@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/tools/rank_restoration_jobs.input.json",
+  "title": "RankRestorationJobsInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id",
+    "jobs"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "jobs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 500,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "job_id",
+          "device_id",
+          "is_make_safe",
+          "customers_restored",
+          "effort_crew_minutes",
+          "waiting_seconds",
+          "required_skill"
+        ],
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "device_id": {
+            "type": "string",
+            "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+          },
+          "is_make_safe": {
+            "type": "boolean"
+          },
+          "is_individual_service": {
+            "type": "boolean"
+          },
+          "customers_restored": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "effort_crew_minutes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "waiting_seconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "required_skill": {
+            "type": "string",
+            "enum": [
+              "make_safe",
+              "overhead_line",
+              "switching",
+              "underground_cable"
+            ]
+          },
+          "has_no_safe_route": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

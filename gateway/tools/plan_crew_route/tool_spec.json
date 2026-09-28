@@ -1,0 +1,52 @@
+[
+  {
+    "name": "plan_crew_route",
+    "description": "Plan a drivable route from a crew to a destination that avoids every active flood hazard. Amazon Location is asked to avoid the flood areas and the returned route is then re-tested against those same areas, because avoidance is best-effort: a route that still touches water is discarded and the tool answers with a flood safety violation instead. Take the route_id it returns, pass it to check_flood_geofence with target_kind route to get a clearance, then call dispatch_crew with both. A destination inside a flood hazard is refused outright. Do NOT dispatch anybody with this tool, do NOT invent a route when it refuses, and do NOT plan travel for a crew of fewer than two people.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "incident_id",
+        "idempotency_key",
+        "crew_id",
+        "destination_kind"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident this call belongs to. Format inc_ followed by a 26-character ULID."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional. corr_ followed by a 26-character ULID. Reuse one id across a whole operational step."
+        },
+        "idempotency_key": {
+          "type": "string",
+          "description": "Idempotency key. A 26-character ULID. Repeating it returns the first result instead of writing again."
+        },
+        "crew_id": {
+          "type": "string",
+          "description": "The crew to move. crew_ followed by digits."
+        },
+        "destination_kind": {
+          "type": "string",
+          "description": "Where to go. One of point or device. point needs coordinates; device needs device_id."
+        },
+        "coordinates": {
+          "type": "array",
+          "description": "Required when destination_kind is point. Exactly two numbers: longitude then latitude, WGS84.",
+          "items": {
+            "type": "number"
+          }
+        },
+        "device_id": {
+          "type": "string",
+          "description": "Required when destination_kind is device. One of sub_, fdr_, lat_ or dt_ followed by digits."
+        },
+        "job_id": {
+          "type": "string",
+          "description": "Optional. The job this route serves, at most 64 characters."
+        }
+      }
+    }
+  }
+]

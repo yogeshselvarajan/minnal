@@ -26,14 +26,14 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 2. [geo-data-engineer] Write the six emitted event schemas in `gateway/schemas/events/`: `DispatchProposed`, `DispatchVetoed`, `DispatchApproved`, `SwitchingProposed`, `SwitchingVetoed`, `SwitchingApproved`, each with `additionalProperties: false` and the closed `rule_id` set _Requirements: 13.1, 13.2_ _Design: §7.2, §11.5_
 
-- [ ] 3. [geo-data-engineer] Tool contracts: two files per tool, Gateway subset plus strict schema _Requirements: 1.2, 1.9, 6.1, 10.8, 12.6_ _Design: §3.3, §5_
-  - [ ] 3.1 [geo-data-engineer] `record_outage`: `tool_spec.json` in the five-keyword subset with constraints in `description` prose, `input.schema.json` strict, and `RecordOutageInput` _Requirements: 1.2, 4.4, 4.8_ _Design: §3.3, §5.1_
-  - [ ] 3.2 [geo-data-engineer] `trace_upstream_device`: the same three artefacts _Requirements: 1.2, 5.7_ _Design: §3.3, §5.2_
-  - [ ] 3.3 [geo-data-engineer] `check_flood_geofence`: the same three artefacts, with `target_kind` flattening `point`/`line`/`polygon`/`device`/`route` and the kind-to-field `model_validator` _Requirements: 1.2, 6.1_ _Design: §3.3, §5.3_
-  - [ ] 3.4 [geo-data-engineer] `plan_crew_route`: the same three artefacts, with `destination_kind` flattening and the `idempotency_key` _Requirements: 1.2, 1.9_ _Design: §3.3, §5.4_
-  - [ ] 3.5 [geo-data-engineer] `rank_restoration_jobs`: the same three artefacts, with the nested `items` job object _Requirements: 1.2, 8.9_ _Design: §3.3, §5.5_
-  - [ ] 3.6 [geo-data-engineer] `dispatch_crew`: the same three artefacts, declaring `safety_clearance_id` and `flood_check` so the Cedar schema contains them _Requirements: 1.2, 12.6_ _Design: §3.3, §5.6_
-  - [ ] 3.7 [geo-data-engineer] `propose_switching`: the same three artefacts, with `safety_clearance_id` and `flood_check` **optional** and a `model_validator` requiring them only for `energise` _Requirements: 1.2, 10.8, 12.6_ _Design: §3.3, §5.7_
+- [x] 3. [geo-data-engineer] Tool contracts: two files per tool, Gateway subset plus strict schema _Requirements: 1.2, 1.9, 6.1, 10.8, 12.6_ _Design: §3.3, §5_
+  - [x] 3.1 [geo-data-engineer] `record_outage`: `tool_spec.json` in the five-keyword subset with constraints in `description` prose, `input.schema.json` strict, and `RecordOutageInput` _Requirements: 1.2, 4.4, 4.8_ _Design: §3.3, §5.1_
+  - [x] 3.2 [geo-data-engineer] `trace_upstream_device`: the same three artefacts _Requirements: 1.2, 5.7_ _Design: §3.3, §5.2_
+  - [x] 3.3 [geo-data-engineer] `check_flood_geofence`: the same three artefacts, with `target_kind` flattening `point`/`line`/`polygon`/`device`/`route` and the kind-to-field `model_validator` _Requirements: 1.2, 6.1_ _Design: §3.3, §5.3_
+  - [x] 3.4 [geo-data-engineer] `plan_crew_route`: the same three artefacts, with `destination_kind` flattening and the `idempotency_key` _Requirements: 1.2, 1.9_ _Design: §3.3, §5.4_
+  - [x] 3.5 [geo-data-engineer] `rank_restoration_jobs`: the same three artefacts, with the nested `items` job object _Requirements: 1.2, 8.9_ _Design: §3.3, §5.5_
+  - [x] 3.6 [geo-data-engineer] `dispatch_crew`: the same three artefacts, declaring `safety_clearance_id` and `flood_check` so the Cedar schema contains them _Requirements: 1.2, 12.6_ _Design: §3.3, §5.6_
+  - [x] 3.7 [geo-data-engineer] `propose_switching`: the same three artefacts, with `safety_clearance_id` and `flood_check` **optional** and a `model_validator` requiring them only for `energise` _Requirements: 1.2, 10.8, 12.6_ _Design: §3.3, §5.7_
 
 - [ ] 4. [qa-eval-engineer] Contract tests _Requirements: 1.1, 1.2, 1.4, 1.11, 13.1, 14.5, 16.3, 16.4, 17.6, 17.7_ _Design: §3.3, §19.3_
   - [ ] 4.1 [qa-eval-engineer] Write `test_tool_spec_uses_only_gateway_subset`: walk all seven `tool_spec.json` at every depth and fail on any keyword outside `type`, `description`, `properties`, `required`, `items`; plus `test_no_oneof_anywhere` _Requirements: 1.2_ _Design: §3.3_

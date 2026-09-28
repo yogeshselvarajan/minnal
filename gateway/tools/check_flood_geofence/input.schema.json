@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/tools/check_flood_geofence.input.json",
+  "title": "CheckFloodGeofenceInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id",
+    "idempotency_key",
+    "purpose",
+    "target_kind"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "purpose": {
+      "type": "string",
+      "enum": ["route", "switching"]
+    },
+    "target_kind": {
+      "type": "string",
+      "enum": ["point", "line", "polygon", "device", "route"]
+    },
+    "coordinates": {
+      "type": "array"
+    },
+    "device_id": {
+      "type": "string",
+      "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+    },
+    "route_id": {
+      "type": "string",
+      "pattern": "^rte_[0-9A-HJKMNP-TV-Z]{26}$"
+    }
+  }
+}

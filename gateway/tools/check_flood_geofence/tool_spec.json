@@ -1,0 +1,53 @@
+[
+  {
+    "name": "check_flood_geofence",
+    "description": "Test a place, line, area, grid device or a stored route against the incident's active flood hazards, and obtain a safety clearance when it is clear. Call it before proposing any crew movement (purpose route) or any energisation (purpose switching): dispatch_crew and propose_switching refuse without the clearance id this tool returns. For a crew route, always pass target_kind route with the route_id that plan_crew_route returned, never a copy of the coordinates: the clearance is bound to that stored route. A clearance is tied to one geometry, to the current flood version and to a short expiry, and it can back only one proposal. With target_kind device the tool also tests every device downstream and the service areas those transformers supply. Do NOT use it to decide whether to de-energise equipment, which is always allowed as a safety measure, and do NOT reuse an old clearance after the flood picture changes: ask again.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "incident_id",
+        "idempotency_key",
+        "purpose",
+        "target_kind"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident this call belongs to. Format inc_ followed by a 26-character ULID."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional. corr_ followed by a 26-character ULID. Reuse one id across a whole operational step."
+        },
+        "idempotency_key": {
+          "type": "string",
+          "description": "Idempotency key. A 26-character ULID. Repeating it returns the first result instead of writing again."
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Why you are checking. One of route (crew movement) or switching (energisation)."
+        },
+        "target_kind": {
+          "type": "string",
+          "description": "What to test. One of point, line, polygon, device, route. point, line and polygon need coordinates; device needs device_id; route needs route_id."
+        },
+        "coordinates": {
+          "type": "array",
+          "description": "Required for point, line and polygon. A point is two numbers longitude then latitude; a line is a list of such pairs, at least two; a polygon is a list of closed rings, each of at least four pairs. WGS84.",
+          "items": {
+            "type": "number",
+            "description": "A coordinate value, or a nested array for line and polygon shapes."
+          }
+        },
+        "device_id": {
+          "type": "string",
+          "description": "Required when target_kind is device. One of sub_, fdr_, lat_ or dt_ followed by digits."
+        },
+        "route_id": {
+          "type": "string",
+          "description": "Required when target_kind is route. The rte_ id that plan_crew_route returned."
+        }
+      }
+    }
+  }
+]

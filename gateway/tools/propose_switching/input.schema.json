@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/tools/propose_switching.input.json",
+  "title": "ProposeSwitchingInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id",
+    "idempotency_key",
+    "device_id",
+    "action",
+    "reason"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "device_id": {
+      "type": "string",
+      "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+    },
+    "action": {
+      "type": "string",
+      "enum": ["energise", "de_energise"]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280
+    },
+    "safety_clearance_id": {
+      "type": "string",
+      "pattern": "^sfc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "flood_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["flood_check_id", "intersects"],
+      "properties": {
+        "flood_check_id": {
+          "type": "string",
+          "pattern": "^fck_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "intersects": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

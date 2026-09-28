@@ -1,0 +1,113 @@
+/* Minnal design tokens. Paste into frontend/src/app/globals.css (Tailwind v4). */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  /* dark control-room default */
+  --background: #0b1020;
+  --surface-1: #11182b;
+  --surface-2: #172036;
+  --surface-3: #1f2a44;
+  --foreground: #e8edf7;
+  --muted-foreground: #9aa7bf;
+  --border: #2a3654;
+  --ring: #f5c518;
+  --brand: #f5c518;
+  --brand-foreground: #0b1020;
+  --status-critical: #ff6b4a;
+  --status-warning: #f2b233;
+  --status-ok: #2ec4a6;
+  --status-info: #5aa9ff;
+  --status-neutral: #a3adc2;
+  --flood: #3d8bfd;
+  --radius-control: 6px;
+  --radius-card: 10px;
+  --radius-sheet: 16px;
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --duration-slow: 380ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --font-sans: "IBM Plex Sans", "Noto Sans Tamil", "Noto Sans Devanagari", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* shadcn/ui variable contract (components read these) */
+  --card: var(--surface-1);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface-2);
+  --popover-foreground: var(--foreground);
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
+  --secondary: var(--surface-3);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--surface-2);
+  --accent: var(--surface-3);
+  --accent-foreground: var(--foreground);
+  --destructive: var(--status-critical);
+  --input: var(--border);
+  --radius: var(--radius-card);
+}
+
+.light {
+  --background: #f6f8fc;
+  --surface-1: #ffffff;
+  --surface-2: #eef2f8;
+  --surface-3: #e2e8f2;
+  --foreground: #0e1526;
+  --muted-foreground: #4a5670;
+  --border: #c9d2e3;
+  --ring: #8a6a00;
+  --brand: #8a6a00;
+  --brand-foreground: #ffffff;
+  --status-critical: #c2331a;
+  --status-warning: #8f5f00;
+  --status-ok: #0d7a63;
+  --status-info: #1f5fbf;
+  --status-neutral: #5b667d;
+  --flood: #1f5fbf;
+}
+
+@theme inline {
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-background: var(--background);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-status-critical: var(--status-critical);
+  --color-status-warning: var(--status-warning);
+  --color-status-ok: var(--status-ok);
+  --color-status-info: var(--status-info);
+  --color-status-neutral: var(--status-neutral);
+  --color-flood: var(--flood);
+  --radius-control: var(--radius-control);
+  --radius-card: var(--radius-card);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

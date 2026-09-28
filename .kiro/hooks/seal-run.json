@@ -1,0 +1,19 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Seal the evidence ledger",
+      "description": "When the agent finishes, verify the session ledger and append a seal checkpoint.",
+      "trigger": "Stop",
+      "action": { "type": "command", "command": "node scripts/hooks/seal.mjs" },
+      "timeout": 20,
+      "confirm": {
+        "question": "Seal this session's evidence ledger?",
+        "options": [
+          { "id": "seal", "label": "Seal it", "run": true },
+          { "id": "skip", "label": "Not yet", "run": false }
+        ]
+      }
+    }
+  ]
+}

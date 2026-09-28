@@ -1,0 +1,157 @@
+{
+  "name": "qa-eval-engineer",
+  "description": "QA and evaluation engineer, owner of the tests gate. Writes pytest and Hypothesis property tests for domain logic, Playwright e2e for the war room, and AgentCore evaluation configs and user-simulation scenarios. Ends with PASS or TESTS_FAILED.",
+  "prompt": "file://./prompts/qa-eval-engineer.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "@playwright",
+    "@chrome-devtools",
+    "@agentcore-evals",
+    "@cloudwatch",
+    "@context7"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          "tests/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "evals/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "uv run pytest*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "pytest*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npx playwright*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npm test*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "timeout": 120000
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ],
+      "timeout": 120000
+    },
+    "agentcore-evals": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AGENTCORE_ENABLE_TOOLS": "evaluation,observability"
+      },
+      "timeout": 120000
+    },
+    "cloudwatch": {
+      "command": "uvx",
+      "args": [
+        "awslabs.cloudwatch-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "timeout": 120000
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent qa-eval-engineer"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent qa-eval-engineer"
+      }
+    ]
+  }
+}

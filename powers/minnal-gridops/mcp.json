@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "aws-location": {
+      "command": "uvx",
+      "args": ["awslabs.aws-location-mcp-server@latest"],
+      "env": { "AWS_PROFILE": "default", "AWS_REGION": "us-east-1", "FASTMCP_LOG_LEVEL": "ERROR" }
+    },
+    "translate": {
+      "command": "uvx",
+      "args": ["awslabs.amazon-translate-mcp-server@latest"],
+      "env": { "AWS_PROFILE": "default", "AWS_REGION": "us-east-1", "FASTMCP_LOG_LEVEL": "ERROR" }
+    },
+    "roda": {
+      "command": "uvx",
+      "args": ["awslabs.roda-mcp-server@latest"],
+      "env": { "FASTMCP_LOG_LEVEL": "ERROR" }
+    }
+  }
+}

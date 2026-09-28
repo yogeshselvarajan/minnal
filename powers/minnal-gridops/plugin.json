@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "minnal-gridops",
+  "version": "0.1.0",
+  "description": "Storm-restoration expertise for building agentic utility operations on AWS: Incident Command System roles, restoration priority rules, flood safety, honest ETRs and CAP 1.2 public alerts, with Amazon Location, Amazon Translate and Registry of Open Data MCP servers bundled.",
+  "author": {
+    "name": "Yogesh Selvarajan",
+    "url": "https://github.com/REPLACE_WITH_YOUR_GITHUB"
+  },
+  "homepage": "https://github.com/REPLACE_WITH_YOUR_GITHUB/minnal",
+  "repository": "https://github.com/REPLACE_WITH_YOUR_GITHUB/minnal",
+  "license": "MIT",
+  "keywords": [
+    "storm restoration",
+    "power outage",
+    "outage management",
+    "utility",
+    "grid",
+    "crew dispatch",
+    "etr",
+    "restoration time",
+    "cap alert",
+    "incident command",
+    "flood",
+    "cyclone",
+    "disaster response"
+  ]
+}

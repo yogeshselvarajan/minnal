@@ -1,0 +1,12 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Kiroster brief (CLI)",
+      "description": "Adds team, open spec tasks and ledger health to context when an agent starts.",
+      "trigger": "AgentSpawn",
+      "action": { "type": "command", "command": "node scripts/hooks/session-brief.mjs" },
+      "timeout": 10
+    }
+  ]
+}

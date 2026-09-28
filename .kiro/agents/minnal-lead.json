@@ -1,0 +1,118 @@
+{
+  "name": "minnal-lead",
+  "description": "Tech lead and build orchestrator for Minnal. Plans from Kiro specs, delegates to specialist sub-agents in parallel by lane, runs the tests, code-review and security-review loops, and stops for the owner before any deploy. Never writes product code.",
+  "prompt": "file://./prompts/minnal-lead.md",
+  "tools": [
+    "read",
+    "write",
+    "subagent",
+    "todo_list",
+    "@aws-knowledge"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          "docs/plans/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git status*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git log*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git diff*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "aws-knowledge": {
+      "url": "https://knowledge-mcp.global.api.aws"
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent minnal-lead"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent minnal-lead"
+      }
+    ]
+  },
+  "toolsSettings": {
+    "subagent": {
+      "availableAgents": [
+        "domain-analyst",
+        "solution-architect",
+        "agent-engineer",
+        "geo-data-engineer",
+        "frontend-engineer",
+        "platform-engineer",
+        "qa-eval-engineer",
+        "code-reviewer",
+        "security-reviewer",
+        "sre"
+      ],
+      "trustedAgents": [
+        "domain-analyst",
+        "code-reviewer",
+        "security-reviewer",
+        "qa-eval-engineer"
+      ]
+    }
+  },
+  "welcomeMessage": "Minnal lead ready. Name a spec or a goal; I will plan, delegate by lane and run the gates.",
+  "keyboardShortcut": "ctrl+l"
+}

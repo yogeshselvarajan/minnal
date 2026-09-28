@@ -1,0 +1,215 @@
+{
+  "name": "geo-data-engineer",
+  "description": "Geo and data engineer. Builds the storm replay simulator, synthetic grid data on OpenStreetMap geometry, Lambda tools (topology trace, crews, work orders, ETR, CAP alerts) and their pure logic, using Amazon Location, RODA open data, DynamoDB, Translate, Step Functions and SNS. Use for gateway/tools/, simulator/ and data/.",
+  "prompt": "file://./prompts/geo-data-engineer.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web",
+    "@aws-location",
+    "@roda",
+    "@dynamodb",
+    "@translate",
+    "@stepfunctions",
+    "@sns-sqs",
+    "@context7",
+    "@fetch"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          "gateway/tools/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "simulator/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "data/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "uv *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "pytest*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "ruff *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "mypy *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "python *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "aws-location": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-location-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "roda": {
+      "command": "uvx",
+      "args": [
+        "awslabs.roda-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "dynamodb": {
+      "command": "uvx",
+      "args": [
+        "awslabs.dynamodb-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "DDB-MCP-READONLY": "true"
+      },
+      "timeout": 120000
+    },
+    "translate": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-translate-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "stepfunctions": {
+      "command": "uvx",
+      "args": [
+        "awslabs.stepfunctions-tool-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "STATE_MACHINE_PREFIX": "minnal-"
+      },
+      "timeout": 120000
+    },
+    "sns-sqs": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-sns-sqs-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "timeout": 120000
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "timeout": 120000
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent geo-data-engineer"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent geo-data-engineer"
+      }
+    ]
+  }
+}

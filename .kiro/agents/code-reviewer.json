@@ -1,0 +1,112 @@
+{
+  "name": "code-reviewer",
+  "description": "Independent code reviewer, owner of the code-review gate. Read-only. Checks diffs against specs, steering (tech, agents-and-mcp, ux) and design properties. Ends with PASS or NEEDS_CHANGES.",
+  "prompt": "file://./prompts/code-reviewer.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "@context7"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          "docs/reviews/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git diff*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git log*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "ruff check*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "mypy *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npx tsc --noEmit*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "timeout": 120000
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent code-reviewer"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent code-reviewer"
+      }
+    ]
+  }
+}

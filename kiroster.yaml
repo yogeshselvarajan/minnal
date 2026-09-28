@@ -1,0 +1,115 @@
+# Kiroster charter for the team that builds Minnal. The .kiro/agents/*.json files mirror this file.
+apiVersion: kiroster/v1
+team:
+  name: minnal-build
+  description: Builds Minnal, the agentic storm-restoration war room, on AWS.
+  owner: Yogesh Selvarajan
+  lead: minnal-lead
+
+defaults:
+  steering: [".kiro/steering/**/*.md"]
+  skills: [".kiro/skills/**/SKILL.md"]
+  aws_profiles: { read: minnal-readonly, deploy: minnal-deploy }
+  deny:
+    shell: ["git push --force*", "git push -f*", "rm -rf *", "sudo *", "aws * delete*", "aws * terminate*", "cdk destroy*", "terraform destroy*"]
+    write: [".kiroster/ledger/**", ".kiro/agents/**", ".kiro/hooks/**", ".env*"]
+  ledger: .kiroster/ledger
+
+roles:
+  minnal-lead:
+    kind: orchestrator
+    tools: [read, write, subagent, todo_list, "@aws-knowledge"]
+    mcp: ["aws-knowledge"]
+    write: ["docs/plans/**"]
+    shell: ["git status*", "git log*", "git diff*"]
+    delegates: ["domain-analyst", "solution-architect", "agent-engineer", "geo-data-engineer", "frontend-engineer", "platform-engineer", "qa-eval-engineer", "code-reviewer", "security-reviewer", sre]
+    trusts: ["domain-analyst", "code-reviewer", "security-reviewer", "qa-eval-engineer"]
+
+  domain-analyst:
+    kind: maker
+    tools: [read, write, web, "@aws-knowledge", "@fetch"]
+    mcp: ["aws-knowledge", fetch]
+    write: ["docs/domain/**", ".kiro/specs/**/requirements.md", "data/kb/**"]
+
+  solution-architect:
+    kind: maker
+    tools: [read, write, "@aws-knowledge", "@aws-iac", "@aws-pricing", "@agentcore", "@strands"]
+    mcp: ["aws-knowledge", "aws-iac", "aws-pricing", agentcore, strands]
+    write: [".kiro/specs/**/design.md", ".kiro/specs/**/tasks.md", "docs/adr/**", "docs/architecture/**"]
+
+  agent-engineer:
+    kind: maker
+    tools: [read, write, shell, "@agentcore", "@strands", "@aws-knowledge", "@bedrock-kb", "@context7", "@fetch"]
+    mcp: [agentcore, strands, "aws-knowledge", "bedrock-kb", "context7", fetch]
+    write: ["patterns/agui-minnal/**", "voice/**", "pyproject.toml", "uv.lock"]
+    shell: ["uv *", "pytest*", "ruff *", "mypy *", "python -m *", "agentcore status*", "agentcore invoke*"]
+
+  geo-data-engineer:
+    kind: maker
+    tools: [read, write, shell, web, "@aws-location", "@roda", "@dynamodb", "@translate", "@stepfunctions", "@sns-sqs", "@context7", "@fetch"]
+    mcp: ["aws-location", roda, dynamodb, translate, stepfunctions, "sns-sqs", "context7", fetch]
+    write: ["gateway/tools/**", "simulator/**", "data/**"]
+    shell: ["uv *", "pytest*", "ruff *", "mypy *", "python *"]
+
+  frontend-engineer:
+    kind: maker
+    tools: [read, write, shell, "@context7", "@shadcn", "@chrome-devtools", "@fetch"]
+    mcp: ["context7", shadcn, "chrome-devtools", fetch]
+    write: ["frontend/**"]
+    shell: ["npm *", "npx vite*", "npx vitest*", "npx playwright*", "npx shadcn*", "python .kiro/skills/ui-ux-pro/scripts/*"]
+
+  platform-engineer:
+    kind: maker
+    tools: [read, write, shell, "@aws-iac", "@aws-mcp", "@aws-pricing", "@billing-cost-management", "@context7"]
+    mcp: ["aws-iac", "aws-mcp", "aws-pricing", "billing-cost-management", "context7"]
+    write: ["infra-cdk/**", "gateway/policies/**"]
+    shell: ["npm *", "npx cdk synth*", "npx cdk diff*", "npx cdk-nag*", "npx cdk deploy*"]
+    ask_shell: ["npx cdk deploy*"]
+    ask_mcp: ["@aws-mcp/call_aws", "@aws-mcp/run_script"]
+
+  qa-eval-engineer:
+    kind: maker
+    tools: [read, write, shell, "@playwright", "@chrome-devtools", "@agentcore-evals", "@cloudwatch", "@context7"]
+    mcp: [playwright, "chrome-devtools", "agentcore-evals", cloudwatch, "context7"]
+    write: ["tests/**", "evals/**"]
+    shell: ["uv run pytest*", "pytest*", "npx playwright*", "npm test*"]
+
+  code-reviewer:
+    kind: checker
+    tools: [read, write, shell, "@context7"]
+    mcp: ["context7"]
+    write: ["docs/reviews/**"]
+    shell: ["git diff*", "git log*", "ruff check*", "mypy *", "npx tsc --noEmit*"]
+
+  security-reviewer:
+    kind: checker
+    tools: [read, write, shell, "@iam", "@wa-security", "@cloudtrail"]
+    mcp: [iam, "wa-security", cloudtrail]
+    write: ["docs/reviews/**"]
+    shell: ["git diff*", "git log*", "npm audit*", "uv pip audit*", "npx cdk-nag*"]
+
+  sre:
+    kind: maker
+    tools: [read, write, "@cloudwatch", "@app-signals", "@cloudtrail"]
+    mcp: [cloudwatch, "app-signals", cloudtrail]
+    write: ["docs/runbooks/**"]
+
+gates:
+  tests:
+    checker: qa-eval-engineer
+    covers: ["patterns/agui-minnal/**", "voice/**", "gateway/tools/**", "simulator/**", "frontend/**"]
+    loop: { target: agent-engineer, trigger: TESTS_FAILED, max_iterations: 3 }
+  code-review:
+    checker: code-reviewer
+    covers: ["patterns/agui-minnal/**", "voice/**", "gateway/**", "simulator/**", "frontend/**", "infra-cdk/**"]
+    loop: { target: agent-engineer, trigger: NEEDS_CHANGES, max_iterations: 3 }
+  security-review:
+    checker: security-reviewer
+    covers: ["patterns/agui-minnal/**", "voice/**", "gateway/**", "infra-cdk/**", "frontend/**"]
+    loop: { target: platform-engineer, trigger: NEEDS_CHANGES, max_iterations: 2 }
+
+human_gates:
+  - before: "npx cdk deploy*"
+    reason: The owner approves every deployment.
+  - before: "@aws-mcp/call_aws"
+    reason: Live AWS API calls from the build team need a person.

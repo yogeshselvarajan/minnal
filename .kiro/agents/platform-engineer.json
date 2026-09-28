@@ -1,0 +1,186 @@
+{
+  "name": "platform-engineer",
+  "description": "Platform engineer. Owns the CDK app: AgentCore runtimes, Gateway and targets, Memory, Policy, Cognito, DynamoDB, EventBridge, Step Functions, Location resources, least-privilege IAM, cdk-nag, and cost checks. Deploys only after the owner approves.",
+  "prompt": "file://./prompts/platform-engineer.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "@aws-iac",
+    "@aws-mcp",
+    "@aws-pricing",
+    "@billing-cost-management",
+    "@context7"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          "infra-cdk/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "gateway/policies/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npm *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npx cdk synth*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npx cdk diff*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npx cdk-nag*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npx cdk deploy*"
+        ],
+        "effect": "ask"
+      },
+      {
+        "capability": "mcp",
+        "match": [
+          "@aws-mcp/call_aws"
+        ],
+        "effect": "ask"
+      },
+      {
+        "capability": "mcp",
+        "match": [
+          "@aws-mcp/run_script"
+        ],
+        "effect": "ask"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "aws-iac": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-iac-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "aws-mcp": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy-for-aws==1.6.0",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--metadata",
+        "AWS_REGION=us-east-1"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-deploy"
+      },
+      "timeout": 120000
+    },
+    "aws-pricing": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-pricing-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "billing-cost-management": {
+      "command": "uvx",
+      "args": [
+        "awslabs.billing-cost-management-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "timeout": 120000
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent platform-engineer"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent platform-engineer"
+      }
+    ]
+  }
+}

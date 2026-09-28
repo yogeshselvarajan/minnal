@@ -1,0 +1,143 @@
+{
+  "name": "solution-architect",
+  "description": "AWS solution architect. Writes design.md with correctness properties, ADRs and architecture docs for Strands agents on Bedrock AgentCore (Runtime, Gateway, Memory, Policy, Evaluations), Location, Step Functions and CDK. Checks cost with the pricing MCP. Use for any design decision.",
+  "prompt": "file://./prompts/solution-architect.md",
+  "tools": [
+    "read",
+    "write",
+    "@aws-knowledge",
+    "@aws-iac",
+    "@aws-pricing",
+    "@agentcore",
+    "@strands"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiro/specs/**/design.md"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiro/specs/**/tasks.md"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "docs/adr/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "docs/architecture/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "aws-knowledge": {
+      "url": "https://knowledge-mcp.global.api.aws"
+    },
+    "aws-iac": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-iac-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "aws-pricing": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-pricing-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "agentcore": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AGENTCORE_ENABLE_TOOLS": "runtime,gateway,memory,identity,policy,evaluation"
+      },
+      "timeout": 120000
+    },
+    "strands": {
+      "command": "uvx",
+      "args": [
+        "strands-agents-mcp-server"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "INFO"
+      },
+      "timeout": 120000
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent solution-architect"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent solution-architect"
+      }
+    ]
+  }
+}

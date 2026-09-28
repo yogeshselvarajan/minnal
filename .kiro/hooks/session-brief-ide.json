@@ -1,0 +1,12 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Kiroster brief (IDE)",
+      "description": "Same brief as the CLI AgentSpawn hook, for IDE sessions.",
+      "trigger": "SessionStart",
+      "action": { "type": "command", "command": "node scripts/hooks/session-brief.mjs" },
+      "timeout": 10
+    }
+  ]
+}

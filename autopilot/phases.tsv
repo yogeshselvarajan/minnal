@@ -1,0 +1,11 @@
+id	name	brief	verify
+00	foundation	autopilot/phases/00-foundation.md	uv run pytest -q tests/test_no_claude.py && test "$(ls docs/domain/*.md 2>/dev/null | wc -l)" -ge 3 && test -f patterns/agui-minnal/config/models.yaml
+01	specs	autopilot/phases/01-specs.md	scripts/specs-ready.sh
+02	replay-simulator	autopilot/phases/02-replay-simulator.md	scripts/spec-complete.sh replay-simulator && uv run ruff check simulator && uv run pytest -q tests/simulator
+03	grid-tools	autopilot/phases/03-grid-tools.md	scripts/spec-complete.sh grid-tools && uv run ruff check gateway && uv run pytest -q tests/tools tests/policy
+04	agent-team-runtime	autopilot/phases/04-agent-team-runtime.md	scripts/spec-complete.sh agent-team-runtime && uv run pytest -q tests/agents && (cd infra-cdk && npm ci --silent && npx cdk synth --quiet > /dev/null)
+05	war-room-ui	autopilot/phases/05-war-room-ui.md	scripts/spec-complete.sh war-room-ui && (cd frontend && npm ci --silent && npm run lint && npm run build && npm test)
+06	public-information	autopilot/phases/06-public-information.md	scripts/spec-complete.sh public-information && uv run pytest -q tests/pio
+07	citizen-voice-line	autopilot/phases/07-citizen-voice-line.md	scripts/spec-complete.sh citizen-voice-line && uv run pytest -q tests/voice
+08	quality-security	autopilot/phases/08-quality-security.md	uv run ruff check . && uv run pytest -q && test -f evals/baseline.json && test -f docs/reviews/security-review.md && test -f docs/reviews/code-review.md
+09	evidence-docs	autopilot/phases/09-evidence-docs.md	test -f docs/evidence/specs.md && test -f docs/evidence/team-run.md && test -f docs/submission.md && node scripts/hooks/verify.mjs

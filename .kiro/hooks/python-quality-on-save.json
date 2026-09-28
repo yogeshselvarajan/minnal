@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Ruff + mypy on Python save (IDE)",
+      "description": "When the agent edits Python in patterns/agui-minnal/, gateway/tools/ or simulator/, lint and type-check and feed errors back.",
+      "trigger": "PostFileSave",
+      "matcher": "(agents|tools|simulator)/.*\\.py$",
+      "action": { "type": "command", "command": "uv run ruff check --fix . && uv run mypy patterns/agui-minnal/domain tools" },
+      "timeout": 180
+    }
+  ]
+}

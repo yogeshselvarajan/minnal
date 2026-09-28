@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "CDK synth + cdk-nag on infra save (IDE)",
+      "description": "When the agent edits CDK code, synthesise and run cdk-nag so policy and IAM problems surface immediately.",
+      "trigger": "PostFileSave",
+      "matcher": "infra-cdk/.*\\.(ts|cedar)$",
+      "action": { "type": "command", "command": "cd infra && npx cdk synth --quiet" },
+      "timeout": 300
+    }
+  ]
+}

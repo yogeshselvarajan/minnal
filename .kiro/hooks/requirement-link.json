@@ -1,0 +1,20 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Link task to requirements (IDE)",
+      "description": "Before a spec task starts, name the requirement and property IDs it satisfies and any [SAFETY] requirement it touches.",
+      "trigger": "PreTaskExecution",
+      "action": {
+        "type": "agent",
+        "prompt": "Before starting this task, list the requirement IDs (R..), correctness property IDs (P..) and any [SAFETY] requirements it touches, from requirements.md and design.md. If none apply, stop and ask the owner to update the spec."
+      }
+    },
+    {
+      "name": "Run tests after task (IDE)",
+      "trigger": "PostTaskExecution",
+      "action": { "type": "command", "command": "uv run pytest -q --maxfail=5" },
+      "timeout": 600
+    }
+  ]
+}

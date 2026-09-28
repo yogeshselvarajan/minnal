@@ -1,0 +1,106 @@
+{
+  "name": "sre",
+  "description": "Site reliability engineer. Reads CloudWatch, Application Signals and CloudTrail for the deployed stack, writes runbooks and dashboards-as-code notes, and investigates failed evaluation or replay runs. Use for operations questions.",
+  "prompt": "file://./prompts/sre.md",
+  "tools": [
+    "read",
+    "write",
+    "@cloudwatch",
+    "@app-signals",
+    "@cloudtrail"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          "docs/runbooks/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "cloudwatch": {
+      "command": "uvx",
+      "args": [
+        "awslabs.cloudwatch-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "app-signals": {
+      "command": "uvx",
+      "args": [
+        "awslabs.cloudwatch-applicationsignals-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    },
+    "cloudtrail": {
+      "command": "uvx",
+      "args": [
+        "awslabs.cloudtrail-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "timeout": 120000
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent sre"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent sre"
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Lint + typecheck on React save (IDE)",
+      "description": "When the agent edits frontend TypeScript, run ESLint and the TypeScript compiler and feed errors back.",
+      "trigger": "PostFileSave",
+      "matcher": "frontend/src/.*\\.(ts|tsx)$",
+      "action": { "type": "command", "command": "cd frontend && npx eslint src/ --fix --quiet && npx tsc --noEmit" },
+      "timeout": 180
+    },
+    {
+      "name": "Contrast check on token change (IDE)",
+      "description": "When design tokens change, verify WCAG contrast for every text and status pair in dark and light themes.",
+      "trigger": "PostFileSave",
+      "matcher": "frontend/src/app/globals\\.css$",
+      "action": { "type": "command", "command": "python3 .kiro/skills/ui-ux-pro/scripts/contrast_check.py frontend/src/app/globals.css" },
+      "timeout": 30
+    }
+  ]
+}

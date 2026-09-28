@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Kiroster guard",
+      "description": "Fail-closed PreToolUse fence: blocks ledger edits, secrets, destructive AWS commands, Claude model IDs in runtime code, deploys and live AWS calls during autopilot, and any tool input it cannot understand. Works in CLI and IDE.",
+      "trigger": "PreToolUse",
+      "matcher": "fs_write|execute_bash|write|shell|@aws-mcp.*",
+      "action": { "type": "command", "command": "node scripts/hooks/guard.mjs" },
+      "timeout": 10
+    }
+  ]
+}

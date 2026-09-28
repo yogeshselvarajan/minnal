@@ -1,0 +1,199 @@
+{
+  "name": "agent-engineer",
+  "description": "Agent engineer. Implements the Strands agents for each ICS role (commander, hazard, diagnostics, safety, dispatch, pio, citizen_line, scribe), their prompts, structured outputs, Gateway tool wiring and AgentCore deployment config. Use for anything under patterns/agui-minnal/.",
+  "prompt": "file://./prompts/agent-engineer.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "@agentcore",
+    "@strands",
+    "@aws-knowledge",
+    "@bedrock-kb",
+    "@context7",
+    "@fetch"
+  ],
+  "allowedTools": [
+    "read"
+  ],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_write",
+        "match": [
+          "patterns/agui-minnal/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "voice/**"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "pyproject.toml"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          "uv.lock"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "uv *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "pytest*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "ruff *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "mypy *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "python -m *"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "agentcore status*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "agentcore invoke*"
+        ],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": [
+          ".kiroster/ledger/**",
+          ".kiro/agents/**",
+          ".kiro/hooks/**",
+          ".env*"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git push --force*",
+          "git push -f*",
+          "rm -rf *",
+          "sudo *",
+          "aws * delete*",
+          "aws * terminate*",
+          "cdk destroy*",
+          "terraform destroy*"
+        ],
+        "effect": "deny"
+      }
+    ]
+  },
+  "mcpServers": {
+    "agentcore": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AGENTCORE_ENABLE_TOOLS": "runtime,gateway,memory,identity,policy,evaluation"
+      },
+      "timeout": 120000
+    },
+    "strands": {
+      "command": "uvx",
+      "args": [
+        "strands-agents-mcp-server"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "INFO"
+      },
+      "timeout": 120000
+    },
+    "aws-knowledge": {
+      "url": "https://knowledge-mcp.global.api.aws"
+    },
+    "bedrock-kb": {
+      "command": "uvx",
+      "args": [
+        "awslabs.bedrock-kb-retrieval-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "minnal-readonly",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "BEDROCK_KB_RERANKING_ENABLED": "false",
+        "KB_INCLUSION_TAG_KEY": "minnal"
+      },
+      "timeout": 120000
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "timeout": 120000
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "timeout": 120000
+    }
+  },
+  "includeMcpJson": false,
+  "resources": [
+    "file://.kiro/steering/**/*.md",
+    "file://docs/BLUEPRINT.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "fs_write",
+        "command": "node scripts/hooks/trail.mjs --agent agent-engineer"
+      },
+      {
+        "matcher": "execute_bash",
+        "command": "node scripts/hooks/trail.mjs --agent agent-engineer"
+      }
+    ]
+  }
+}

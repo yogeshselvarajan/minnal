@@ -2,9 +2,9 @@
 
 Branch: `feat/grid-tools` (from `main` @ 2d3fa2f).
 
-- **Last finished task:** 9 (Wave 1 — Pure foundations complete: tasks 5, 6, 7, 8, 9.1-9.4).
-- **Next:** Wave 2 — Pure logic per tool (tasks 10-26, checkpoint 31): the seven `logic.py` modules and their property tests.
-- **Open notes:** Wave 1 built `_shared/geometry.py` (UTM 44N buffering, hashing, snapping, simplify_outward), `_shared/flood.py` (FloodSet model, derive_status, version-keyed hazard index, apply_flood_event/apply_heartbeat), `_shared/grid.py` (radial forest loader), the P28 monotonic-clock property test, and the test infrastructure (`tests/tools/oracles.py`, `strategies.py`, `fakes.py`, `test_pure_modules.py`). `tests/tools` = 82 passing. `ruff check gateway tests` is green; the `ruff format --check` debt in 12 `tests/simulator/properties/` files remains pre-existing (see grid-tools-build-notes.md) and untouched. `cdk synth` may be blocked by Docker/arm64 emulation (owner-side, not grid-tools).
+- **Last finished task:** 31 (Wave 2 checkpoint — Pure logic per tool complete: tasks 10-26, 25.1, 31).
+- **Next:** Wave 3 — Ports and adapters (tasks 32-40): `_shared/ports.py`, local and AWS adapters, and their property tests (P16, P27, P32, P36-P40).
+- **Open notes:** Wave 2 filled in the seven `logic.py` bodies plus the two internal-component logics: `record_outage` (Outage_Key, draft, emergency advice, sticky escalation), `trace_upstream_device` (path-prefix LCA, per-substation split), `check_flood_geofence` (geometry/device checks, clearance_for), `plan_crew_route` (avoidance_areas with envelope budget cap, destination + route re-test), `rank_restoration_jobs` (tiers, exact-Fraction sort key, three-way partition, stale blocking), `dispatch_crew` (validate_dispatch typed decision), `propose_switching` (validate_switching; de_energise never blocked), `approval_handler` (authorise + decide) and `work_order_expirer` (expire). Nine property tests landed: P7, P31[SAFETY], P4, P24, P13[SAFETY], P29, P3, P10, P11, P12. `tests/tools` = 104 passing (6 under `-m safety`), all property tests at 200 examples. `uv run mypy gateway/tools` = 0 issues over 51 files after the authorised task-31 config fix (`gateway/tools` on `mypy_path`, `_shared` in `files`, shapely/pyproj `ignore_missing_imports`, FAST `sample_tool` `ignore_errors`). `ruff check gateway tests` green; the `ruff format --check` debt in 12 `tests/simulator/properties/` files remains pre-existing and untouched. Deviation logged: P29 vertex-budget vs the convex-hull-only `simplify_outward` — `avoidance_areas` caps with the axis-aligned envelope (in-file, outward-only). `cdk synth` may be blocked by Docker/arm64 emulation (owner-side, not grid-tools). Tasks 27-30 (Wave 4) NOT touched.
 
 ## Wave status
 
@@ -12,7 +12,7 @@ Branch: `feat/grid-tools` (from `main` @ 2d3fa2f).
 |---|---|---|
 | 0 Contracts | 0-4 | done |
 | 1 Pure foundations | 5-9 | done |
-| 2 Pure logic per tool | 10-26, 31 | pending |
+| 2 Pure logic per tool | 10-26, 25.1, 31 | done |
 | 3 Ports and adapters | 32-40 | pending |
 | 4 Handlers + backend | 41-57, 27-30 | pending |
 | 5 Policy | 58-64 | pending |

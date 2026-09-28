@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/events/DispatchProposed.v1.json",
+  "title": "DispatchProposed",
+  "description": "Emitted by dispatch_crew when a crew dispatch proposal is created and awaits human approval (R13.2). Carries no raw task token, no personal data and no hazard geometry (R2.4, §13.1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "incident_id",
+    "correlation_id",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "DispatchProposed"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "const": "minnal.grid-tools"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposal_id",
+        "kind",
+        "crew_id",
+        "job_id",
+        "route_id",
+        "task_token_ref",
+        "status"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "dispatch"
+        },
+        "crew_id": {
+          "type": "string",
+          "pattern": "^crew_\\d+$"
+        },
+        "job_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "route_id": {
+          "type": "string",
+          "pattern": "^rte_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "task_token_ref": {
+          "type": "string",
+          "pattern": "^ttr_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "status": {
+          "type": "string",
+          "const": "waiting_approval"
+        }
+      }
+    }
+  }
+}

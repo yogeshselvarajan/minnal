@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/events/DispatchApproved.v1.json",
+  "title": "DispatchApproved",
+  "description": "Emitted by the Approval_Handler when a human approves a crew dispatch proposal (R13.5). Carries the deciding principal group but never an operator name or email (§13.1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "incident_id",
+    "correlation_id",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "DispatchApproved"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "const": "minnal.grid-tools"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposal_id",
+        "kind",
+        "crew_id",
+        "job_id",
+        "decision",
+        "decided_at"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "dispatch"
+        },
+        "crew_id": {
+          "type": "string",
+          "pattern": "^crew_\\d+$"
+        },
+        "job_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "decision": {
+          "type": "string",
+          "enum": ["approved", "rejected"]
+        },
+        "decided_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "decided_by_group": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

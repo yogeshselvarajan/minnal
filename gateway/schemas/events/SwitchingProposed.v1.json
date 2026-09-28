@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/events/SwitchingProposed.v1.json",
+  "title": "SwitchingProposed",
+  "description": "Emitted by propose_switching when an energise or de_energise proposal is created and awaits human approval (R13.2). A de_energise proposal may be flagged is_preventive_safety_measure. Carries no raw task token and no personal data (§13.1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "incident_id",
+    "correlation_id",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "SwitchingProposed"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "const": "minnal.grid-tools"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposal_id",
+        "kind",
+        "device_id",
+        "action",
+        "task_token_ref",
+        "status",
+        "is_preventive_safety_measure"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "switching"
+        },
+        "device_id": {
+          "type": "string",
+          "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+        },
+        "action": {
+          "type": "string",
+          "enum": ["energise", "de_energise"]
+        },
+        "task_token_ref": {
+          "type": "string",
+          "pattern": "^ttr_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "status": {
+          "type": "string",
+          "const": "waiting_approval"
+        },
+        "is_preventive_safety_measure": {
+          "type": ["boolean", "string"],
+          "enum": [true, false, "unknown"]
+        },
+        "customers_affected": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

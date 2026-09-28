@@ -24,7 +24,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
   - [x] 1.5 [geo-data-engineer] Write `_shared/settings.py`: every setting in the §14 table with its bounds, the `MINNAL_BACKEND` switch, `default_feed_mode`, `flood_event_sources`, the two queue URLs, and the six cross-field start-up validations _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
   - [x] 1.6 [geo-data-engineer] Write `_shared/models.py`: `ToolInput`, `Job`, `FloodCheckRef`, the geometry value objects, and the `EmergencyEscalation` record _Requirements: 1.8, 1.11_ _Design: §4.3_
 
-- [ ] 2. [geo-data-engineer] Write the six emitted event schemas in `gateway/schemas/events/`: `DispatchProposed`, `DispatchVetoed`, `DispatchApproved`, `SwitchingProposed`, `SwitchingVetoed`, `SwitchingApproved`, each with `additionalProperties: false` and the closed `rule_id` set _Requirements: 13.1, 13.2_ _Design: §7.2, §11.5_
+- [x] 2. [geo-data-engineer] Write the six emitted event schemas in `gateway/schemas/events/`: `DispatchProposed`, `DispatchVetoed`, `DispatchApproved`, `SwitchingProposed`, `SwitchingVetoed`, `SwitchingApproved`, each with `additionalProperties: false` and the closed `rule_id` set _Requirements: 13.1, 13.2_ _Design: §7.2, §11.5_
 
 - [ ] 3. [geo-data-engineer] Tool contracts: two files per tool, Gateway subset plus strict schema _Requirements: 1.2, 1.9, 6.1, 10.8, 12.6_ _Design: §3.3, §5_
   - [ ] 3.1 [geo-data-engineer] `record_outage`: `tool_spec.json` in the five-keyword subset with constraints in `description` prose, `input.schema.json` strict, and `RecordOutageInput` _Requirements: 1.2, 4.4, 4.8_ _Design: §3.3, §5.1_

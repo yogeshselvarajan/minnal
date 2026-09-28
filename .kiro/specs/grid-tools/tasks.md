@@ -79,7 +79,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 16. [geo-data-engineer] Write `check_flood_geofence/logic.py`: `check_target` for all five `target_kind`s including `route`, the device footprint covering downstream devices and their DT service areas, `clearance_for` binding to the route hash or device id with a Wall_Clock expiry _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_ _Design: §5.3, §8.6_
 
-- [ ] 17. [qa-eval-engineer] Write property test for Property 13 `[SAFETY]` (the flood check equals the independent buffered oracle, boundary included) _Requirements: 6.1, 6.2, 6.5_ _Design: §18 P13_
+- [x] 17. [qa-eval-engineer] Write property test for Property 13 `[SAFETY]` (the flood check equals the independent buffered oracle, boundary included) _Requirements: 6.1, 6.2, 6.5_ _Design: §18 P13_
 
 - [ ] 18. [geo-data-engineer] Write `plan_crew_route/logic.py`: `avoidance_areas` with union, exterior rings only and outward simplification; `accept_route` re-testing the returned line; the destination check _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_ _Design: §5.4, §8.10_
 

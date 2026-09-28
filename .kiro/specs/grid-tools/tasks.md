@@ -83,7 +83,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 18. [geo-data-engineer] Write `plan_crew_route/logic.py`: `avoidance_areas` with union, exterior rings only and outward simplification; `accept_route` re-testing the returned line; the destination check _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_ _Design: §5.4, §8.10_
 
-- [ ] 19. [qa-eval-engineer] Write property test for Property 29 (the ring handed to the router always contains the buffered hazard) _Requirements: 7.1, 7.2_ _Design: §18 P29_
+- [x] 19. [qa-eval-engineer] Write property test for Property 29 (the ring handed to the router always contains the buffered hazard) _Requirements: 7.1, 7.2_ _Design: §18 P29_
 
 - [ ] 20. [geo-data-engineer] Write `rank_restoration_jobs/logic.py`: `assign_tier` from the Grid with the deciding rule, the exact-`Fraction` sort key, the three-way partition, and the stale-data blocking rule _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.10_ _Design: §5.5, §8.8_
 

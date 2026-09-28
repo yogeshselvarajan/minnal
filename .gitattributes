@@ -4,3 +4,10 @@
 *.mjs text eol=lf
 # Hash-chained evidence ledger: never rewrite its bytes.
 .kiroster/** -text
+
+# Deterministic, byte-identical data across OSes (R12.1, R14.2):
+# Event_Streams (.jsonl), Truth_Stores (.jsonl) and grid/scenario files (.json/.geojson)
+# must use LF so a run's bytes match on every platform (P4/P9/P23 byte-equivalence).
+*.jsonl text eol=lf
+*.json text eol=lf
+*.geojson text eol=lf

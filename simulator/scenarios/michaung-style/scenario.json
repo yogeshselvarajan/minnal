@@ -1,0 +1,866 @@
+{
+  "scenario_id": "michaung-style",
+  "version": "1.0.0",
+  "study_area_bbox": {
+    "min_lon": 80.15,
+    "min_lat": 12.95,
+    "max_lon": 80.32,
+    "max_lat": 13.15
+  },
+  "sim_start": "2023-12-05T00:00:00Z",
+  "sim_end": "2023-12-05T12:00:00Z",
+  "phases": [
+    {
+      "name": "approach",
+      "start": "2023-12-05T00:00:00Z",
+      "end": "2023-12-05T03:00:00Z"
+    },
+    {
+      "name": "peak_wind",
+      "start": "2023-12-05T03:00:00Z",
+      "end": "2023-12-05T06:00:00Z"
+    },
+    {
+      "name": "flooding",
+      "start": "2023-12-05T06:00:00Z",
+      "end": "2023-12-05T09:00:00Z"
+    },
+    {
+      "name": "recession",
+      "start": "2023-12-05T09:00:00Z",
+      "end": "2023-12-05T12:00:00Z"
+    }
+  ],
+  "cyclone_track": [
+    {
+      "sim_time": "2023-12-05T00:00:00Z",
+      "centre": [
+        80.9,
+        12.6
+      ]
+    },
+    {
+      "sim_time": "2023-12-05T03:00:00Z",
+      "centre": [
+        80.75,
+        12.7125
+      ]
+    },
+    {
+      "sim_time": "2023-12-05T06:00:00Z",
+      "centre": [
+        80.6,
+        12.825
+      ]
+    },
+    {
+      "sim_time": "2023-12-05T09:00:00Z",
+      "centre": [
+        80.45,
+        12.9375
+      ]
+    },
+    {
+      "sim_time": "2023-12-05T12:00:00Z",
+      "centre": [
+        80.3,
+        13.05
+      ]
+    }
+  ],
+  "weather_snapshot_ref": "weather_snapshot.json",
+  "flood_polygons": [
+    {
+      "id": "FP-1",
+      "geometry": [
+        [
+          [
+            80.24,
+            13.05
+          ],
+          [
+            80.3,
+            13.05
+          ],
+          [
+            80.3,
+            13.13
+          ],
+          [
+            80.24,
+            13.13
+          ],
+          [
+            80.24,
+            13.05
+          ]
+        ]
+      ],
+      "validity": {
+        "start": "2023-12-05T00:00:00Z",
+        "end": "2023-12-05T12:00:00Z"
+      },
+      "status_changes": [
+        {
+          "status": "active",
+          "sim_time": "2023-12-05T06:30:00Z"
+        },
+        {
+          "status": "receding",
+          "sim_time": "2023-12-05T08:30:00Z"
+        },
+        {
+          "status": "cleared",
+          "sim_time": "2023-12-05T10:00:00Z"
+        }
+      ],
+      "derived": "scenario-authored"
+    }
+  ],
+  "damage_script": [
+    {
+      "device_id": "fdr_003",
+      "sim_time": "2023-12-05T04:00:00Z",
+      "cause": "wind"
+    },
+    {
+      "device_id": "lat_012",
+      "sim_time": "2023-12-05T04:30:00Z",
+      "cause": "wind"
+    },
+    {
+      "device_id": "dt_045",
+      "sim_time": "2023-12-05T05:00:00Z",
+      "cause": "wind"
+    },
+    {
+      "device_id": "lat_020",
+      "sim_time": "2023-12-05T05:30:00Z",
+      "cause": "vegetation"
+    },
+    {
+      "device_id": "dt_100",
+      "sim_time": "2023-12-05T05:45:00Z",
+      "cause": "equipment_failure"
+    },
+    {
+      "device_id": "sub_004",
+      "sim_time": "2023-12-05T07:00:00Z",
+      "cause": "flood"
+    },
+    {
+      "device_id": "dt_009",
+      "sim_time": "2023-12-05T08:00:00Z",
+      "cause": "flood"
+    }
+  ],
+  "citizen_reports": [
+    {
+      "id": "rep_000",
+      "location": [
+        80.16,
+        12.96
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T00:30:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_001",
+      "location": [
+        80.181429,
+        12.96
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T00:40:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_002",
+      "location": [
+        80.202857,
+        12.96
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T00:51:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_003",
+      "location": [
+        80.224286,
+        12.96
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T01:01:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_004",
+      "location": [
+        80.245714,
+        12.96
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T01:12:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_005",
+      "location": [
+        80.267143,
+        12.96
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T01:22:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_006",
+      "location": [
+        80.288571,
+        12.96
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T01:33:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_007",
+      "location": [
+        80.31,
+        12.96
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T01:43:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_008",
+      "location": [
+        80.16,
+        12.996
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T01:54:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_009",
+      "location": [
+        80.181429,
+        12.996
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T02:04:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_010",
+      "location": [
+        80.202857,
+        12.996
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T02:15:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_011",
+      "location": [
+        80.224286,
+        12.996
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T02:25:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_012",
+      "location": [
+        80.245714,
+        12.996
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T02:36:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_013",
+      "location": [
+        80.267143,
+        12.996
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T02:46:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_014",
+      "location": [
+        80.288571,
+        12.996
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T02:57:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_015",
+      "location": [
+        80.31,
+        12.996
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T03:07:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_016",
+      "location": [
+        80.16,
+        13.032
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T03:17:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_017",
+      "location": [
+        80.181429,
+        13.032
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T03:28:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_018",
+      "location": [
+        80.202857,
+        13.032
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T03:38:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_019",
+      "location": [
+        80.224286,
+        13.032
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T03:49:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_020",
+      "location": [
+        80.245714,
+        13.032
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T03:59:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_021",
+      "location": [
+        80.267143,
+        13.032
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T04:10:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_022",
+      "location": [
+        80.288571,
+        13.032
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T04:20:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_023",
+      "location": [
+        80.31,
+        13.032
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T04:31:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_024",
+      "location": [
+        80.16,
+        13.068
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T04:41:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_025",
+      "location": [
+        80.181429,
+        13.068
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T04:52:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_026",
+      "location": [
+        80.202857,
+        13.068
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T05:02:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_027",
+      "location": [
+        80.224286,
+        13.068
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T05:13:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_028",
+      "location": [
+        80.245714,
+        13.068
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T05:23:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_029",
+      "location": [
+        80.267143,
+        13.068
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T05:33:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_030",
+      "location": [
+        80.288571,
+        13.068
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T05:44:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_031",
+      "location": [
+        80.31,
+        13.068
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T05:54:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_032",
+      "location": [
+        80.16,
+        13.104
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T06:05:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_033",
+      "location": [
+        80.181429,
+        13.104
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T06:15:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_034",
+      "location": [
+        80.202857,
+        13.104
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T06:26:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_035",
+      "location": [
+        80.224286,
+        13.104
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T06:36:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_036",
+      "location": [
+        80.245714,
+        13.104
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T06:47:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_037",
+      "location": [
+        80.267143,
+        13.104
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T06:57:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_038",
+      "location": [
+        80.288571,
+        13.104
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T07:08:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_039",
+      "location": [
+        80.31,
+        13.104
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T07:18:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_040",
+      "location": [
+        80.16,
+        13.14
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T07:29:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_041",
+      "location": [
+        80.181429,
+        13.14
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T07:39:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_042",
+      "location": [
+        80.202857,
+        13.14
+      ],
+      "symptom": "downed_wire",
+      "sim_time": "2023-12-05T07:50:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_043",
+      "location": [
+        80.224286,
+        13.14
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T08:00:00Z",
+      "duplicate_of": null
+    },
+    {
+      "id": "rep_dup_000",
+      "location": [
+        80.267143,
+        12.96
+      ],
+      "symptom": "no_power",
+      "sim_time": "2023-12-05T01:28:00Z",
+      "duplicate_of": "rep_005"
+    },
+    {
+      "id": "rep_dup_001",
+      "location": [
+        80.181429,
+        12.996
+      ],
+      "symptom": "submerged_equipment",
+      "sim_time": "2023-12-05T02:10:00Z",
+      "duplicate_of": "rep_009"
+    },
+    {
+      "id": "rep_dup_002",
+      "location": [
+        80.267143,
+        12.996
+      ],
+      "symptom": "sparking",
+      "sim_time": "2023-12-05T02:52:00Z",
+      "duplicate_of": "rep_013"
+    },
+    {
+      "id": "rep_dup_003",
+      "location": [
+        80.267143,
+        13.032
+      ],
+      "symptom": "partial_power",
+      "sim_time": "2023-12-05T04:16:00Z",
+      "duplicate_of": "rep_021"
+    }
+  ],
+  "grid_spec": {
+    "substations": 4,
+    "feeders": 20,
+    "laterals": 60,
+    "dts": 200,
+    "customer_min": 10,
+    "customer_max": 2000
+  },
+  "facility_tag_map": {
+    "amenity=hospital": "hospital",
+    "man_made=water_works": "water_pumping",
+    "man_made=wastewater_plant": "sewage_pumping",
+    "man_made=communications_tower": "telecom",
+    "amenity=fire_station": "emergency_services",
+    "amenity=shelter": "relief_shelter"
+  },
+  "crew_spec": {
+    "skills": [
+      "overhead_line",
+      "underground_cable",
+      "make_safe",
+      "switching"
+    ],
+    "depots": [
+      {
+        "crew_id": "crew_000",
+        "depot": [
+          80.16,
+          12.97
+        ],
+        "member_ids": [
+          "mem_000",
+          "mem_001"
+        ],
+        "skills": [
+          "overhead_line",
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_001",
+        "depot": [
+          80.18,
+          12.98
+        ],
+        "member_ids": [
+          "mem_002",
+          "mem_003"
+        ],
+        "skills": [
+          "underground_cable",
+          "switching"
+        ]
+      },
+      {
+        "crew_id": "crew_002",
+        "depot": [
+          80.2,
+          12.99
+        ],
+        "member_ids": [
+          "mem_004",
+          "mem_005"
+        ],
+        "skills": [
+          "overhead_line",
+          "switching",
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_003",
+        "depot": [
+          80.22,
+          13.0
+        ],
+        "member_ids": [
+          "mem_006",
+          "mem_007"
+        ],
+        "skills": [
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_004",
+        "depot": [
+          80.17,
+          13.01
+        ],
+        "member_ids": [
+          "mem_008",
+          "mem_009"
+        ],
+        "skills": [
+          "overhead_line",
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_005",
+        "depot": [
+          80.19,
+          13.02
+        ],
+        "member_ids": [
+          "mem_010",
+          "mem_011"
+        ],
+        "skills": [
+          "underground_cable",
+          "switching"
+        ]
+      },
+      {
+        "crew_id": "crew_006",
+        "depot": [
+          80.21,
+          13.03
+        ],
+        "member_ids": [
+          "mem_012",
+          "mem_013"
+        ],
+        "skills": [
+          "overhead_line",
+          "switching",
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_007",
+        "depot": [
+          80.23,
+          13.02
+        ],
+        "member_ids": [
+          "mem_014",
+          "mem_015"
+        ],
+        "skills": [
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_008",
+        "depot": [
+          80.16,
+          13.1
+        ],
+        "member_ids": [
+          "mem_016",
+          "mem_017"
+        ],
+        "skills": [
+          "overhead_line",
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_009",
+        "depot": [
+          80.18,
+          13.12
+        ],
+        "member_ids": [
+          "mem_018",
+          "mem_019"
+        ],
+        "skills": [
+          "underground_cable",
+          "switching"
+        ]
+      },
+      {
+        "crew_id": "crew_010",
+        "depot": [
+          80.2,
+          13.14
+        ],
+        "member_ids": [
+          "mem_020",
+          "mem_021"
+        ],
+        "skills": [
+          "overhead_line",
+          "switching",
+          "make_safe"
+        ]
+      },
+      {
+        "crew_id": "crew_011",
+        "depot": [
+          80.22,
+          13.14
+        ],
+        "member_ids": [
+          "mem_022",
+          "mem_023"
+        ],
+        "skills": [
+          "make_safe"
+        ]
+      }
+    ],
+    "expected_crew_count": 12
+  },
+  "default_seed": 20231205,
+  "noise_rate_per_hour": 30.0,
+  "wind_damage_threshold_kmh": 90.0,
+  "sources": [
+    {
+      "title": "OpenStreetMap contributors",
+      "licence": "Open Database License (ODbL) v1.0",
+      "citation": "\u00a9 OpenStreetMap contributors, data available under the Open Database License (ODbL); extract of the Chennai study area."
+    },
+    {
+      "title": "IMD Cyclone Michaung bulletins (synthetic, Michaung-style)",
+      "licence": "Government of India Open Data (synthetic derivative)",
+      "citation": "India Meteorological Department, Cyclone Michaung bulletins, December 2023; weather values here are synthetic and Michaung-style."
+    },
+    {
+      "title": "Synthetic weather snapshot (authored)",
+      "licence": "CC0 1.0",
+      "citation": "Authored synthetic Weather_Snapshot for the Minnal demo; no third-party weather values reproduced."
+    }
+  ]
+}

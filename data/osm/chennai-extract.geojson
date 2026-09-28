@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "attribution": "© OpenStreetMap contributors, data available under the Open Database License (ODbL); trimmed Chennai study-area extract for the Minnal demo.",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.17, 12.97] },
+      "properties": { "osm_id": "node/1000000001", "power": "substation", "name": "Chennai North Substation" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.23, 12.99] },
+      "properties": { "osm_id": "node/1000000002", "power": "substation", "name": "Chennai Central Substation" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.19, 13.06] },
+      "properties": { "osm_id": "node/1000000003", "power": "substation", "name": "Chennai West Substation" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.27, 13.09] },
+      "properties": { "osm_id": "node/1000000004", "power": "substation", "name": "Chennai East Substation" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.21, 13.02] },
+      "properties": { "osm_id": "way/2000000001", "amenity": "hospital", "name": "Government General Hospital" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.18, 13.04] },
+      "properties": { "osm_id": "way/2000000002", "man_made": "water_works", "name": "Kilpauk Water Works" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.25, 13.07] },
+      "properties": { "osm_id": "way/2000000003", "man_made": "wastewater_plant", "name": "Koyambedu Sewage Treatment Plant" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.20, 12.98] },
+      "properties": { "osm_id": "node/2000000004", "man_made": "communications_tower", "name": "Anna Nagar Telecom Tower" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.24, 13.11] },
+      "properties": { "osm_id": "way/2000000005", "amenity": "fire_station", "name": "Ambattur Fire Station" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.16, 13.10] },
+      "properties": { "osm_id": "way/2000000006", "amenity": "shelter", "name": "Corporation Relief Shelter" }
+    }
+  ]
+}

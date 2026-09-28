@@ -50,12 +50,29 @@ python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
 explicit_package_bases = true
-mypy_path = ["patterns/agui-minnal"]
+# gateway/tools is on the path so tool logic imports `_shared.*` and sibling tool
+# modules exactly as the deployed Lambda does (design §3, §3.2); patterns stays for
+# the agent domain code.
+mypy_path = ["patterns/agui-minnal", "gateway/tools"]
 files = [
     "patterns/agui-minnal/config/settings.py",
     "patterns/agui-minnal/domain",
+    "gateway/tools/_shared",
     "gateway/tools/*/logic.py",
 ]
+
+# shapely and pyproj ship no type stubs; the pure-geometry core is fully hinted on
+# our side, so treat only these third-party imports as untyped (design §8, R16.4).
+[[tool.mypy.overrides]]
+module = ["shapely.*", "pyproj.*"]
+ignore_missing_imports = true
+
+# sample_tool is the untyped FAST template skeleton (predates grid-tools, not a
+# grid-tools logic module); it is not held to --strict so the gateway/tools gate
+# is clean without touching template code that Day-1 cleanup will remove.
+[[tool.mypy.overrides]]
+module = ["sample_tool.*"]
+ignore_errors = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

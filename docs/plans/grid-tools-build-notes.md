@@ -98,6 +98,17 @@ Blockers, deviations and decisions recorded during the autonomous build of the `
   by relative area (epsilon `1e-9`) so float round-trip noise in the returned ring
   coordinates cannot masquerade as a hazard escaping the avoided area.
 
+- **Task 31 mypy config gap (flagged in the Wave-1 notes above), now fixed.** The
+  repo `pyproject.toml` `[tool.mypy]` (agent-engineer lane, task 0) targeted only
+  `gateway/tools/*/logic.py` with `mypy_path = ["patterns/agui-minnal"]`, so `mypy
+  gateway/tools` could not resolve `_shared.*` or sibling tool imports and reported
+  shapely/pyproj `import-untyped` noise. Task 31 explicitly authorised a minimal config
+  fix: added `gateway/tools` to `mypy_path`, added `gateway/tools/_shared` to `files`,
+  and per-module overrides `ignore_missing_imports` for `shapely.*`/`pyproj.*` and
+  `ignore_errors` for the untyped FAST `sample_tool.*` template skeleton (not a
+  grid-tools module). `uv run mypy gateway/tools` now exits 0 over all 51 files; no
+  domain typing was weakened (recorded in `decisions-log.md`).
+
 ## Pre-existing test flake (not grid-tools)
 
 - `tests/test_network_blocked.py::test_connecting_a_socket_to_an_external_address_raises`

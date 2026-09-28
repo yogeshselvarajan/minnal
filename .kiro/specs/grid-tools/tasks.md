@@ -101,7 +101,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 26. [geo-data-engineer] Write `propose_switching/logic.py`: `validate_switching` with the energise footprint over devices and service areas, the clearance requirement scoped to `energise`, and the `de_energise` path that no flood rule can refuse _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8_ _Design: §5.7, §8.6_
 
-- [ ] 31. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools` and `uv run mypy gateway/tools` over every `logic.py` and `_shared` module, and confirm the wave-2 property tests pass at 200 examples _Requirements: 15.1, 15.2_ _Design: §19.1_
+- [x] 31. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools` and `uv run mypy gateway/tools` over every `logic.py` and `_shared` module, and confirm the wave-2 property tests pass at 200 examples _Requirements: 15.1, 15.2_ _Design: §19.1_
 
 ---
 

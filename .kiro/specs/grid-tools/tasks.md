@@ -73,7 +73,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 13. [geo-data-engineer] Write `trace_upstream_device/logic.py`: `lowest_common` by common path prefix, per-substation grouping, `customers_downstream_reporting_pct`, unlocated-outage handling, order-invariant output _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.8_ _Design: §5.2, §8.7_
 
-- [ ] 14. [qa-eval-engineer] Write property test for Property 4 (the returned device is the lowest common ancestor-or-self) _Requirements: 5.1, 5.2, 5.3_ _Design: §18 P4_
+- [x] 14. [qa-eval-engineer] Write property test for Property 4 (the returned device is the lowest common ancestor-or-self) _Requirements: 5.1, 5.2, 5.3_ _Design: §18 P4_
 
 - [ ] 15. [qa-eval-engineer] Write property test for Property 24 (trace is invariant to order and duplicates and splits cleanly across substations) _Requirements: 5.4, 5.6, 5.8_ _Design: §18 P24_
 

@@ -14,15 +14,15 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 ## Wave 0 — Contracts
 
-- [ ] 0. [agent-engineer] Add the dependencies with `uv add`: runtime `aws-lambda-powertools`, `pydantic`, `shapely`, `pyproj`, `python-ulid`, `jsonschema`; dev `hypothesis`, `pytest`, `pytest-socket`, `moto`, `cedarpy`, `mypy`, `ruff`. Pin exact versions, commit `uv.lock`, and record the versions relied on in the commit body _Requirements: 15.2, 16.4_ _Design: header stack_
+- [x] 0. [agent-engineer] Add the dependencies with `uv add`: runtime `aws-lambda-powertools`, `pydantic`, `shapely`, `pyproj`, `python-ulid`, `jsonschema`; dev `hypothesis`, `pytest`, `pytest-socket`, `moto`, `cedarpy`, `mypy`, `ruff`. Pin exact versions, commit `uv.lock`, and record the versions relied on in the commit body _Requirements: 15.2, 16.4_ _Design: header stack_
 
-- [ ] 1. [geo-data-engineer] Shared contract modules _Requirements: 1.5, 1.6, 1.8, 1.11, 14.5, 17.6, 17.7_ _Design: §4.3, §4.4, §9.1, §14_
-  - [ ] 1.1 [geo-data-engineer] Write `_shared/errors.py`: `MinnalError` hierarchy, `InputValidationError` (never named `ValidationError`), `SafetyViolation` that cannot be built without a `rule_id`, `FloodSnapshotUnstable`, the `ErrorCode` and `RuleId` literals _Requirements: 1.5, 1.6_ _Design: §4.4_
-  - [ ] 1.2 [geo-data-engineer] Write `_shared/envelope.py`: `Envelope`, `ErrorBody`, `ok()`, `err()`, the 280-character `summary` guard, and the fixed public-message vocabulary per `ErrorCode` _Requirements: 1.5, 1.6_ _Design: §4.3, §11.3_
-  - [ ] 1.3 [geo-data-engineer] Write `_shared/ids.py`: ULID generation and prefix validators for `out_`, `fck_`, `sfc_`, `prp_`, `wo_`, `ttr_`, `rte_`, `corr_`, `inc_` _Requirements: 1.11_ _Design: §4.3_
-  - [ ] 1.4 [geo-data-engineer] Write `_shared/clock.py`: the `Clock` protocol with `wall_now()` and `incident_now()` and no generic `now()`, plus `FrozenClock` for tests _Requirements: 1.11, 6.4, 11.6_ _Design: §9.1_
-  - [ ] 1.5 [geo-data-engineer] Write `_shared/settings.py`: every setting in the §14 table with its bounds, the `MINNAL_BACKEND` switch, `default_feed_mode`, `flood_event_sources`, the two queue URLs, and the six cross-field start-up validations _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
-  - [ ] 1.6 [geo-data-engineer] Write `_shared/models.py`: `ToolInput`, `Job`, `FloodCheckRef`, the geometry value objects, and the `EmergencyEscalation` record _Requirements: 1.8, 1.11_ _Design: §4.3_
+- [x] 1. [geo-data-engineer] Shared contract modules _Requirements: 1.5, 1.6, 1.8, 1.11, 14.5, 17.6, 17.7_ _Design: §4.3, §4.4, §9.1, §14_
+  - [x] 1.1 [geo-data-engineer] Write `_shared/errors.py`: `MinnalError` hierarchy, `InputValidationError` (never named `ValidationError`), `SafetyViolation` that cannot be built without a `rule_id`, `FloodSnapshotUnstable`, the `ErrorCode` and `RuleId` literals _Requirements: 1.5, 1.6_ _Design: §4.4_
+  - [x] 1.2 [geo-data-engineer] Write `_shared/envelope.py`: `Envelope`, `ErrorBody`, `ok()`, `err()`, the 280-character `summary` guard, and the fixed public-message vocabulary per `ErrorCode` _Requirements: 1.5, 1.6_ _Design: §4.3, §11.3_
+  - [x] 1.3 [geo-data-engineer] Write `_shared/ids.py`: ULID generation and prefix validators for `out_`, `fck_`, `sfc_`, `prp_`, `wo_`, `ttr_`, `rte_`, `corr_`, `inc_` _Requirements: 1.11_ _Design: §4.3_
+  - [x] 1.4 [geo-data-engineer] Write `_shared/clock.py`: the `Clock` protocol with `wall_now()` and `incident_now()` and no generic `now()`, plus `FrozenClock` for tests _Requirements: 1.11, 6.4, 11.6_ _Design: §9.1_
+  - [x] 1.5 [geo-data-engineer] Write `_shared/settings.py`: every setting in the §14 table with its bounds, the `MINNAL_BACKEND` switch, `default_feed_mode`, `flood_event_sources`, the two queue URLs, and the six cross-field start-up validations _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
+  - [x] 1.6 [geo-data-engineer] Write `_shared/models.py`: `ToolInput`, `Job`, `FloodCheckRef`, the geometry value objects, and the `EmergencyEscalation` record _Requirements: 1.8, 1.11_ _Design: §4.3_
 
 - [ ] 2. [geo-data-engineer] Write the six emitted event schemas in `gateway/schemas/events/`: `DispatchProposed`, `DispatchVetoed`, `DispatchApproved`, `SwitchingProposed`, `SwitchingVetoed`, `SwitchingApproved`, each with `additionalProperties: false` and the closed `rule_id` set _Requirements: 13.1, 13.2_ _Design: §7.2, §11.5_
 

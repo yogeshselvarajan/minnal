@@ -69,7 +69,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 11. [qa-eval-engineer] Write property test for Property 7 (at most one open Outage per Outage_Key; report counts equal distinct report ids) _Requirements: 4.1, 4.2, 4.3, 4.11_ _Design: §18 P7_
 
-- [ ] 12. [qa-eval-engineer] Write property test for Property 31 `[SAFETY]` (emergency flag and advice, and sticky escalation on attach) _Requirements: 4.4, 4.5, 4.13_ _Design: §18 P31_
+- [x] 12. [qa-eval-engineer] Write property test for Property 31 `[SAFETY]` (emergency flag and advice, and sticky escalation on attach) _Requirements: 4.4, 4.5, 4.13_ _Design: §18 P31_
 
 - [ ] 13. [geo-data-engineer] Write `trace_upstream_device/logic.py`: `lowest_common` by common path prefix, per-substation grouping, `customers_downstream_reporting_pct`, unlocated-outage handling, order-invariant output _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.8_ _Design: §5.2, §8.7_
 

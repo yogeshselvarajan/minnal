@@ -75,7 +75,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 14. [qa-eval-engineer] Write property test for Property 4 (the returned device is the lowest common ancestor-or-self) _Requirements: 5.1, 5.2, 5.3_ _Design: §18 P4_
 
-- [ ] 15. [qa-eval-engineer] Write property test for Property 24 (trace is invariant to order and duplicates and splits cleanly across substations) _Requirements: 5.4, 5.6, 5.8_ _Design: §18 P24_
+- [x] 15. [qa-eval-engineer] Write property test for Property 24 (trace is invariant to order and duplicates and splits cleanly across substations) _Requirements: 5.4, 5.6, 5.8_ _Design: §18 P24_
 
 - [ ] 16. [geo-data-engineer] Write `check_flood_geofence/logic.py`: `check_target` for all five `target_kind`s including `route`, the device footprint covering downstream devices and their DT service areas, `clearance_for` binding to the route hash or device id with a Wall_Clock expiry _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_ _Design: §5.3, §8.6_
 

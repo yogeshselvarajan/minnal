@@ -65,7 +65,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 ## Wave 2 — Pure logic per tool
 
-- [ ] 10. [geo-data-engineer] Write `record_outage/logic.py`: `derive_outage_key`, `build_draft`, `emergency_advice` from configuration, the attach-and-escalate rules with the sticky emergency flag and `symptom_most_severe` _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.7, 4.10, 4.11, 4.12, 4.13_ _Design: §5.1, §8.9_
+- [x] 10. [geo-data-engineer] Write `record_outage/logic.py`: `derive_outage_key`, `build_draft`, `emergency_advice` from configuration, the attach-and-escalate rules with the sticky emergency flag and `symptom_most_severe` _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.7, 4.10, 4.11, 4.12, 4.13_ _Design: §5.1, §8.9_
 
 - [ ] 11. [qa-eval-engineer] Write property test for Property 7 (at most one open Outage per Outage_Key; report counts equal distinct report ids) _Requirements: 4.1, 4.2, 4.3, 4.11_ _Design: §18 P7_
 

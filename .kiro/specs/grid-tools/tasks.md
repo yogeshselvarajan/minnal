@@ -81,7 +81,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 17. [qa-eval-engineer] Write property test for Property 13 `[SAFETY]` (the flood check equals the independent buffered oracle, boundary included) _Requirements: 6.1, 6.2, 6.5_ _Design: §18 P13_
 
-- [ ] 18. [geo-data-engineer] Write `plan_crew_route/logic.py`: `avoidance_areas` with union, exterior rings only and outward simplification; `accept_route` re-testing the returned line; the destination check _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_ _Design: §5.4, §8.10_
+- [x] 18. [geo-data-engineer] Write `plan_crew_route/logic.py`: `avoidance_areas` with union, exterior rings only and outward simplification; `accept_route` re-testing the returned line; the destination check _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_ _Design: §5.4, §8.10_
 
 - [ ] 19. [qa-eval-engineer] Write property test for Property 29 (the ring handed to the router always contains the buffered hazard) _Requirements: 7.1, 7.2_ _Design: §18 P29_
 

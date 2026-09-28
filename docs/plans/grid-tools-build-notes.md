@@ -78,6 +78,26 @@ Blockers, deviations and decisions recorded during the autonomous build of the `
   `pyproject.toml`-owning lane; Wave 1 code itself is fully type-hinted with no `Any` in
   domain code. Not fixed here to stay inside the `shared`/`tests` scope.
 
+## Wave 2 deviations from design (tasks 10-26, 31)
+
+- **Task 18/19 avoidance-area vertex budget (P29 vs the convex-hull-only
+  `simplify_outward`).** Design §8.10 and `_shared/geometry.py` `simplify_outward`
+  reduce an over-budget ring to its **convex hull**, which is guaranteed to *contain*
+  the original (outward-only) but is **not** guaranteed to have `<= max_vertices`
+  vertices: the convex hull of an L-shaped buffered hazard can have 5 vertices, so a
+  vertex budget of 4 (the minimum `max_avoid_vertices` allows) would leave the ring
+  over budget. Property 29 asserts the ring handed to the router has "no more than the
+  budgeted vertices" *for all budgets >= 4*, which the convex-hull step alone cannot
+  satisfy at the low end. Closest safe choice, inside the task's own file
+  (`plan_crew_route/logic.py`, not the Wave-1 `_shared/geometry.py`): `avoidance_areas`
+  now caps the ring with the axis-aligned **envelope** (bounding box, 4 vertices) when
+  the convex hull still exceeds the budget. The envelope contains the hull, which
+  contains the buffered hazard, so the "outward only, never expose a road" guarantee
+  (P29, P1) is preserved while the budget is honoured for every budget >= 4.
+  `simplify_outward` is left exactly as the design specifies. P29 checks containment
+  by relative area (epsilon `1e-9`) so float round-trip noise in the returned ring
+  coordinates cannot masquerade as a hazard escaping the avoided area.
+
 ## Pre-existing test flake (not grid-tools)
 
 - `tests/test_network_blocked.py::test_connecting_a_socket_to_an_external_address_raises`

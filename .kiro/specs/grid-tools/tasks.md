@@ -97,7 +97,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 25. [geo-data-engineer] Write `dispatch_crew/logic.py`: `validate_dispatch` with the clearance checks, the route re-test against the current flood set, the two-person rule and the skill check, returning a typed decision _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.7_ _Design: §5.6_
 
-- [ ] 25.1 [geo-data-engineer] Write `approval_handler/logic.py` (`authorise` on the approver-group claim, and `decide` returning a typed decision from the work order, the re-check outcome and the principal) and `work_order_expirer/logic.py` (the terminal-state and release decisions), both as pure functions over typed inputs with no adapter calls _Requirements: 11.3, 11.4, 11.6, 11.7, 11.9, 9.10_ _Design: §4.1, §5.9, §5.11_
+- [x] 25.1 [geo-data-engineer] Write `approval_handler/logic.py` (`authorise` on the approver-group claim, and `decide` returning a typed decision from the work order, the re-check outcome and the principal) and `work_order_expirer/logic.py` (the terminal-state and release decisions), both as pure functions over typed inputs with no adapter calls _Requirements: 11.3, 11.4, 11.6, 11.7, 11.9, 9.10_ _Design: §4.1, §5.9, §5.11_
 
 - [ ] 26. [geo-data-engineer] Write `propose_switching/logic.py`: `validate_switching` with the energise footprint over devices and service areas, the clearance requirement scoped to `energise`, and the `de_energise` path that no flood rule can refuse _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8_ _Design: §5.7, §8.6_
 

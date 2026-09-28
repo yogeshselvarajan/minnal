@@ -1,0 +1,6 @@
+# Normalise line endings in the repo; keep shell/Node scripts LF so bash and the runner work on every OS.
+* text=auto
+*.sh text eol=lf
+*.mjs text eol=lf
+# Hash-chained evidence ledger: never rewrite its bytes.
+.kiroster/** -text

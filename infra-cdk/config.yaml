@@ -1,0 +1,58 @@
+stack_name_base: FAST-stack
+
+# Optional: Set to automatically create an admin user and email credentials
+# If not provided, you'll need to manually create users via AWS Console
+admin_user_email: # Example: admin@example.com
+
+backend:
+  agent_name: FASTAgent # Name for the agent runtime (a-z, A-Z, 0-9, _)
+  pattern: agui-minnal # See patterns/ for available options
+  # Pattern prefix determines the frontend parser:
+  #   agui-*      → AG-UI parser      (e.g. agui-strands-agent)
+  #   strands-*   → Strands parser    (e.g. strands-single-agent)
+  #   langgraph-* → LangGraph parser  (e.g. langgraph-single-agent)
+  #   claude-*    → Claude parser     (e.g. claude-agent-sdk-single-agent)
+  # The folder name must match exactly and start with the desired parser prefix.
+  deployment_type: docker # Available deployment types: docker (default), zip (not supported for claude-agent-sdk)
+  network_mode: PUBLIC # Available network modes: PUBLIC (default), VPC
+
+  # Long-term memory uses a SemanticMemoryStrategy to extract and store facts across sessions.
+  # This incurs additional costs: $0.75/1,000 records stored + $0.50/1,000 retrieval calls.
+  # Set to true when you want to try persistent cross-session memory, which is keyed off of the
+  # Cognito userId.
+  use_long_term_memory: false
+  ltm_top_k: 10             # Number of facts to retrieve per turn (default: 10)
+  ltm_relevance_score: 0.3  # Minimum similarity threshold for retrieval (default: 0.3)
+
+  # MCP server discovery + auto-connect from an AWS Agent Registry.
+  # Lightweight: no DynamoDB, no UI, no per-user preferences. When enabled, the
+  # agent lists the registry's Approved MCP records at runtime and connects to
+  # each public streamable-HTTP server as a live MCP client (their tools become
+  # directly callable). See docs/MCP_REGISTRY_DISCOVERY.md.
+  mcp_registry:
+    enabled: false        # Default off. Set true to activate discovery + auto-connect.
+    registry_id: ""       # ARN or id of the AWS Agent Registry. Required when enabled.
+
+  # VPC configuration - required when network_mode is VPC
+  # Your VPC must have the necessary VPC endpoints for AWS services.
+  # See docs/DEPLOYMENT.md for the full list of required VPC endpoints.
+  # vpc:
+  #   vpc_id: vpc-0abc1234def56789a
+  #   subnet_ids:
+  #     - subnet-aaaa1111bbbb2222c
+  #     - subnet-cccc3333dddd4444e
+  #   security_group_ids:  # Optional - a default SG is created if omitted
+  #     - sg-0abc1234def56789a
+
+
+# Bedrock invoke allow-list for the runtime role (models.md rule 3).
+# Model IDs are read from models_file at synth time; none are written here or in CDK code.
+bedrock:
+  models_file: patterns/agui-minnal/config/models.yaml # relative to the repo root
+  # Destination Regions of each geographic inference profile used in models.yaml, for the
+  # demo source Region us-east-1. Source: Nova 2 Lite model card, "Geo: US" table,
+  # https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-amazon-nova-2-lite.html
+  # (checked 2026-09-28). Geo profile destination lists do not change, per
+  # https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
+  inference_profile_destination_regions:
+    us: [us-east-1, us-east-2, us-west-2]

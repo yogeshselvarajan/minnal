@@ -85,15 +85,15 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 19. [qa-eval-engineer] Write property test for Property 29 (the ring handed to the router always contains the buffered hazard) _Requirements: 7.1, 7.2_ _Design: §18 P29_
 
-- [ ] 20. [geo-data-engineer] Write `rank_restoration_jobs/logic.py`: `assign_tier` from the Grid with the deciding rule, the exact-`Fraction` sort key, the three-way partition, and the stale-data blocking rule _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.10_ _Design: §5.5, §8.8_
+- [x] 20. [geo-data-engineer] Write `rank_restoration_jobs/logic.py`: `assign_tier` from the Grid with the deciding rule, the exact-`Fraction` sort key, the three-way partition, and the stale-data blocking rule _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.10_ _Design: §5.5, §8.8_
 
-- [ ] 21. [qa-eval-engineer] Write property test for Property 3 (a critical job never ranks below cheaper ordinary work) _Requirements: 8.1, 8.2, 8.3_ _Design: §18 P3_
+- [x] 21. [qa-eval-engineer] Write property test for Property 3 (a critical job never ranks below cheaper ordinary work) _Requirements: 8.1, 8.2, 8.3_ _Design: §18 P3_
 
-- [ ] 22. [qa-eval-engineer] Write property test for Property 10 (make-safe work always precedes everything else) _Requirements: 8.1, 8.2_ _Design: §18 P10_
+- [x] 22. [qa-eval-engineer] Write property test for Property 10 (make-safe work always precedes everything else) _Requirements: 8.1, 8.2_ _Design: §18 P10_
 
-- [ ] 23. [qa-eval-engineer] Write property test for Property 11 (the output is a partition and blocked jobs never appear in `dispatchable`) _Requirements: 8.4, 8.5, 8.6, 8.7_ _Design: §18 P11_
+- [x] 23. [qa-eval-engineer] Write property test for Property 11 (the output is a partition and blocked jobs never appear in `dispatchable`) _Requirements: 8.4, 8.5, 8.6, 8.7_ _Design: §18 P11_
 
-- [ ] 24. [qa-eval-engineer] Write property test for Property 12 (the ranking is a total order and permutation-invariant) _Requirements: 8.1, 8.6_ _Design: §18 P12_
+- [x] 24. [qa-eval-engineer] Write property test for Property 12 (the ranking is a total order and permutation-invariant) _Requirements: 8.1, 8.6_ _Design: §18 P12_
 
 - [ ] 25. [geo-data-engineer] Write `dispatch_crew/logic.py`: `validate_dispatch` with the clearance checks, the route re-test against the current flood set, the two-person rule and the skill check, returning a typed decision _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.7_ _Design: §5.6_
 

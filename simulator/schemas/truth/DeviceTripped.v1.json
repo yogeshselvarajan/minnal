@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/truth/DeviceTripped.v1.json",
+  "title": "DeviceTripped",
+  "description": "TRUTH-ONLY event: a device failure with its cause and attributed outage signals (R9.6). Never sent to a Public_Sink and never placed under gateway/schemas/ (R8.6, R15.1, R15.2).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "run_id",
+    "incident_id",
+    "correlation_id",
+    "sequence",
+    "sim_time",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "DeviceTripped"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "const": "minnal.simulator"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^run_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sim_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device_id",
+        "device_type",
+        "cause",
+        "attributed_signal_ids"
+      ],
+      "properties": {
+        "device_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "device_type": {
+          "type": "string",
+          "enum": ["Substation", "Feeder", "Lateral", "DT"]
+        },
+        "cause": {
+          "type": "string",
+          "enum": ["wind", "flood", "vegetation", "equipment_failure"]
+        },
+        "attributed_signal_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

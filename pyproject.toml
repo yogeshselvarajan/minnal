@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "aws-lambda-powertools==3.35.0",
     "bedrock-agentcore==1.23.1",
+    "jsonschema==4.26.0",
     "pydantic==2.13.5",
     "pydantic-settings==2.15.0",
     "python-ulid==4.0.1",
@@ -23,6 +24,7 @@ dev = [
     "mypy==2.3.1",
     "pytest==9.1.1",
     "ruff==0.16.9",
+    "types-jsonschema==4.26.0.20260518",
     "types-PyYAML==6.0.12.20260906",
 ]
 
@@ -54,3 +56,8 @@ files = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "safety: required safety-gate property test (design.md Safety gate, R20.5)",
+    "slow: non-gating performance benchmark (Requirement 19, DEFERRED)",
+]

@@ -16,3 +16,5 @@ coverage/
 .DS_Store
 .kiroster/autopilot/*.tmp
 .kiroster/runs/*.stderr
+
+simulator/runs/

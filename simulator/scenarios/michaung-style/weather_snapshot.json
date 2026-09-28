@@ -1,0 +1,7935 @@
+{
+  "records": [
+    {
+      "record_time": "2023-12-05T00:00:00Z",
+      "centre": [
+        80.9,
+        12.6
+      ],
+      "wind_kmh": 61.8,
+      "gust_kmh": 86.5,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 995.1
+    },
+    {
+      "record_time": "2023-12-05T00:01:00Z",
+      "centre": [
+        80.899167,
+        12.600625
+      ],
+      "wind_kmh": 62.0,
+      "gust_kmh": 86.8,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 995.0
+    },
+    {
+      "record_time": "2023-12-05T00:02:00Z",
+      "centre": [
+        80.898333,
+        12.60125
+      ],
+      "wind_kmh": 62.2,
+      "gust_kmh": 87.1,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 994.9
+    },
+    {
+      "record_time": "2023-12-05T00:03:00Z",
+      "centre": [
+        80.8975,
+        12.601875
+      ],
+      "wind_kmh": 62.4,
+      "gust_kmh": 87.4,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 994.9
+    },
+    {
+      "record_time": "2023-12-05T00:04:00Z",
+      "centre": [
+        80.896667,
+        12.6025
+      ],
+      "wind_kmh": 62.6,
+      "gust_kmh": 87.7,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 994.8
+    },
+    {
+      "record_time": "2023-12-05T00:05:00Z",
+      "centre": [
+        80.895833,
+        12.603125
+      ],
+      "wind_kmh": 62.9,
+      "gust_kmh": 88.0,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 994.7
+    },
+    {
+      "record_time": "2023-12-05T00:06:00Z",
+      "centre": [
+        80.895,
+        12.60375
+      ],
+      "wind_kmh": 63.1,
+      "gust_kmh": 88.3,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 994.7
+    },
+    {
+      "record_time": "2023-12-05T00:07:00Z",
+      "centre": [
+        80.894167,
+        12.604375
+      ],
+      "wind_kmh": 63.3,
+      "gust_kmh": 88.6,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 994.6
+    },
+    {
+      "record_time": "2023-12-05T00:08:00Z",
+      "centre": [
+        80.893333,
+        12.605
+      ],
+      "wind_kmh": 63.5,
+      "gust_kmh": 88.9,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 994.6
+    },
+    {
+      "record_time": "2023-12-05T00:09:00Z",
+      "centre": [
+        80.8925,
+        12.605625
+      ],
+      "wind_kmh": 63.7,
+      "gust_kmh": 89.2,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 994.5
+    },
+    {
+      "record_time": "2023-12-05T00:10:00Z",
+      "centre": [
+        80.891667,
+        12.60625
+      ],
+      "wind_kmh": 63.9,
+      "gust_kmh": 89.5,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 994.4
+    },
+    {
+      "record_time": "2023-12-05T00:11:00Z",
+      "centre": [
+        80.890833,
+        12.606875
+      ],
+      "wind_kmh": 64.1,
+      "gust_kmh": 89.8,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 994.4
+    },
+    {
+      "record_time": "2023-12-05T00:12:00Z",
+      "centre": [
+        80.89,
+        12.6075
+      ],
+      "wind_kmh": 64.4,
+      "gust_kmh": 90.1,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 994.3
+    },
+    {
+      "record_time": "2023-12-05T00:13:00Z",
+      "centre": [
+        80.889167,
+        12.608125
+      ],
+      "wind_kmh": 64.6,
+      "gust_kmh": 90.4,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 994.2
+    },
+    {
+      "record_time": "2023-12-05T00:14:00Z",
+      "centre": [
+        80.888333,
+        12.60875
+      ],
+      "wind_kmh": 64.8,
+      "gust_kmh": 90.7,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 994.2
+    },
+    {
+      "record_time": "2023-12-05T00:15:00Z",
+      "centre": [
+        80.8875,
+        12.609375
+      ],
+      "wind_kmh": 65.0,
+      "gust_kmh": 91.1,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 994.1
+    },
+    {
+      "record_time": "2023-12-05T00:16:00Z",
+      "centre": [
+        80.886667,
+        12.61
+      ],
+      "wind_kmh": 65.3,
+      "gust_kmh": 91.4,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 994.0
+    },
+    {
+      "record_time": "2023-12-05T00:17:00Z",
+      "centre": [
+        80.885833,
+        12.610625
+      ],
+      "wind_kmh": 65.5,
+      "gust_kmh": 91.7,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 994.0
+    },
+    {
+      "record_time": "2023-12-05T00:18:00Z",
+      "centre": [
+        80.885,
+        12.61125
+      ],
+      "wind_kmh": 65.7,
+      "gust_kmh": 92.0,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 993.9
+    },
+    {
+      "record_time": "2023-12-05T00:19:00Z",
+      "centre": [
+        80.884167,
+        12.611875
+      ],
+      "wind_kmh": 66.0,
+      "gust_kmh": 92.3,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 993.8
+    },
+    {
+      "record_time": "2023-12-05T00:20:00Z",
+      "centre": [
+        80.883333,
+        12.6125
+      ],
+      "wind_kmh": 66.2,
+      "gust_kmh": 92.7,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 993.8
+    },
+    {
+      "record_time": "2023-12-05T00:21:00Z",
+      "centre": [
+        80.8825,
+        12.613125
+      ],
+      "wind_kmh": 66.4,
+      "gust_kmh": 93.0,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 993.7
+    },
+    {
+      "record_time": "2023-12-05T00:22:00Z",
+      "centre": [
+        80.881667,
+        12.61375
+      ],
+      "wind_kmh": 66.7,
+      "gust_kmh": 93.3,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 993.6
+    },
+    {
+      "record_time": "2023-12-05T00:23:00Z",
+      "centre": [
+        80.880833,
+        12.614375
+      ],
+      "wind_kmh": 66.9,
+      "gust_kmh": 93.7,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 993.6
+    },
+    {
+      "record_time": "2023-12-05T00:24:00Z",
+      "centre": [
+        80.88,
+        12.615
+      ],
+      "wind_kmh": 67.2,
+      "gust_kmh": 94.0,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 993.5
+    },
+    {
+      "record_time": "2023-12-05T00:25:00Z",
+      "centre": [
+        80.879167,
+        12.615625
+      ],
+      "wind_kmh": 67.4,
+      "gust_kmh": 94.4,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 993.4
+    },
+    {
+      "record_time": "2023-12-05T00:26:00Z",
+      "centre": [
+        80.878333,
+        12.61625
+      ],
+      "wind_kmh": 67.6,
+      "gust_kmh": 94.7,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 993.3
+    },
+    {
+      "record_time": "2023-12-05T00:27:00Z",
+      "centre": [
+        80.8775,
+        12.616875
+      ],
+      "wind_kmh": 67.9,
+      "gust_kmh": 95.0,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 993.3
+    },
+    {
+      "record_time": "2023-12-05T00:28:00Z",
+      "centre": [
+        80.876667,
+        12.6175
+      ],
+      "wind_kmh": 68.1,
+      "gust_kmh": 95.4,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 993.2
+    },
+    {
+      "record_time": "2023-12-05T00:29:00Z",
+      "centre": [
+        80.875833,
+        12.618125
+      ],
+      "wind_kmh": 68.4,
+      "gust_kmh": 95.7,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 993.1
+    },
+    {
+      "record_time": "2023-12-05T00:30:00Z",
+      "centre": [
+        80.875,
+        12.61875
+      ],
+      "wind_kmh": 68.6,
+      "gust_kmh": 96.1,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 993.0
+    },
+    {
+      "record_time": "2023-12-05T00:31:00Z",
+      "centre": [
+        80.874167,
+        12.619375
+      ],
+      "wind_kmh": 68.9,
+      "gust_kmh": 96.4,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 993.0
+    },
+    {
+      "record_time": "2023-12-05T00:32:00Z",
+      "centre": [
+        80.873333,
+        12.62
+      ],
+      "wind_kmh": 69.1,
+      "gust_kmh": 96.8,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 992.9
+    },
+    {
+      "record_time": "2023-12-05T00:33:00Z",
+      "centre": [
+        80.8725,
+        12.620625
+      ],
+      "wind_kmh": 69.4,
+      "gust_kmh": 97.2,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 992.8
+    },
+    {
+      "record_time": "2023-12-05T00:34:00Z",
+      "centre": [
+        80.871667,
+        12.62125
+      ],
+      "wind_kmh": 69.7,
+      "gust_kmh": 97.5,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 992.7
+    },
+    {
+      "record_time": "2023-12-05T00:35:00Z",
+      "centre": [
+        80.870833,
+        12.621875
+      ],
+      "wind_kmh": 69.9,
+      "gust_kmh": 97.9,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 992.7
+    },
+    {
+      "record_time": "2023-12-05T00:36:00Z",
+      "centre": [
+        80.87,
+        12.6225
+      ],
+      "wind_kmh": 70.2,
+      "gust_kmh": 98.2,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 992.6
+    },
+    {
+      "record_time": "2023-12-05T00:37:00Z",
+      "centre": [
+        80.869167,
+        12.623125
+      ],
+      "wind_kmh": 70.4,
+      "gust_kmh": 98.6,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 992.5
+    },
+    {
+      "record_time": "2023-12-05T00:38:00Z",
+      "centre": [
+        80.868333,
+        12.62375
+      ],
+      "wind_kmh": 70.7,
+      "gust_kmh": 99.0,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 992.4
+    },
+    {
+      "record_time": "2023-12-05T00:39:00Z",
+      "centre": [
+        80.8675,
+        12.624375
+      ],
+      "wind_kmh": 71.0,
+      "gust_kmh": 99.4,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 992.4
+    },
+    {
+      "record_time": "2023-12-05T00:40:00Z",
+      "centre": [
+        80.866667,
+        12.625
+      ],
+      "wind_kmh": 71.2,
+      "gust_kmh": 99.7,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 992.3
+    },
+    {
+      "record_time": "2023-12-05T00:41:00Z",
+      "centre": [
+        80.865833,
+        12.625625
+      ],
+      "wind_kmh": 71.5,
+      "gust_kmh": 100.1,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 992.2
+    },
+    {
+      "record_time": "2023-12-05T00:42:00Z",
+      "centre": [
+        80.865,
+        12.62625
+      ],
+      "wind_kmh": 71.8,
+      "gust_kmh": 100.5,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 992.1
+    },
+    {
+      "record_time": "2023-12-05T00:43:00Z",
+      "centre": [
+        80.864167,
+        12.626875
+      ],
+      "wind_kmh": 72.0,
+      "gust_kmh": 100.9,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 992.0
+    },
+    {
+      "record_time": "2023-12-05T00:44:00Z",
+      "centre": [
+        80.863333,
+        12.6275
+      ],
+      "wind_kmh": 72.3,
+      "gust_kmh": 101.2,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 992.0
+    },
+    {
+      "record_time": "2023-12-05T00:45:00Z",
+      "centre": [
+        80.8625,
+        12.628125
+      ],
+      "wind_kmh": 72.6,
+      "gust_kmh": 101.6,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 991.9
+    },
+    {
+      "record_time": "2023-12-05T00:46:00Z",
+      "centre": [
+        80.861667,
+        12.62875
+      ],
+      "wind_kmh": 72.9,
+      "gust_kmh": 102.0,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 991.8
+    },
+    {
+      "record_time": "2023-12-05T00:47:00Z",
+      "centre": [
+        80.860833,
+        12.629375
+      ],
+      "wind_kmh": 73.2,
+      "gust_kmh": 102.4,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 991.7
+    },
+    {
+      "record_time": "2023-12-05T00:48:00Z",
+      "centre": [
+        80.86,
+        12.63
+      ],
+      "wind_kmh": 73.4,
+      "gust_kmh": 102.8,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 991.6
+    },
+    {
+      "record_time": "2023-12-05T00:49:00Z",
+      "centre": [
+        80.859167,
+        12.630625
+      ],
+      "wind_kmh": 73.7,
+      "gust_kmh": 103.2,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 991.6
+    },
+    {
+      "record_time": "2023-12-05T00:50:00Z",
+      "centre": [
+        80.858333,
+        12.63125
+      ],
+      "wind_kmh": 74.0,
+      "gust_kmh": 103.6,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 991.5
+    },
+    {
+      "record_time": "2023-12-05T00:51:00Z",
+      "centre": [
+        80.8575,
+        12.631875
+      ],
+      "wind_kmh": 74.3,
+      "gust_kmh": 104.0,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 991.4
+    },
+    {
+      "record_time": "2023-12-05T00:52:00Z",
+      "centre": [
+        80.856667,
+        12.6325
+      ],
+      "wind_kmh": 74.6,
+      "gust_kmh": 104.4,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 991.3
+    },
+    {
+      "record_time": "2023-12-05T00:53:00Z",
+      "centre": [
+        80.855833,
+        12.633125
+      ],
+      "wind_kmh": 74.9,
+      "gust_kmh": 104.8,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 991.2
+    },
+    {
+      "record_time": "2023-12-05T00:54:00Z",
+      "centre": [
+        80.855,
+        12.63375
+      ],
+      "wind_kmh": 75.1,
+      "gust_kmh": 105.2,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 991.1
+    },
+    {
+      "record_time": "2023-12-05T00:55:00Z",
+      "centre": [
+        80.854167,
+        12.634375
+      ],
+      "wind_kmh": 75.4,
+      "gust_kmh": 105.6,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 991.0
+    },
+    {
+      "record_time": "2023-12-05T00:56:00Z",
+      "centre": [
+        80.853333,
+        12.635
+      ],
+      "wind_kmh": 75.7,
+      "gust_kmh": 106.0,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 991.0
+    },
+    {
+      "record_time": "2023-12-05T00:57:00Z",
+      "centre": [
+        80.8525,
+        12.635625
+      ],
+      "wind_kmh": 76.0,
+      "gust_kmh": 106.4,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 990.9
+    },
+    {
+      "record_time": "2023-12-05T00:58:00Z",
+      "centre": [
+        80.851667,
+        12.63625
+      ],
+      "wind_kmh": 76.3,
+      "gust_kmh": 106.8,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 990.8
+    },
+    {
+      "record_time": "2023-12-05T00:59:00Z",
+      "centre": [
+        80.850833,
+        12.636875
+      ],
+      "wind_kmh": 76.6,
+      "gust_kmh": 107.2,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 990.7
+    },
+    {
+      "record_time": "2023-12-05T01:00:00Z",
+      "centre": [
+        80.85,
+        12.6375
+      ],
+      "wind_kmh": 76.9,
+      "gust_kmh": 107.7,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 990.6
+    },
+    {
+      "record_time": "2023-12-05T01:01:00Z",
+      "centre": [
+        80.849167,
+        12.638125
+      ],
+      "wind_kmh": 77.2,
+      "gust_kmh": 108.1,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 990.5
+    },
+    {
+      "record_time": "2023-12-05T01:02:00Z",
+      "centre": [
+        80.848333,
+        12.63875
+      ],
+      "wind_kmh": 77.5,
+      "gust_kmh": 108.5,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 990.4
+    },
+    {
+      "record_time": "2023-12-05T01:03:00Z",
+      "centre": [
+        80.8475,
+        12.639375
+      ],
+      "wind_kmh": 77.8,
+      "gust_kmh": 108.9,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 990.4
+    },
+    {
+      "record_time": "2023-12-05T01:04:00Z",
+      "centre": [
+        80.846667,
+        12.64
+      ],
+      "wind_kmh": 78.1,
+      "gust_kmh": 109.3,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 990.3
+    },
+    {
+      "record_time": "2023-12-05T01:05:00Z",
+      "centre": [
+        80.845833,
+        12.640625
+      ],
+      "wind_kmh": 78.4,
+      "gust_kmh": 109.8,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 990.2
+    },
+    {
+      "record_time": "2023-12-05T01:06:00Z",
+      "centre": [
+        80.845,
+        12.64125
+      ],
+      "wind_kmh": 78.7,
+      "gust_kmh": 110.2,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 990.1
+    },
+    {
+      "record_time": "2023-12-05T01:07:00Z",
+      "centre": [
+        80.844167,
+        12.641875
+      ],
+      "wind_kmh": 79.0,
+      "gust_kmh": 110.6,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 990.0
+    },
+    {
+      "record_time": "2023-12-05T01:08:00Z",
+      "centre": [
+        80.843333,
+        12.6425
+      ],
+      "wind_kmh": 79.3,
+      "gust_kmh": 111.1,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 989.9
+    },
+    {
+      "record_time": "2023-12-05T01:09:00Z",
+      "centre": [
+        80.8425,
+        12.643125
+      ],
+      "wind_kmh": 79.6,
+      "gust_kmh": 111.5,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 989.8
+    },
+    {
+      "record_time": "2023-12-05T01:10:00Z",
+      "centre": [
+        80.841667,
+        12.64375
+      ],
+      "wind_kmh": 79.9,
+      "gust_kmh": 111.9,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 989.7
+    },
+    {
+      "record_time": "2023-12-05T01:11:00Z",
+      "centre": [
+        80.840833,
+        12.644375
+      ],
+      "wind_kmh": 80.3,
+      "gust_kmh": 112.4,
+      "rain_mm_h": 4.9,
+      "pressure_hpa": 989.6
+    },
+    {
+      "record_time": "2023-12-05T01:12:00Z",
+      "centre": [
+        80.84,
+        12.645
+      ],
+      "wind_kmh": 80.6,
+      "gust_kmh": 112.8,
+      "rain_mm_h": 4.9,
+      "pressure_hpa": 989.5
+    },
+    {
+      "record_time": "2023-12-05T01:13:00Z",
+      "centre": [
+        80.839167,
+        12.645625
+      ],
+      "wind_kmh": 80.9,
+      "gust_kmh": 113.2,
+      "rain_mm_h": 4.9,
+      "pressure_hpa": 989.4
+    },
+    {
+      "record_time": "2023-12-05T01:14:00Z",
+      "centre": [
+        80.838333,
+        12.64625
+      ],
+      "wind_kmh": 81.2,
+      "gust_kmh": 113.7,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 989.4
+    },
+    {
+      "record_time": "2023-12-05T01:15:00Z",
+      "centre": [
+        80.8375,
+        12.646875
+      ],
+      "wind_kmh": 81.5,
+      "gust_kmh": 114.1,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 989.3
+    },
+    {
+      "record_time": "2023-12-05T01:16:00Z",
+      "centre": [
+        80.836667,
+        12.6475
+      ],
+      "wind_kmh": 81.8,
+      "gust_kmh": 114.6,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 989.2
+    },
+    {
+      "record_time": "2023-12-05T01:17:00Z",
+      "centre": [
+        80.835833,
+        12.648125
+      ],
+      "wind_kmh": 82.1,
+      "gust_kmh": 115.0,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 989.1
+    },
+    {
+      "record_time": "2023-12-05T01:18:00Z",
+      "centre": [
+        80.835,
+        12.64875
+      ],
+      "wind_kmh": 82.5,
+      "gust_kmh": 115.5,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 989.0
+    },
+    {
+      "record_time": "2023-12-05T01:19:00Z",
+      "centre": [
+        80.834167,
+        12.649375
+      ],
+      "wind_kmh": 82.8,
+      "gust_kmh": 115.9,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 988.9
+    },
+    {
+      "record_time": "2023-12-05T01:20:00Z",
+      "centre": [
+        80.833333,
+        12.65
+      ],
+      "wind_kmh": 83.1,
+      "gust_kmh": 116.4,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 988.8
+    },
+    {
+      "record_time": "2023-12-05T01:21:00Z",
+      "centre": [
+        80.8325,
+        12.650625
+      ],
+      "wind_kmh": 83.4,
+      "gust_kmh": 116.8,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 988.7
+    },
+    {
+      "record_time": "2023-12-05T01:22:00Z",
+      "centre": [
+        80.831667,
+        12.65125
+      ],
+      "wind_kmh": 83.8,
+      "gust_kmh": 117.3,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 988.6
+    },
+    {
+      "record_time": "2023-12-05T01:23:00Z",
+      "centre": [
+        80.830833,
+        12.651875
+      ],
+      "wind_kmh": 84.1,
+      "gust_kmh": 117.7,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 988.5
+    },
+    {
+      "record_time": "2023-12-05T01:24:00Z",
+      "centre": [
+        80.83,
+        12.6525
+      ],
+      "wind_kmh": 84.4,
+      "gust_kmh": 118.2,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 988.4
+    },
+    {
+      "record_time": "2023-12-05T01:25:00Z",
+      "centre": [
+        80.829167,
+        12.653125
+      ],
+      "wind_kmh": 84.7,
+      "gust_kmh": 118.6,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 988.3
+    },
+    {
+      "record_time": "2023-12-05T01:26:00Z",
+      "centre": [
+        80.828333,
+        12.65375
+      ],
+      "wind_kmh": 85.1,
+      "gust_kmh": 119.1,
+      "rain_mm_h": 5.3,
+      "pressure_hpa": 988.2
+    },
+    {
+      "record_time": "2023-12-05T01:27:00Z",
+      "centre": [
+        80.8275,
+        12.654375
+      ],
+      "wind_kmh": 85.4,
+      "gust_kmh": 119.5,
+      "rain_mm_h": 5.3,
+      "pressure_hpa": 988.1
+    },
+    {
+      "record_time": "2023-12-05T01:28:00Z",
+      "centre": [
+        80.826667,
+        12.655
+      ],
+      "wind_kmh": 85.7,
+      "gust_kmh": 120.0,
+      "rain_mm_h": 5.3,
+      "pressure_hpa": 988.0
+    },
+    {
+      "record_time": "2023-12-05T01:29:00Z",
+      "centre": [
+        80.825833,
+        12.655625
+      ],
+      "wind_kmh": 86.0,
+      "gust_kmh": 120.5,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 987.9
+    },
+    {
+      "record_time": "2023-12-05T01:30:00Z",
+      "centre": [
+        80.825,
+        12.65625
+      ],
+      "wind_kmh": 86.4,
+      "gust_kmh": 120.9,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 987.8
+    },
+    {
+      "record_time": "2023-12-05T01:31:00Z",
+      "centre": [
+        80.824167,
+        12.656875
+      ],
+      "wind_kmh": 86.7,
+      "gust_kmh": 121.4,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 987.7
+    },
+    {
+      "record_time": "2023-12-05T01:32:00Z",
+      "centre": [
+        80.823333,
+        12.6575
+      ],
+      "wind_kmh": 87.0,
+      "gust_kmh": 121.9,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 987.6
+    },
+    {
+      "record_time": "2023-12-05T01:33:00Z",
+      "centre": [
+        80.8225,
+        12.658125
+      ],
+      "wind_kmh": 87.4,
+      "gust_kmh": 122.3,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 987.5
+    },
+    {
+      "record_time": "2023-12-05T01:34:00Z",
+      "centre": [
+        80.821667,
+        12.65875
+      ],
+      "wind_kmh": 87.7,
+      "gust_kmh": 122.8,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 987.4
+    },
+    {
+      "record_time": "2023-12-05T01:35:00Z",
+      "centre": [
+        80.820833,
+        12.659375
+      ],
+      "wind_kmh": 88.0,
+      "gust_kmh": 123.3,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 987.3
+    },
+    {
+      "record_time": "2023-12-05T01:36:00Z",
+      "centre": [
+        80.82,
+        12.66
+      ],
+      "wind_kmh": 88.4,
+      "gust_kmh": 123.7,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 987.2
+    },
+    {
+      "record_time": "2023-12-05T01:37:00Z",
+      "centre": [
+        80.819167,
+        12.660625
+      ],
+      "wind_kmh": 88.7,
+      "gust_kmh": 124.2,
+      "rain_mm_h": 5.6,
+      "pressure_hpa": 987.1
+    },
+    {
+      "record_time": "2023-12-05T01:38:00Z",
+      "centre": [
+        80.818333,
+        12.66125
+      ],
+      "wind_kmh": 89.0,
+      "gust_kmh": 124.7,
+      "rain_mm_h": 5.6,
+      "pressure_hpa": 987.0
+    },
+    {
+      "record_time": "2023-12-05T01:39:00Z",
+      "centre": [
+        80.8175,
+        12.661875
+      ],
+      "wind_kmh": 89.4,
+      "gust_kmh": 125.1,
+      "rain_mm_h": 5.6,
+      "pressure_hpa": 986.9
+    },
+    {
+      "record_time": "2023-12-05T01:40:00Z",
+      "centre": [
+        80.816667,
+        12.6625
+      ],
+      "wind_kmh": 89.7,
+      "gust_kmh": 125.6,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 986.8
+    },
+    {
+      "record_time": "2023-12-05T01:41:00Z",
+      "centre": [
+        80.815833,
+        12.663125
+      ],
+      "wind_kmh": 90.1,
+      "gust_kmh": 126.1,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 986.7
+    },
+    {
+      "record_time": "2023-12-05T01:42:00Z",
+      "centre": [
+        80.815,
+        12.66375
+      ],
+      "wind_kmh": 90.4,
+      "gust_kmh": 126.6,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 986.6
+    },
+    {
+      "record_time": "2023-12-05T01:43:00Z",
+      "centre": [
+        80.814167,
+        12.664375
+      ],
+      "wind_kmh": 90.7,
+      "gust_kmh": 127.0,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 986.5
+    },
+    {
+      "record_time": "2023-12-05T01:44:00Z",
+      "centre": [
+        80.813333,
+        12.665
+      ],
+      "wind_kmh": 91.1,
+      "gust_kmh": 127.5,
+      "rain_mm_h": 5.8,
+      "pressure_hpa": 986.4
+    },
+    {
+      "record_time": "2023-12-05T01:45:00Z",
+      "centre": [
+        80.8125,
+        12.665625
+      ],
+      "wind_kmh": 91.4,
+      "gust_kmh": 128.0,
+      "rain_mm_h": 5.8,
+      "pressure_hpa": 986.3
+    },
+    {
+      "record_time": "2023-12-05T01:46:00Z",
+      "centre": [
+        80.811667,
+        12.66625
+      ],
+      "wind_kmh": 91.8,
+      "gust_kmh": 128.5,
+      "rain_mm_h": 5.8,
+      "pressure_hpa": 986.2
+    },
+    {
+      "record_time": "2023-12-05T01:47:00Z",
+      "centre": [
+        80.810833,
+        12.666875
+      ],
+      "wind_kmh": 92.1,
+      "gust_kmh": 128.9,
+      "rain_mm_h": 5.9,
+      "pressure_hpa": 986.1
+    },
+    {
+      "record_time": "2023-12-05T01:48:00Z",
+      "centre": [
+        80.81,
+        12.6675
+      ],
+      "wind_kmh": 92.4,
+      "gust_kmh": 129.4,
+      "rain_mm_h": 5.9,
+      "pressure_hpa": 986.0
+    },
+    {
+      "record_time": "2023-12-05T01:49:00Z",
+      "centre": [
+        80.809167,
+        12.668125
+      ],
+      "wind_kmh": 92.8,
+      "gust_kmh": 129.9,
+      "rain_mm_h": 5.9,
+      "pressure_hpa": 985.9
+    },
+    {
+      "record_time": "2023-12-05T01:50:00Z",
+      "centre": [
+        80.808333,
+        12.66875
+      ],
+      "wind_kmh": 93.1,
+      "gust_kmh": 130.4,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 985.8
+    },
+    {
+      "record_time": "2023-12-05T01:51:00Z",
+      "centre": [
+        80.8075,
+        12.669375
+      ],
+      "wind_kmh": 93.5,
+      "gust_kmh": 130.9,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 985.7
+    },
+    {
+      "record_time": "2023-12-05T01:52:00Z",
+      "centre": [
+        80.806667,
+        12.67
+      ],
+      "wind_kmh": 93.8,
+      "gust_kmh": 131.3,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 985.6
+    },
+    {
+      "record_time": "2023-12-05T01:53:00Z",
+      "centre": [
+        80.805833,
+        12.670625
+      ],
+      "wind_kmh": 94.2,
+      "gust_kmh": 131.8,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 985.5
+    },
+    {
+      "record_time": "2023-12-05T01:54:00Z",
+      "centre": [
+        80.805,
+        12.67125
+      ],
+      "wind_kmh": 94.5,
+      "gust_kmh": 132.3,
+      "rain_mm_h": 6.1,
+      "pressure_hpa": 985.4
+    },
+    {
+      "record_time": "2023-12-05T01:55:00Z",
+      "centre": [
+        80.804167,
+        12.671875
+      ],
+      "wind_kmh": 94.8,
+      "gust_kmh": 132.8,
+      "rain_mm_h": 6.1,
+      "pressure_hpa": 985.3
+    },
+    {
+      "record_time": "2023-12-05T01:56:00Z",
+      "centre": [
+        80.803333,
+        12.6725
+      ],
+      "wind_kmh": 95.2,
+      "gust_kmh": 133.3,
+      "rain_mm_h": 6.1,
+      "pressure_hpa": 985.2
+    },
+    {
+      "record_time": "2023-12-05T01:57:00Z",
+      "centre": [
+        80.8025,
+        12.673125
+      ],
+      "wind_kmh": 95.5,
+      "gust_kmh": 133.7,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 985.1
+    },
+    {
+      "record_time": "2023-12-05T01:58:00Z",
+      "centre": [
+        80.801667,
+        12.67375
+      ],
+      "wind_kmh": 95.9,
+      "gust_kmh": 134.2,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 985.0
+    },
+    {
+      "record_time": "2023-12-05T01:59:00Z",
+      "centre": [
+        80.800833,
+        12.674375
+      ],
+      "wind_kmh": 96.2,
+      "gust_kmh": 134.7,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 984.9
+    },
+    {
+      "record_time": "2023-12-05T02:00:00Z",
+      "centre": [
+        80.8,
+        12.675
+      ],
+      "wind_kmh": 96.6,
+      "gust_kmh": 135.2,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 984.8
+    },
+    {
+      "record_time": "2023-12-05T02:01:00Z",
+      "centre": [
+        80.799167,
+        12.675625
+      ],
+      "wind_kmh": 96.9,
+      "gust_kmh": 135.7,
+      "rain_mm_h": 6.3,
+      "pressure_hpa": 984.7
+    },
+    {
+      "record_time": "2023-12-05T02:02:00Z",
+      "centre": [
+        80.798333,
+        12.67625
+      ],
+      "wind_kmh": 97.2,
+      "gust_kmh": 136.1,
+      "rain_mm_h": 6.3,
+      "pressure_hpa": 984.6
+    },
+    {
+      "record_time": "2023-12-05T02:03:00Z",
+      "centre": [
+        80.7975,
+        12.676875
+      ],
+      "wind_kmh": 97.6,
+      "gust_kmh": 136.6,
+      "rain_mm_h": 6.3,
+      "pressure_hpa": 984.5
+    },
+    {
+      "record_time": "2023-12-05T02:04:00Z",
+      "centre": [
+        80.796667,
+        12.6775
+      ],
+      "wind_kmh": 97.9,
+      "gust_kmh": 137.1,
+      "rain_mm_h": 6.4,
+      "pressure_hpa": 984.4
+    },
+    {
+      "record_time": "2023-12-05T02:05:00Z",
+      "centre": [
+        80.795833,
+        12.678125
+      ],
+      "wind_kmh": 98.3,
+      "gust_kmh": 137.6,
+      "rain_mm_h": 6.4,
+      "pressure_hpa": 984.3
+    },
+    {
+      "record_time": "2023-12-05T02:06:00Z",
+      "centre": [
+        80.795,
+        12.67875
+      ],
+      "wind_kmh": 98.6,
+      "gust_kmh": 138.1,
+      "rain_mm_h": 6.4,
+      "pressure_hpa": 984.2
+    },
+    {
+      "record_time": "2023-12-05T02:07:00Z",
+      "centre": [
+        80.794167,
+        12.679375
+      ],
+      "wind_kmh": 99.0,
+      "gust_kmh": 138.5,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 984.1
+    },
+    {
+      "record_time": "2023-12-05T02:08:00Z",
+      "centre": [
+        80.793333,
+        12.68
+      ],
+      "wind_kmh": 99.3,
+      "gust_kmh": 139.0,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 984.0
+    },
+    {
+      "record_time": "2023-12-05T02:09:00Z",
+      "centre": [
+        80.7925,
+        12.680625
+      ],
+      "wind_kmh": 99.6,
+      "gust_kmh": 139.5,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 983.9
+    },
+    {
+      "record_time": "2023-12-05T02:10:00Z",
+      "centre": [
+        80.791667,
+        12.68125
+      ],
+      "wind_kmh": 100.0,
+      "gust_kmh": 140.0,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 983.8
+    },
+    {
+      "record_time": "2023-12-05T02:11:00Z",
+      "centre": [
+        80.790833,
+        12.681875
+      ],
+      "wind_kmh": 100.3,
+      "gust_kmh": 140.5,
+      "rain_mm_h": 6.6,
+      "pressure_hpa": 983.7
+    },
+    {
+      "record_time": "2023-12-05T02:12:00Z",
+      "centre": [
+        80.79,
+        12.6825
+      ],
+      "wind_kmh": 100.7,
+      "gust_kmh": 140.9,
+      "rain_mm_h": 6.6,
+      "pressure_hpa": 983.6
+    },
+    {
+      "record_time": "2023-12-05T02:13:00Z",
+      "centre": [
+        80.789167,
+        12.683125
+      ],
+      "wind_kmh": 101.0,
+      "gust_kmh": 141.4,
+      "rain_mm_h": 6.6,
+      "pressure_hpa": 983.5
+    },
+    {
+      "record_time": "2023-12-05T02:14:00Z",
+      "centre": [
+        80.788333,
+        12.68375
+      ],
+      "wind_kmh": 101.4,
+      "gust_kmh": 141.9,
+      "rain_mm_h": 6.7,
+      "pressure_hpa": 983.4
+    },
+    {
+      "record_time": "2023-12-05T02:15:00Z",
+      "centre": [
+        80.7875,
+        12.684375
+      ],
+      "wind_kmh": 101.7,
+      "gust_kmh": 142.4,
+      "rain_mm_h": 6.7,
+      "pressure_hpa": 983.3
+    },
+    {
+      "record_time": "2023-12-05T02:16:00Z",
+      "centre": [
+        80.786667,
+        12.685
+      ],
+      "wind_kmh": 102.0,
+      "gust_kmh": 142.8,
+      "rain_mm_h": 6.7,
+      "pressure_hpa": 983.2
+    },
+    {
+      "record_time": "2023-12-05T02:17:00Z",
+      "centre": [
+        80.785833,
+        12.685625
+      ],
+      "wind_kmh": 102.4,
+      "gust_kmh": 143.3,
+      "rain_mm_h": 6.8,
+      "pressure_hpa": 983.1
+    },
+    {
+      "record_time": "2023-12-05T02:18:00Z",
+      "centre": [
+        80.785,
+        12.68625
+      ],
+      "wind_kmh": 102.7,
+      "gust_kmh": 143.8,
+      "rain_mm_h": 6.8,
+      "pressure_hpa": 983.0
+    },
+    {
+      "record_time": "2023-12-05T02:19:00Z",
+      "centre": [
+        80.784167,
+        12.686875
+      ],
+      "wind_kmh": 103.0,
+      "gust_kmh": 144.3,
+      "rain_mm_h": 6.8,
+      "pressure_hpa": 982.9
+    },
+    {
+      "record_time": "2023-12-05T02:20:00Z",
+      "centre": [
+        80.783333,
+        12.6875
+      ],
+      "wind_kmh": 103.4,
+      "gust_kmh": 144.7,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 982.8
+    },
+    {
+      "record_time": "2023-12-05T02:21:00Z",
+      "centre": [
+        80.7825,
+        12.688125
+      ],
+      "wind_kmh": 103.7,
+      "gust_kmh": 145.2,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 982.7
+    },
+    {
+      "record_time": "2023-12-05T02:22:00Z",
+      "centre": [
+        80.781667,
+        12.68875
+      ],
+      "wind_kmh": 104.1,
+      "gust_kmh": 145.7,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 982.6
+    },
+    {
+      "record_time": "2023-12-05T02:23:00Z",
+      "centre": [
+        80.780833,
+        12.689375
+      ],
+      "wind_kmh": 104.4,
+      "gust_kmh": 146.2,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 982.5
+    },
+    {
+      "record_time": "2023-12-05T02:24:00Z",
+      "centre": [
+        80.78,
+        12.69
+      ],
+      "wind_kmh": 104.7,
+      "gust_kmh": 146.6,
+      "rain_mm_h": 7.0,
+      "pressure_hpa": 982.4
+    },
+    {
+      "record_time": "2023-12-05T02:25:00Z",
+      "centre": [
+        80.779167,
+        12.690625
+      ],
+      "wind_kmh": 105.1,
+      "gust_kmh": 147.1,
+      "rain_mm_h": 7.0,
+      "pressure_hpa": 982.3
+    },
+    {
+      "record_time": "2023-12-05T02:26:00Z",
+      "centre": [
+        80.778333,
+        12.69125
+      ],
+      "wind_kmh": 105.4,
+      "gust_kmh": 147.6,
+      "rain_mm_h": 7.0,
+      "pressure_hpa": 982.2
+    },
+    {
+      "record_time": "2023-12-05T02:27:00Z",
+      "centre": [
+        80.7775,
+        12.691875
+      ],
+      "wind_kmh": 105.7,
+      "gust_kmh": 148.0,
+      "rain_mm_h": 7.1,
+      "pressure_hpa": 982.1
+    },
+    {
+      "record_time": "2023-12-05T02:28:00Z",
+      "centre": [
+        80.776667,
+        12.6925
+      ],
+      "wind_kmh": 106.1,
+      "gust_kmh": 148.5,
+      "rain_mm_h": 7.1,
+      "pressure_hpa": 982.0
+    },
+    {
+      "record_time": "2023-12-05T02:29:00Z",
+      "centre": [
+        80.775833,
+        12.693125
+      ],
+      "wind_kmh": 106.4,
+      "gust_kmh": 149.0,
+      "rain_mm_h": 7.1,
+      "pressure_hpa": 981.9
+    },
+    {
+      "record_time": "2023-12-05T02:30:00Z",
+      "centre": [
+        80.775,
+        12.69375
+      ],
+      "wind_kmh": 106.7,
+      "gust_kmh": 149.4,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 981.8
+    },
+    {
+      "record_time": "2023-12-05T02:31:00Z",
+      "centre": [
+        80.774167,
+        12.694375
+      ],
+      "wind_kmh": 107.1,
+      "gust_kmh": 149.9,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 981.7
+    },
+    {
+      "record_time": "2023-12-05T02:32:00Z",
+      "centre": [
+        80.773333,
+        12.695
+      ],
+      "wind_kmh": 107.4,
+      "gust_kmh": 150.3,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 981.7
+    },
+    {
+      "record_time": "2023-12-05T02:33:00Z",
+      "centre": [
+        80.7725,
+        12.695625
+      ],
+      "wind_kmh": 107.7,
+      "gust_kmh": 150.8,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 981.6
+    },
+    {
+      "record_time": "2023-12-05T02:34:00Z",
+      "centre": [
+        80.771667,
+        12.69625
+      ],
+      "wind_kmh": 108.0,
+      "gust_kmh": 151.2,
+      "rain_mm_h": 7.3,
+      "pressure_hpa": 981.5
+    },
+    {
+      "record_time": "2023-12-05T02:35:00Z",
+      "centre": [
+        80.770833,
+        12.696875
+      ],
+      "wind_kmh": 108.4,
+      "gust_kmh": 151.7,
+      "rain_mm_h": 7.3,
+      "pressure_hpa": 981.4
+    },
+    {
+      "record_time": "2023-12-05T02:36:00Z",
+      "centre": [
+        80.77,
+        12.6975
+      ],
+      "wind_kmh": 108.7,
+      "gust_kmh": 152.2,
+      "rain_mm_h": 7.3,
+      "pressure_hpa": 981.3
+    },
+    {
+      "record_time": "2023-12-05T02:37:00Z",
+      "centre": [
+        80.769167,
+        12.698125
+      ],
+      "wind_kmh": 109.0,
+      "gust_kmh": 152.6,
+      "rain_mm_h": 7.4,
+      "pressure_hpa": 981.2
+    },
+    {
+      "record_time": "2023-12-05T02:38:00Z",
+      "centre": [
+        80.768333,
+        12.69875
+      ],
+      "wind_kmh": 109.3,
+      "gust_kmh": 153.1,
+      "rain_mm_h": 7.4,
+      "pressure_hpa": 981.1
+    },
+    {
+      "record_time": "2023-12-05T02:39:00Z",
+      "centre": [
+        80.7675,
+        12.699375
+      ],
+      "wind_kmh": 109.6,
+      "gust_kmh": 153.5,
+      "rain_mm_h": 7.4,
+      "pressure_hpa": 981.0
+    },
+    {
+      "record_time": "2023-12-05T02:40:00Z",
+      "centre": [
+        80.766667,
+        12.7
+      ],
+      "wind_kmh": 110.0,
+      "gust_kmh": 153.9,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 980.9
+    },
+    {
+      "record_time": "2023-12-05T02:41:00Z",
+      "centre": [
+        80.765833,
+        12.700625
+      ],
+      "wind_kmh": 110.3,
+      "gust_kmh": 154.4,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 980.8
+    },
+    {
+      "record_time": "2023-12-05T02:42:00Z",
+      "centre": [
+        80.765,
+        12.70125
+      ],
+      "wind_kmh": 110.6,
+      "gust_kmh": 154.8,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 980.7
+    },
+    {
+      "record_time": "2023-12-05T02:43:00Z",
+      "centre": [
+        80.764167,
+        12.701875
+      ],
+      "wind_kmh": 110.9,
+      "gust_kmh": 155.3,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 980.6
+    },
+    {
+      "record_time": "2023-12-05T02:44:00Z",
+      "centre": [
+        80.763333,
+        12.7025
+      ],
+      "wind_kmh": 111.2,
+      "gust_kmh": 155.7,
+      "rain_mm_h": 7.6,
+      "pressure_hpa": 980.5
+    },
+    {
+      "record_time": "2023-12-05T02:45:00Z",
+      "centre": [
+        80.7625,
+        12.703125
+      ],
+      "wind_kmh": 111.5,
+      "gust_kmh": 156.1,
+      "rain_mm_h": 7.6,
+      "pressure_hpa": 980.4
+    },
+    {
+      "record_time": "2023-12-05T02:46:00Z",
+      "centre": [
+        80.761667,
+        12.70375
+      ],
+      "wind_kmh": 111.8,
+      "gust_kmh": 156.6,
+      "rain_mm_h": 7.6,
+      "pressure_hpa": 980.3
+    },
+    {
+      "record_time": "2023-12-05T02:47:00Z",
+      "centre": [
+        80.760833,
+        12.704375
+      ],
+      "wind_kmh": 112.1,
+      "gust_kmh": 157.0,
+      "rain_mm_h": 7.7,
+      "pressure_hpa": 980.3
+    },
+    {
+      "record_time": "2023-12-05T02:48:00Z",
+      "centre": [
+        80.76,
+        12.705
+      ],
+      "wind_kmh": 112.5,
+      "gust_kmh": 157.4,
+      "rain_mm_h": 7.7,
+      "pressure_hpa": 980.2
+    },
+    {
+      "record_time": "2023-12-05T02:49:00Z",
+      "centre": [
+        80.759167,
+        12.705625
+      ],
+      "wind_kmh": 112.8,
+      "gust_kmh": 157.9,
+      "rain_mm_h": 7.7,
+      "pressure_hpa": 980.1
+    },
+    {
+      "record_time": "2023-12-05T02:50:00Z",
+      "centre": [
+        80.758333,
+        12.70625
+      ],
+      "wind_kmh": 113.1,
+      "gust_kmh": 158.3,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 980.0
+    },
+    {
+      "record_time": "2023-12-05T02:51:00Z",
+      "centre": [
+        80.7575,
+        12.706875
+      ],
+      "wind_kmh": 113.4,
+      "gust_kmh": 158.7,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 979.9
+    },
+    {
+      "record_time": "2023-12-05T02:52:00Z",
+      "centre": [
+        80.756667,
+        12.7075
+      ],
+      "wind_kmh": 113.7,
+      "gust_kmh": 159.1,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 979.8
+    },
+    {
+      "record_time": "2023-12-05T02:53:00Z",
+      "centre": [
+        80.755833,
+        12.708125
+      ],
+      "wind_kmh": 114.0,
+      "gust_kmh": 159.5,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 979.7
+    },
+    {
+      "record_time": "2023-12-05T02:54:00Z",
+      "centre": [
+        80.755,
+        12.70875
+      ],
+      "wind_kmh": 114.3,
+      "gust_kmh": 160.0,
+      "rain_mm_h": 7.9,
+      "pressure_hpa": 979.6
+    },
+    {
+      "record_time": "2023-12-05T02:55:00Z",
+      "centre": [
+        80.754167,
+        12.709375
+      ],
+      "wind_kmh": 114.6,
+      "gust_kmh": 160.4,
+      "rain_mm_h": 7.9,
+      "pressure_hpa": 979.5
+    },
+    {
+      "record_time": "2023-12-05T02:56:00Z",
+      "centre": [
+        80.753333,
+        12.71
+      ],
+      "wind_kmh": 114.8,
+      "gust_kmh": 160.8,
+      "rain_mm_h": 7.9,
+      "pressure_hpa": 979.5
+    },
+    {
+      "record_time": "2023-12-05T02:57:00Z",
+      "centre": [
+        80.7525,
+        12.710625
+      ],
+      "wind_kmh": 115.1,
+      "gust_kmh": 161.2,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 979.4
+    },
+    {
+      "record_time": "2023-12-05T02:58:00Z",
+      "centre": [
+        80.751667,
+        12.71125
+      ],
+      "wind_kmh": 115.4,
+      "gust_kmh": 161.6,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 979.3
+    },
+    {
+      "record_time": "2023-12-05T02:59:00Z",
+      "centre": [
+        80.750833,
+        12.711875
+      ],
+      "wind_kmh": 115.7,
+      "gust_kmh": 162.0,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 979.2
+    },
+    {
+      "record_time": "2023-12-05T03:00:00Z",
+      "centre": [
+        80.75,
+        12.7125
+      ],
+      "wind_kmh": 116.0,
+      "gust_kmh": 162.4,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 979.1
+    },
+    {
+      "record_time": "2023-12-05T03:01:00Z",
+      "centre": [
+        80.749167,
+        12.713125
+      ],
+      "wind_kmh": 116.3,
+      "gust_kmh": 162.8,
+      "rain_mm_h": 8.1,
+      "pressure_hpa": 979.0
+    },
+    {
+      "record_time": "2023-12-05T03:02:00Z",
+      "centre": [
+        80.748333,
+        12.71375
+      ],
+      "wind_kmh": 116.6,
+      "gust_kmh": 163.2,
+      "rain_mm_h": 8.1,
+      "pressure_hpa": 979.0
+    },
+    {
+      "record_time": "2023-12-05T03:03:00Z",
+      "centre": [
+        80.7475,
+        12.714375
+      ],
+      "wind_kmh": 116.8,
+      "gust_kmh": 163.6,
+      "rain_mm_h": 8.1,
+      "pressure_hpa": 978.9
+    },
+    {
+      "record_time": "2023-12-05T03:04:00Z",
+      "centre": [
+        80.746667,
+        12.715
+      ],
+      "wind_kmh": 117.1,
+      "gust_kmh": 164.0,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 978.8
+    },
+    {
+      "record_time": "2023-12-05T03:05:00Z",
+      "centre": [
+        80.745833,
+        12.715625
+      ],
+      "wind_kmh": 117.4,
+      "gust_kmh": 164.3,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 978.7
+    },
+    {
+      "record_time": "2023-12-05T03:06:00Z",
+      "centre": [
+        80.745,
+        12.71625
+      ],
+      "wind_kmh": 117.7,
+      "gust_kmh": 164.7,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 978.6
+    },
+    {
+      "record_time": "2023-12-05T03:07:00Z",
+      "centre": [
+        80.744167,
+        12.716875
+      ],
+      "wind_kmh": 117.9,
+      "gust_kmh": 165.1,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 978.5
+    },
+    {
+      "record_time": "2023-12-05T03:08:00Z",
+      "centre": [
+        80.743333,
+        12.7175
+      ],
+      "wind_kmh": 118.2,
+      "gust_kmh": 165.5,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 978.5
+    },
+    {
+      "record_time": "2023-12-05T03:09:00Z",
+      "centre": [
+        80.7425,
+        12.718125
+      ],
+      "wind_kmh": 118.5,
+      "gust_kmh": 165.9,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 978.4
+    },
+    {
+      "record_time": "2023-12-05T03:10:00Z",
+      "centre": [
+        80.741667,
+        12.71875
+      ],
+      "wind_kmh": 118.7,
+      "gust_kmh": 166.2,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 978.3
+    },
+    {
+      "record_time": "2023-12-05T03:11:00Z",
+      "centre": [
+        80.740833,
+        12.719375
+      ],
+      "wind_kmh": 119.0,
+      "gust_kmh": 166.6,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 978.2
+    },
+    {
+      "record_time": "2023-12-05T03:12:00Z",
+      "centre": [
+        80.74,
+        12.72
+      ],
+      "wind_kmh": 119.3,
+      "gust_kmh": 167.0,
+      "rain_mm_h": 8.4,
+      "pressure_hpa": 978.2
+    },
+    {
+      "record_time": "2023-12-05T03:13:00Z",
+      "centre": [
+        80.739167,
+        12.720625
+      ],
+      "wind_kmh": 119.5,
+      "gust_kmh": 167.3,
+      "rain_mm_h": 8.4,
+      "pressure_hpa": 978.1
+    },
+    {
+      "record_time": "2023-12-05T03:14:00Z",
+      "centre": [
+        80.738333,
+        12.72125
+      ],
+      "wind_kmh": 119.8,
+      "gust_kmh": 167.7,
+      "rain_mm_h": 8.4,
+      "pressure_hpa": 978.0
+    },
+    {
+      "record_time": "2023-12-05T03:15:00Z",
+      "centre": [
+        80.7375,
+        12.721875
+      ],
+      "wind_kmh": 120.0,
+      "gust_kmh": 168.0,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 977.9
+    },
+    {
+      "record_time": "2023-12-05T03:16:00Z",
+      "centre": [
+        80.736667,
+        12.7225
+      ],
+      "wind_kmh": 120.3,
+      "gust_kmh": 168.4,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 977.9
+    },
+    {
+      "record_time": "2023-12-05T03:17:00Z",
+      "centre": [
+        80.735833,
+        12.723125
+      ],
+      "wind_kmh": 120.5,
+      "gust_kmh": 168.7,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 977.8
+    },
+    {
+      "record_time": "2023-12-05T03:18:00Z",
+      "centre": [
+        80.735,
+        12.72375
+      ],
+      "wind_kmh": 120.8,
+      "gust_kmh": 169.1,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 977.7
+    },
+    {
+      "record_time": "2023-12-05T03:19:00Z",
+      "centre": [
+        80.734167,
+        12.724375
+      ],
+      "wind_kmh": 121.0,
+      "gust_kmh": 169.4,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 977.6
+    },
+    {
+      "record_time": "2023-12-05T03:20:00Z",
+      "centre": [
+        80.733333,
+        12.725
+      ],
+      "wind_kmh": 121.2,
+      "gust_kmh": 169.7,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 977.6
+    },
+    {
+      "record_time": "2023-12-05T03:21:00Z",
+      "centre": [
+        80.7325,
+        12.725625
+      ],
+      "wind_kmh": 121.5,
+      "gust_kmh": 170.1,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 977.5
+    },
+    {
+      "record_time": "2023-12-05T03:22:00Z",
+      "centre": [
+        80.731667,
+        12.72625
+      ],
+      "wind_kmh": 121.7,
+      "gust_kmh": 170.4,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 977.4
+    },
+    {
+      "record_time": "2023-12-05T03:23:00Z",
+      "centre": [
+        80.730833,
+        12.726875
+      ],
+      "wind_kmh": 121.9,
+      "gust_kmh": 170.7,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 977.4
+    },
+    {
+      "record_time": "2023-12-05T03:24:00Z",
+      "centre": [
+        80.73,
+        12.7275
+      ],
+      "wind_kmh": 122.2,
+      "gust_kmh": 171.0,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 977.3
+    },
+    {
+      "record_time": "2023-12-05T03:25:00Z",
+      "centre": [
+        80.729167,
+        12.728125
+      ],
+      "wind_kmh": 122.4,
+      "gust_kmh": 171.3,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 977.2
+    },
+    {
+      "record_time": "2023-12-05T03:26:00Z",
+      "centre": [
+        80.728333,
+        12.72875
+      ],
+      "wind_kmh": 122.6,
+      "gust_kmh": 171.6,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 977.2
+    },
+    {
+      "record_time": "2023-12-05T03:27:00Z",
+      "centre": [
+        80.7275,
+        12.729375
+      ],
+      "wind_kmh": 122.8,
+      "gust_kmh": 172.0,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 977.1
+    },
+    {
+      "record_time": "2023-12-05T03:28:00Z",
+      "centre": [
+        80.726667,
+        12.73
+      ],
+      "wind_kmh": 123.0,
+      "gust_kmh": 172.3,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 977.0
+    },
+    {
+      "record_time": "2023-12-05T03:29:00Z",
+      "centre": [
+        80.725833,
+        12.730625
+      ],
+      "wind_kmh": 123.3,
+      "gust_kmh": 172.6,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 977.0
+    },
+    {
+      "record_time": "2023-12-05T03:30:00Z",
+      "centre": [
+        80.725,
+        12.73125
+      ],
+      "wind_kmh": 123.5,
+      "gust_kmh": 172.9,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 976.9
+    },
+    {
+      "record_time": "2023-12-05T03:31:00Z",
+      "centre": [
+        80.724167,
+        12.731875
+      ],
+      "wind_kmh": 123.7,
+      "gust_kmh": 173.1,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 976.9
+    },
+    {
+      "record_time": "2023-12-05T03:32:00Z",
+      "centre": [
+        80.723333,
+        12.7325
+      ],
+      "wind_kmh": 123.9,
+      "gust_kmh": 173.4,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 976.8
+    },
+    {
+      "record_time": "2023-12-05T03:33:00Z",
+      "centre": [
+        80.7225,
+        12.733125
+      ],
+      "wind_kmh": 124.1,
+      "gust_kmh": 173.7,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 976.7
+    },
+    {
+      "record_time": "2023-12-05T03:34:00Z",
+      "centre": [
+        80.721667,
+        12.73375
+      ],
+      "wind_kmh": 124.3,
+      "gust_kmh": 174.0,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 976.7
+    },
+    {
+      "record_time": "2023-12-05T03:35:00Z",
+      "centre": [
+        80.720833,
+        12.734375
+      ],
+      "wind_kmh": 124.5,
+      "gust_kmh": 174.3,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 976.6
+    },
+    {
+      "record_time": "2023-12-05T03:36:00Z",
+      "centre": [
+        80.72,
+        12.735
+      ],
+      "wind_kmh": 124.7,
+      "gust_kmh": 174.5,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 976.6
+    },
+    {
+      "record_time": "2023-12-05T03:37:00Z",
+      "centre": [
+        80.719167,
+        12.735625
+      ],
+      "wind_kmh": 124.9,
+      "gust_kmh": 174.8,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 976.5
+    },
+    {
+      "record_time": "2023-12-05T03:38:00Z",
+      "centre": [
+        80.718333,
+        12.73625
+      ],
+      "wind_kmh": 125.0,
+      "gust_kmh": 175.1,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 976.5
+    },
+    {
+      "record_time": "2023-12-05T03:39:00Z",
+      "centre": [
+        80.7175,
+        12.736875
+      ],
+      "wind_kmh": 125.2,
+      "gust_kmh": 175.3,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 976.4
+    },
+    {
+      "record_time": "2023-12-05T03:40:00Z",
+      "centre": [
+        80.716667,
+        12.7375
+      ],
+      "wind_kmh": 125.4,
+      "gust_kmh": 175.6,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 976.4
+    },
+    {
+      "record_time": "2023-12-05T03:41:00Z",
+      "centre": [
+        80.715833,
+        12.738125
+      ],
+      "wind_kmh": 125.6,
+      "gust_kmh": 175.8,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 976.3
+    },
+    {
+      "record_time": "2023-12-05T03:42:00Z",
+      "centre": [
+        80.715,
+        12.73875
+      ],
+      "wind_kmh": 125.8,
+      "gust_kmh": 176.1,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 976.2
+    },
+    {
+      "record_time": "2023-12-05T03:43:00Z",
+      "centre": [
+        80.714167,
+        12.739375
+      ],
+      "wind_kmh": 125.9,
+      "gust_kmh": 176.3,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 976.2
+    },
+    {
+      "record_time": "2023-12-05T03:44:00Z",
+      "centre": [
+        80.713333,
+        12.74
+      ],
+      "wind_kmh": 126.1,
+      "gust_kmh": 176.5,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 976.1
+    },
+    {
+      "record_time": "2023-12-05T03:45:00Z",
+      "centre": [
+        80.7125,
+        12.740625
+      ],
+      "wind_kmh": 126.3,
+      "gust_kmh": 176.8,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 976.1
+    },
+    {
+      "record_time": "2023-12-05T03:46:00Z",
+      "centre": [
+        80.711667,
+        12.74125
+      ],
+      "wind_kmh": 126.4,
+      "gust_kmh": 177.0,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 976.1
+    },
+    {
+      "record_time": "2023-12-05T03:47:00Z",
+      "centre": [
+        80.710833,
+        12.741875
+      ],
+      "wind_kmh": 126.6,
+      "gust_kmh": 177.2,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 976.0
+    },
+    {
+      "record_time": "2023-12-05T03:48:00Z",
+      "centre": [
+        80.71,
+        12.7425
+      ],
+      "wind_kmh": 126.7,
+      "gust_kmh": 177.4,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 976.0
+    },
+    {
+      "record_time": "2023-12-05T03:49:00Z",
+      "centre": [
+        80.709167,
+        12.743125
+      ],
+      "wind_kmh": 126.9,
+      "gust_kmh": 177.6,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 975.9
+    },
+    {
+      "record_time": "2023-12-05T03:50:00Z",
+      "centre": [
+        80.708333,
+        12.74375
+      ],
+      "wind_kmh": 127.0,
+      "gust_kmh": 177.8,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 975.9
+    },
+    {
+      "record_time": "2023-12-05T03:51:00Z",
+      "centre": [
+        80.7075,
+        12.744375
+      ],
+      "wind_kmh": 127.2,
+      "gust_kmh": 178.0,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 975.8
+    },
+    {
+      "record_time": "2023-12-05T03:52:00Z",
+      "centre": [
+        80.706667,
+        12.745
+      ],
+      "wind_kmh": 127.3,
+      "gust_kmh": 178.2,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 975.8
+    },
+    {
+      "record_time": "2023-12-05T03:53:00Z",
+      "centre": [
+        80.705833,
+        12.745625
+      ],
+      "wind_kmh": 127.5,
+      "gust_kmh": 178.4,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 975.7
+    },
+    {
+      "record_time": "2023-12-05T03:54:00Z",
+      "centre": [
+        80.705,
+        12.74625
+      ],
+      "wind_kmh": 127.6,
+      "gust_kmh": 178.6,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 975.7
+    },
+    {
+      "record_time": "2023-12-05T03:55:00Z",
+      "centre": [
+        80.704167,
+        12.746875
+      ],
+      "wind_kmh": 127.7,
+      "gust_kmh": 178.8,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 975.7
+    },
+    {
+      "record_time": "2023-12-05T03:56:00Z",
+      "centre": [
+        80.703333,
+        12.7475
+      ],
+      "wind_kmh": 127.8,
+      "gust_kmh": 179.0,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 975.6
+    },
+    {
+      "record_time": "2023-12-05T03:57:00Z",
+      "centre": [
+        80.7025,
+        12.748125
+      ],
+      "wind_kmh": 128.0,
+      "gust_kmh": 179.2,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 975.6
+    },
+    {
+      "record_time": "2023-12-05T03:58:00Z",
+      "centre": [
+        80.701667,
+        12.74875
+      ],
+      "wind_kmh": 128.1,
+      "gust_kmh": 179.3,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 975.6
+    },
+    {
+      "record_time": "2023-12-05T03:59:00Z",
+      "centre": [
+        80.700833,
+        12.749375
+      ],
+      "wind_kmh": 128.2,
+      "gust_kmh": 179.5,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 975.5
+    },
+    {
+      "record_time": "2023-12-05T04:00:00Z",
+      "centre": [
+        80.7,
+        12.75
+      ],
+      "wind_kmh": 128.3,
+      "gust_kmh": 179.6,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 975.5
+    },
+    {
+      "record_time": "2023-12-05T04:01:00Z",
+      "centre": [
+        80.699167,
+        12.750625
+      ],
+      "wind_kmh": 128.4,
+      "gust_kmh": 179.8,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 975.5
+    },
+    {
+      "record_time": "2023-12-05T04:02:00Z",
+      "centre": [
+        80.698333,
+        12.75125
+      ],
+      "wind_kmh": 128.5,
+      "gust_kmh": 179.9,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 975.4
+    },
+    {
+      "record_time": "2023-12-05T04:03:00Z",
+      "centre": [
+        80.6975,
+        12.751875
+      ],
+      "wind_kmh": 128.6,
+      "gust_kmh": 180.1,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 975.4
+    },
+    {
+      "record_time": "2023-12-05T04:04:00Z",
+      "centre": [
+        80.696667,
+        12.7525
+      ],
+      "wind_kmh": 128.7,
+      "gust_kmh": 180.2,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 975.4
+    },
+    {
+      "record_time": "2023-12-05T04:05:00Z",
+      "centre": [
+        80.695833,
+        12.753125
+      ],
+      "wind_kmh": 128.8,
+      "gust_kmh": 180.4,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:06:00Z",
+      "centre": [
+        80.695,
+        12.75375
+      ],
+      "wind_kmh": 128.9,
+      "gust_kmh": 180.5,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:07:00Z",
+      "centre": [
+        80.694167,
+        12.754375
+      ],
+      "wind_kmh": 129.0,
+      "gust_kmh": 180.6,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:08:00Z",
+      "centre": [
+        80.693333,
+        12.755
+      ],
+      "wind_kmh": 129.1,
+      "gust_kmh": 180.7,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:09:00Z",
+      "centre": [
+        80.6925,
+        12.755625
+      ],
+      "wind_kmh": 129.2,
+      "gust_kmh": 180.8,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:10:00Z",
+      "centre": [
+        80.691667,
+        12.75625
+      ],
+      "wind_kmh": 129.2,
+      "gust_kmh": 180.9,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:11:00Z",
+      "centre": [
+        80.690833,
+        12.756875
+      ],
+      "wind_kmh": 129.3,
+      "gust_kmh": 181.0,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:12:00Z",
+      "centre": [
+        80.69,
+        12.7575
+      ],
+      "wind_kmh": 129.4,
+      "gust_kmh": 181.1,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:13:00Z",
+      "centre": [
+        80.689167,
+        12.758125
+      ],
+      "wind_kmh": 129.5,
+      "gust_kmh": 181.2,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:14:00Z",
+      "centre": [
+        80.688333,
+        12.75875
+      ],
+      "wind_kmh": 129.5,
+      "gust_kmh": 181.3,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:15:00Z",
+      "centre": [
+        80.6875,
+        12.759375
+      ],
+      "wind_kmh": 129.6,
+      "gust_kmh": 181.4,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:16:00Z",
+      "centre": [
+        80.686667,
+        12.76
+      ],
+      "wind_kmh": 129.6,
+      "gust_kmh": 181.5,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:17:00Z",
+      "centre": [
+        80.685833,
+        12.760625
+      ],
+      "wind_kmh": 129.7,
+      "gust_kmh": 181.6,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:18:00Z",
+      "centre": [
+        80.685,
+        12.76125
+      ],
+      "wind_kmh": 129.7,
+      "gust_kmh": 181.6,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:19:00Z",
+      "centre": [
+        80.684167,
+        12.761875
+      ],
+      "wind_kmh": 129.8,
+      "gust_kmh": 181.7,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:20:00Z",
+      "centre": [
+        80.683333,
+        12.7625
+      ],
+      "wind_kmh": 129.8,
+      "gust_kmh": 181.7,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:21:00Z",
+      "centre": [
+        80.6825,
+        12.763125
+      ],
+      "wind_kmh": 129.8,
+      "gust_kmh": 181.8,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:22:00Z",
+      "centre": [
+        80.681667,
+        12.76375
+      ],
+      "wind_kmh": 129.9,
+      "gust_kmh": 181.8,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:23:00Z",
+      "centre": [
+        80.680833,
+        12.764375
+      ],
+      "wind_kmh": 129.9,
+      "gust_kmh": 181.9,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:24:00Z",
+      "centre": [
+        80.68,
+        12.765
+      ],
+      "wind_kmh": 129.9,
+      "gust_kmh": 181.9,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:25:00Z",
+      "centre": [
+        80.679167,
+        12.765625
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 181.9,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:26:00Z",
+      "centre": [
+        80.678333,
+        12.76625
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:27:00Z",
+      "centre": [
+        80.6775,
+        12.766875
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:28:00Z",
+      "centre": [
+        80.676667,
+        12.7675
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:29:00Z",
+      "centre": [
+        80.675833,
+        12.768125
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:30:00Z",
+      "centre": [
+        80.675,
+        12.76875
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:31:00Z",
+      "centre": [
+        80.674167,
+        12.769375
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:32:00Z",
+      "centre": [
+        80.673333,
+        12.77
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:33:00Z",
+      "centre": [
+        80.6725,
+        12.770625
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:34:00Z",
+      "centre": [
+        80.671667,
+        12.77125
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 182.0,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:35:00Z",
+      "centre": [
+        80.670833,
+        12.771875
+      ],
+      "wind_kmh": 130.0,
+      "gust_kmh": 181.9,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:36:00Z",
+      "centre": [
+        80.67,
+        12.7725
+      ],
+      "wind_kmh": 129.9,
+      "gust_kmh": 181.9,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:37:00Z",
+      "centre": [
+        80.669167,
+        12.773125
+      ],
+      "wind_kmh": 129.9,
+      "gust_kmh": 181.9,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:38:00Z",
+      "centre": [
+        80.668333,
+        12.77375
+      ],
+      "wind_kmh": 129.9,
+      "gust_kmh": 181.8,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:39:00Z",
+      "centre": [
+        80.6675,
+        12.774375
+      ],
+      "wind_kmh": 129.8,
+      "gust_kmh": 181.8,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.0
+    },
+    {
+      "record_time": "2023-12-05T04:40:00Z",
+      "centre": [
+        80.666667,
+        12.775
+      ],
+      "wind_kmh": 129.8,
+      "gust_kmh": 181.7,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:41:00Z",
+      "centre": [
+        80.665833,
+        12.775625
+      ],
+      "wind_kmh": 129.8,
+      "gust_kmh": 181.7,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:42:00Z",
+      "centre": [
+        80.665,
+        12.77625
+      ],
+      "wind_kmh": 129.7,
+      "gust_kmh": 181.6,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:43:00Z",
+      "centre": [
+        80.664167,
+        12.776875
+      ],
+      "wind_kmh": 129.7,
+      "gust_kmh": 181.6,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:44:00Z",
+      "centre": [
+        80.663333,
+        12.7775
+      ],
+      "wind_kmh": 129.6,
+      "gust_kmh": 181.5,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:45:00Z",
+      "centre": [
+        80.6625,
+        12.778125
+      ],
+      "wind_kmh": 129.6,
+      "gust_kmh": 181.4,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:46:00Z",
+      "centre": [
+        80.661667,
+        12.77875
+      ],
+      "wind_kmh": 129.5,
+      "gust_kmh": 181.3,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.1
+    },
+    {
+      "record_time": "2023-12-05T04:47:00Z",
+      "centre": [
+        80.660833,
+        12.779375
+      ],
+      "wind_kmh": 129.5,
+      "gust_kmh": 181.2,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:48:00Z",
+      "centre": [
+        80.66,
+        12.78
+      ],
+      "wind_kmh": 129.4,
+      "gust_kmh": 181.1,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:49:00Z",
+      "centre": [
+        80.659167,
+        12.780625
+      ],
+      "wind_kmh": 129.3,
+      "gust_kmh": 181.0,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:50:00Z",
+      "centre": [
+        80.658333,
+        12.78125
+      ],
+      "wind_kmh": 129.2,
+      "gust_kmh": 180.9,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:51:00Z",
+      "centre": [
+        80.6575,
+        12.781875
+      ],
+      "wind_kmh": 129.2,
+      "gust_kmh": 180.8,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.2
+    },
+    {
+      "record_time": "2023-12-05T04:52:00Z",
+      "centre": [
+        80.656667,
+        12.7825
+      ],
+      "wind_kmh": 129.1,
+      "gust_kmh": 180.7,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:53:00Z",
+      "centre": [
+        80.655833,
+        12.783125
+      ],
+      "wind_kmh": 129.0,
+      "gust_kmh": 180.6,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:54:00Z",
+      "centre": [
+        80.655,
+        12.78375
+      ],
+      "wind_kmh": 128.9,
+      "gust_kmh": 180.5,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:55:00Z",
+      "centre": [
+        80.654167,
+        12.784375
+      ],
+      "wind_kmh": 128.8,
+      "gust_kmh": 180.4,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.3
+    },
+    {
+      "record_time": "2023-12-05T04:56:00Z",
+      "centre": [
+        80.653333,
+        12.785
+      ],
+      "wind_kmh": 128.7,
+      "gust_kmh": 180.2,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.4
+    },
+    {
+      "record_time": "2023-12-05T04:57:00Z",
+      "centre": [
+        80.6525,
+        12.785625
+      ],
+      "wind_kmh": 128.6,
+      "gust_kmh": 180.1,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.4
+    },
+    {
+      "record_time": "2023-12-05T04:58:00Z",
+      "centre": [
+        80.651667,
+        12.78625
+      ],
+      "wind_kmh": 128.5,
+      "gust_kmh": 179.9,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.4
+    },
+    {
+      "record_time": "2023-12-05T04:59:00Z",
+      "centre": [
+        80.650833,
+        12.786875
+      ],
+      "wind_kmh": 128.4,
+      "gust_kmh": 179.8,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.5
+    },
+    {
+      "record_time": "2023-12-05T05:00:00Z",
+      "centre": [
+        80.65,
+        12.7875
+      ],
+      "wind_kmh": 128.3,
+      "gust_kmh": 179.6,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.5
+    },
+    {
+      "record_time": "2023-12-05T05:01:00Z",
+      "centre": [
+        80.649167,
+        12.788125
+      ],
+      "wind_kmh": 128.2,
+      "gust_kmh": 179.5,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.5
+    },
+    {
+      "record_time": "2023-12-05T05:02:00Z",
+      "centre": [
+        80.648333,
+        12.78875
+      ],
+      "wind_kmh": 128.1,
+      "gust_kmh": 179.3,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.6
+    },
+    {
+      "record_time": "2023-12-05T05:03:00Z",
+      "centre": [
+        80.6475,
+        12.789375
+      ],
+      "wind_kmh": 128.0,
+      "gust_kmh": 179.2,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.6
+    },
+    {
+      "record_time": "2023-12-05T05:04:00Z",
+      "centre": [
+        80.646667,
+        12.79
+      ],
+      "wind_kmh": 127.8,
+      "gust_kmh": 179.0,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.6
+    },
+    {
+      "record_time": "2023-12-05T05:05:00Z",
+      "centre": [
+        80.645833,
+        12.790625
+      ],
+      "wind_kmh": 127.7,
+      "gust_kmh": 178.8,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.7
+    },
+    {
+      "record_time": "2023-12-05T05:06:00Z",
+      "centre": [
+        80.645,
+        12.79125
+      ],
+      "wind_kmh": 127.6,
+      "gust_kmh": 178.6,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.7
+    },
+    {
+      "record_time": "2023-12-05T05:07:00Z",
+      "centre": [
+        80.644167,
+        12.791875
+      ],
+      "wind_kmh": 127.5,
+      "gust_kmh": 178.4,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.7
+    },
+    {
+      "record_time": "2023-12-05T05:08:00Z",
+      "centre": [
+        80.643333,
+        12.7925
+      ],
+      "wind_kmh": 127.3,
+      "gust_kmh": 178.2,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.8
+    },
+    {
+      "record_time": "2023-12-05T05:09:00Z",
+      "centre": [
+        80.6425,
+        12.793125
+      ],
+      "wind_kmh": 127.2,
+      "gust_kmh": 178.0,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.8
+    },
+    {
+      "record_time": "2023-12-05T05:10:00Z",
+      "centre": [
+        80.641667,
+        12.79375
+      ],
+      "wind_kmh": 127.0,
+      "gust_kmh": 177.8,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.9
+    },
+    {
+      "record_time": "2023-12-05T05:11:00Z",
+      "centre": [
+        80.640833,
+        12.794375
+      ],
+      "wind_kmh": 126.9,
+      "gust_kmh": 177.6,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 975.9
+    },
+    {
+      "record_time": "2023-12-05T05:12:00Z",
+      "centre": [
+        80.64,
+        12.795
+      ],
+      "wind_kmh": 126.7,
+      "gust_kmh": 177.4,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 976.0
+    },
+    {
+      "record_time": "2023-12-05T05:13:00Z",
+      "centre": [
+        80.639167,
+        12.795625
+      ],
+      "wind_kmh": 126.6,
+      "gust_kmh": 177.2,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 976.0
+    },
+    {
+      "record_time": "2023-12-05T05:14:00Z",
+      "centre": [
+        80.638333,
+        12.79625
+      ],
+      "wind_kmh": 126.4,
+      "gust_kmh": 177.0,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 976.1
+    },
+    {
+      "record_time": "2023-12-05T05:15:00Z",
+      "centre": [
+        80.6375,
+        12.796875
+      ],
+      "wind_kmh": 126.3,
+      "gust_kmh": 176.8,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 976.1
+    },
+    {
+      "record_time": "2023-12-05T05:16:00Z",
+      "centre": [
+        80.636667,
+        12.7975
+      ],
+      "wind_kmh": 126.1,
+      "gust_kmh": 176.5,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 976.1
+    },
+    {
+      "record_time": "2023-12-05T05:17:00Z",
+      "centre": [
+        80.635833,
+        12.798125
+      ],
+      "wind_kmh": 125.9,
+      "gust_kmh": 176.3,
+      "rain_mm_h": 10.0,
+      "pressure_hpa": 976.2
+    },
+    {
+      "record_time": "2023-12-05T05:18:00Z",
+      "centre": [
+        80.635,
+        12.79875
+      ],
+      "wind_kmh": 125.8,
+      "gust_kmh": 176.1,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.2
+    },
+    {
+      "record_time": "2023-12-05T05:19:00Z",
+      "centre": [
+        80.634167,
+        12.799375
+      ],
+      "wind_kmh": 125.6,
+      "gust_kmh": 175.8,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.3
+    },
+    {
+      "record_time": "2023-12-05T05:20:00Z",
+      "centre": [
+        80.633333,
+        12.8
+      ],
+      "wind_kmh": 125.4,
+      "gust_kmh": 175.6,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.4
+    },
+    {
+      "record_time": "2023-12-05T05:21:00Z",
+      "centre": [
+        80.6325,
+        12.800625
+      ],
+      "wind_kmh": 125.2,
+      "gust_kmh": 175.3,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.4
+    },
+    {
+      "record_time": "2023-12-05T05:22:00Z",
+      "centre": [
+        80.631667,
+        12.80125
+      ],
+      "wind_kmh": 125.0,
+      "gust_kmh": 175.1,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.5
+    },
+    {
+      "record_time": "2023-12-05T05:23:00Z",
+      "centre": [
+        80.630833,
+        12.801875
+      ],
+      "wind_kmh": 124.9,
+      "gust_kmh": 174.8,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.5
+    },
+    {
+      "record_time": "2023-12-05T05:24:00Z",
+      "centre": [
+        80.63,
+        12.8025
+      ],
+      "wind_kmh": 124.7,
+      "gust_kmh": 174.5,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.6
+    },
+    {
+      "record_time": "2023-12-05T05:25:00Z",
+      "centre": [
+        80.629167,
+        12.803125
+      ],
+      "wind_kmh": 124.5,
+      "gust_kmh": 174.3,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.6
+    },
+    {
+      "record_time": "2023-12-05T05:26:00Z",
+      "centre": [
+        80.628333,
+        12.80375
+      ],
+      "wind_kmh": 124.3,
+      "gust_kmh": 174.0,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.7
+    },
+    {
+      "record_time": "2023-12-05T05:27:00Z",
+      "centre": [
+        80.6275,
+        12.804375
+      ],
+      "wind_kmh": 124.1,
+      "gust_kmh": 173.7,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.7
+    },
+    {
+      "record_time": "2023-12-05T05:28:00Z",
+      "centre": [
+        80.626667,
+        12.805
+      ],
+      "wind_kmh": 123.9,
+      "gust_kmh": 173.4,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.8
+    },
+    {
+      "record_time": "2023-12-05T05:29:00Z",
+      "centre": [
+        80.625833,
+        12.805625
+      ],
+      "wind_kmh": 123.7,
+      "gust_kmh": 173.1,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.9
+    },
+    {
+      "record_time": "2023-12-05T05:30:00Z",
+      "centre": [
+        80.625,
+        12.80625
+      ],
+      "wind_kmh": 123.5,
+      "gust_kmh": 172.9,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 976.9
+    },
+    {
+      "record_time": "2023-12-05T05:31:00Z",
+      "centre": [
+        80.624167,
+        12.806875
+      ],
+      "wind_kmh": 123.3,
+      "gust_kmh": 172.6,
+      "rain_mm_h": 9.9,
+      "pressure_hpa": 977.0
+    },
+    {
+      "record_time": "2023-12-05T05:32:00Z",
+      "centre": [
+        80.623333,
+        12.8075
+      ],
+      "wind_kmh": 123.0,
+      "gust_kmh": 172.3,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.0
+    },
+    {
+      "record_time": "2023-12-05T05:33:00Z",
+      "centre": [
+        80.6225,
+        12.808125
+      ],
+      "wind_kmh": 122.8,
+      "gust_kmh": 172.0,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.1
+    },
+    {
+      "record_time": "2023-12-05T05:34:00Z",
+      "centre": [
+        80.621667,
+        12.80875
+      ],
+      "wind_kmh": 122.6,
+      "gust_kmh": 171.6,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.2
+    },
+    {
+      "record_time": "2023-12-05T05:35:00Z",
+      "centre": [
+        80.620833,
+        12.809375
+      ],
+      "wind_kmh": 122.4,
+      "gust_kmh": 171.3,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.2
+    },
+    {
+      "record_time": "2023-12-05T05:36:00Z",
+      "centre": [
+        80.62,
+        12.81
+      ],
+      "wind_kmh": 122.2,
+      "gust_kmh": 171.0,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.3
+    },
+    {
+      "record_time": "2023-12-05T05:37:00Z",
+      "centre": [
+        80.619167,
+        12.810625
+      ],
+      "wind_kmh": 121.9,
+      "gust_kmh": 170.7,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.4
+    },
+    {
+      "record_time": "2023-12-05T05:38:00Z",
+      "centre": [
+        80.618333,
+        12.81125
+      ],
+      "wind_kmh": 121.7,
+      "gust_kmh": 170.4,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.4
+    },
+    {
+      "record_time": "2023-12-05T05:39:00Z",
+      "centre": [
+        80.6175,
+        12.811875
+      ],
+      "wind_kmh": 121.5,
+      "gust_kmh": 170.1,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.5
+    },
+    {
+      "record_time": "2023-12-05T05:40:00Z",
+      "centre": [
+        80.616667,
+        12.8125
+      ],
+      "wind_kmh": 121.2,
+      "gust_kmh": 169.7,
+      "rain_mm_h": 9.8,
+      "pressure_hpa": 977.6
+    },
+    {
+      "record_time": "2023-12-05T05:41:00Z",
+      "centre": [
+        80.615833,
+        12.813125
+      ],
+      "wind_kmh": 121.0,
+      "gust_kmh": 169.4,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 977.6
+    },
+    {
+      "record_time": "2023-12-05T05:42:00Z",
+      "centre": [
+        80.615,
+        12.81375
+      ],
+      "wind_kmh": 120.8,
+      "gust_kmh": 169.1,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 977.7
+    },
+    {
+      "record_time": "2023-12-05T05:43:00Z",
+      "centre": [
+        80.614167,
+        12.814375
+      ],
+      "wind_kmh": 120.5,
+      "gust_kmh": 168.7,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 977.8
+    },
+    {
+      "record_time": "2023-12-05T05:44:00Z",
+      "centre": [
+        80.613333,
+        12.815
+      ],
+      "wind_kmh": 120.3,
+      "gust_kmh": 168.4,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 977.9
+    },
+    {
+      "record_time": "2023-12-05T05:45:00Z",
+      "centre": [
+        80.6125,
+        12.815625
+      ],
+      "wind_kmh": 120.0,
+      "gust_kmh": 168.0,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 977.9
+    },
+    {
+      "record_time": "2023-12-05T05:46:00Z",
+      "centre": [
+        80.611667,
+        12.81625
+      ],
+      "wind_kmh": 119.8,
+      "gust_kmh": 167.7,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 978.0
+    },
+    {
+      "record_time": "2023-12-05T05:47:00Z",
+      "centre": [
+        80.610833,
+        12.816875
+      ],
+      "wind_kmh": 119.5,
+      "gust_kmh": 167.3,
+      "rain_mm_h": 9.7,
+      "pressure_hpa": 978.1
+    },
+    {
+      "record_time": "2023-12-05T05:48:00Z",
+      "centre": [
+        80.61,
+        12.8175
+      ],
+      "wind_kmh": 119.3,
+      "gust_kmh": 167.0,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 978.2
+    },
+    {
+      "record_time": "2023-12-05T05:49:00Z",
+      "centre": [
+        80.609167,
+        12.818125
+      ],
+      "wind_kmh": 119.0,
+      "gust_kmh": 166.6,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 978.2
+    },
+    {
+      "record_time": "2023-12-05T05:50:00Z",
+      "centre": [
+        80.608333,
+        12.81875
+      ],
+      "wind_kmh": 118.7,
+      "gust_kmh": 166.2,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 978.3
+    },
+    {
+      "record_time": "2023-12-05T05:51:00Z",
+      "centre": [
+        80.6075,
+        12.819375
+      ],
+      "wind_kmh": 118.5,
+      "gust_kmh": 165.9,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 978.4
+    },
+    {
+      "record_time": "2023-12-05T05:52:00Z",
+      "centre": [
+        80.606667,
+        12.82
+      ],
+      "wind_kmh": 118.2,
+      "gust_kmh": 165.5,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 978.5
+    },
+    {
+      "record_time": "2023-12-05T05:53:00Z",
+      "centre": [
+        80.605833,
+        12.820625
+      ],
+      "wind_kmh": 117.9,
+      "gust_kmh": 165.1,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 978.5
+    },
+    {
+      "record_time": "2023-12-05T05:54:00Z",
+      "centre": [
+        80.605,
+        12.82125
+      ],
+      "wind_kmh": 117.7,
+      "gust_kmh": 164.7,
+      "rain_mm_h": 9.6,
+      "pressure_hpa": 978.6
+    },
+    {
+      "record_time": "2023-12-05T05:55:00Z",
+      "centre": [
+        80.604167,
+        12.821875
+      ],
+      "wind_kmh": 117.4,
+      "gust_kmh": 164.3,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 978.7
+    },
+    {
+      "record_time": "2023-12-05T05:56:00Z",
+      "centre": [
+        80.603333,
+        12.8225
+      ],
+      "wind_kmh": 117.1,
+      "gust_kmh": 164.0,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 978.8
+    },
+    {
+      "record_time": "2023-12-05T05:57:00Z",
+      "centre": [
+        80.6025,
+        12.823125
+      ],
+      "wind_kmh": 116.8,
+      "gust_kmh": 163.6,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 978.9
+    },
+    {
+      "record_time": "2023-12-05T05:58:00Z",
+      "centre": [
+        80.601667,
+        12.82375
+      ],
+      "wind_kmh": 116.6,
+      "gust_kmh": 163.2,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 979.0
+    },
+    {
+      "record_time": "2023-12-05T05:59:00Z",
+      "centre": [
+        80.600833,
+        12.824375
+      ],
+      "wind_kmh": 116.3,
+      "gust_kmh": 162.8,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 979.0
+    },
+    {
+      "record_time": "2023-12-05T06:00:00Z",
+      "centre": [
+        80.6,
+        12.825
+      ],
+      "wind_kmh": 116.0,
+      "gust_kmh": 162.4,
+      "rain_mm_h": 9.5,
+      "pressure_hpa": 979.1
+    },
+    {
+      "record_time": "2023-12-05T06:01:00Z",
+      "centre": [
+        80.599167,
+        12.825625
+      ],
+      "wind_kmh": 115.7,
+      "gust_kmh": 162.0,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 979.2
+    },
+    {
+      "record_time": "2023-12-05T06:02:00Z",
+      "centre": [
+        80.598333,
+        12.82625
+      ],
+      "wind_kmh": 115.4,
+      "gust_kmh": 161.6,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 979.3
+    },
+    {
+      "record_time": "2023-12-05T06:03:00Z",
+      "centre": [
+        80.5975,
+        12.826875
+      ],
+      "wind_kmh": 115.1,
+      "gust_kmh": 161.2,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 979.4
+    },
+    {
+      "record_time": "2023-12-05T06:04:00Z",
+      "centre": [
+        80.596667,
+        12.8275
+      ],
+      "wind_kmh": 114.8,
+      "gust_kmh": 160.8,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 979.5
+    },
+    {
+      "record_time": "2023-12-05T06:05:00Z",
+      "centre": [
+        80.595833,
+        12.828125
+      ],
+      "wind_kmh": 114.6,
+      "gust_kmh": 160.4,
+      "rain_mm_h": 9.4,
+      "pressure_hpa": 979.5
+    },
+    {
+      "record_time": "2023-12-05T06:06:00Z",
+      "centre": [
+        80.595,
+        12.82875
+      ],
+      "wind_kmh": 114.3,
+      "gust_kmh": 160.0,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 979.6
+    },
+    {
+      "record_time": "2023-12-05T06:07:00Z",
+      "centre": [
+        80.594167,
+        12.829375
+      ],
+      "wind_kmh": 114.0,
+      "gust_kmh": 159.5,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 979.7
+    },
+    {
+      "record_time": "2023-12-05T06:08:00Z",
+      "centre": [
+        80.593333,
+        12.83
+      ],
+      "wind_kmh": 113.7,
+      "gust_kmh": 159.1,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 979.8
+    },
+    {
+      "record_time": "2023-12-05T06:09:00Z",
+      "centre": [
+        80.5925,
+        12.830625
+      ],
+      "wind_kmh": 113.4,
+      "gust_kmh": 158.7,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 979.9
+    },
+    {
+      "record_time": "2023-12-05T06:10:00Z",
+      "centre": [
+        80.591667,
+        12.83125
+      ],
+      "wind_kmh": 113.1,
+      "gust_kmh": 158.3,
+      "rain_mm_h": 9.3,
+      "pressure_hpa": 980.0
+    },
+    {
+      "record_time": "2023-12-05T06:11:00Z",
+      "centre": [
+        80.590833,
+        12.831875
+      ],
+      "wind_kmh": 112.8,
+      "gust_kmh": 157.9,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 980.1
+    },
+    {
+      "record_time": "2023-12-05T06:12:00Z",
+      "centre": [
+        80.59,
+        12.8325
+      ],
+      "wind_kmh": 112.5,
+      "gust_kmh": 157.4,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 980.2
+    },
+    {
+      "record_time": "2023-12-05T06:13:00Z",
+      "centre": [
+        80.589167,
+        12.833125
+      ],
+      "wind_kmh": 112.1,
+      "gust_kmh": 157.0,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 980.3
+    },
+    {
+      "record_time": "2023-12-05T06:14:00Z",
+      "centre": [
+        80.588333,
+        12.83375
+      ],
+      "wind_kmh": 111.8,
+      "gust_kmh": 156.6,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 980.3
+    },
+    {
+      "record_time": "2023-12-05T06:15:00Z",
+      "centre": [
+        80.5875,
+        12.834375
+      ],
+      "wind_kmh": 111.5,
+      "gust_kmh": 156.1,
+      "rain_mm_h": 9.2,
+      "pressure_hpa": 980.4
+    },
+    {
+      "record_time": "2023-12-05T06:16:00Z",
+      "centre": [
+        80.586667,
+        12.835
+      ],
+      "wind_kmh": 111.2,
+      "gust_kmh": 155.7,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 980.5
+    },
+    {
+      "record_time": "2023-12-05T06:17:00Z",
+      "centre": [
+        80.585833,
+        12.835625
+      ],
+      "wind_kmh": 110.9,
+      "gust_kmh": 155.3,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 980.6
+    },
+    {
+      "record_time": "2023-12-05T06:18:00Z",
+      "centre": [
+        80.585,
+        12.83625
+      ],
+      "wind_kmh": 110.6,
+      "gust_kmh": 154.8,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 980.7
+    },
+    {
+      "record_time": "2023-12-05T06:19:00Z",
+      "centre": [
+        80.584167,
+        12.836875
+      ],
+      "wind_kmh": 110.3,
+      "gust_kmh": 154.4,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 980.8
+    },
+    {
+      "record_time": "2023-12-05T06:20:00Z",
+      "centre": [
+        80.583333,
+        12.8375
+      ],
+      "wind_kmh": 110.0,
+      "gust_kmh": 153.9,
+      "rain_mm_h": 9.1,
+      "pressure_hpa": 980.9
+    },
+    {
+      "record_time": "2023-12-05T06:21:00Z",
+      "centre": [
+        80.5825,
+        12.838125
+      ],
+      "wind_kmh": 109.6,
+      "gust_kmh": 153.5,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 981.0
+    },
+    {
+      "record_time": "2023-12-05T06:22:00Z",
+      "centre": [
+        80.581667,
+        12.83875
+      ],
+      "wind_kmh": 109.3,
+      "gust_kmh": 153.1,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 981.1
+    },
+    {
+      "record_time": "2023-12-05T06:23:00Z",
+      "centre": [
+        80.580833,
+        12.839375
+      ],
+      "wind_kmh": 109.0,
+      "gust_kmh": 152.6,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 981.2
+    },
+    {
+      "record_time": "2023-12-05T06:24:00Z",
+      "centre": [
+        80.58,
+        12.84
+      ],
+      "wind_kmh": 108.7,
+      "gust_kmh": 152.2,
+      "rain_mm_h": 9.0,
+      "pressure_hpa": 981.3
+    },
+    {
+      "record_time": "2023-12-05T06:25:00Z",
+      "centre": [
+        80.579167,
+        12.840625
+      ],
+      "wind_kmh": 108.4,
+      "gust_kmh": 151.7,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 981.4
+    },
+    {
+      "record_time": "2023-12-05T06:26:00Z",
+      "centre": [
+        80.578333,
+        12.84125
+      ],
+      "wind_kmh": 108.0,
+      "gust_kmh": 151.2,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 981.5
+    },
+    {
+      "record_time": "2023-12-05T06:27:00Z",
+      "centre": [
+        80.5775,
+        12.841875
+      ],
+      "wind_kmh": 107.7,
+      "gust_kmh": 150.8,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 981.6
+    },
+    {
+      "record_time": "2023-12-05T06:28:00Z",
+      "centre": [
+        80.576667,
+        12.8425
+      ],
+      "wind_kmh": 107.4,
+      "gust_kmh": 150.3,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 981.7
+    },
+    {
+      "record_time": "2023-12-05T06:29:00Z",
+      "centre": [
+        80.575833,
+        12.843125
+      ],
+      "wind_kmh": 107.1,
+      "gust_kmh": 149.9,
+      "rain_mm_h": 8.9,
+      "pressure_hpa": 981.7
+    },
+    {
+      "record_time": "2023-12-05T06:30:00Z",
+      "centre": [
+        80.575,
+        12.84375
+      ],
+      "wind_kmh": 106.7,
+      "gust_kmh": 149.4,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 981.8
+    },
+    {
+      "record_time": "2023-12-05T06:31:00Z",
+      "centre": [
+        80.574167,
+        12.844375
+      ],
+      "wind_kmh": 106.4,
+      "gust_kmh": 149.0,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 981.9
+    },
+    {
+      "record_time": "2023-12-05T06:32:00Z",
+      "centre": [
+        80.573333,
+        12.845
+      ],
+      "wind_kmh": 106.1,
+      "gust_kmh": 148.5,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 982.0
+    },
+    {
+      "record_time": "2023-12-05T06:33:00Z",
+      "centre": [
+        80.5725,
+        12.845625
+      ],
+      "wind_kmh": 105.7,
+      "gust_kmh": 148.0,
+      "rain_mm_h": 8.8,
+      "pressure_hpa": 982.1
+    },
+    {
+      "record_time": "2023-12-05T06:34:00Z",
+      "centre": [
+        80.571667,
+        12.84625
+      ],
+      "wind_kmh": 105.4,
+      "gust_kmh": 147.6,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 982.2
+    },
+    {
+      "record_time": "2023-12-05T06:35:00Z",
+      "centre": [
+        80.570833,
+        12.846875
+      ],
+      "wind_kmh": 105.1,
+      "gust_kmh": 147.1,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 982.3
+    },
+    {
+      "record_time": "2023-12-05T06:36:00Z",
+      "centre": [
+        80.57,
+        12.8475
+      ],
+      "wind_kmh": 104.7,
+      "gust_kmh": 146.6,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 982.4
+    },
+    {
+      "record_time": "2023-12-05T06:37:00Z",
+      "centre": [
+        80.569167,
+        12.848125
+      ],
+      "wind_kmh": 104.4,
+      "gust_kmh": 146.2,
+      "rain_mm_h": 8.7,
+      "pressure_hpa": 982.5
+    },
+    {
+      "record_time": "2023-12-05T06:38:00Z",
+      "centre": [
+        80.568333,
+        12.84875
+      ],
+      "wind_kmh": 104.1,
+      "gust_kmh": 145.7,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 982.6
+    },
+    {
+      "record_time": "2023-12-05T06:39:00Z",
+      "centre": [
+        80.5675,
+        12.849375
+      ],
+      "wind_kmh": 103.7,
+      "gust_kmh": 145.2,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 982.7
+    },
+    {
+      "record_time": "2023-12-05T06:40:00Z",
+      "centre": [
+        80.566667,
+        12.85
+      ],
+      "wind_kmh": 103.4,
+      "gust_kmh": 144.7,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 982.8
+    },
+    {
+      "record_time": "2023-12-05T06:41:00Z",
+      "centre": [
+        80.565833,
+        12.850625
+      ],
+      "wind_kmh": 103.0,
+      "gust_kmh": 144.3,
+      "rain_mm_h": 8.6,
+      "pressure_hpa": 982.9
+    },
+    {
+      "record_time": "2023-12-05T06:42:00Z",
+      "centre": [
+        80.565,
+        12.85125
+      ],
+      "wind_kmh": 102.7,
+      "gust_kmh": 143.8,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 983.0
+    },
+    {
+      "record_time": "2023-12-05T06:43:00Z",
+      "centre": [
+        80.564167,
+        12.851875
+      ],
+      "wind_kmh": 102.4,
+      "gust_kmh": 143.3,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 983.1
+    },
+    {
+      "record_time": "2023-12-05T06:44:00Z",
+      "centre": [
+        80.563333,
+        12.8525
+      ],
+      "wind_kmh": 102.0,
+      "gust_kmh": 142.8,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 983.2
+    },
+    {
+      "record_time": "2023-12-05T06:45:00Z",
+      "centre": [
+        80.5625,
+        12.853125
+      ],
+      "wind_kmh": 101.7,
+      "gust_kmh": 142.4,
+      "rain_mm_h": 8.5,
+      "pressure_hpa": 983.3
+    },
+    {
+      "record_time": "2023-12-05T06:46:00Z",
+      "centre": [
+        80.561667,
+        12.85375
+      ],
+      "wind_kmh": 101.4,
+      "gust_kmh": 141.9,
+      "rain_mm_h": 8.4,
+      "pressure_hpa": 983.4
+    },
+    {
+      "record_time": "2023-12-05T06:47:00Z",
+      "centre": [
+        80.560833,
+        12.854375
+      ],
+      "wind_kmh": 101.0,
+      "gust_kmh": 141.4,
+      "rain_mm_h": 8.4,
+      "pressure_hpa": 983.5
+    },
+    {
+      "record_time": "2023-12-05T06:48:00Z",
+      "centre": [
+        80.56,
+        12.855
+      ],
+      "wind_kmh": 100.7,
+      "gust_kmh": 140.9,
+      "rain_mm_h": 8.4,
+      "pressure_hpa": 983.6
+    },
+    {
+      "record_time": "2023-12-05T06:49:00Z",
+      "centre": [
+        80.559167,
+        12.855625
+      ],
+      "wind_kmh": 100.3,
+      "gust_kmh": 140.5,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 983.7
+    },
+    {
+      "record_time": "2023-12-05T06:50:00Z",
+      "centre": [
+        80.558333,
+        12.85625
+      ],
+      "wind_kmh": 100.0,
+      "gust_kmh": 140.0,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 983.8
+    },
+    {
+      "record_time": "2023-12-05T06:51:00Z",
+      "centre": [
+        80.5575,
+        12.856875
+      ],
+      "wind_kmh": 99.6,
+      "gust_kmh": 139.5,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 983.9
+    },
+    {
+      "record_time": "2023-12-05T06:52:00Z",
+      "centre": [
+        80.556667,
+        12.8575
+      ],
+      "wind_kmh": 99.3,
+      "gust_kmh": 139.0,
+      "rain_mm_h": 8.3,
+      "pressure_hpa": 984.0
+    },
+    {
+      "record_time": "2023-12-05T06:53:00Z",
+      "centre": [
+        80.555833,
+        12.858125
+      ],
+      "wind_kmh": 99.0,
+      "gust_kmh": 138.5,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 984.1
+    },
+    {
+      "record_time": "2023-12-05T06:54:00Z",
+      "centre": [
+        80.555,
+        12.85875
+      ],
+      "wind_kmh": 98.6,
+      "gust_kmh": 138.1,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 984.2
+    },
+    {
+      "record_time": "2023-12-05T06:55:00Z",
+      "centre": [
+        80.554167,
+        12.859375
+      ],
+      "wind_kmh": 98.3,
+      "gust_kmh": 137.6,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 984.3
+    },
+    {
+      "record_time": "2023-12-05T06:56:00Z",
+      "centre": [
+        80.553333,
+        12.86
+      ],
+      "wind_kmh": 97.9,
+      "gust_kmh": 137.1,
+      "rain_mm_h": 8.2,
+      "pressure_hpa": 984.4
+    },
+    {
+      "record_time": "2023-12-05T06:57:00Z",
+      "centre": [
+        80.5525,
+        12.860625
+      ],
+      "wind_kmh": 97.6,
+      "gust_kmh": 136.6,
+      "rain_mm_h": 8.1,
+      "pressure_hpa": 984.5
+    },
+    {
+      "record_time": "2023-12-05T06:58:00Z",
+      "centre": [
+        80.551667,
+        12.86125
+      ],
+      "wind_kmh": 97.2,
+      "gust_kmh": 136.1,
+      "rain_mm_h": 8.1,
+      "pressure_hpa": 984.6
+    },
+    {
+      "record_time": "2023-12-05T06:59:00Z",
+      "centre": [
+        80.550833,
+        12.861875
+      ],
+      "wind_kmh": 96.9,
+      "gust_kmh": 135.7,
+      "rain_mm_h": 8.1,
+      "pressure_hpa": 984.7
+    },
+    {
+      "record_time": "2023-12-05T07:00:00Z",
+      "centre": [
+        80.55,
+        12.8625
+      ],
+      "wind_kmh": 96.6,
+      "gust_kmh": 135.2,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 984.8
+    },
+    {
+      "record_time": "2023-12-05T07:01:00Z",
+      "centre": [
+        80.549167,
+        12.863125
+      ],
+      "wind_kmh": 96.2,
+      "gust_kmh": 134.7,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 984.9
+    },
+    {
+      "record_time": "2023-12-05T07:02:00Z",
+      "centre": [
+        80.548333,
+        12.86375
+      ],
+      "wind_kmh": 95.9,
+      "gust_kmh": 134.2,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 985.0
+    },
+    {
+      "record_time": "2023-12-05T07:03:00Z",
+      "centre": [
+        80.5475,
+        12.864375
+      ],
+      "wind_kmh": 95.5,
+      "gust_kmh": 133.7,
+      "rain_mm_h": 8.0,
+      "pressure_hpa": 985.1
+    },
+    {
+      "record_time": "2023-12-05T07:04:00Z",
+      "centre": [
+        80.546667,
+        12.865
+      ],
+      "wind_kmh": 95.2,
+      "gust_kmh": 133.3,
+      "rain_mm_h": 7.9,
+      "pressure_hpa": 985.2
+    },
+    {
+      "record_time": "2023-12-05T07:05:00Z",
+      "centre": [
+        80.545833,
+        12.865625
+      ],
+      "wind_kmh": 94.8,
+      "gust_kmh": 132.8,
+      "rain_mm_h": 7.9,
+      "pressure_hpa": 985.3
+    },
+    {
+      "record_time": "2023-12-05T07:06:00Z",
+      "centre": [
+        80.545,
+        12.86625
+      ],
+      "wind_kmh": 94.5,
+      "gust_kmh": 132.3,
+      "rain_mm_h": 7.9,
+      "pressure_hpa": 985.4
+    },
+    {
+      "record_time": "2023-12-05T07:07:00Z",
+      "centre": [
+        80.544167,
+        12.866875
+      ],
+      "wind_kmh": 94.2,
+      "gust_kmh": 131.8,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 985.5
+    },
+    {
+      "record_time": "2023-12-05T07:08:00Z",
+      "centre": [
+        80.543333,
+        12.8675
+      ],
+      "wind_kmh": 93.8,
+      "gust_kmh": 131.3,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 985.6
+    },
+    {
+      "record_time": "2023-12-05T07:09:00Z",
+      "centre": [
+        80.5425,
+        12.868125
+      ],
+      "wind_kmh": 93.5,
+      "gust_kmh": 130.9,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 985.7
+    },
+    {
+      "record_time": "2023-12-05T07:10:00Z",
+      "centre": [
+        80.541667,
+        12.86875
+      ],
+      "wind_kmh": 93.1,
+      "gust_kmh": 130.4,
+      "rain_mm_h": 7.8,
+      "pressure_hpa": 985.8
+    },
+    {
+      "record_time": "2023-12-05T07:11:00Z",
+      "centre": [
+        80.540833,
+        12.869375
+      ],
+      "wind_kmh": 92.8,
+      "gust_kmh": 129.9,
+      "rain_mm_h": 7.7,
+      "pressure_hpa": 985.9
+    },
+    {
+      "record_time": "2023-12-05T07:12:00Z",
+      "centre": [
+        80.54,
+        12.87
+      ],
+      "wind_kmh": 92.4,
+      "gust_kmh": 129.4,
+      "rain_mm_h": 7.7,
+      "pressure_hpa": 986.0
+    },
+    {
+      "record_time": "2023-12-05T07:13:00Z",
+      "centre": [
+        80.539167,
+        12.870625
+      ],
+      "wind_kmh": 92.1,
+      "gust_kmh": 128.9,
+      "rain_mm_h": 7.7,
+      "pressure_hpa": 986.1
+    },
+    {
+      "record_time": "2023-12-05T07:14:00Z",
+      "centre": [
+        80.538333,
+        12.87125
+      ],
+      "wind_kmh": 91.8,
+      "gust_kmh": 128.5,
+      "rain_mm_h": 7.6,
+      "pressure_hpa": 986.2
+    },
+    {
+      "record_time": "2023-12-05T07:15:00Z",
+      "centre": [
+        80.5375,
+        12.871875
+      ],
+      "wind_kmh": 91.4,
+      "gust_kmh": 128.0,
+      "rain_mm_h": 7.6,
+      "pressure_hpa": 986.3
+    },
+    {
+      "record_time": "2023-12-05T07:16:00Z",
+      "centre": [
+        80.536667,
+        12.8725
+      ],
+      "wind_kmh": 91.1,
+      "gust_kmh": 127.5,
+      "rain_mm_h": 7.6,
+      "pressure_hpa": 986.4
+    },
+    {
+      "record_time": "2023-12-05T07:17:00Z",
+      "centre": [
+        80.535833,
+        12.873125
+      ],
+      "wind_kmh": 90.7,
+      "gust_kmh": 127.0,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 986.5
+    },
+    {
+      "record_time": "2023-12-05T07:18:00Z",
+      "centre": [
+        80.535,
+        12.87375
+      ],
+      "wind_kmh": 90.4,
+      "gust_kmh": 126.6,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 986.6
+    },
+    {
+      "record_time": "2023-12-05T07:19:00Z",
+      "centre": [
+        80.534167,
+        12.874375
+      ],
+      "wind_kmh": 90.1,
+      "gust_kmh": 126.1,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 986.7
+    },
+    {
+      "record_time": "2023-12-05T07:20:00Z",
+      "centre": [
+        80.533333,
+        12.875
+      ],
+      "wind_kmh": 89.7,
+      "gust_kmh": 125.6,
+      "rain_mm_h": 7.5,
+      "pressure_hpa": 986.8
+    },
+    {
+      "record_time": "2023-12-05T07:21:00Z",
+      "centre": [
+        80.5325,
+        12.875625
+      ],
+      "wind_kmh": 89.4,
+      "gust_kmh": 125.1,
+      "rain_mm_h": 7.4,
+      "pressure_hpa": 986.9
+    },
+    {
+      "record_time": "2023-12-05T07:22:00Z",
+      "centre": [
+        80.531667,
+        12.87625
+      ],
+      "wind_kmh": 89.0,
+      "gust_kmh": 124.7,
+      "rain_mm_h": 7.4,
+      "pressure_hpa": 987.0
+    },
+    {
+      "record_time": "2023-12-05T07:23:00Z",
+      "centre": [
+        80.530833,
+        12.876875
+      ],
+      "wind_kmh": 88.7,
+      "gust_kmh": 124.2,
+      "rain_mm_h": 7.4,
+      "pressure_hpa": 987.1
+    },
+    {
+      "record_time": "2023-12-05T07:24:00Z",
+      "centre": [
+        80.53,
+        12.8775
+      ],
+      "wind_kmh": 88.4,
+      "gust_kmh": 123.7,
+      "rain_mm_h": 7.3,
+      "pressure_hpa": 987.2
+    },
+    {
+      "record_time": "2023-12-05T07:25:00Z",
+      "centre": [
+        80.529167,
+        12.878125
+      ],
+      "wind_kmh": 88.0,
+      "gust_kmh": 123.3,
+      "rain_mm_h": 7.3,
+      "pressure_hpa": 987.3
+    },
+    {
+      "record_time": "2023-12-05T07:26:00Z",
+      "centre": [
+        80.528333,
+        12.87875
+      ],
+      "wind_kmh": 87.7,
+      "gust_kmh": 122.8,
+      "rain_mm_h": 7.3,
+      "pressure_hpa": 987.4
+    },
+    {
+      "record_time": "2023-12-05T07:27:00Z",
+      "centre": [
+        80.5275,
+        12.879375
+      ],
+      "wind_kmh": 87.4,
+      "gust_kmh": 122.3,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 987.5
+    },
+    {
+      "record_time": "2023-12-05T07:28:00Z",
+      "centre": [
+        80.526667,
+        12.88
+      ],
+      "wind_kmh": 87.0,
+      "gust_kmh": 121.9,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 987.6
+    },
+    {
+      "record_time": "2023-12-05T07:29:00Z",
+      "centre": [
+        80.525833,
+        12.880625
+      ],
+      "wind_kmh": 86.7,
+      "gust_kmh": 121.4,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 987.7
+    },
+    {
+      "record_time": "2023-12-05T07:30:00Z",
+      "centre": [
+        80.525,
+        12.88125
+      ],
+      "wind_kmh": 86.4,
+      "gust_kmh": 120.9,
+      "rain_mm_h": 7.2,
+      "pressure_hpa": 987.8
+    },
+    {
+      "record_time": "2023-12-05T07:31:00Z",
+      "centre": [
+        80.524167,
+        12.881875
+      ],
+      "wind_kmh": 86.0,
+      "gust_kmh": 120.5,
+      "rain_mm_h": 7.1,
+      "pressure_hpa": 987.9
+    },
+    {
+      "record_time": "2023-12-05T07:32:00Z",
+      "centre": [
+        80.523333,
+        12.8825
+      ],
+      "wind_kmh": 85.7,
+      "gust_kmh": 120.0,
+      "rain_mm_h": 7.1,
+      "pressure_hpa": 988.0
+    },
+    {
+      "record_time": "2023-12-05T07:33:00Z",
+      "centre": [
+        80.5225,
+        12.883125
+      ],
+      "wind_kmh": 85.4,
+      "gust_kmh": 119.5,
+      "rain_mm_h": 7.1,
+      "pressure_hpa": 988.1
+    },
+    {
+      "record_time": "2023-12-05T07:34:00Z",
+      "centre": [
+        80.521667,
+        12.88375
+      ],
+      "wind_kmh": 85.1,
+      "gust_kmh": 119.1,
+      "rain_mm_h": 7.0,
+      "pressure_hpa": 988.2
+    },
+    {
+      "record_time": "2023-12-05T07:35:00Z",
+      "centre": [
+        80.520833,
+        12.884375
+      ],
+      "wind_kmh": 84.7,
+      "gust_kmh": 118.6,
+      "rain_mm_h": 7.0,
+      "pressure_hpa": 988.3
+    },
+    {
+      "record_time": "2023-12-05T07:36:00Z",
+      "centre": [
+        80.52,
+        12.885
+      ],
+      "wind_kmh": 84.4,
+      "gust_kmh": 118.2,
+      "rain_mm_h": 7.0,
+      "pressure_hpa": 988.4
+    },
+    {
+      "record_time": "2023-12-05T07:37:00Z",
+      "centre": [
+        80.519167,
+        12.885625
+      ],
+      "wind_kmh": 84.1,
+      "gust_kmh": 117.7,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 988.5
+    },
+    {
+      "record_time": "2023-12-05T07:38:00Z",
+      "centre": [
+        80.518333,
+        12.88625
+      ],
+      "wind_kmh": 83.8,
+      "gust_kmh": 117.3,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 988.6
+    },
+    {
+      "record_time": "2023-12-05T07:39:00Z",
+      "centre": [
+        80.5175,
+        12.886875
+      ],
+      "wind_kmh": 83.4,
+      "gust_kmh": 116.8,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 988.7
+    },
+    {
+      "record_time": "2023-12-05T07:40:00Z",
+      "centre": [
+        80.516667,
+        12.8875
+      ],
+      "wind_kmh": 83.1,
+      "gust_kmh": 116.4,
+      "rain_mm_h": 6.9,
+      "pressure_hpa": 988.8
+    },
+    {
+      "record_time": "2023-12-05T07:41:00Z",
+      "centre": [
+        80.515833,
+        12.888125
+      ],
+      "wind_kmh": 82.8,
+      "gust_kmh": 115.9,
+      "rain_mm_h": 6.8,
+      "pressure_hpa": 988.9
+    },
+    {
+      "record_time": "2023-12-05T07:42:00Z",
+      "centre": [
+        80.515,
+        12.88875
+      ],
+      "wind_kmh": 82.5,
+      "gust_kmh": 115.5,
+      "rain_mm_h": 6.8,
+      "pressure_hpa": 989.0
+    },
+    {
+      "record_time": "2023-12-05T07:43:00Z",
+      "centre": [
+        80.514167,
+        12.889375
+      ],
+      "wind_kmh": 82.1,
+      "gust_kmh": 115.0,
+      "rain_mm_h": 6.8,
+      "pressure_hpa": 989.1
+    },
+    {
+      "record_time": "2023-12-05T07:44:00Z",
+      "centre": [
+        80.513333,
+        12.89
+      ],
+      "wind_kmh": 81.8,
+      "gust_kmh": 114.6,
+      "rain_mm_h": 6.7,
+      "pressure_hpa": 989.2
+    },
+    {
+      "record_time": "2023-12-05T07:45:00Z",
+      "centre": [
+        80.5125,
+        12.890625
+      ],
+      "wind_kmh": 81.5,
+      "gust_kmh": 114.1,
+      "rain_mm_h": 6.7,
+      "pressure_hpa": 989.3
+    },
+    {
+      "record_time": "2023-12-05T07:46:00Z",
+      "centre": [
+        80.511667,
+        12.89125
+      ],
+      "wind_kmh": 81.2,
+      "gust_kmh": 113.7,
+      "rain_mm_h": 6.7,
+      "pressure_hpa": 989.4
+    },
+    {
+      "record_time": "2023-12-05T07:47:00Z",
+      "centre": [
+        80.510833,
+        12.891875
+      ],
+      "wind_kmh": 80.9,
+      "gust_kmh": 113.2,
+      "rain_mm_h": 6.6,
+      "pressure_hpa": 989.4
+    },
+    {
+      "record_time": "2023-12-05T07:48:00Z",
+      "centre": [
+        80.51,
+        12.8925
+      ],
+      "wind_kmh": 80.6,
+      "gust_kmh": 112.8,
+      "rain_mm_h": 6.6,
+      "pressure_hpa": 989.5
+    },
+    {
+      "record_time": "2023-12-05T07:49:00Z",
+      "centre": [
+        80.509167,
+        12.893125
+      ],
+      "wind_kmh": 80.3,
+      "gust_kmh": 112.4,
+      "rain_mm_h": 6.6,
+      "pressure_hpa": 989.6
+    },
+    {
+      "record_time": "2023-12-05T07:50:00Z",
+      "centre": [
+        80.508333,
+        12.89375
+      ],
+      "wind_kmh": 79.9,
+      "gust_kmh": 111.9,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 989.7
+    },
+    {
+      "record_time": "2023-12-05T07:51:00Z",
+      "centre": [
+        80.5075,
+        12.894375
+      ],
+      "wind_kmh": 79.6,
+      "gust_kmh": 111.5,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 989.8
+    },
+    {
+      "record_time": "2023-12-05T07:52:00Z",
+      "centre": [
+        80.506667,
+        12.895
+      ],
+      "wind_kmh": 79.3,
+      "gust_kmh": 111.1,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 989.9
+    },
+    {
+      "record_time": "2023-12-05T07:53:00Z",
+      "centre": [
+        80.505833,
+        12.895625
+      ],
+      "wind_kmh": 79.0,
+      "gust_kmh": 110.6,
+      "rain_mm_h": 6.5,
+      "pressure_hpa": 990.0
+    },
+    {
+      "record_time": "2023-12-05T07:54:00Z",
+      "centre": [
+        80.505,
+        12.89625
+      ],
+      "wind_kmh": 78.7,
+      "gust_kmh": 110.2,
+      "rain_mm_h": 6.4,
+      "pressure_hpa": 990.1
+    },
+    {
+      "record_time": "2023-12-05T07:55:00Z",
+      "centre": [
+        80.504167,
+        12.896875
+      ],
+      "wind_kmh": 78.4,
+      "gust_kmh": 109.8,
+      "rain_mm_h": 6.4,
+      "pressure_hpa": 990.2
+    },
+    {
+      "record_time": "2023-12-05T07:56:00Z",
+      "centre": [
+        80.503333,
+        12.8975
+      ],
+      "wind_kmh": 78.1,
+      "gust_kmh": 109.3,
+      "rain_mm_h": 6.4,
+      "pressure_hpa": 990.3
+    },
+    {
+      "record_time": "2023-12-05T07:57:00Z",
+      "centre": [
+        80.5025,
+        12.898125
+      ],
+      "wind_kmh": 77.8,
+      "gust_kmh": 108.9,
+      "rain_mm_h": 6.3,
+      "pressure_hpa": 990.4
+    },
+    {
+      "record_time": "2023-12-05T07:58:00Z",
+      "centre": [
+        80.501667,
+        12.89875
+      ],
+      "wind_kmh": 77.5,
+      "gust_kmh": 108.5,
+      "rain_mm_h": 6.3,
+      "pressure_hpa": 990.4
+    },
+    {
+      "record_time": "2023-12-05T07:59:00Z",
+      "centre": [
+        80.500833,
+        12.899375
+      ],
+      "wind_kmh": 77.2,
+      "gust_kmh": 108.1,
+      "rain_mm_h": 6.3,
+      "pressure_hpa": 990.5
+    },
+    {
+      "record_time": "2023-12-05T08:00:00Z",
+      "centre": [
+        80.5,
+        12.9
+      ],
+      "wind_kmh": 76.9,
+      "gust_kmh": 107.7,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 990.6
+    },
+    {
+      "record_time": "2023-12-05T08:01:00Z",
+      "centre": [
+        80.499167,
+        12.900625
+      ],
+      "wind_kmh": 76.6,
+      "gust_kmh": 107.2,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 990.7
+    },
+    {
+      "record_time": "2023-12-05T08:02:00Z",
+      "centre": [
+        80.498333,
+        12.90125
+      ],
+      "wind_kmh": 76.3,
+      "gust_kmh": 106.8,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 990.8
+    },
+    {
+      "record_time": "2023-12-05T08:03:00Z",
+      "centre": [
+        80.4975,
+        12.901875
+      ],
+      "wind_kmh": 76.0,
+      "gust_kmh": 106.4,
+      "rain_mm_h": 6.2,
+      "pressure_hpa": 990.9
+    },
+    {
+      "record_time": "2023-12-05T08:04:00Z",
+      "centre": [
+        80.496667,
+        12.9025
+      ],
+      "wind_kmh": 75.7,
+      "gust_kmh": 106.0,
+      "rain_mm_h": 6.1,
+      "pressure_hpa": 991.0
+    },
+    {
+      "record_time": "2023-12-05T08:05:00Z",
+      "centre": [
+        80.495833,
+        12.903125
+      ],
+      "wind_kmh": 75.4,
+      "gust_kmh": 105.6,
+      "rain_mm_h": 6.1,
+      "pressure_hpa": 991.0
+    },
+    {
+      "record_time": "2023-12-05T08:06:00Z",
+      "centre": [
+        80.495,
+        12.90375
+      ],
+      "wind_kmh": 75.1,
+      "gust_kmh": 105.2,
+      "rain_mm_h": 6.1,
+      "pressure_hpa": 991.1
+    },
+    {
+      "record_time": "2023-12-05T08:07:00Z",
+      "centre": [
+        80.494167,
+        12.904375
+      ],
+      "wind_kmh": 74.9,
+      "gust_kmh": 104.8,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 991.2
+    },
+    {
+      "record_time": "2023-12-05T08:08:00Z",
+      "centre": [
+        80.493333,
+        12.905
+      ],
+      "wind_kmh": 74.6,
+      "gust_kmh": 104.4,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 991.3
+    },
+    {
+      "record_time": "2023-12-05T08:09:00Z",
+      "centre": [
+        80.4925,
+        12.905625
+      ],
+      "wind_kmh": 74.3,
+      "gust_kmh": 104.0,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 991.4
+    },
+    {
+      "record_time": "2023-12-05T08:10:00Z",
+      "centre": [
+        80.491667,
+        12.90625
+      ],
+      "wind_kmh": 74.0,
+      "gust_kmh": 103.6,
+      "rain_mm_h": 6.0,
+      "pressure_hpa": 991.5
+    },
+    {
+      "record_time": "2023-12-05T08:11:00Z",
+      "centre": [
+        80.490833,
+        12.906875
+      ],
+      "wind_kmh": 73.7,
+      "gust_kmh": 103.2,
+      "rain_mm_h": 5.9,
+      "pressure_hpa": 991.6
+    },
+    {
+      "record_time": "2023-12-05T08:12:00Z",
+      "centre": [
+        80.49,
+        12.9075
+      ],
+      "wind_kmh": 73.4,
+      "gust_kmh": 102.8,
+      "rain_mm_h": 5.9,
+      "pressure_hpa": 991.6
+    },
+    {
+      "record_time": "2023-12-05T08:13:00Z",
+      "centre": [
+        80.489167,
+        12.908125
+      ],
+      "wind_kmh": 73.2,
+      "gust_kmh": 102.4,
+      "rain_mm_h": 5.9,
+      "pressure_hpa": 991.7
+    },
+    {
+      "record_time": "2023-12-05T08:14:00Z",
+      "centre": [
+        80.488333,
+        12.90875
+      ],
+      "wind_kmh": 72.9,
+      "gust_kmh": 102.0,
+      "rain_mm_h": 5.8,
+      "pressure_hpa": 991.8
+    },
+    {
+      "record_time": "2023-12-05T08:15:00Z",
+      "centre": [
+        80.4875,
+        12.909375
+      ],
+      "wind_kmh": 72.6,
+      "gust_kmh": 101.6,
+      "rain_mm_h": 5.8,
+      "pressure_hpa": 991.9
+    },
+    {
+      "record_time": "2023-12-05T08:16:00Z",
+      "centre": [
+        80.486667,
+        12.91
+      ],
+      "wind_kmh": 72.3,
+      "gust_kmh": 101.2,
+      "rain_mm_h": 5.8,
+      "pressure_hpa": 992.0
+    },
+    {
+      "record_time": "2023-12-05T08:17:00Z",
+      "centre": [
+        80.485833,
+        12.910625
+      ],
+      "wind_kmh": 72.0,
+      "gust_kmh": 100.9,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 992.0
+    },
+    {
+      "record_time": "2023-12-05T08:18:00Z",
+      "centre": [
+        80.485,
+        12.91125
+      ],
+      "wind_kmh": 71.8,
+      "gust_kmh": 100.5,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 992.1
+    },
+    {
+      "record_time": "2023-12-05T08:19:00Z",
+      "centre": [
+        80.484167,
+        12.911875
+      ],
+      "wind_kmh": 71.5,
+      "gust_kmh": 100.1,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 992.2
+    },
+    {
+      "record_time": "2023-12-05T08:20:00Z",
+      "centre": [
+        80.483333,
+        12.9125
+      ],
+      "wind_kmh": 71.2,
+      "gust_kmh": 99.7,
+      "rain_mm_h": 5.7,
+      "pressure_hpa": 992.3
+    },
+    {
+      "record_time": "2023-12-05T08:21:00Z",
+      "centre": [
+        80.4825,
+        12.913125
+      ],
+      "wind_kmh": 71.0,
+      "gust_kmh": 99.4,
+      "rain_mm_h": 5.6,
+      "pressure_hpa": 992.4
+    },
+    {
+      "record_time": "2023-12-05T08:22:00Z",
+      "centre": [
+        80.481667,
+        12.91375
+      ],
+      "wind_kmh": 70.7,
+      "gust_kmh": 99.0,
+      "rain_mm_h": 5.6,
+      "pressure_hpa": 992.4
+    },
+    {
+      "record_time": "2023-12-05T08:23:00Z",
+      "centre": [
+        80.480833,
+        12.914375
+      ],
+      "wind_kmh": 70.4,
+      "gust_kmh": 98.6,
+      "rain_mm_h": 5.6,
+      "pressure_hpa": 992.5
+    },
+    {
+      "record_time": "2023-12-05T08:24:00Z",
+      "centre": [
+        80.48,
+        12.915
+      ],
+      "wind_kmh": 70.2,
+      "gust_kmh": 98.2,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 992.6
+    },
+    {
+      "record_time": "2023-12-05T08:25:00Z",
+      "centre": [
+        80.479167,
+        12.915625
+      ],
+      "wind_kmh": 69.9,
+      "gust_kmh": 97.9,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 992.7
+    },
+    {
+      "record_time": "2023-12-05T08:26:00Z",
+      "centre": [
+        80.478333,
+        12.91625
+      ],
+      "wind_kmh": 69.7,
+      "gust_kmh": 97.5,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 992.7
+    },
+    {
+      "record_time": "2023-12-05T08:27:00Z",
+      "centre": [
+        80.4775,
+        12.916875
+      ],
+      "wind_kmh": 69.4,
+      "gust_kmh": 97.2,
+      "rain_mm_h": 5.5,
+      "pressure_hpa": 992.8
+    },
+    {
+      "record_time": "2023-12-05T08:28:00Z",
+      "centre": [
+        80.476667,
+        12.9175
+      ],
+      "wind_kmh": 69.1,
+      "gust_kmh": 96.8,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 992.9
+    },
+    {
+      "record_time": "2023-12-05T08:29:00Z",
+      "centre": [
+        80.475833,
+        12.918125
+      ],
+      "wind_kmh": 68.9,
+      "gust_kmh": 96.4,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 993.0
+    },
+    {
+      "record_time": "2023-12-05T08:30:00Z",
+      "centre": [
+        80.475,
+        12.91875
+      ],
+      "wind_kmh": 68.6,
+      "gust_kmh": 96.1,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 993.0
+    },
+    {
+      "record_time": "2023-12-05T08:31:00Z",
+      "centre": [
+        80.474167,
+        12.919375
+      ],
+      "wind_kmh": 68.4,
+      "gust_kmh": 95.7,
+      "rain_mm_h": 5.4,
+      "pressure_hpa": 993.1
+    },
+    {
+      "record_time": "2023-12-05T08:32:00Z",
+      "centre": [
+        80.473333,
+        12.92
+      ],
+      "wind_kmh": 68.1,
+      "gust_kmh": 95.4,
+      "rain_mm_h": 5.3,
+      "pressure_hpa": 993.2
+    },
+    {
+      "record_time": "2023-12-05T08:33:00Z",
+      "centre": [
+        80.4725,
+        12.920625
+      ],
+      "wind_kmh": 67.9,
+      "gust_kmh": 95.0,
+      "rain_mm_h": 5.3,
+      "pressure_hpa": 993.3
+    },
+    {
+      "record_time": "2023-12-05T08:34:00Z",
+      "centre": [
+        80.471667,
+        12.92125
+      ],
+      "wind_kmh": 67.6,
+      "gust_kmh": 94.7,
+      "rain_mm_h": 5.3,
+      "pressure_hpa": 993.3
+    },
+    {
+      "record_time": "2023-12-05T08:35:00Z",
+      "centre": [
+        80.470833,
+        12.921875
+      ],
+      "wind_kmh": 67.4,
+      "gust_kmh": 94.4,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 993.4
+    },
+    {
+      "record_time": "2023-12-05T08:36:00Z",
+      "centre": [
+        80.47,
+        12.9225
+      ],
+      "wind_kmh": 67.2,
+      "gust_kmh": 94.0,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 993.5
+    },
+    {
+      "record_time": "2023-12-05T08:37:00Z",
+      "centre": [
+        80.469167,
+        12.923125
+      ],
+      "wind_kmh": 66.9,
+      "gust_kmh": 93.7,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 993.6
+    },
+    {
+      "record_time": "2023-12-05T08:38:00Z",
+      "centre": [
+        80.468333,
+        12.92375
+      ],
+      "wind_kmh": 66.7,
+      "gust_kmh": 93.3,
+      "rain_mm_h": 5.2,
+      "pressure_hpa": 993.6
+    },
+    {
+      "record_time": "2023-12-05T08:39:00Z",
+      "centre": [
+        80.4675,
+        12.924375
+      ],
+      "wind_kmh": 66.4,
+      "gust_kmh": 93.0,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 993.7
+    },
+    {
+      "record_time": "2023-12-05T08:40:00Z",
+      "centre": [
+        80.466667,
+        12.925
+      ],
+      "wind_kmh": 66.2,
+      "gust_kmh": 92.7,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 993.8
+    },
+    {
+      "record_time": "2023-12-05T08:41:00Z",
+      "centre": [
+        80.465833,
+        12.925625
+      ],
+      "wind_kmh": 66.0,
+      "gust_kmh": 92.3,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 993.8
+    },
+    {
+      "record_time": "2023-12-05T08:42:00Z",
+      "centre": [
+        80.465,
+        12.92625
+      ],
+      "wind_kmh": 65.7,
+      "gust_kmh": 92.0,
+      "rain_mm_h": 5.1,
+      "pressure_hpa": 993.9
+    },
+    {
+      "record_time": "2023-12-05T08:43:00Z",
+      "centre": [
+        80.464167,
+        12.926875
+      ],
+      "wind_kmh": 65.5,
+      "gust_kmh": 91.7,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 994.0
+    },
+    {
+      "record_time": "2023-12-05T08:44:00Z",
+      "centre": [
+        80.463333,
+        12.9275
+      ],
+      "wind_kmh": 65.3,
+      "gust_kmh": 91.4,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 994.0
+    },
+    {
+      "record_time": "2023-12-05T08:45:00Z",
+      "centre": [
+        80.4625,
+        12.928125
+      ],
+      "wind_kmh": 65.0,
+      "gust_kmh": 91.1,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 994.1
+    },
+    {
+      "record_time": "2023-12-05T08:46:00Z",
+      "centre": [
+        80.461667,
+        12.92875
+      ],
+      "wind_kmh": 64.8,
+      "gust_kmh": 90.7,
+      "rain_mm_h": 5.0,
+      "pressure_hpa": 994.2
+    },
+    {
+      "record_time": "2023-12-05T08:47:00Z",
+      "centre": [
+        80.460833,
+        12.929375
+      ],
+      "wind_kmh": 64.6,
+      "gust_kmh": 90.4,
+      "rain_mm_h": 4.9,
+      "pressure_hpa": 994.2
+    },
+    {
+      "record_time": "2023-12-05T08:48:00Z",
+      "centre": [
+        80.46,
+        12.93
+      ],
+      "wind_kmh": 64.4,
+      "gust_kmh": 90.1,
+      "rain_mm_h": 4.9,
+      "pressure_hpa": 994.3
+    },
+    {
+      "record_time": "2023-12-05T08:49:00Z",
+      "centre": [
+        80.459167,
+        12.930625
+      ],
+      "wind_kmh": 64.1,
+      "gust_kmh": 89.8,
+      "rain_mm_h": 4.9,
+      "pressure_hpa": 994.4
+    },
+    {
+      "record_time": "2023-12-05T08:50:00Z",
+      "centre": [
+        80.458333,
+        12.93125
+      ],
+      "wind_kmh": 63.9,
+      "gust_kmh": 89.5,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 994.4
+    },
+    {
+      "record_time": "2023-12-05T08:51:00Z",
+      "centre": [
+        80.4575,
+        12.931875
+      ],
+      "wind_kmh": 63.7,
+      "gust_kmh": 89.2,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 994.5
+    },
+    {
+      "record_time": "2023-12-05T08:52:00Z",
+      "centre": [
+        80.456667,
+        12.9325
+      ],
+      "wind_kmh": 63.5,
+      "gust_kmh": 88.9,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 994.6
+    },
+    {
+      "record_time": "2023-12-05T08:53:00Z",
+      "centre": [
+        80.455833,
+        12.933125
+      ],
+      "wind_kmh": 63.3,
+      "gust_kmh": 88.6,
+      "rain_mm_h": 4.8,
+      "pressure_hpa": 994.6
+    },
+    {
+      "record_time": "2023-12-05T08:54:00Z",
+      "centre": [
+        80.455,
+        12.93375
+      ],
+      "wind_kmh": 63.1,
+      "gust_kmh": 88.3,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 994.7
+    },
+    {
+      "record_time": "2023-12-05T08:55:00Z",
+      "centre": [
+        80.454167,
+        12.934375
+      ],
+      "wind_kmh": 62.9,
+      "gust_kmh": 88.0,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 994.7
+    },
+    {
+      "record_time": "2023-12-05T08:56:00Z",
+      "centre": [
+        80.453333,
+        12.935
+      ],
+      "wind_kmh": 62.6,
+      "gust_kmh": 87.7,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 994.8
+    },
+    {
+      "record_time": "2023-12-05T08:57:00Z",
+      "centre": [
+        80.4525,
+        12.935625
+      ],
+      "wind_kmh": 62.4,
+      "gust_kmh": 87.4,
+      "rain_mm_h": 4.7,
+      "pressure_hpa": 994.9
+    },
+    {
+      "record_time": "2023-12-05T08:58:00Z",
+      "centre": [
+        80.451667,
+        12.93625
+      ],
+      "wind_kmh": 62.2,
+      "gust_kmh": 87.1,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 994.9
+    },
+    {
+      "record_time": "2023-12-05T08:59:00Z",
+      "centre": [
+        80.450833,
+        12.936875
+      ],
+      "wind_kmh": 62.0,
+      "gust_kmh": 86.8,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 995.0
+    },
+    {
+      "record_time": "2023-12-05T09:00:00Z",
+      "centre": [
+        80.45,
+        12.9375
+      ],
+      "wind_kmh": 61.8,
+      "gust_kmh": 86.5,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 995.1
+    },
+    {
+      "record_time": "2023-12-05T09:01:00Z",
+      "centre": [
+        80.449167,
+        12.938125
+      ],
+      "wind_kmh": 61.6,
+      "gust_kmh": 86.3,
+      "rain_mm_h": 4.6,
+      "pressure_hpa": 995.1
+    },
+    {
+      "record_time": "2023-12-05T09:02:00Z",
+      "centre": [
+        80.448333,
+        12.93875
+      ],
+      "wind_kmh": 61.4,
+      "gust_kmh": 86.0,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 995.2
+    },
+    {
+      "record_time": "2023-12-05T09:03:00Z",
+      "centre": [
+        80.4475,
+        12.939375
+      ],
+      "wind_kmh": 61.2,
+      "gust_kmh": 85.7,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 995.2
+    },
+    {
+      "record_time": "2023-12-05T09:04:00Z",
+      "centre": [
+        80.446667,
+        12.94
+      ],
+      "wind_kmh": 61.0,
+      "gust_kmh": 85.4,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 995.3
+    },
+    {
+      "record_time": "2023-12-05T09:05:00Z",
+      "centre": [
+        80.445833,
+        12.940625
+      ],
+      "wind_kmh": 60.8,
+      "gust_kmh": 85.2,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 995.3
+    },
+    {
+      "record_time": "2023-12-05T09:06:00Z",
+      "centre": [
+        80.445,
+        12.94125
+      ],
+      "wind_kmh": 60.6,
+      "gust_kmh": 84.9,
+      "rain_mm_h": 4.5,
+      "pressure_hpa": 995.4
+    },
+    {
+      "record_time": "2023-12-05T09:07:00Z",
+      "centre": [
+        80.444167,
+        12.941875
+      ],
+      "wind_kmh": 60.4,
+      "gust_kmh": 84.6,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 995.5
+    },
+    {
+      "record_time": "2023-12-05T09:08:00Z",
+      "centre": [
+        80.443333,
+        12.9425
+      ],
+      "wind_kmh": 60.3,
+      "gust_kmh": 84.4,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 995.5
+    },
+    {
+      "record_time": "2023-12-05T09:09:00Z",
+      "centre": [
+        80.4425,
+        12.943125
+      ],
+      "wind_kmh": 60.1,
+      "gust_kmh": 84.1,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 995.6
+    },
+    {
+      "record_time": "2023-12-05T09:10:00Z",
+      "centre": [
+        80.441667,
+        12.94375
+      ],
+      "wind_kmh": 59.9,
+      "gust_kmh": 83.8,
+      "rain_mm_h": 4.4,
+      "pressure_hpa": 995.6
+    },
+    {
+      "record_time": "2023-12-05T09:11:00Z",
+      "centre": [
+        80.440833,
+        12.944375
+      ],
+      "wind_kmh": 59.7,
+      "gust_kmh": 83.6,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 995.7
+    },
+    {
+      "record_time": "2023-12-05T09:12:00Z",
+      "centre": [
+        80.44,
+        12.945
+      ],
+      "wind_kmh": 59.5,
+      "gust_kmh": 83.3,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 995.7
+    },
+    {
+      "record_time": "2023-12-05T09:13:00Z",
+      "centre": [
+        80.439167,
+        12.945625
+      ],
+      "wind_kmh": 59.3,
+      "gust_kmh": 83.1,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 995.8
+    },
+    {
+      "record_time": "2023-12-05T09:14:00Z",
+      "centre": [
+        80.438333,
+        12.94625
+      ],
+      "wind_kmh": 59.2,
+      "gust_kmh": 82.8,
+      "rain_mm_h": 4.3,
+      "pressure_hpa": 995.8
+    },
+    {
+      "record_time": "2023-12-05T09:15:00Z",
+      "centre": [
+        80.4375,
+        12.946875
+      ],
+      "wind_kmh": 59.0,
+      "gust_kmh": 82.6,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 995.9
+    },
+    {
+      "record_time": "2023-12-05T09:16:00Z",
+      "centre": [
+        80.436667,
+        12.9475
+      ],
+      "wind_kmh": 58.8,
+      "gust_kmh": 82.3,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 995.9
+    },
+    {
+      "record_time": "2023-12-05T09:17:00Z",
+      "centre": [
+        80.435833,
+        12.948125
+      ],
+      "wind_kmh": 58.6,
+      "gust_kmh": 82.1,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 996.0
+    },
+    {
+      "record_time": "2023-12-05T09:18:00Z",
+      "centre": [
+        80.435,
+        12.94875
+      ],
+      "wind_kmh": 58.5,
+      "gust_kmh": 81.8,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 996.0
+    },
+    {
+      "record_time": "2023-12-05T09:19:00Z",
+      "centre": [
+        80.434167,
+        12.949375
+      ],
+      "wind_kmh": 58.3,
+      "gust_kmh": 81.6,
+      "rain_mm_h": 4.2,
+      "pressure_hpa": 996.1
+    },
+    {
+      "record_time": "2023-12-05T09:20:00Z",
+      "centre": [
+        80.433333,
+        12.95
+      ],
+      "wind_kmh": 58.1,
+      "gust_kmh": 81.4,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 996.1
+    },
+    {
+      "record_time": "2023-12-05T09:21:00Z",
+      "centre": [
+        80.4325,
+        12.950625
+      ],
+      "wind_kmh": 57.9,
+      "gust_kmh": 81.1,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 996.2
+    },
+    {
+      "record_time": "2023-12-05T09:22:00Z",
+      "centre": [
+        80.431667,
+        12.95125
+      ],
+      "wind_kmh": 57.8,
+      "gust_kmh": 80.9,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 996.2
+    },
+    {
+      "record_time": "2023-12-05T09:23:00Z",
+      "centre": [
+        80.430833,
+        12.951875
+      ],
+      "wind_kmh": 57.6,
+      "gust_kmh": 80.7,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 996.3
+    },
+    {
+      "record_time": "2023-12-05T09:24:00Z",
+      "centre": [
+        80.43,
+        12.9525
+      ],
+      "wind_kmh": 57.5,
+      "gust_kmh": 80.4,
+      "rain_mm_h": 4.1,
+      "pressure_hpa": 996.3
+    },
+    {
+      "record_time": "2023-12-05T09:25:00Z",
+      "centre": [
+        80.429167,
+        12.953125
+      ],
+      "wind_kmh": 57.3,
+      "gust_kmh": 80.2,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 996.4
+    },
+    {
+      "record_time": "2023-12-05T09:26:00Z",
+      "centre": [
+        80.428333,
+        12.95375
+      ],
+      "wind_kmh": 57.1,
+      "gust_kmh": 80.0,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 996.4
+    },
+    {
+      "record_time": "2023-12-05T09:27:00Z",
+      "centre": [
+        80.4275,
+        12.954375
+      ],
+      "wind_kmh": 57.0,
+      "gust_kmh": 79.8,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 996.5
+    },
+    {
+      "record_time": "2023-12-05T09:28:00Z",
+      "centre": [
+        80.426667,
+        12.955
+      ],
+      "wind_kmh": 56.8,
+      "gust_kmh": 79.5,
+      "rain_mm_h": 4.0,
+      "pressure_hpa": 996.5
+    },
+    {
+      "record_time": "2023-12-05T09:29:00Z",
+      "centre": [
+        80.425833,
+        12.955625
+      ],
+      "wind_kmh": 56.7,
+      "gust_kmh": 79.3,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 996.6
+    },
+    {
+      "record_time": "2023-12-05T09:30:00Z",
+      "centre": [
+        80.425,
+        12.95625
+      ],
+      "wind_kmh": 56.5,
+      "gust_kmh": 79.1,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 996.6
+    },
+    {
+      "record_time": "2023-12-05T09:31:00Z",
+      "centre": [
+        80.424167,
+        12.956875
+      ],
+      "wind_kmh": 56.4,
+      "gust_kmh": 78.9,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 996.7
+    },
+    {
+      "record_time": "2023-12-05T09:32:00Z",
+      "centre": [
+        80.423333,
+        12.9575
+      ],
+      "wind_kmh": 56.2,
+      "gust_kmh": 78.7,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 996.7
+    },
+    {
+      "record_time": "2023-12-05T09:33:00Z",
+      "centre": [
+        80.4225,
+        12.958125
+      ],
+      "wind_kmh": 56.1,
+      "gust_kmh": 78.5,
+      "rain_mm_h": 3.9,
+      "pressure_hpa": 996.7
+    },
+    {
+      "record_time": "2023-12-05T09:34:00Z",
+      "centre": [
+        80.421667,
+        12.95875
+      ],
+      "wind_kmh": 55.9,
+      "gust_kmh": 78.3,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 996.8
+    },
+    {
+      "record_time": "2023-12-05T09:35:00Z",
+      "centre": [
+        80.420833,
+        12.959375
+      ],
+      "wind_kmh": 55.8,
+      "gust_kmh": 78.1,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 996.8
+    },
+    {
+      "record_time": "2023-12-05T09:36:00Z",
+      "centre": [
+        80.42,
+        12.96
+      ],
+      "wind_kmh": 55.6,
+      "gust_kmh": 77.9,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 996.9
+    },
+    {
+      "record_time": "2023-12-05T09:37:00Z",
+      "centre": [
+        80.419167,
+        12.960625
+      ],
+      "wind_kmh": 55.5,
+      "gust_kmh": 77.7,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 996.9
+    },
+    {
+      "record_time": "2023-12-05T09:38:00Z",
+      "centre": [
+        80.418333,
+        12.96125
+      ],
+      "wind_kmh": 55.3,
+      "gust_kmh": 77.5,
+      "rain_mm_h": 3.8,
+      "pressure_hpa": 997.0
+    },
+    {
+      "record_time": "2023-12-05T09:39:00Z",
+      "centre": [
+        80.4175,
+        12.961875
+      ],
+      "wind_kmh": 55.2,
+      "gust_kmh": 77.3,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 997.0
+    },
+    {
+      "record_time": "2023-12-05T09:40:00Z",
+      "centre": [
+        80.416667,
+        12.9625
+      ],
+      "wind_kmh": 55.0,
+      "gust_kmh": 77.1,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 997.0
+    },
+    {
+      "record_time": "2023-12-05T09:41:00Z",
+      "centre": [
+        80.415833,
+        12.963125
+      ],
+      "wind_kmh": 54.9,
+      "gust_kmh": 76.9,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 997.1
+    },
+    {
+      "record_time": "2023-12-05T09:42:00Z",
+      "centre": [
+        80.415,
+        12.96375
+      ],
+      "wind_kmh": 54.8,
+      "gust_kmh": 76.7,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 997.1
+    },
+    {
+      "record_time": "2023-12-05T09:43:00Z",
+      "centre": [
+        80.414167,
+        12.964375
+      ],
+      "wind_kmh": 54.6,
+      "gust_kmh": 76.5,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 997.2
+    },
+    {
+      "record_time": "2023-12-05T09:44:00Z",
+      "centre": [
+        80.413333,
+        12.965
+      ],
+      "wind_kmh": 54.5,
+      "gust_kmh": 76.3,
+      "rain_mm_h": 3.7,
+      "pressure_hpa": 997.2
+    },
+    {
+      "record_time": "2023-12-05T09:45:00Z",
+      "centre": [
+        80.4125,
+        12.965625
+      ],
+      "wind_kmh": 54.4,
+      "gust_kmh": 76.1,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 997.2
+    },
+    {
+      "record_time": "2023-12-05T09:46:00Z",
+      "centre": [
+        80.411667,
+        12.96625
+      ],
+      "wind_kmh": 54.2,
+      "gust_kmh": 75.9,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 997.3
+    },
+    {
+      "record_time": "2023-12-05T09:47:00Z",
+      "centre": [
+        80.410833,
+        12.966875
+      ],
+      "wind_kmh": 54.1,
+      "gust_kmh": 75.8,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 997.3
+    },
+    {
+      "record_time": "2023-12-05T09:48:00Z",
+      "centre": [
+        80.41,
+        12.9675
+      ],
+      "wind_kmh": 54.0,
+      "gust_kmh": 75.6,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 997.4
+    },
+    {
+      "record_time": "2023-12-05T09:49:00Z",
+      "centre": [
+        80.409167,
+        12.968125
+      ],
+      "wind_kmh": 53.9,
+      "gust_kmh": 75.4,
+      "rain_mm_h": 3.6,
+      "pressure_hpa": 997.4
+    },
+    {
+      "record_time": "2023-12-05T09:50:00Z",
+      "centre": [
+        80.408333,
+        12.96875
+      ],
+      "wind_kmh": 53.7,
+      "gust_kmh": 75.2,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 997.4
+    },
+    {
+      "record_time": "2023-12-05T09:51:00Z",
+      "centre": [
+        80.4075,
+        12.969375
+      ],
+      "wind_kmh": 53.6,
+      "gust_kmh": 75.1,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 997.5
+    },
+    {
+      "record_time": "2023-12-05T09:52:00Z",
+      "centre": [
+        80.406667,
+        12.97
+      ],
+      "wind_kmh": 53.5,
+      "gust_kmh": 74.9,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 997.5
+    },
+    {
+      "record_time": "2023-12-05T09:53:00Z",
+      "centre": [
+        80.405833,
+        12.970625
+      ],
+      "wind_kmh": 53.4,
+      "gust_kmh": 74.7,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 997.5
+    },
+    {
+      "record_time": "2023-12-05T09:54:00Z",
+      "centre": [
+        80.405,
+        12.97125
+      ],
+      "wind_kmh": 53.2,
+      "gust_kmh": 74.5,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 997.6
+    },
+    {
+      "record_time": "2023-12-05T09:55:00Z",
+      "centre": [
+        80.404167,
+        12.971875
+      ],
+      "wind_kmh": 53.1,
+      "gust_kmh": 74.4,
+      "rain_mm_h": 3.5,
+      "pressure_hpa": 997.6
+    },
+    {
+      "record_time": "2023-12-05T09:56:00Z",
+      "centre": [
+        80.403333,
+        12.9725
+      ],
+      "wind_kmh": 53.0,
+      "gust_kmh": 74.2,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 997.6
+    },
+    {
+      "record_time": "2023-12-05T09:57:00Z",
+      "centre": [
+        80.4025,
+        12.973125
+      ],
+      "wind_kmh": 52.9,
+      "gust_kmh": 74.1,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 997.7
+    },
+    {
+      "record_time": "2023-12-05T09:58:00Z",
+      "centre": [
+        80.401667,
+        12.97375
+      ],
+      "wind_kmh": 52.8,
+      "gust_kmh": 73.9,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 997.7
+    },
+    {
+      "record_time": "2023-12-05T09:59:00Z",
+      "centre": [
+        80.400833,
+        12.974375
+      ],
+      "wind_kmh": 52.7,
+      "gust_kmh": 73.7,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 997.7
+    },
+    {
+      "record_time": "2023-12-05T10:00:00Z",
+      "centre": [
+        80.4,
+        12.975
+      ],
+      "wind_kmh": 52.6,
+      "gust_kmh": 73.6,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 997.8
+    },
+    {
+      "record_time": "2023-12-05T10:01:00Z",
+      "centre": [
+        80.399167,
+        12.975625
+      ],
+      "wind_kmh": 52.4,
+      "gust_kmh": 73.4,
+      "rain_mm_h": 3.4,
+      "pressure_hpa": 997.8
+    },
+    {
+      "record_time": "2023-12-05T10:02:00Z",
+      "centre": [
+        80.398333,
+        12.97625
+      ],
+      "wind_kmh": 52.3,
+      "gust_kmh": 73.3,
+      "rain_mm_h": 3.3,
+      "pressure_hpa": 997.8
+    },
+    {
+      "record_time": "2023-12-05T10:03:00Z",
+      "centre": [
+        80.3975,
+        12.976875
+      ],
+      "wind_kmh": 52.2,
+      "gust_kmh": 73.1,
+      "rain_mm_h": 3.3,
+      "pressure_hpa": 997.9
+    },
+    {
+      "record_time": "2023-12-05T10:04:00Z",
+      "centre": [
+        80.396667,
+        12.9775
+      ],
+      "wind_kmh": 52.1,
+      "gust_kmh": 73.0,
+      "rain_mm_h": 3.3,
+      "pressure_hpa": 997.9
+    },
+    {
+      "record_time": "2023-12-05T10:05:00Z",
+      "centre": [
+        80.395833,
+        12.978125
+      ],
+      "wind_kmh": 52.0,
+      "gust_kmh": 72.8,
+      "rain_mm_h": 3.3,
+      "pressure_hpa": 997.9
+    },
+    {
+      "record_time": "2023-12-05T10:06:00Z",
+      "centre": [
+        80.395,
+        12.97875
+      ],
+      "wind_kmh": 51.9,
+      "gust_kmh": 72.7,
+      "rain_mm_h": 3.3,
+      "pressure_hpa": 998.0
+    },
+    {
+      "record_time": "2023-12-05T10:07:00Z",
+      "centre": [
+        80.394167,
+        12.979375
+      ],
+      "wind_kmh": 51.8,
+      "gust_kmh": 72.5,
+      "rain_mm_h": 3.3,
+      "pressure_hpa": 998.0
+    },
+    {
+      "record_time": "2023-12-05T10:08:00Z",
+      "centre": [
+        80.393333,
+        12.98
+      ],
+      "wind_kmh": 51.7,
+      "gust_kmh": 72.4,
+      "rain_mm_h": 3.3,
+      "pressure_hpa": 998.0
+    },
+    {
+      "record_time": "2023-12-05T10:09:00Z",
+      "centre": [
+        80.3925,
+        12.980625
+      ],
+      "wind_kmh": 51.6,
+      "gust_kmh": 72.3,
+      "rain_mm_h": 3.2,
+      "pressure_hpa": 998.1
+    },
+    {
+      "record_time": "2023-12-05T10:10:00Z",
+      "centre": [
+        80.391667,
+        12.98125
+      ],
+      "wind_kmh": 51.5,
+      "gust_kmh": 72.1,
+      "rain_mm_h": 3.2,
+      "pressure_hpa": 998.1
+    },
+    {
+      "record_time": "2023-12-05T10:11:00Z",
+      "centre": [
+        80.390833,
+        12.981875
+      ],
+      "wind_kmh": 51.4,
+      "gust_kmh": 72.0,
+      "rain_mm_h": 3.2,
+      "pressure_hpa": 998.1
+    },
+    {
+      "record_time": "2023-12-05T10:12:00Z",
+      "centre": [
+        80.39,
+        12.9825
+      ],
+      "wind_kmh": 51.3,
+      "gust_kmh": 71.8,
+      "rain_mm_h": 3.2,
+      "pressure_hpa": 998.1
+    },
+    {
+      "record_time": "2023-12-05T10:13:00Z",
+      "centre": [
+        80.389167,
+        12.983125
+      ],
+      "wind_kmh": 51.2,
+      "gust_kmh": 71.7,
+      "rain_mm_h": 3.2,
+      "pressure_hpa": 998.2
+    },
+    {
+      "record_time": "2023-12-05T10:14:00Z",
+      "centre": [
+        80.388333,
+        12.98375
+      ],
+      "wind_kmh": 51.1,
+      "gust_kmh": 71.6,
+      "rain_mm_h": 3.2,
+      "pressure_hpa": 998.2
+    },
+    {
+      "record_time": "2023-12-05T10:15:00Z",
+      "centre": [
+        80.3875,
+        12.984375
+      ],
+      "wind_kmh": 51.0,
+      "gust_kmh": 71.4,
+      "rain_mm_h": 3.2,
+      "pressure_hpa": 998.2
+    },
+    {
+      "record_time": "2023-12-05T10:16:00Z",
+      "centre": [
+        80.386667,
+        12.985
+      ],
+      "wind_kmh": 50.9,
+      "gust_kmh": 71.3,
+      "rain_mm_h": 3.1,
+      "pressure_hpa": 998.3
+    },
+    {
+      "record_time": "2023-12-05T10:17:00Z",
+      "centre": [
+        80.385833,
+        12.985625
+      ],
+      "wind_kmh": 50.9,
+      "gust_kmh": 71.2,
+      "rain_mm_h": 3.1,
+      "pressure_hpa": 998.3
+    },
+    {
+      "record_time": "2023-12-05T10:18:00Z",
+      "centre": [
+        80.385,
+        12.98625
+      ],
+      "wind_kmh": 50.8,
+      "gust_kmh": 71.1,
+      "rain_mm_h": 3.1,
+      "pressure_hpa": 998.3
+    },
+    {
+      "record_time": "2023-12-05T10:19:00Z",
+      "centre": [
+        80.384167,
+        12.986875
+      ],
+      "wind_kmh": 50.7,
+      "gust_kmh": 70.9,
+      "rain_mm_h": 3.1,
+      "pressure_hpa": 998.3
+    },
+    {
+      "record_time": "2023-12-05T10:20:00Z",
+      "centre": [
+        80.383333,
+        12.9875
+      ],
+      "wind_kmh": 50.6,
+      "gust_kmh": 70.8,
+      "rain_mm_h": 3.1,
+      "pressure_hpa": 998.4
+    },
+    {
+      "record_time": "2023-12-05T10:21:00Z",
+      "centre": [
+        80.3825,
+        12.988125
+      ],
+      "wind_kmh": 50.5,
+      "gust_kmh": 70.7,
+      "rain_mm_h": 3.1,
+      "pressure_hpa": 998.4
+    },
+    {
+      "record_time": "2023-12-05T10:22:00Z",
+      "centre": [
+        80.381667,
+        12.98875
+      ],
+      "wind_kmh": 50.4,
+      "gust_kmh": 70.6,
+      "rain_mm_h": 3.1,
+      "pressure_hpa": 998.4
+    },
+    {
+      "record_time": "2023-12-05T10:23:00Z",
+      "centre": [
+        80.380833,
+        12.989375
+      ],
+      "wind_kmh": 50.3,
+      "gust_kmh": 70.5,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.4
+    },
+    {
+      "record_time": "2023-12-05T10:24:00Z",
+      "centre": [
+        80.38,
+        12.99
+      ],
+      "wind_kmh": 50.2,
+      "gust_kmh": 70.3,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.5
+    },
+    {
+      "record_time": "2023-12-05T10:25:00Z",
+      "centre": [
+        80.379167,
+        12.990625
+      ],
+      "wind_kmh": 50.2,
+      "gust_kmh": 70.2,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.5
+    },
+    {
+      "record_time": "2023-12-05T10:26:00Z",
+      "centre": [
+        80.378333,
+        12.99125
+      ],
+      "wind_kmh": 50.1,
+      "gust_kmh": 70.1,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.5
+    },
+    {
+      "record_time": "2023-12-05T10:27:00Z",
+      "centre": [
+        80.3775,
+        12.991875
+      ],
+      "wind_kmh": 50.0,
+      "gust_kmh": 70.0,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.5
+    },
+    {
+      "record_time": "2023-12-05T10:28:00Z",
+      "centre": [
+        80.376667,
+        12.9925
+      ],
+      "wind_kmh": 49.9,
+      "gust_kmh": 69.9,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.6
+    },
+    {
+      "record_time": "2023-12-05T10:29:00Z",
+      "centre": [
+        80.375833,
+        12.993125
+      ],
+      "wind_kmh": 49.8,
+      "gust_kmh": 69.8,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.6
+    },
+    {
+      "record_time": "2023-12-05T10:30:00Z",
+      "centre": [
+        80.375,
+        12.99375
+      ],
+      "wind_kmh": 49.8,
+      "gust_kmh": 69.7,
+      "rain_mm_h": 3.0,
+      "pressure_hpa": 998.6
+    },
+    {
+      "record_time": "2023-12-05T10:31:00Z",
+      "centre": [
+        80.374167,
+        12.994375
+      ],
+      "wind_kmh": 49.7,
+      "gust_kmh": 69.6,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.6
+    },
+    {
+      "record_time": "2023-12-05T10:32:00Z",
+      "centre": [
+        80.373333,
+        12.995
+      ],
+      "wind_kmh": 49.6,
+      "gust_kmh": 69.5,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.6
+    },
+    {
+      "record_time": "2023-12-05T10:33:00Z",
+      "centre": [
+        80.3725,
+        12.995625
+      ],
+      "wind_kmh": 49.5,
+      "gust_kmh": 69.4,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.7
+    },
+    {
+      "record_time": "2023-12-05T10:34:00Z",
+      "centre": [
+        80.371667,
+        12.99625
+      ],
+      "wind_kmh": 49.5,
+      "gust_kmh": 69.3,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.7
+    },
+    {
+      "record_time": "2023-12-05T10:35:00Z",
+      "centre": [
+        80.370833,
+        12.996875
+      ],
+      "wind_kmh": 49.4,
+      "gust_kmh": 69.2,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.7
+    },
+    {
+      "record_time": "2023-12-05T10:36:00Z",
+      "centre": [
+        80.37,
+        12.9975
+      ],
+      "wind_kmh": 49.3,
+      "gust_kmh": 69.1,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.7
+    },
+    {
+      "record_time": "2023-12-05T10:37:00Z",
+      "centre": [
+        80.369167,
+        12.998125
+      ],
+      "wind_kmh": 49.3,
+      "gust_kmh": 69.0,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.7
+    },
+    {
+      "record_time": "2023-12-05T10:38:00Z",
+      "centre": [
+        80.368333,
+        12.99875
+      ],
+      "wind_kmh": 49.2,
+      "gust_kmh": 68.9,
+      "rain_mm_h": 2.9,
+      "pressure_hpa": 998.8
+    },
+    {
+      "record_time": "2023-12-05T10:39:00Z",
+      "centre": [
+        80.3675,
+        12.999375
+      ],
+      "wind_kmh": 49.1,
+      "gust_kmh": 68.8,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.8
+    },
+    {
+      "record_time": "2023-12-05T10:40:00Z",
+      "centre": [
+        80.366667,
+        13.0
+      ],
+      "wind_kmh": 49.1,
+      "gust_kmh": 68.7,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.8
+    },
+    {
+      "record_time": "2023-12-05T10:41:00Z",
+      "centre": [
+        80.365833,
+        13.000625
+      ],
+      "wind_kmh": 49.0,
+      "gust_kmh": 68.6,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.8
+    },
+    {
+      "record_time": "2023-12-05T10:42:00Z",
+      "centre": [
+        80.365,
+        13.00125
+      ],
+      "wind_kmh": 48.9,
+      "gust_kmh": 68.5,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.8
+    },
+    {
+      "record_time": "2023-12-05T10:43:00Z",
+      "centre": [
+        80.364167,
+        13.001875
+      ],
+      "wind_kmh": 48.9,
+      "gust_kmh": 68.4,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.9
+    },
+    {
+      "record_time": "2023-12-05T10:44:00Z",
+      "centre": [
+        80.363333,
+        13.0025
+      ],
+      "wind_kmh": 48.8,
+      "gust_kmh": 68.3,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.9
+    },
+    {
+      "record_time": "2023-12-05T10:45:00Z",
+      "centre": [
+        80.3625,
+        13.003125
+      ],
+      "wind_kmh": 48.7,
+      "gust_kmh": 68.2,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.9
+    },
+    {
+      "record_time": "2023-12-05T10:46:00Z",
+      "centre": [
+        80.361667,
+        13.00375
+      ],
+      "wind_kmh": 48.7,
+      "gust_kmh": 68.1,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.9
+    },
+    {
+      "record_time": "2023-12-05T10:47:00Z",
+      "centre": [
+        80.360833,
+        13.004375
+      ],
+      "wind_kmh": 48.6,
+      "gust_kmh": 68.1,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 998.9
+    },
+    {
+      "record_time": "2023-12-05T10:48:00Z",
+      "centre": [
+        80.36,
+        13.005
+      ],
+      "wind_kmh": 48.6,
+      "gust_kmh": 68.0,
+      "rain_mm_h": 2.8,
+      "pressure_hpa": 999.0
+    },
+    {
+      "record_time": "2023-12-05T10:49:00Z",
+      "centre": [
+        80.359167,
+        13.005625
+      ],
+      "wind_kmh": 48.5,
+      "gust_kmh": 67.9,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.0
+    },
+    {
+      "record_time": "2023-12-05T10:50:00Z",
+      "centre": [
+        80.358333,
+        13.00625
+      ],
+      "wind_kmh": 48.4,
+      "gust_kmh": 67.8,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.0
+    },
+    {
+      "record_time": "2023-12-05T10:51:00Z",
+      "centre": [
+        80.3575,
+        13.006875
+      ],
+      "wind_kmh": 48.4,
+      "gust_kmh": 67.7,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.0
+    },
+    {
+      "record_time": "2023-12-05T10:52:00Z",
+      "centre": [
+        80.356667,
+        13.0075
+      ],
+      "wind_kmh": 48.3,
+      "gust_kmh": 67.6,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.0
+    },
+    {
+      "record_time": "2023-12-05T10:53:00Z",
+      "centre": [
+        80.355833,
+        13.008125
+      ],
+      "wind_kmh": 48.3,
+      "gust_kmh": 67.6,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.0
+    },
+    {
+      "record_time": "2023-12-05T10:54:00Z",
+      "centre": [
+        80.355,
+        13.00875
+      ],
+      "wind_kmh": 48.2,
+      "gust_kmh": 67.5,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.1
+    },
+    {
+      "record_time": "2023-12-05T10:55:00Z",
+      "centre": [
+        80.354167,
+        13.009375
+      ],
+      "wind_kmh": 48.2,
+      "gust_kmh": 67.4,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.1
+    },
+    {
+      "record_time": "2023-12-05T10:56:00Z",
+      "centre": [
+        80.353333,
+        13.01
+      ],
+      "wind_kmh": 48.1,
+      "gust_kmh": 67.3,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.1
+    },
+    {
+      "record_time": "2023-12-05T10:57:00Z",
+      "centre": [
+        80.3525,
+        13.010625
+      ],
+      "wind_kmh": 48.0,
+      "gust_kmh": 67.3,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.1
+    },
+    {
+      "record_time": "2023-12-05T10:58:00Z",
+      "centre": [
+        80.351667,
+        13.01125
+      ],
+      "wind_kmh": 48.0,
+      "gust_kmh": 67.2,
+      "rain_mm_h": 2.7,
+      "pressure_hpa": 999.1
+    },
+    {
+      "record_time": "2023-12-05T10:59:00Z",
+      "centre": [
+        80.350833,
+        13.011875
+      ],
+      "wind_kmh": 47.9,
+      "gust_kmh": 67.1,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.1
+    },
+    {
+      "record_time": "2023-12-05T11:00:00Z",
+      "centre": [
+        80.35,
+        13.0125
+      ],
+      "wind_kmh": 47.9,
+      "gust_kmh": 67.1,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.1
+    },
+    {
+      "record_time": "2023-12-05T11:01:00Z",
+      "centre": [
+        80.349167,
+        13.013125
+      ],
+      "wind_kmh": 47.8,
+      "gust_kmh": 67.0,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.2
+    },
+    {
+      "record_time": "2023-12-05T11:02:00Z",
+      "centre": [
+        80.348333,
+        13.01375
+      ],
+      "wind_kmh": 47.8,
+      "gust_kmh": 66.9,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.2
+    },
+    {
+      "record_time": "2023-12-05T11:03:00Z",
+      "centre": [
+        80.3475,
+        13.014375
+      ],
+      "wind_kmh": 47.7,
+      "gust_kmh": 66.8,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.2
+    },
+    {
+      "record_time": "2023-12-05T11:04:00Z",
+      "centre": [
+        80.346667,
+        13.015
+      ],
+      "wind_kmh": 47.7,
+      "gust_kmh": 66.8,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.2
+    },
+    {
+      "record_time": "2023-12-05T11:05:00Z",
+      "centre": [
+        80.345833,
+        13.015625
+      ],
+      "wind_kmh": 47.7,
+      "gust_kmh": 66.7,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.2
+    },
+    {
+      "record_time": "2023-12-05T11:06:00Z",
+      "centre": [
+        80.345,
+        13.01625
+      ],
+      "wind_kmh": 47.6,
+      "gust_kmh": 66.6,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.2
+    },
+    {
+      "record_time": "2023-12-05T11:07:00Z",
+      "centre": [
+        80.344167,
+        13.016875
+      ],
+      "wind_kmh": 47.6,
+      "gust_kmh": 66.6,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.2
+    },
+    {
+      "record_time": "2023-12-05T11:08:00Z",
+      "centre": [
+        80.343333,
+        13.0175
+      ],
+      "wind_kmh": 47.5,
+      "gust_kmh": 66.5,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:09:00Z",
+      "centre": [
+        80.3425,
+        13.018125
+      ],
+      "wind_kmh": 47.5,
+      "gust_kmh": 66.5,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:10:00Z",
+      "centre": [
+        80.341667,
+        13.01875
+      ],
+      "wind_kmh": 47.4,
+      "gust_kmh": 66.4,
+      "rain_mm_h": 2.6,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:11:00Z",
+      "centre": [
+        80.340833,
+        13.019375
+      ],
+      "wind_kmh": 47.4,
+      "gust_kmh": 66.3,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:12:00Z",
+      "centre": [
+        80.34,
+        13.02
+      ],
+      "wind_kmh": 47.3,
+      "gust_kmh": 66.3,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:13:00Z",
+      "centre": [
+        80.339167,
+        13.020625
+      ],
+      "wind_kmh": 47.3,
+      "gust_kmh": 66.2,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:14:00Z",
+      "centre": [
+        80.338333,
+        13.02125
+      ],
+      "wind_kmh": 47.3,
+      "gust_kmh": 66.2,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:15:00Z",
+      "centre": [
+        80.3375,
+        13.021875
+      ],
+      "wind_kmh": 47.2,
+      "gust_kmh": 66.1,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.3
+    },
+    {
+      "record_time": "2023-12-05T11:16:00Z",
+      "centre": [
+        80.336667,
+        13.0225
+      ],
+      "wind_kmh": 47.2,
+      "gust_kmh": 66.1,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:17:00Z",
+      "centre": [
+        80.335833,
+        13.023125
+      ],
+      "wind_kmh": 47.1,
+      "gust_kmh": 66.0,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:18:00Z",
+      "centre": [
+        80.335,
+        13.02375
+      ],
+      "wind_kmh": 47.1,
+      "gust_kmh": 65.9,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:19:00Z",
+      "centre": [
+        80.334167,
+        13.024375
+      ],
+      "wind_kmh": 47.1,
+      "gust_kmh": 65.9,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:20:00Z",
+      "centre": [
+        80.333333,
+        13.025
+      ],
+      "wind_kmh": 47.0,
+      "gust_kmh": 65.8,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:21:00Z",
+      "centre": [
+        80.3325,
+        13.025625
+      ],
+      "wind_kmh": 47.0,
+      "gust_kmh": 65.8,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:22:00Z",
+      "centre": [
+        80.331667,
+        13.02625
+      ],
+      "wind_kmh": 47.0,
+      "gust_kmh": 65.7,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:23:00Z",
+      "centre": [
+        80.330833,
+        13.026875
+      ],
+      "wind_kmh": 46.9,
+      "gust_kmh": 65.7,
+      "rain_mm_h": 2.5,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:24:00Z",
+      "centre": [
+        80.33,
+        13.0275
+      ],
+      "wind_kmh": 46.9,
+      "gust_kmh": 65.6,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.4
+    },
+    {
+      "record_time": "2023-12-05T11:25:00Z",
+      "centre": [
+        80.329167,
+        13.028125
+      ],
+      "wind_kmh": 46.9,
+      "gust_kmh": 65.6,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:26:00Z",
+      "centre": [
+        80.328333,
+        13.02875
+      ],
+      "wind_kmh": 46.8,
+      "gust_kmh": 65.5,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:27:00Z",
+      "centre": [
+        80.3275,
+        13.029375
+      ],
+      "wind_kmh": 46.8,
+      "gust_kmh": 65.5,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:28:00Z",
+      "centre": [
+        80.326667,
+        13.03
+      ],
+      "wind_kmh": 46.8,
+      "gust_kmh": 65.5,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:29:00Z",
+      "centre": [
+        80.325833,
+        13.030625
+      ],
+      "wind_kmh": 46.7,
+      "gust_kmh": 65.4,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:30:00Z",
+      "centre": [
+        80.325,
+        13.03125
+      ],
+      "wind_kmh": 46.7,
+      "gust_kmh": 65.4,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:31:00Z",
+      "centre": [
+        80.324167,
+        13.031875
+      ],
+      "wind_kmh": 46.7,
+      "gust_kmh": 65.3,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:32:00Z",
+      "centre": [
+        80.323333,
+        13.0325
+      ],
+      "wind_kmh": 46.6,
+      "gust_kmh": 65.3,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:33:00Z",
+      "centre": [
+        80.3225,
+        13.033125
+      ],
+      "wind_kmh": 46.6,
+      "gust_kmh": 65.2,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:34:00Z",
+      "centre": [
+        80.321667,
+        13.03375
+      ],
+      "wind_kmh": 46.6,
+      "gust_kmh": 65.2,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:35:00Z",
+      "centre": [
+        80.320833,
+        13.034375
+      ],
+      "wind_kmh": 46.5,
+      "gust_kmh": 65.1,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.5
+    },
+    {
+      "record_time": "2023-12-05T11:36:00Z",
+      "centre": [
+        80.32,
+        13.035
+      ],
+      "wind_kmh": 46.5,
+      "gust_kmh": 65.1,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:37:00Z",
+      "centre": [
+        80.319167,
+        13.035625
+      ],
+      "wind_kmh": 46.5,
+      "gust_kmh": 65.1,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:38:00Z",
+      "centre": [
+        80.318333,
+        13.03625
+      ],
+      "wind_kmh": 46.5,
+      "gust_kmh": 65.0,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:39:00Z",
+      "centre": [
+        80.3175,
+        13.036875
+      ],
+      "wind_kmh": 46.4,
+      "gust_kmh": 65.0,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:40:00Z",
+      "centre": [
+        80.316667,
+        13.0375
+      ],
+      "wind_kmh": 46.4,
+      "gust_kmh": 65.0,
+      "rain_mm_h": 2.4,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:41:00Z",
+      "centre": [
+        80.315833,
+        13.038125
+      ],
+      "wind_kmh": 46.4,
+      "gust_kmh": 64.9,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:42:00Z",
+      "centre": [
+        80.315,
+        13.03875
+      ],
+      "wind_kmh": 46.3,
+      "gust_kmh": 64.9,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:43:00Z",
+      "centre": [
+        80.314167,
+        13.039375
+      ],
+      "wind_kmh": 46.3,
+      "gust_kmh": 64.8,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:44:00Z",
+      "centre": [
+        80.313333,
+        13.04
+      ],
+      "wind_kmh": 46.3,
+      "gust_kmh": 64.8,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:45:00Z",
+      "centre": [
+        80.3125,
+        13.040625
+      ],
+      "wind_kmh": 46.3,
+      "gust_kmh": 64.8,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:46:00Z",
+      "centre": [
+        80.311667,
+        13.04125
+      ],
+      "wind_kmh": 46.2,
+      "gust_kmh": 64.7,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:47:00Z",
+      "centre": [
+        80.310833,
+        13.041875
+      ],
+      "wind_kmh": 46.2,
+      "gust_kmh": 64.7,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:48:00Z",
+      "centre": [
+        80.31,
+        13.0425
+      ],
+      "wind_kmh": 46.2,
+      "gust_kmh": 64.7,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.6
+    },
+    {
+      "record_time": "2023-12-05T11:49:00Z",
+      "centre": [
+        80.309167,
+        13.043125
+      ],
+      "wind_kmh": 46.2,
+      "gust_kmh": 64.6,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:50:00Z",
+      "centre": [
+        80.308333,
+        13.04375
+      ],
+      "wind_kmh": 46.2,
+      "gust_kmh": 64.6,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:51:00Z",
+      "centre": [
+        80.3075,
+        13.044375
+      ],
+      "wind_kmh": 46.1,
+      "gust_kmh": 64.6,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:52:00Z",
+      "centre": [
+        80.306667,
+        13.045
+      ],
+      "wind_kmh": 46.1,
+      "gust_kmh": 64.5,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:53:00Z",
+      "centre": [
+        80.305833,
+        13.045625
+      ],
+      "wind_kmh": 46.1,
+      "gust_kmh": 64.5,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:54:00Z",
+      "centre": [
+        80.305,
+        13.04625
+      ],
+      "wind_kmh": 46.1,
+      "gust_kmh": 64.5,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:55:00Z",
+      "centre": [
+        80.304167,
+        13.046875
+      ],
+      "wind_kmh": 46.0,
+      "gust_kmh": 64.5,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:56:00Z",
+      "centre": [
+        80.303333,
+        13.0475
+      ],
+      "wind_kmh": 46.0,
+      "gust_kmh": 64.4,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:57:00Z",
+      "centre": [
+        80.3025,
+        13.048125
+      ],
+      "wind_kmh": 46.0,
+      "gust_kmh": 64.4,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:58:00Z",
+      "centre": [
+        80.301667,
+        13.04875
+      ],
+      "wind_kmh": 46.0,
+      "gust_kmh": 64.4,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T11:59:00Z",
+      "centre": [
+        80.300833,
+        13.049375
+      ],
+      "wind_kmh": 46.0,
+      "gust_kmh": 64.3,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    },
+    {
+      "record_time": "2023-12-05T12:00:00Z",
+      "centre": [
+        80.3,
+        13.05
+      ],
+      "wind_kmh": 45.9,
+      "gust_kmh": 64.3,
+      "rain_mm_h": 2.3,
+      "pressure_hpa": 999.7
+    }
+  ]
+}

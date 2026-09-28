@@ -71,9 +71,7 @@ def handler(event, context):
         # Get tool name from context and strip the target prefix
         delimiter = "___"
         original_tool_name = context.client_context.custom["bedrockAgentCoreToolName"]
-        tool_name = original_tool_name[
-            original_tool_name.index(delimiter) + len(delimiter) :
-        ]
+        tool_name = original_tool_name[original_tool_name.index(delimiter) + len(delimiter) :]
 
         logger.info(f"Processing tool: {tool_name}")
 
@@ -95,5 +93,5 @@ def handler(event, context):
             }
 
     except Exception as e:
-        logger.error(f"Error processing request: {str(e)}")
-        return {"error": f"Internal server error: {str(e)}"}
+        logger.error(f"Error processing request: {e!s}")
+        return {"error": f"Internal server error: {e!s}"}

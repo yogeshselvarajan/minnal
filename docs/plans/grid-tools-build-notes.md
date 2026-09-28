@@ -28,6 +28,11 @@ Blockers, deviations and decisions recorded during the autonomous build of the `
   the two schema files and the real `models.py`; `logic.py`, `adapters.py` and
   `<name>_lambda.py` are created now as minimal typed stubs so `test_every_tool_has_
   five_files` passes in Wave 0, and are filled in Waves 2-4. Noted per FEAT-001 step.
+- **Pre-existing lint fix (out-of-spec, unblocks the gate).** `gateway/tools/sample_tool/
+  sample_tool_lambda.py` (FAST template sample, predates grid-tools) failed `ruff check`
+  with two RUF010 findings (`str(e)` in f-strings). CI only lints changed files so it never
+  surfaced, but the FEAT-001 `ruff check gateway` gate is repo-wide. Fixed to `{e!s}` in a
+  separate `chore` commit; no behaviour change.
 
 ## Deferred / optional tasks
 

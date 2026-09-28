@@ -28,11 +28,39 @@ Blockers, deviations and decisions recorded during the autonomous build of the `
   the two schema files and the real `models.py`; `logic.py`, `adapters.py` and
   `<name>_lambda.py` are created now as minimal typed stubs so `test_every_tool_has_
   five_files` passes in Wave 0, and are filled in Waves 2-4. Noted per FEAT-001 step.
+- **Task 4.5 conftest location.** Task 4.5 names `tests/conftest.py`, but the repo already
+  ships one (from replay-simulator) that provides the session-scoped socket block. To avoid
+  breaking the 64 existing simulator tests, the grid-tools Hypothesis profiles
+  (`default`/`ci`/`quick`), fake AWS credentials and local-backend defaults were added in a
+  new `tests/tools/conftest.py`; socket blocking stays in the root conftest. `pyproject.toml`
+  `pythonpath` gains `gateway/tools` (alongside `.`) so tests import `_shared` and each tool
+  package exactly as the deployed Lambda does (design §3).
 - **Pre-existing lint fix (out-of-spec, unblocks the gate).** `gateway/tools/sample_tool/
   sample_tool_lambda.py` (FAST template sample, predates grid-tools) failed `ruff check`
   with two RUF010 findings (`str(e)` in f-strings). CI only lints changed files so it never
   surfaced, but the FEAT-001 `ruff check gateway` gate is repo-wide. Fixed to `{e!s}` in a
   separate `chore` commit; no behaviour change.
+
+## Pre-existing test flake (not grid-tools)
+
+- `tests/test_network_blocked.py::test_connecting_a_socket_to_an_external_address_raises`
+  fails with a `TimeoutError` (instead of the guard's `RuntimeError`) **only when the
+  `tests/simulator` suite runs before it in the same session**. Verified by `git stash`:
+  the failure reproduces on the base branch (`68 passed, 1 failed`), so it predates
+  grid-tools and is independent of Wave 0. Both files pass in isolation. Root cause is a
+  session-scoped socket-guard / simulator-suite ordering interaction in the qa-eval lane's
+  existing code; out of scope for FEAT-001, which is verified against `tests/tools`
+  (74 passed) with the 64 simulator tests and 5 network tests still green on their own.
+
+## Pre-existing formatting debt (not grid-tools)
+
+- 12 files under `tests/simulator/properties/` fail `ruff format --check` on the base
+  branch (verified by `git stash`): they were committed by the replay-simulator merge with
+  a different wrap style. `ruff check` (lint) passes on them; only `ruff format --check`
+  flags them. They are the qa-eval lane's existing code, out of scope for FEAT-001. All
+  Wave 0 files (`gateway/**`, `tests/tools/**`) are `ruff format --check` clean. Reformatting
+  the simulator files is left for their owning lane to avoid mixing a large unrelated diff
+  into the grid-tools contracts commits.
 
 ## Deferred / optional tasks
 

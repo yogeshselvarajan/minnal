@@ -59,7 +59,7 @@ files = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["."]
+pythonpath = [".", "gateway/tools"]
 markers = [
     "safety: required safety-gate property test (design.md Safety gate, R20.5)",
     "slow: non-gating performance benchmark (Requirement 19, DEFERRED)",

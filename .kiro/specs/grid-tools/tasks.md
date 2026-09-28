@@ -35,13 +35,13 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
   - [x] 3.6 [geo-data-engineer] `dispatch_crew`: the same three artefacts, declaring `safety_clearance_id` and `flood_check` so the Cedar schema contains them _Requirements: 1.2, 12.6_ _Design: §3.3, §5.6_
   - [x] 3.7 [geo-data-engineer] `propose_switching`: the same three artefacts, with `safety_clearance_id` and `flood_check` **optional** and a `model_validator` requiring them only for `energise` _Requirements: 1.2, 10.8, 12.6_ _Design: §3.3, §5.7_
 
-- [ ] 4. [qa-eval-engineer] Contract tests _Requirements: 1.1, 1.2, 1.4, 1.11, 13.1, 14.5, 16.3, 16.4, 17.6, 17.7_ _Design: §3.3, §19.3_
-  - [ ] 4.1 [qa-eval-engineer] Write `test_tool_spec_uses_only_gateway_subset`: walk all seven `tool_spec.json` at every depth and fail on any keyword outside `type`, `description`, `properties`, `required`, `items`; plus `test_no_oneof_anywhere` _Requirements: 1.2_ _Design: §3.3_
-  - [ ] 4.2 [qa-eval-engineer] Write `test_input_schema_is_strict` and the parity test between `input.schema.json`, `tool_spec.json` property names and each Pydantic model _Requirements: 1.2, 1.4_ _Design: §3.3_
-  - [ ] 4.3 [qa-eval-engineer] Write `test_every_tool_has_five_files` and `test_six_event_schemas_are_strict` _Requirements: 1.1, 13.1_ _Design: §3, §7.2_
-  - [ ] 4.4 [qa-eval-engineer] Write `test_settings_validation_and_ranges`, `test_default_backend_is_aws`, `test_invalid_backend_fails_startup` _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
-  - [ ] 4.5 [qa-eval-engineer] Write `tests/conftest.py`: socket blocking, fake AWS credentials, the `default`, `ci` and `quick` Hypothesis profiles, and `test_profiles_registered_and_min_examples` _Requirements: 16.3, 16.4_ _Design: §19.3_
-  - [ ] 4.6 [qa-eval-engineer] Write `test_times_ids_and_geojson_conventions` for the wire conventions _Requirements: 1.11_ _Design: §4.3_
+- [x] 4. [qa-eval-engineer] Contract tests _Requirements: 1.1, 1.2, 1.4, 1.11, 13.1, 14.5, 16.3, 16.4, 17.6, 17.7_ _Design: §3.3, §19.3_
+  - [x] 4.1 [qa-eval-engineer] Write `test_tool_spec_uses_only_gateway_subset`: walk all seven `tool_spec.json` at every depth and fail on any keyword outside `type`, `description`, `properties`, `required`, `items`; plus `test_no_oneof_anywhere` _Requirements: 1.2_ _Design: §3.3_
+  - [x] 4.2 [qa-eval-engineer] Write `test_input_schema_is_strict` and the parity test between `input.schema.json`, `tool_spec.json` property names and each Pydantic model _Requirements: 1.2, 1.4_ _Design: §3.3_
+  - [x] 4.3 [qa-eval-engineer] Write `test_every_tool_has_five_files` and `test_six_event_schemas_are_strict` _Requirements: 1.1, 13.1_ _Design: §3, §7.2_
+  - [x] 4.4 [qa-eval-engineer] Write `test_settings_validation_and_ranges`, `test_default_backend_is_aws`, `test_invalid_backend_fails_startup` _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
+  - [x] 4.5 [qa-eval-engineer] Write `tests/conftest.py`: socket blocking, fake AWS credentials, the `default`, `ci` and `quick` Hypothesis profiles, and `test_profiles_registered_and_min_examples` _Requirements: 16.3, 16.4_ _Design: §19.3_
+  - [x] 4.6 [qa-eval-engineer] Write `test_times_ids_and_geojson_conventions` for the wire conventions _Requirements: 1.11_ _Design: §4.3_
 
 ---
 

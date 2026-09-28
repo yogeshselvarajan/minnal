@@ -47,19 +47,19 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 ## Wave 1 — Pure foundations
 
-- [ ] 5. [geo-data-engineer] Write `_shared/geometry.py`: UTM 44N `buffer_metres` with the 1 m outward slack, `validate_geometry`, boundary-inclusive `intersects_any`, `geometry_hash` canonicalisation at 6 dp, `snap_to_cell` in projected metres, `exterior_ring_coords`, `simplify_outward` by convex hull _Requirements: 6.5, 6.6_ _Design: §8.1, §8.2, §8.3, §8.4, §8.9, §8.10_
+- [x] 5. [geo-data-engineer] Write `_shared/geometry.py`: UTM 44N `buffer_metres` with the 1 m outward slack, `validate_geometry`, boundary-inclusive `intersects_any`, `geometry_hash` canonicalisation at 6 dp, `snap_to_cell` in projected metres, `exterior_ring_coords`, `simplify_outward` by convex hull _Requirements: 6.5, 6.6_ _Design: §8.1, §8.2, §8.3, §8.4, §8.9, §8.10_
 
-- [ ] 6. [geo-data-engineer] Write `_shared/flood.py`: `HazardPolygon` with `changed_in_version`, `FloodSet` with `feed_mode` and both feed timestamps, `is_hazard`, `derive_status` with the replay and live rules, `hazard_index` with the prepared STRtree and the version-keyed cache, `apply_flood_event`, `apply_heartbeat` _Requirements: 3.3, 3.8, 3.9_ _Design: §6.1, §6.2, §8.5, §9.2_
+- [x] 6. [geo-data-engineer] Write `_shared/flood.py`: `HazardPolygon` with `changed_in_version`, `FloodSet` with `feed_mode` and both feed timestamps, `is_hazard`, `derive_status` with the replay and live rules, `hazard_index` with the prepared STRtree and the version-keyed cache, `apply_flood_event`, `apply_heartbeat` _Requirements: 3.3, 3.8, 3.9_ _Design: §6.1, §6.2, §8.5, §9.2_
 
-- [ ] 7. [qa-eval-engineer] Write property test for Property 28 (the Incident_Clock and `last_feed_at` never decrease) _Requirements: 3.5, 3.8_ _Design: §18 P28_
+- [x] 7. [qa-eval-engineer] Write property test for Property 28 (the Incident_Clock and `last_feed_at` never decrease) _Requirements: 3.5, 3.8_ _Design: §18 P28_
 
-- [ ] 8. [geo-data-engineer] Write `_shared/grid.py`: the immutable radial forest loaded from the bundled GeoJSON, `ancestors_or_self`, `downstream_set`, `dts_downstream`, `service_area_of`, `supplying_dt` with the smallest-id tie rule, `has_critical_facility_downstream`, `in_study_area` _Requirements: 4.7, 5.5, 8.2_ _Design: §4.1, §8.6_
+- [x] 8. [geo-data-engineer] Write `_shared/grid.py`: the immutable radial forest loaded from the bundled GeoJSON, `ancestors_or_self`, `downstream_set`, `dts_downstream`, `service_area_of`, `supplying_dt` with the smallest-id tie rule, `has_critical_facility_downstream`, `in_study_area` _Requirements: 4.7, 5.5, 8.2_ _Design: §4.1, §8.6_
 
-- [ ] 9. [qa-eval-engineer] Test infrastructure _Requirements: 14.4, 15.2, 16.6, 17.1, 17.2_ _Design: §19.2, §15.1_
-  - [ ] 9.1 [qa-eval-engineer] Write `tests/tools/oracles.py`: the brute-force buffered-distance flood oracle, the naive LCA oracle, and the outage-ledger oracle reused from `replay-simulator` _Requirements: 16.6_ _Design: §19.2_
-  - [ ] 9.2 [qa-eval-engineer] Write `tests/tools/strategies.py`: `radial_grids`, `hazard_polygons`, `adversarial_routes`, `clearance_mutations`, `flood_event_streams` (including two events sharing one `sim_time`), `apply_interleavings`, `job_lists`, `report_streams`, `job_completed_streams` _Requirements: 16.6_ _Design: §19.2_
-  - [ ] 9.3 [qa-eval-engineer] Write `tests/tools/fakes.py`: `InMemoryTable` with `put_if_not_exists`, `update_if` and all-or-nothing `transact_write`, `FakeRouter`, `FakeWorkflow`, `CapturingLogger`, `ListEventPublisher` _Requirements: 15.2, 17.1_ _Design: §15.1_
-  - [ ] 9.4 [qa-eval-engineer] Write `test_pure_modules_import_no_boto3` and `test_logic_never_reads_backend_setting` as AST scans _Requirements: 14.4, 17.2_ _Design: §2.4, §15.5_
+- [x] 9. [qa-eval-engineer] Test infrastructure _Requirements: 14.4, 15.2, 16.6, 17.1, 17.2_ _Design: §19.2, §15.1_
+  - [x] 9.1 [qa-eval-engineer] Write `tests/tools/oracles.py`: the brute-force buffered-distance flood oracle, the naive LCA oracle, and the outage-ledger oracle reused from `replay-simulator` _Requirements: 16.6_ _Design: §19.2_
+  - [x] 9.2 [qa-eval-engineer] Write `tests/tools/strategies.py`: `radial_grids`, `hazard_polygons`, `adversarial_routes`, `clearance_mutations`, `flood_event_streams` (including two events sharing one `sim_time`), `apply_interleavings`, `job_lists`, `report_streams`, `job_completed_streams` _Requirements: 16.6_ _Design: §19.2_
+  - [x] 9.3 [qa-eval-engineer] Write `tests/tools/fakes.py`: `InMemoryTable` with `put_if_not_exists`, `update_if` and all-or-nothing `transact_write`, `FakeRouter`, `FakeWorkflow`, `CapturingLogger`, `ListEventPublisher` _Requirements: 15.2, 17.1_ _Design: §15.1_
+  - [x] 9.4 [qa-eval-engineer] Write `test_pure_modules_import_no_boto3` and `test_logic_never_reads_backend_setting` as AST scans _Requirements: 14.4, 17.2_ _Design: §2.4, §15.5_
 
 ---
 

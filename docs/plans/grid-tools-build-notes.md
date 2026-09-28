@@ -41,6 +41,43 @@ Blockers, deviations and decisions recorded during the autonomous build of the `
   surfaced, but the FEAT-001 `ruff check gateway` gate is repo-wide. Fixed to `{e!s}` in a
   separate `chore` commit; no behaviour change.
 
+## Wave 1 deviations from design (tasks 5-9)
+
+- **Task 6 `apply_flood_event` signature carries `sim_time` on the payload.** Design
+  §4.1 fixes `apply_flood_event(fs, ev, seq) -> FloodApply` where `ev` is a
+  `FloodPolygonUpdatedPayload`, and §5.8 step 4d says the same fold advances
+  `incident_clock`/`last_feed_at` as `max(stored, event)`. The event's `sim_time`
+  lives on the envelope, not the JSON `payload`. To keep `apply_flood_event` a pure
+  fold (no envelope argument, no invented time) while still advancing the feed clocks,
+  `FloodPolygonUpdatedPayload` gains a `sim_time: str` field alongside the polygon
+  fields; the ingestor (Wave 4, task 42) fills it from the event envelope. This keeps
+  the exact §4.1 arity and the §5.8 semantics. P28 (task 7) verifies both clocks stay
+  monotonic under any ordering.
+- **Task 6 `derive_status` in replay mode.** As the design itself states (§9.2, OQ-2),
+  the simulated-time rule alone never turns a `replay` feed `stale` once it stops,
+  because `incident_now` and `last_feed_at` advance together. This is intended; the
+  live-mode wall-clock backstop is the only rule that fails a dead feed closed. The
+  `> limit` simulated-time branch still fires for any `FloodSet` whose `incident_now`
+  exceeds `last_feed_at` (as later staleness tests construct directly).
+- **Task 8 grid data location.** No `Settings` entry names the grid data path (the
+  bundled GeoJSON is co-located with the Lambda). `load_grid()` defaults to the repo
+  `data/` dir (`parents[3]` from `_shared/grid.py`); the CDK bundling (task 68) copies
+  `data/` next to `_shared`, so the same default resolves in the deployed asset. A
+  `data_dir` argument lets tests point elsewhere.
+- **Task 8 `has_critical_facility_downstream` and `in_study_area`.** Facilities are
+  matched to their DT by `properties.parent_id` in `facilities.geojson`; the study
+  area is the bounding box of every grid feature coordinate (R4.9 "study-area bounding
+  box"), computed once at load.
+- **mypy `--strict` on `_shared` needs shapely/pyproj stub handling.** `gateway/tools/
+  _shared/*` now imports shapely and pyproj, which ship no type stubs, and the repo
+  `pyproject.toml` `[tool.mypy] files` list (agent-engineer lane, task 0) targets
+  `gateway/tools/*/logic.py` only and lacks `ignore_missing_imports` overrides for these
+  libraries plus a `mypy_path` entry for `gateway/tools`. Running `mypy gateway/tools`
+  therefore reports pre-existing `import-untyped`/`import-not-found` noise unrelated to
+  Wave 1 code. This is a mypy-config concern for the wave-2 checkpoint (task 31) and the
+  `pyproject.toml`-owning lane; Wave 1 code itself is fully type-hinted with no `Any` in
+  domain code. Not fixed here to stay inside the `shared`/`tests` scope.
+
 ## Pre-existing test flake (not grid-tools)
 
 - `tests/test_network_blocked.py::test_connecting_a_socket_to_an_external_address_raises`

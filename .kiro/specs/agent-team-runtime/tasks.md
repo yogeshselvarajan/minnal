@@ -322,9 +322,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 41.1 Write `patterns/agui-minnal/roles/_common/repair.py` with `run_node_with_repair` running a gather turn then a typed turn via `structured_output_async(output_model)`, catching `StructuredOutputException` and `ValidationError`, allowing exactly one outer repair attempt with the errors supplied through `wrap_untrusted`, then returning a typed `NodeFailure` with the failing field locations
     - _Requirements: 4.2, 4.3, 4.4, 4.6_ §7.4 [agent-engineer]
 
-- [ ] 42. Verify structured output and repair
+- [x] 42. Verify structured output and repair
   - _Requirements: 4.2, 4.3, 4.4, 4.5, 4.6_ §20, §7.4 [qa-eval-engineer]
-  - [ ] 42.1 Write property test for Property 49
+  - [x] 42.1 Write property test for Property 49
     - **Property 49: node outputs validate, with one repair then a typed failure**
     - **Validates: Requirements 4.2, 4.3, 4.4, 4.6, 4.5**
     - `test_property_P49_repair_then_typed_failure` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`

@@ -107,7 +107,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 ## Wave 3 — Ports and adapters
 
-- [ ] 32. [geo-data-engineer] Write `_shared/ports.py`: every Protocol from §4.2, including the snapshot contract on `FloodStore`, `close_outage`, `open_outages_under`, `release_crew_lock` and `mark_clearance_used` _Requirements: 3.6, 3.11, 9.10, 18.3_ _Design: §4.2_
+- [x] 32. [geo-data-engineer] Write `_shared/ports.py`: every Protocol from §4.2, including the snapshot contract on `FloodStore`, `close_outage`, `open_outages_under`, `release_crew_lock` and `mark_clearance_used` _Requirements: 3.6, 3.11, 9.10, 18.3_ _Design: §4.2_
 
 - [ ] 33. [geo-data-engineer] Local adapters _Requirements: 17.1, 17.2, 17.3, 17.4_ _Design: §15.1, §15.2, §15.3, §8.12_
   - [ ] 33.1 [geo-data-engineer] Write `_shared/adapters/local.py` store side: the in-memory and file-backed stores with conditional writes and all-or-nothing transactions, atomic file replacement, and the §15.2 layout _Requirements: 17.1, 17.2_ _Design: §15.1, §15.2_

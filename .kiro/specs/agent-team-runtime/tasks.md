@@ -185,14 +185,14 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 24.2 Add `reject_safety_fields` as a Pydantic pre-validator on every model-node output model, naming the security reason so the repair prompt and the audit log are precise
     - _Requirements: 17.4_ §5.7 [agent-engineer]
 
-- [ ] 25. Verify node contracts and purity
+- [x] 25. Verify node contracts and purity
   - _Requirements: 1.8, 4.1, 5.1, 9.3, 12.11, 13.9, 17.4_ §20, §3.1, §5.7 [qa-eval-engineer]
-  - [ ] 25.1 Write property test for Property 47
+  - [x] 25.1 Write property test for Property 47
     - **Property 47: safety-meaning fields come only from tool results [SAFETY]**
     - **Validates: Requirements 17.4, 9.3, 5.1**
     - `test_property_P47_safety_fields_from_tools` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 17.4, 9.3, 5.1_ §20, §5.7 [qa-eval-engineer]
-  - [ ] 25.2 Write `tests/agents/test_contracts.py::test_all_frozen_extra_forbid` and `tests/agents/test_purity.py` walking the AST of every pure module and failing on any `boto3`, `botocore` or `strands` import, on a direct `grid-tools` table write, or on AWS credentials in an agent
+  - [x] 25.2 Write `tests/agents/test_contracts.py::test_all_frozen_extra_forbid` and `tests/agents/test_purity.py` walking the AST of every pure module and failing on any `boto3`, `botocore` or `strands` import, on a direct `grid-tools` table write, or on AWS credentials in an agent
     - _Requirements: 1.8, 4.1, 12.11, 13.9_ §3.1, §21.5 [qa-eval-engineer]
 
 - [ ] 26. **Checkpoint: run the tests so far.** `uv run ruff check patterns gateway && uv run mypy patterns/agui-minnal/domain && uv run pytest -q tests/agents`, then `uv run pytest -m safety`

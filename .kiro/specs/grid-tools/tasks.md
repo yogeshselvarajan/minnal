@@ -167,7 +167,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here because each one exercises a handler, a store transaction or the Approval_Handler, none of which exists before this wave._
 
-- [ ] 27. [qa-eval-engineer] Write property test for Property 1 `[SAFETY]` (no accepted route or dispatch crosses a flood, against adversarial routers) _Requirements: 7.3, 7.4, 7.5, 9.3, 9.7_ _Design: §18 P1_
+- [x] 27. [qa-eval-engineer] Write property test for Property 1 `[SAFETY]` (no accepted route or dispatch crosses a flood, against adversarial routers) _Requirements: 7.3, 7.4, 7.5, 9.3, 9.7_ _Design: §18 P1_
 
 - [ ] 28. [qa-eval-engineer] Write property test for Property 2 `[SAFETY]` (no energisation into water, including flooded customer areas) _Requirements: 10.2, 10.3, 11.4_ _Design: §18 P2_
 

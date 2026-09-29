@@ -125,9 +125,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - `test_property_P52_single_flight` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 3.15, 3.14_ §20, §11.2 [qa-eval-engineer]
 
-- [ ] 18. Budget arithmetic with the commit reserve
+- [x] 18. Budget arithmetic with the commit reserve
   - _Requirements: 16.1, 16.2, 16.3, 16.6, 16.9_ §6.5, §14.6 [agent-engineer]
-  - [ ] 18.1 Write `patterns/agui-minnal/domain/budgets.py` (pure) with `NodeBudget`, `RESERVED_NODES`, and `BudgetBook` exposing `charge_tokens`, `charge_seconds`, `charge_tool_call`, `working_exhausted` measuring against the budget minus the reserve, `period_exhausted` as the hard stop, and `node_timeout` subtracting the reserve only for a working node
+  - [x] 18.1 Write `patterns/agui-minnal/domain/budgets.py` (pure) with `NodeBudget`, `RESERVED_NODES`, and `BudgetBook` exposing `charge_tokens`, `charge_seconds`, `charge_tool_call`, `working_exhausted` measuring against the budget minus the reserve, `period_exhausted` as the hard stop, and `node_timeout` subtracting the reserve only for a working node
     - _Requirements: 16.1, 16.2, 16.3, 16.6, 16.9_ §6.5, §14.6 [agent-engineer]
 
 - [ ] 19. Verify budgets and the reserve

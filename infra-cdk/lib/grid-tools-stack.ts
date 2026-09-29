@@ -50,6 +50,7 @@ export class GridToolsStack extends cdk.Stack {
       config,
       hazardQueue: this.intake.hazardQueue,
       intakeQueue: this.intake.intakeQueue,
+      deadLetterQueue: this.data.deadLetterQueue,
     })
 
     // The Cognito user pool is owned by the FAST main stack; grid-tools imports its id from the

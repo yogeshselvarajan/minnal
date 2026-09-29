@@ -608,3 +608,98 @@ tests/policy tests/infra` = 320 passed (the qa lane's honest cold-start test
 `tests/infra/test_assets_grid_loading.py` now passes; it stays owned/added by the qa lane,
 NOT this lane, and task 73.6 is left unticked). `ruff check gateway`, `ruff format --check
 gateway`, `mypy gateway/tools` all clean.
+
+
+## Wave 6 code-review gate — iteration 1 (platform-engineer fixes)
+
+Two findings from `docs/reviews/grid-tools-wave6-infra-code-review.md` fixed.
+
+### BLOCKER — per-incident FIFO grouping (task 67, R18.8, §2.1/§16.1)
+
+**Problem.** `EventsConstruct` set `sqsParameters.messageGroupId = "$.detail.incident_id"` on both
+`AWS::Events::Rule` SQS targets. EventBridge rule target parameters are **static strings** — a JSON
+path is not resolved there. Every hazard/intake event therefore landed in one literal FIFO group
+named `"$.detail.incident_id"`, collapsing all incidents into a single group → head-of-line blocking,
+defeating the two-queue split (§2.1).
+
+**Mechanism chosen: EventBridge Pipes.** Pipes target parameters DO support dynamic JSON-path
+substitution per event. Verified against the AWS EventBridge Pipes documentation:
+- *"EventBridge Pipes target parameters support optional dynamic JSON path syntax … These paths are
+  replaced dynamically at runtime with data from the event payload itself at the specified path."*
+- For an **SQS source**, the message `body` is implicitly parsed to valid JSON, so
+  `$.body.detail.incident_id` reaches the EventBridge envelope's `detail.incident_id`.
+- CDK field (aws-cdk-lib 2.260): `CfnPipe.PipeTargetSqsQueueParametersProperty.messageGroupId`
+  (`targetParameters.sqsQueueParameters.messageGroupId`).
+
+**New path (EventsConstruct):**
+```
+minnal-events bus
+  → EventBridge rule (filter by detail-type; STATIC group id on the buffer)
+    → FIFO buffer queue  (minnal-<env>-hazard-buffer.fifo / -intake-buffer.fifo)
+      → Pipe (source = buffer, target = work FIFO queue,
+              sqsQueueParameters.messageGroupId = "$.body.detail.incident_id")   ← per-event resolve
+        → work FIFO queue (minnal-<env>-hazard.fifo / -intake.fifo, IntakeConstruct, unchanged)
+```
+The rule sets only a static group on the buffer; the per-incident group is applied by the Pipe on the
+**work** queue, which is where the ingestor Lambdas do the heavy DynamoDB work — so different incidents
+proceed concurrently (the property §2.1 requires). The buffer is FIFO (its DLQ must match the shared
+FIFO DLQ) and drains fast because the Pipe only re-sends. A static group on the buffer is acceptable:
+the blocking the design guards against is on the ingestors, not on the trivial Pipe re-send.
+
+**Invariants preserved:** two SEPARATE work FIFO queues (batch 1 / batch 10 + `ReportBatchItemFailures`,
+untouched); content-based dedup on every queue in the path; both buffers redrive to the ONE shared FIFO
+DLQ (maxReceiveCount 3); detail-type source filtering on the rules; scoped EventBridge delivery role
+(SendMessage on the two buffers only) and scoped pipe roles (Receive/Delete/GetQueueAttributes on own
+buffer, SendMessage on own work queue only). `EventsConstruct` gained a `deadLetterQueue` prop and
+public `hazardBufferQueue`/`intakeBufferQueue`/`hazardPipe`/`intakePipe`; `hazardRule`/`intakeRule`/
+`deliveryRole` kept.
+
+**Synth evidence:** template `FAST-stack-grid-tools.template.json` has 5 SQS queues (2 work + 2 buffer
++ 1 DLQ), 2 `AWS::Events::Rule`, 2 `AWS::Pipes::Pipe`, 2 `AWS::Lambda::EventSourceMapping`. Both Pipes:
+`Target = <work queue>.Arn`, `TargetParameters.SqsQueueParameters.MessageGroupId = "$.body.detail.incident_id"`,
+`SourceParameters.SqsQueueParameters.BatchSize = 1`.
+
+**QA test to update (NOT edited by this lane — qa owns tests/).**
+`tests/infra/test_cdk_intake.py` now has 3 failures, all from the buffer-queue + Pipe shape:
+- `test_eventbridge_rules_route_by_detail_type_and_group_by_incident` — asserts the literal
+  `SqsParameters.MessageGroupId == "$.detail.incident_id"` on the rule target. This is the enshrined
+  broken literal the review called out; it must assert **real** per-incident grouping — i.e. the Pipe's
+  `TargetParameters.SqsQueueParameters.MessageGroupId == "$.body.detail.incident_id"` (a JSON path
+  resolved per event), while the rule may carry any static buffer group. Detail-type routing on the two
+  rules is unchanged and still asserted.
+- `test_two_separate_fifo_work_queues_plus_one_dlq` — assumes 3 queues total and treats every queue with
+  a RedrivePolicy as a "work" queue; now there are 5 queues (buffers also redrive to the DLQ). It should
+  identify the two WORK FIFO queues by name (`*-hazard.fifo`/`*-intake.fifo`, i.e. not `*-buffer.fifo`
+  and not the DLQ) and assert 2 buffers + 2 work + 1 shared DLQ, all redriving to the one DLQ.
+- `test_work_queue_visibility_exceeds_six_times_consumer_timeout` — same `_fifo_intake_queues` helper now
+  also matches the two 60 s buffer queues; it should filter to the work queues by name before asserting
+  `[180, 360]`.
+The other 24 infra tests + all tools/policy tests stay green (317 passed with these 3 failing).
+
+### MAJOR — env-agnostic cdk-nag acknowledgement ids (task 72 / 68)
+
+**Problem.** The cdk-nag ack `id` embedded `stack.account`/`region` (the Logs ARN in `makeFunctionRole`;
+the `bedrock-agentcore:...:{gateway,policy-engine}/*` ARNs in the GatewayRole). With no account resolved
+(env-agnostic synth — the default when `CDK_DEFAULT_ACCOUNT` is unset) those became unresolved tokens
+used as a metadata **map key** → `KeyMustResolveToString` hard-fail. Env-bound synth hid it; the qa
+conftest then *skipped* rather than failed. The pseudo-parameter form (`<AWS::Partition>` …) is also
+unusable in an ack id because its `::` is the reserved prefix delimiter (`InvalidValidationId`).
+
+**Fix (a) — function-role Logs.** `makeFunctionRole` now takes the function's `logs.LogGroup` (callers
+in intake/gateway/workflow create the log group FIRST) and scopes Logs to `${logGroup.logGroupArn}:*`,
+so cdk-nag renders the finding as the token-free `<LogGroupLogicalId.Arn>:*` — the same `<logicalId.Arn>`
+idiom the existing table/bucket acks use, env-independent and `::`-free. `logs:CreateLogGroup` dropped
+(CDK creates the group; the role only writes streams).
+
+**Fix (b) — GatewayRole.** The four policy-evaluation verbs (no wildcard action) now use
+`resources:["*"]`, acknowledged as `AwsSolutions-IAM5[Resource::*]` — a `::`-free, env-independent id.
+Rationale: the per-account `bedrock-agentcore:...:gateway/*` ARN is only expressible via pseudo-parameters
+whose `::` cannot be acknowledged, and the gateway ARN is unknown at role creation (the gateway
+references this role — a dependency cycle). This is the documented "no resource ARN to scope to" wildcard,
+the same class as the X-Ray and geo-routes grants; the scope is carried by the four specific actions.
+
+**Evidence.** `npx cdk synth --app "npx ts-node --prefer-ts-exts bin/grid-tools-app.ts"` exits 0 with
+cdk-nag reporting ZERO unsuppressed findings BOTH with `CDK_DEFAULT_ACCOUNT`/`CDK_DEFAULT_REGION` unset
+AND with them set. The two DESIGN-cited §16.5 suppressions (geo-routes `*` on fn-plan-crew-route, ADR-10;
+absent CMK on the data layer, ADR-6) remain the only documented suppressions. `npx tsc --noEmit` clean;
+`npx jest` 19 passed.

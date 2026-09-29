@@ -253,7 +253,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 ## Wave 7 — Replay and closure
 
-- [ ] 74. [geo-data-engineer] Write `gateway/local/replay.py`: the driver that reads the committed fixture, applies hazard events through the Flood_Ingestor Logic and reports through the Event_Ingestor Logic, runs the tool sequence at the flood peak, drives an approval, applies `JobCompleted`, and writes `events.jsonl` and a run summary _Requirements: 17.1, 17.5, 18.1, 18.3_ _Design: §15.4_
+- [x] 74. [geo-data-engineer] Write `gateway/local/replay.py`: the driver that reads the committed fixture, applies hazard events through the Flood_Ingestor Logic and reports through the Event_Ingestor Logic, runs the tool sequence at the flood peak, drives an approval, applies `JobCompleted`, and writes `events.jsonl` and a run summary _Requirements: 17.1, 17.5, 18.1, 18.3_ _Design: §15.4_
 
 - [ ] 75. [qa-eval-engineer] Write `test_fixture_drives_tools_end_to_end`: the fixture replay in `local` mode must dedupe 408 reports, cross all three flood transitions, veto an energise on `sub_004`, complete one dispatch-to-approval cycle, and close its outages _Requirements: 17.5, 18.2, 18.3_ _Design: §15.4_
 

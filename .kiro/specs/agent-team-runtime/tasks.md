@@ -502,7 +502,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 61.1 Write `tests/agents/test_memory.py` with `test_runs_without_memory`, `test_namespaces_are_incident_scoped` and `test_lessons_read_only_and_no_pii`
     - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7_ §13, §21.5 [qa-eval-engineer]
 
-- [ ] 62. Observability and the `DeviceSuspected` emission
+- [x] 62. Observability and the `DeviceSuspected` emission
   - _Requirements: 12.7, 12.9, 17.8, 20.1, 20.2, 20.3, 20.4, 20.5, 20.6, 20.7, 20.8_ §16 [agent-engineer]
   - [x] 62.1 Add OpenTelemetry spans per node with `incident_id`, `operational_period`, `agent`, `node` and `correlation_id` attributes, structured JSON logging with the same keys and no `print`, every veto logged at warning with its `rule_id` and `item_id`, and never log or emit the contents of an Untrusted_Block as if it were Minnal's own reasoning
     - _Requirements: 17.8, 20.1, 20.2, 20.7, 20.8_ §16.1, §6.6 [agent-engineer]
@@ -510,7 +510,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - _Requirements: 20.3_ §16.2 [agent-engineer]
   - [x] 62.3 Emit the `Minnal` namespace metrics `PeriodsRun`, `ItemsProposed`, `ItemsBlocked`, `DispatchVetoed`, `NodeBudgetExceeded`, `PeriodDurationMs`, `AgentTokens` and `VetoLoopIterations`, recording token usage per agent per period, and logging a hash prefix of at most 12 hex characters where a correlation is needed instead of personal data
     - _Requirements: 20.4, 20.5, 20.6_ §16.3 [agent-engineer]
-  - [ ] 62.4 Emit `DeviceSuspected` per suspected device with `source: minnal.diagnostics`, schema-validated before publishing, and publish no invalid event
+  - [x] 62.4 Emit `DeviceSuspected` per suspected device with `source: minnal.diagnostics`, schema-validated before publishing, and publish no invalid event
     - _Requirements: 12.7, 12.9_ §16.4 [agent-engineer]
 
 - [ ] 63. Verify observability

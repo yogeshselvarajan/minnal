@@ -133,7 +133,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 37. [qa-eval-engineer] Write property test for Property 16 `[SAFETY]` (an unreadable flood store never reports "clear") _Requirements: 6.7, 1.10_ _Design: §18 P16_
 
-- [ ] 38. [qa-eval-engineer] Write property test for Property 27 (the store adapters behave identically in `local` and `aws`) _Requirements: 17.1, 17.2, 17.5_ _Design: §18 P27, §15.5_
+- [x] 38. [qa-eval-engineer] Write property test for Property 27 (the store adapters behave identically in `local` and `aws`) _Requirements: 17.1, 17.2, 17.5_ _Design: §18 P27, §15.5_
 
 - [ ] 39. [qa-eval-engineer] Write the local-router tests: `test_graph_mode_removes_flooded_edges`, `test_adversarial_mode_returns_unsafe_lines`, `test_local_router_output_is_retested`, `test_local_mode_opens_no_socket` _Requirements: 17.1, 17.3_ _Design: §8.12_
 

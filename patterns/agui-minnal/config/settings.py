@@ -66,6 +66,16 @@ class Settings(BaseSettings):
     models_path: Path = _MODELS_YAML
     budgets_path: Path = _BUDGETS_YAML
 
+    # Runtime deployment inputs. These are the ONLY environment reads in the pattern (R1.4); the
+    # roles and the graph receive the resolved values by injection. ``backend`` selects the port
+    # implementation and is read only in ``gateway`` adapters; here it lets the event-capture rule
+    # be expressed in one place (§12.5). ``memory_id`` is the AgentCore Memory resource, absent
+    # when memory is not provisioned (§13.2, R19.5). ``region`` hosts the Memory and model calls.
+    backend: str = "aws"
+    event_capture: bool = False
+    memory_id: str | None = None
+    region: str = "us-east-1"
+
     @cached_property
     def _models(self) -> dict[str, Any]:
         return _load_yaml(self.models_path)
@@ -82,6 +92,16 @@ class Settings(BaseSettings):
         if not isinstance(timeout, int) or timeout < 1:
             return _DEFAULT_MODEL_REQUEST_TIMEOUT_SECONDS
         return timeout
+
+    @property
+    def capture_events(self) -> bool:
+        """Whether to write ``agui-stream.jsonl`` this run (§12.5, R22.7).
+
+        The replay file is always written in offline mode (the acceptance scenario replays it),
+        and in ``aws`` mode only when ``MINNAL_EVENT_CAPTURE`` is set, so a production run does not
+        pay for it unless an operator asked for a capture.
+        """
+        return self.backend != "aws" or self.event_capture
 
     def model_for(self, role: str) -> ModelSpec:
         """Resolve a Role's model, merging ``default`` under its per-agent entry (§15.1).

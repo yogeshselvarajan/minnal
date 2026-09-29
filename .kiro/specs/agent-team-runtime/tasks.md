@@ -469,13 +469,13 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 6: glass box, memory and observability
 
-- [ ] 58. The glass-box emitter and transport
+- [x] 58. The glass-box emitter and transport
   - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8, 18.9, 18.10, 18.11, 22.7_ §12.1, §12.2, §12.5 [agent-engineer]
   - [x] 58.1 Write `patterns/agui-minnal/agui/emitter.py` with `GlassBoxEmitter` producing the six `minnal.*` events as AG-UI `Custom` events with `name` and `value`, validating each against its schema before emit, carrying `incident_id` and `operational_period`, bounding the summaries, reporting a `status` that matches the node's real state, and never placing personal data or a raw token in a payload
     - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8, 18.9, 18.10, 18.11_ §12.1, §12.3 [agent-engineer]
   - [x] 58.2 Implement the transport chosen by the OQ1 ADR: either the merged async generator interleaving the emitter queue with the adapter stream and draining the queue before the terminal event, or the second-channel fallback writing to the period record with a read path
     - _Requirements: 18.1, 18.11_ §12.2 [agent-engineer]
-  - [ ] 58.3 Write the `agui-stream.jsonl` writer assigning a monotonic `seq` per event, enabled offline and by `MINNAL_EVENT_CAPTURE` in `aws` mode
+  - [x] 58.3 Write the `agui-stream.jsonl` writer assigning a monotonic `seq` per event, enabled offline and by `MINNAL_EVENT_CAPTURE` in `aws` mode
     - _Requirements: 22.7_ §12.5 [agent-engineer]
 
 - [ ] 59. Verify the glass box

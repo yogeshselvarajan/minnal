@@ -1,14 +1,15 @@
 """Powertools Idempotency configuration and a local fake (design §5 preamble, §11.7).
 
 Write tools wrap their execution body in Powertools ``@idempotent_function`` keyed
-on ``incident_id`` plus the tool's key field, with payload hashing on, so the same
-key with the same payload returns the stored result and a changed payload is a
-``CONFLICT`` (R1.9). The critical rule is P34: **a retryable outcome must not be
-cached.** Powertools deletes the in-progress record when the wrapped function
-raises, so the body raises :class:`_shared.errors.UpstreamError` (and its
-subclasses) on a transient failure rather than returning an error envelope; only
-deterministic results — success, veto, validation error — are returned and
-therefore cached (§11.7).
+on ``incident_id`` plus the tool's key field, with a ``payload_validation_jmespath``
+selecting the whole request body, so the same key with the same payload returns the
+stored result and a changed payload raises ``IdempotencyValidationError``, which
+:func:`wrap` maps to a ``CONFLICT`` (R1.9). The critical rule is P34: **a retryable
+outcome must not be cached.** Powertools deletes the in-progress record when the
+wrapped function raises, so the body raises :class:`_shared.errors.UpstreamError`
+(and its subclasses) on a transient failure rather than returning an error
+envelope; only deterministic results — success, veto, validation error — are
+returned and therefore cached (§11.7).
 
 This module wraps Powertools; it is the one ``_shared`` module allowed to import
 it. It does not import ``boto3`` directly (the persistence layer does, at the
@@ -25,6 +26,7 @@ package (3.35.0) and the Powertools idempotency documentation
 
 from __future__ import annotations
 
+import functools
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
@@ -42,21 +44,32 @@ if TYPE_CHECKING:
 _EXPIRES_AFTER_SECONDS = 24 * 60 * 60
 
 
+# Validate the whole request body under one key. The JMESPath ``@`` selects the
+# entire payload, so a second call under the same idempotency key with any changed
+# argument fails Powertools' payload validation (``IdempotencyValidationError``,
+# mapped to ``CONFLICT``) instead of silently replaying the first result (R1.9).
+# The key fields themselves are equal by definition under one key, so including
+# them is harmless; an identical payload still replays without re-executing.
+_PAYLOAD_VALIDATION_JMESPATH = "@"
+
+
 def build_config(key_jmespath: str) -> IdempotencyConfig:
     """Return the :class:`IdempotencyConfig` for a write tool (§11.7, R1.9).
 
     Args:
         key_jmespath: A JMESPath selecting ``[incident_id, <key field>]`` from the
-            event, e.g. ``"[incident_id, report_id]"``. Payload hashing is left on
-            (the default) so a changed payload under the same key is a ``CONFLICT``.
+            event, e.g. ``"[incident_id, report_id]"``.
 
     Returns:
-        A configured :class:`IdempotencyConfig`.
+        A configured :class:`IdempotencyConfig` with payload validation on, so a
+        changed payload under the same key raises ``IdempotencyValidationError``
+        (mapped to ``CONFLICT`` by :func:`wrap`) rather than replaying (R1.9).
     """
     from aws_lambda_powertools.utilities.idempotency import IdempotencyConfig  # noqa: PLC0415
 
     return IdempotencyConfig(
         event_key_jmespath=key_jmespath,
+        payload_validation_jmespath=_PAYLOAD_VALIDATION_JMESPATH,
         expires_after_seconds=_EXPIRES_AFTER_SECONDS,
         raise_on_no_idempotency_key=True,
     )
@@ -114,11 +127,28 @@ def wrap[R](
     """
     if settings.backend != "aws":
         return body
+    from _shared.errors import ConflictError  # noqa: PLC0415
     from aws_lambda_powertools.utilities.idempotency import idempotent_function  # noqa: PLC0415
+    from aws_lambda_powertools.utilities.idempotency.exceptions import (  # noqa: PLC0415
+        IdempotencyValidationError,
+    )
 
-    wrapped: Callable[..., R] = idempotent_function(
+    idempotent: Callable[..., R] = idempotent_function(
         data_keyword_argument=data_keyword_argument,
         persistence_store=build_persistence(settings),
         config=build_config(key_jmespath),
     )(body)
+
+    @functools.wraps(body)
+    def wrapped(*args: object, **kwargs: object) -> R:
+        try:
+            return idempotent(*args, **kwargs)
+        except IdempotencyValidationError as exc:
+            # Same key, different payload: a deterministic CONFLICT, not retryable
+            # (R1.9). ``IdempotencyAlreadyInProgressError`` and the body's own
+            # ``UpstreamError`` are distinct and still propagate unchanged (P34).
+            raise ConflictError(
+                "This idempotency key was already used with a different request."
+            ) from exc
+
     return wrapped

@@ -480,7 +480,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 - [ ] 59. Verify the glass box
   - _Requirements: 11.7, 18.2, 18.8, 18.9, 18.10, 18.11_ §20, §12.3 [qa-eval-engineer]
-  - [ ] 59.1 Write property test for Property 58
+  - [x] 59.1 Write property test for Property 58
     - **Property 58: every glass-box event validates and carries no personal data [SAFETY]**
     - **Validates: Requirements 18.8, 18.9, 18.11, 18.10, 18.2**
     - `test_property_P58_events_validate` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
@@ -497,9 +497,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 60.3 Write the period-summary write and the previous-period read, degrading to no history on failure without failing the period, writing no callback number, name or citizen free text, and treating lessons as read-only
     - _Requirements: 19.2, 19.3, 19.5, 19.6_ §13.3, §13.4, §13.5 [agent-engineer]
 
-- [ ] 61. Verify memory
+- [x] 61. Verify memory
   - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7_ §13, §21.5 [qa-eval-engineer]
-  - [ ] 61.1 Write `tests/agents/test_memory.py` with `test_runs_without_memory`, `test_namespaces_are_incident_scoped` and `test_lessons_read_only_and_no_pii`
+  - [x] 61.1 Write `tests/agents/test_memory.py` with `test_runs_without_memory`, `test_namespaces_are_incident_scoped` and `test_lessons_read_only_and_no_pii`
     - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7_ §13, §21.5 [qa-eval-engineer]
 
 - [x] 62. Observability and the `DeviceSuspected` emission
@@ -513,9 +513,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 62.4 Emit `DeviceSuspected` per suspected device with `source: minnal.diagnostics`, schema-validated before publishing, and publish no invalid event
     - _Requirements: 12.7, 12.9_ §16.4 [agent-engineer]
 
-- [ ] 63. Verify observability
+- [x] 63. Verify observability
   - _Requirements: 20.2, 20.6, 20.7_ §16, §21.5 [qa-eval-engineer]
-  - [ ] 63.1 Write `tests/agents/test_observability.py` with `test_every_log_line_has_required_keys` and `test_no_pii_in_logs_or_metrics`
+  - [x] 63.1 Write `tests/agents/test_observability.py` with `test_every_log_line_has_required_keys` and `test_no_pii_in_logs_or_metrics`
     - _Requirements: 20.2, 20.6, 20.7_ §16, §21.5 [qa-eval-engineer]
 
 - [ ]* 64. Deferred runtime extras

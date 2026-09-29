@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/events/JobCompleted.v1.json",
+  "title": "JobCompleted",
+  "description": "Consumed event (owned by agent-team-runtime): a crew reported its work finished. The Event_Ingestor closes every open Outage under the completed device and releases the crew lock conditional on proposal_id (R18.3, R18.4, R9.10). Carries no personal data (§13.1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "incident_id",
+    "correlation_id",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "JobCompleted"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sim_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device_id",
+        "crew_id",
+        "proposal_id"
+      ],
+      "properties": {
+        "device_id": {
+          "type": "string",
+          "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+        },
+        "crew_id": {
+          "type": "string",
+          "pattern": "^crew_\\d+$"
+        },
+        "proposal_id": {
+          "type": "string",
+          "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$"
+        }
+      }
+    }
+  }
+}

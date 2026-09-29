@@ -40,6 +40,7 @@ _INCIDENT = "inc_00000000000000000000000000"
 _CORR = "corr_00000000000000000000000001"
 _AT = (80.287543, 12.970246)
 
+
 def _report(callback_ref: str | None, note: str | None) -> RecordOutageInput:
     return RecordOutageInput.model_validate(
         {

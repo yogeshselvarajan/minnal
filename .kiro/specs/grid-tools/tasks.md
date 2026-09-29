@@ -199,7 +199,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
   - [x] 56.5 [qa-eval-engineer] Write the approval, expirer and crew-lock tests: the approver group, the second decision conflict, the timeout path, lock release on every ending outcome, and the release condition on the proposal id _Requirements: 11.3, 11.6, 11.7, 11.8, 9.10_ _Design: §5.9, §5.11, §6.5_
   - [x] 56.6 [qa-eval-engineer] Write `test_every_error_row_reachable` covering all 44 rows of the §11.2 matrix, and the observability tests for log fields, trace annotations and the exact metric set _Requirements: 2.1, 2.2, 2.3, 15.2_ _Design: §11.2, §13_
 
-- [ ] 57. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools`, `uv run pytest -m safety`, `uv run ruff check gateway` and `uv run mypy gateway/tools`; every handler error path and every wave-4 property must pass _Requirements: 15.1, 15.2, 16.5_ _Design: §19.1_
+- [x] 57. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools`, `uv run pytest -m safety`, `uv run ruff check gateway` and `uv run mypy gateway/tools`; every handler error path and every wave-4 property must pass _Requirements: 15.1, 15.2, 16.5_ _Design: §19.1_
 
 ---
 

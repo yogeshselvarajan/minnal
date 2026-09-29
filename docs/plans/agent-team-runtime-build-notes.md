@@ -251,3 +251,77 @@ Known environment artifact (out of checkpoint scope): `tests/test_network_blocke
 test_connecting_a_socket_to_an_external_address_raises` fails because the sandbox black-holes
 external TCP (TimeoutError, not RuntimeError). Not under `tests/agents` and not marked `safety`,
 so it does not affect steps 3–4; left untouched.
+
+## 2026-09-29 — Wave 2 geo-data-engineer lane: the four read-only tools (tasks 27–30)
+
+Reconciliations between the design's field names / read paths and the actual
+grid-tools `_shared` ports, made while building the four read tools. No
+grid-tools `_shared` code, `requirements.md`, `design.md` or steering was edited.
+
+### Port coverage vs. what the read tools need
+
+The `_shared/ports.py` surface exposes only the reads the seven write tools
+needed. Three of the four read tools need scans the ports do not offer:
+
+- `FloodStore.get_flood_set(incident_id)` — **exists**; `get_flood_status` uses it
+  unchanged (§7.4.7 snapshot rule). No mismatch.
+- `ProposalStore.get(incident_id, proposal_id)` — **exists** (single-id mode of
+  `get_proposal_status`). But there is **no proposal query/scan port** for list
+  mode, and **no crew-lock read port** and **no crew roster loader** anywhere in
+  `_shared` (grep for `crew`/`CREW` in `_shared` returns nothing). This is exactly
+  the C10/OQ4 gap the design records.
+- `OutageStore.open_outages_under(incident_id, dt_ids)` — **exists** but is
+  DT-scoped; there is no "all open outages for the incident" port.
+
+**Resolution (no `_shared` edit):** each tool's `adapters.py` defines a narrow
+read Protocol and two backend implementations. Where a grid-tools port exists it
+is reused unchanged (flood snapshot, single-proposal `get`, `open_outages_under`
+for the substation filter). Where no port exists, the adapter reads the same
+single table both backends already use, over the documented read primitives:
+
+- **local backend:** the `LocalStore` handed out in `Ports.extras["store"]`
+  (`_local_backend.LocalStore.query(prefix)` / `.get(key)`), keyed exactly as the
+  grid-tools stores key items (`INC#<inc>#OUT#…`, `#PRP#…`, `#CREW#…`, `#TTR#…`).
+- **aws backend:** a read-only `DynamoTable` (`_shared.adapters._aws_dynamo`) on
+  the `MINNAL_TABLE_NAME` table, using `get(pk, sk)` and `query_prefix(pk,
+  sk_prefix)` — the same read methods the grid-tools AWS stores use. Only
+  `adapters.py` imports boto3; every `logic.py` stays boto3-free (R14.12).
+
+These reads never write, never publish and take no idempotency key (R14.3).
+
+### OQ4 resolution — `list_crews` availability from proposals + crew locks
+
+The grid-tools AWS store writes the crew lock as an item `pk=INC#<inc>,
+sk=CREW#<crew_id>` carrying `active_proposal_id` (`_aws_stores._proposal_actions`),
+and the local store writes the identical item
+(`_local_stores.LocalProposalStore.create_with_locks`). So a crew is `held` iff a
+`CREW#<crew_id>` item exists **and** the proposal it names is in
+`waiting_approval` or `approved`. `list_crews` reads the crew-lock items and joins
+them to the proposals it also reads — no new grid-tools port, matching the OQ4
+fallback. A crew whose lock item is missing is reported `free` (the fail-safe
+direction; `dispatch_crew` re-checks server-side, §8.6.4).
+
+### Crew roster loader
+
+`_shared/grid.py` loads devices/service-areas/facilities but **not** crews
+(`data/crews/crews.geojson`). The design says "load the crew roster … through the
+existing grid-tools crew read path", but no such path exists in `_shared`.
+**Resolution:** `list_crews` pure `logic.py` folds the crew FeatureCollection the
+adapter loads from the bundled file (mirroring `grid.load_grid`'s file read),
+emitting only `member_count` (never member ids), per R14.13.
+
+### `get_proposal_status` "completed" status
+
+§8.6.3's tool_spec prose lists a `completed` status, but the grid-tools
+`Proposal.status` Literal is
+`waiting_approval|approved|rejected|vetoed|expired|failed` — no `completed`.
+**Resolution:** the tool reports whatever status the stored Proposal carries (the
+grid-tools Literal is the source of truth); the list-mode `status` filter is
+constrained to the two values the design's strict schema fixes.
+
+### Incident existence (`NOT_FOUND`)
+
+There is no incident registry in `_shared`. "Unknown incident" is read as "the
+`INC#<inc>` partition holds no item at all"; a known incident with no flood feed
+still returns its empty version-0 `unknown` flood set. This satisfies R14.11 while
+a fresh, seeded incident answers normally.

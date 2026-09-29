@@ -200,11 +200,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 2: the four read-only tools
 
-- [ ] 27. `get_flood_status`
+- [x] 27. `get_flood_status`
   - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.11, 14.12_ §8.6.1, §8.7 [geo-data-engineer]
-  - [ ] 27.1 Write `gateway/tools/get_flood_status/` with a `tool_spec.json` using only `type`, `description`, `properties`, `required` and `items` and stating closed sets and patterns in prose, a strict `input.schema.json` with `additionalProperties: false` and no `oneOf`, `models.py`, and `adapters.py` over the `grid-tools` ports
+  - [x] 27.1 Write `gateway/tools/get_flood_status/` with a `tool_spec.json` using only `type`, `description`, `properties`, `required` and `items` and stating closed sets and patterns in prose, a strict `input.schema.json` with `additionalProperties: false` and no `oneOf`, `models.py`, and `adapters.py` over the `grid-tools` ports
     - _Requirements: 14.1, 14.2, 14.4_ §8.6.1 [geo-data-engineer]
-  - [ ] 27.2 Write the pure `logic.py` returning `flood_set_version`, the status literal `unknown`, `fresh` or `stale`, `feed_mode`, `last_feed_at` and per polygon its id, status and `area_sqm` from a per-polygon equal-area projection, and the handler returning the shared envelope with `NOT_FOUND` and `UPSTREAM_ERROR` paths
+  - [x] 27.2 Write the pure `logic.py` returning `flood_set_version`, the status literal `unknown`, `fresh` or `stale`, `feed_mode`, `last_feed_at` and per polygon its id, status and `area_sqm` from a per-polygon equal-area projection, and the handler returning the shared envelope with `NOT_FOUND` and `UPSTREAM_ERROR` paths
     - _Requirements: 14.3, 14.5, 14.11, 14.12_ §8.6.1, §8.7 [geo-data-engineer]
 
 - [ ] 28. `list_open_outages`

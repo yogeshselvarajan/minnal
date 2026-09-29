@@ -3,12 +3,8 @@
 Verifies the structural rules a reviewer would otherwise have to eyeball (R1.1-R1.7):
 
 * R1.1 — each role package has ``agent.py``, ``prompt.md``, ``schemas.py`` and ``tools.py``.
-  **Phase scope:** the ``safety`` role's ``agent.py`` and ``tools.py`` are built in Wave-5
-  (task 50); at this phase ``safety`` ships only ``prompt.md`` and ``schemas.py``, so the layout
-  assertion checks the five thinking roles for the files that exist NOW and, for ``safety``,
-  asserts ``prompt.md`` and ``schemas.py`` exist while its ``agent.py``/``tools.py`` are expected
-  to complete in task 50 (see ``_SAFETY_PENDING`` and its ``# TODO(wave5-safety)``). The check
-  does not fail on this deliberate phase boundary.
+  All five thinking roles, including ``safety`` (whose ``agent.py`` and ``tools.py`` were added
+  in Wave-5 task 50), are now checked identically.
 * R1.3 — every ``build_<role>_agent`` takes all dependencies as a single ``deps`` argument and
   reads no environment variable itself.
 * R1.4 — no module in this spec's runtime trees reads ``os.environ`` except ``config/settings.py``.
@@ -27,17 +23,11 @@ import pytest
 _PATTERN_ROOT = Path(__file__).resolve().parents[2] / "patterns" / "agui-minnal"
 _ROLES_DIR = _PATTERN_ROOT / "roles"
 
-# The five thinking roles (R1.1). All own a prompt.md and schemas.py at this phase.
+# The five thinking roles (R1.1). All own agent.py, prompt.md, schemas.py and tools.py.
 _ROLES = ("commander", "hazard", "diagnostics", "dispatch", "safety")
 
 # Files every fully-built role package contains (R1.1).
 _ROLE_FILES = ("agent.py", "prompt.md", "schemas.py", "tools.py")
-
-# Phase boundary: the safety role's agent.py and tools.py are written in Wave-5 task 50; only
-# these two files are expected to be absent at THIS phase. Its prompt.md and schemas.py exist now.
-# TODO(wave5-safety): task 50 adds roles/safety/agent.py and roles/safety/tools.py; then remove
-# this exception so the safety role is checked identically to the other four.
-_SAFETY_PENDING = frozenset({"agent.py", "tools.py"})
 
 # This spec's runtime module trees (design §3). ``memory/`` and ``offline/`` are later waves;
 # only trees that exist are walked. FAST-template files at the pattern root (``agent.py``,
@@ -76,36 +66,21 @@ def test_role_packages_and_factories(role: str) -> None:
     # Arrange.
     package = _ROLES_DIR / role
 
-    # Act + Assert: expected files exist, except the two safety files task 50 will add.
+    # Act + Assert: every expected file exists for every role.
     for filename in _ROLE_FILES:
-        path = package / filename
-        if role == "safety" and filename in _SAFETY_PENDING:
-            # TODO(wave5-safety): task 50 will create this; do not fail on the phase boundary.
-            assert not path.exists(), (
-                f"safety/{filename} appeared before task 50 — update _SAFETY_PENDING and this test"
-            )
-            continue
-        assert path.is_file(), f"{role}/{filename} is missing (R1.1)"
+        assert (package / filename).is_file(), f"{role}/{filename} is missing (R1.1)"
 
-    # The factory function exists for every role whose agent.py exists at this phase.
-    if not (role == "safety" and "agent.py" in _SAFETY_PENDING):
-        source = (package / "agent.py").read_text(encoding="utf-8")
-        assert f"def build_{role}_agent(deps" in source, (
-            f"{role}/agent.py must expose build_{role}_agent(deps) (R1.3)"
-        )
-
-
-def test_safety_role_has_prompt_and_schemas_now() -> None:
-    """At this phase the safety role ships prompt.md and schemas.py (R1.1, phase-scoped)."""
-    package = _ROLES_DIR / "safety"
-    assert (package / "prompt.md").is_file()
-    assert (package / "schemas.py").is_file()
+    # The factory function exists for every role.
+    source = (package / "agent.py").read_text(encoding="utf-8")
+    assert f"def build_{role}_agent(deps" in source, (
+        f"{role}/agent.py must expose build_{role}_agent(deps) (R1.3)"
+    )
 
 
 # --- R1.3: factories take all deps as arguments and read no environment variable ------------
 
 
-@pytest.mark.parametrize("role", ("commander", "hazard", "diagnostics", "dispatch"))
+@pytest.mark.parametrize("role", _ROLES)
 def test_factory_takes_deps_argument_only(role: str) -> None:
     """``build_<role>_agent`` has a single ``deps`` parameter and no ``os.environ`` read (R1.3)."""
     # Arrange.

@@ -79,7 +79,7 @@ files = [
 # dependency; they appear only in the AWS adapters (never in logic), so treat them
 # as untyped there. Logic and _shared pure modules import none of them (R14.4).
 [[tool.mypy.overrides]]
-module = ["shapely.*", "pyproj.*", "boto3.*", "botocore.*", "mypy_boto3_dynamodb.*", "mypy_boto3_s3.*"]
+module = ["shapely.*", "pyproj.*", "boto3.*", "botocore.*", "mypy_boto3_dynamodb.*", "mypy_boto3_s3.*", "agentcore_tools.*"]
 ignore_missing_imports = true
 
 # sample_tool is the untyped FAST template skeleton (predates grid-tools, not a

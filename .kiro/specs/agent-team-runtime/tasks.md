@@ -254,11 +254,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 33.1 Write `patterns/agui-minnal/gateway_clients/filters.py` (pure) with `GATEWAY_ALLOW_LISTS` and `LOCAL_ALLOW_LISTS` per role, `NEVER_ALLOWED` holding `record_outage`, `tool_filters_for` building `allowed` from a normalising callable and `rejected` from both a callable and the exact Gateway names, and `exact_gateway_allow_list` as the string-matcher fallback and parity source
     - _Requirements: 13.2, 13.3, 13.4_ §8.1.2 [agent-engineer]
 
-- [ ] 34. Local tools
+- [x] 34. Local tools
   - _Requirements: 6.4, 6.6, 13.2, 13.3, 13.7, 17.1_ §8.1.4 [agent-engineer]
-  - [ ] 34.1 Write `patterns/agui-minnal/roles/_common/local_tools.py` with `HazardWebTools` wrapping the `agentcore_tools` Browser and web search in Strands `@tool` methods, each returning its result through `wrap_untrusted` and emitting a `minnal.citation`, plus `_block_id` and `format_results`
+  - [x] 34.1 Write `patterns/agui-minnal/roles/_common/local_tools.py` with `HazardWebTools` wrapping the `agentcore_tools` Browser and web search in Strands `@tool` methods, each returning its result through `wrap_untrusted` and emitting a `minnal.citation`, plus `_block_id` and `format_results`
     - _Requirements: 6.4, 6.6, 17.1_ §8.1.4 [agent-engineer]
-  - [ ] 34.2 Write `all_tools_for(role, registry, local)` as the single place a tool list is built, raising when a role allow-lists a local tool with no provider wired up
+  - [x] 34.2 Write `all_tools_for(role, registry, local)` as the single place a tool list is built, raising when a role allow-lists a local tool with no provider wired up
     - _Requirements: 13.2, 13.3, 13.7_ §8.1.4 [agent-engineer]
 
 - [ ] 35. Identity and the client registry

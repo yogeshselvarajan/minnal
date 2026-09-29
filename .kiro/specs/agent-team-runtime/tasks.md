@@ -77,9 +77,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 10.1 Write `patterns/agui-minnal/gateway_clients/names.py` (pure) with `normalise_tool_name` stripping the client prefix then the `<target>___` segment and idempotent, plus `target_name` and `gateway_tool_name`
     - _Requirements: 13.2, 13.3_ §8.1.1 [agent-engineer]
 
-- [ ] 11. Verify tool-name normalisation
+- [x] 11. Verify tool-name normalisation
   - _Requirements: 13.2, 13.3_ §8.1.1, §21.5 [qa-eval-engineer]
-  - [ ] 11.1 Write `tests/agents/test_tool_names.py::test_normalise_is_idempotent_and_total` covering all three spellings, double application, and a name with no target segment
+  - [x] 11.1 Write `tests/agents/test_tool_names.py::test_normalise_is_idempotent_and_total` covering all three spellings, double application, and a name with no target segment
     - _Requirements: 13.2, 13.3_ §8.1.1, §21.5 [qa-eval-engineer]
 
 - [x] 12. Item identity and job assembly

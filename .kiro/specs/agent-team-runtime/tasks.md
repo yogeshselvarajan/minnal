@@ -130,14 +130,14 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 18.1 Write `patterns/agui-minnal/domain/budgets.py` (pure) with `NodeBudget`, `RESERVED_NODES`, and `BudgetBook` exposing `charge_tokens`, `charge_seconds`, `charge_tool_call`, `working_exhausted` measuring against the budget minus the reserve, `period_exhausted` as the hard stop, and `node_timeout` subtracting the reserve only for a working node
     - _Requirements: 16.1, 16.2, 16.3, 16.6, 16.9_ §6.5, §14.6 [agent-engineer]
 
-- [ ] 19. Verify budgets and the reserve
+- [x] 19. Verify budgets and the reserve
   - _Requirements: 16.1, 16.2, 16.3, 16.5, 16.6, 16.9_ §20, §14.6 [qa-eval-engineer]
-  - [ ] 19.1 Write property test for Property 53
+  - [x] 19.1 Write property test for Property 53
     - **Property 53: every period terminates within its budgets**
     - **Validates: Requirements 16.1, 16.2, 16.3, 16.6, 16.5, 16.9**
     - `test_property_P53_budgets_terminate` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 16.1, 16.2, 16.3, 16.6, 16.5, 16.9_ §20, §14 [qa-eval-engineer]
-  - [ ] 19.2 Write `tests/agents/test_budget_reserve.py` with `test_working_node_cannot_consume_reserve`, `test_exit_after_safety_still_commits` and `test_exit_before_safety_defers_all`
+  - [x] 19.2 Write `tests/agents/test_budget_reserve.py` with `test_working_node_cannot_consume_reserve`, `test_exit_after_safety_still_commits` and `test_exit_before_safety_defers_all`
     - _Requirements: 16.9_ §14.6, §21.5 [qa-eval-engineer]
 
 - [x] 20. Untrusted-content containment

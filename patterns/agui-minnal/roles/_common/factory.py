@@ -25,7 +25,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from botocore.config import Config as BotocoreConfig
 from strands import Agent
@@ -59,7 +59,14 @@ class Emitter(Protocol):
 
     def citation(self, *, agent: str, title: str, url: str, source_kind: str) -> None: ...
 
-    def veto(self, *, rule_id: str | None, reason: str, proposal_id: str | None) -> None: ...
+    def veto(
+        self,
+        *,
+        rule_id: str | None,
+        reason: str,
+        proposal_id: str | None,
+        source: Literal["tool", "advisory"],
+    ) -> None: ...
 
 
 @dataclass(frozen=True)

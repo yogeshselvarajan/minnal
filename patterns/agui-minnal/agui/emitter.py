@@ -203,8 +203,8 @@ class GlassBoxEmitter:
         rule_id: str | None,
         reason: str,
         proposal_id: str | None,
+        source: Literal["tool", "advisory"],
         item_id: str | None = None,
-        source: Literal["tool", "advisory"] = "tool",
         iteration: int | None = None,
         is_final: bool | None = None,
     ) -> None:

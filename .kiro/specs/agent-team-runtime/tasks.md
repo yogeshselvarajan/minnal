@@ -485,7 +485,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - **Validates: Requirements 18.8, 18.9, 18.11, 18.10, 18.2**
     - `test_property_P58_events_validate` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 18.8, 18.9, 18.11, 18.10, 18.2_ §20, §12.3 [qa-eval-engineer]
-  - [ ] 59.2 Write a test that one `minnal.veto` event is emitted per veto, carrying `rule_id`, `reason` and `proposal_id` where one exists
+  - [x] 59.2 Write a test that one `minnal.veto` event is emitted per veto, carrying `rule_id`, `reason` and `proposal_id` where one exists
     - _Requirements: 11.7_ §12.1, §12.3 [qa-eval-engineer]
 
 - [x] 60. Memory

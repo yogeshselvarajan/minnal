@@ -394,3 +394,16 @@ assert the emitted `source` (asserting the correct value would fail on this bug;
 wrong value would encode the defect). The mandated R18.5 fields (rule_id, reason, proposal_id) are
 fully covered and pass. **Task 59.2 is left unticked** pending the fix; 59.1 (Property 58) is
 complete and green (Property 58 does not exercise the advisory-source distinction).
+
+### Resolution (task 59.2, agent-engineer + qa-eval-engineer lanes)
+
+Fixed with the preferred option: `source: Literal["tool", "advisory"]` is now a **required**
+kwarg on `Emitter.veto` (the Protocol in `roles/_common/factory.py`) and on the concrete
+`GlassBoxEmitter.veto` in `agui/emitter.py`. Both veto call sites thread it explicitly:
+`roles/safety/agent.py::record_safety_veto` passes `source = "tool" if rule_id else "advisory"`
+(mirroring the `VetoRecord` it records), and `graph/nodes/dispatch_commit.py` passes
+`source="tool"` for the commit-time deterministic `SAFETY_VIOLATION`. The
+`minnal.veto.v1.json` schema already required `source`. `test_veto_events.py::
+test_advisory_veto_emits_one_event_without_rule_id` now asserts `source == "advisory"` on the
+emitted event, so the war room can distinguish a flood rule from a Safety Officer judgement
+(§12.3, R11.7). **Task 59.2 ticked.**

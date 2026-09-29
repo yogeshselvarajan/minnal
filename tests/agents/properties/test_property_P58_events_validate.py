@@ -255,7 +255,9 @@ def test_property_P58_every_emitted_event_validates_and_is_pii_free(  # noqa: PL
     emitter.citation(
         agent=node, title=title or "src", url="https://example.test/x", source_kind="web"
     )
-    emitter.veto(rule_id="FLOOD_ROUTE", reason=reason or "vetoed", proposal_id=_PROPOSAL)
+    emitter.veto(
+        rule_id="FLOOD_ROUTE", reason=reason or "vetoed", proposal_id=_PROPOSAL, source="tool"
+    )
     emitter.approval_request(
         proposal_id=_PROPOSAL,
         kind="dispatch",

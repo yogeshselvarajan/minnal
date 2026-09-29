@@ -199,16 +199,13 @@ def test_veto_event_carries_proposal_id_when_one_exists() -> None:
 
 
 def test_advisory_veto_emits_one_event_without_rule_id() -> None:
-    """An advisory veto (no tool rule) emits exactly one ``minnal.veto`` with no ``rule_id`` and
-    its reason preserved (R18.5, R11.7).
+    """An advisory veto (no tool rule) emits exactly one ``minnal.veto`` with no ``rule_id``, its
+    reason preserved and ``source: advisory`` (R18.5, R11.7).
 
-    Note: this test deliberately does NOT assert the emitted ``source``. The recorded
-    :class:`VetoRecord` for an advisory veto is ``source="advisory"``, but the emitted event's
-    ``source`` is always ``tool`` because the :class:`~roles._common.factory.Emitter` Protocol has
-    no ``source`` parameter and :func:`record_safety_veto` cannot propagate it — a builder bug
-    recorded in ``docs/plans/agent-team-runtime-build-notes.md`` (2026 Wave-6 verifier). Asserting
-    the *correct* ``source`` here would fail on that bug; asserting the *wrong* current value would
-    encode a defect. The mandated 18.5 fields (rule_id, reason, proposal_id) are covered above.
+    The emitted ``source`` mirrors the recorded :class:`VetoRecord`: ``record_safety_veto`` derives
+    ``source = "tool" if rule_id else "advisory"`` and threads it through the
+    :class:`~roles._common.factory.Emitter` Protocol into :class:`~agui.emitter.GlassBoxEmitter`,
+    so the war room can distinguish a Safety Officer judgement from a flood rule (§12.3).
     """
     # Arrange.
     item = _dispatch(0)
@@ -219,10 +216,11 @@ def test_advisory_veto_emits_one_event_without_rule_id() -> None:
     record_safety_veto(period, item, None, "SOP warns against energising near water", emitter)
     events = _veto_events(queue)
 
-    # Assert: exactly one veto event, reason preserved, no rule_id field (R18.5).
+    # Assert: exactly one veto event, reason preserved, no rule_id field, source advisory (R18.5).
     assert len(events) == 1
     assert "rule_id" not in events[0].value
     assert events[0].value["reason"] == "SOP warns against energising near water"
+    assert events[0].value["source"] == "advisory"
     # And the recorded VetoRecord agrees it is advisory with no rule_id (R11.7).
     assert period.vetoes[-1].source == "advisory"
     assert period.vetoes[-1].rule_id is None

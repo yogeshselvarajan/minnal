@@ -289,7 +289,10 @@ class DispatchCommitNode(MultiAgentBase):
         )
         period.block(item.item_id, f"{rule_id or 'SAFETY_VIOLATION'} at commit")
         self._emitter.veto(
-            rule_id=rule_id, reason=message, proposal_id=period.proposals.get(item.item_id)
+            rule_id=rule_id,
+            reason=message,
+            proposal_id=period.proposals.get(item.item_id),
+            source="tool",  # a commit-time SAFETY_VIOLATION is a deterministic tool veto (R11.7)
         )
         return _CallOutcome(
             veto=BlockedItem(item_id=item.item_id, kind=item.kind, reason=message, rule_id=rule_id)

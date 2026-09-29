@@ -231,16 +231,22 @@ def record_safety_veto(
     already in ``period.blocked`` (§4.3.5, Property 42). Emits one ``minnal.veto`` per veto.
     """
     iteration = period.bump_iteration(item.item_id)
+    source: Literal["tool", "advisory"] = "tool" if rule_id else "advisory"
     period.record_veto(
         VetoRecord(
             item_id=item.item_id,
-            source="tool" if rule_id else "advisory",
+            source=source,
             rule_id=rule_id,
             reason=reason,
             iteration=iteration,
         )
     )
-    emitter.veto(rule_id=rule_id, reason=reason, proposal_id=period.proposals.get(item.item_id))
+    emitter.veto(
+        rule_id=rule_id,
+        reason=reason,
+        proposal_id=period.proposals.get(item.item_id),
+        source=source,
+    )
     if iteration >= MAX_VETO_ITERATIONS:
         detail = f"{rule_id or 'safety judgement'} after {iteration} attempts"
         period.block(item.item_id, detail)

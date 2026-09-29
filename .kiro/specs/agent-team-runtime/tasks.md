@@ -72,9 +72,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 1: pure domain logic
 
-- [ ] 10. Tool-name normalisation
+- [x] 10. Tool-name normalisation
   - _Requirements: 13.2, 13.3_ §8.1.1 [agent-engineer]
-  - [ ] 10.1 Write `patterns/agui-minnal/gateway_clients/names.py` (pure) with `normalise_tool_name` stripping the client prefix then the `<target>___` segment and idempotent, plus `target_name` and `gateway_tool_name`
+  - [x] 10.1 Write `patterns/agui-minnal/gateway_clients/names.py` (pure) with `normalise_tool_name` stripping the client prefix then the `<target>___` segment and idempotent, plus `target_name` and `gateway_tool_name`
     - _Requirements: 13.2, 13.3_ §8.1.1 [agent-engineer]
 
 - [ ] 11. Verify tool-name normalisation

@@ -354,21 +354,21 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 46.2 Handle the routing veto paths: record `FLOOD_ROUTE` and `FLOOD_DESTINATION` as vetoes without retrying the identical call, record `no_safe_route` as a Blocked_Item, re-plan only the vetoed items below the cap while leaving every cleared and blocked item untouched, and add the re-plan guard asserting a vetoed item changes at least one input or is blocked when no alternative crew exists
     - _Requirements: 8.5, 8.6, 11.6, 11.12_ §7.5.4, §4.3.2 [agent-engineer]
 
-- [ ] 47. Verify the role agents
+- [x] 47. Verify the role agents
   - _Requirements: 5.6, 6.1, 6.2, 6.3, 6.5, 6.7, 7.1, 7.2, 7.3, 7.4, 7.5, 8.1, 8.2, 8.4, 8.5, 8.6, 8.7, 8.8, 8.14, 8.15, 8.16, 11.6_ §20, §7.5 [qa-eval-engineer]
-  - [ ] 47.1 Write property test for Property 56
+  - [x] 47.1 Write property test for Property 56
     - **Property 56: hazard never presents an area as flood-free unless the feed is fresh [SAFETY]**
     - **Validates: Requirements 6.1, 6.2, 5.6**
     - `test_property_P56_hazard_honesty` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 6.1, 6.2, 5.6_ §20, §7.5.2 [qa-eval-engineer]
-  - [ ] 47.2 Write property test for Property 51
+  - [x] 47.2 Write property test for Property 51
     - **Property 51: no two Open_Proposals share a job, device or crew [SAFETY]**
     - **Validates: Requirements 8.14, 8.15, 8.16, 8.7**
     - `test_property_P51_no_shared_work` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 8.14, 8.15, 8.16, 8.7_ §20, §7.5.4, §9.4 [qa-eval-engineer]
-  - [ ] 47.3 Write `tests/agents/test_hazard.py::test_picture_fields_from_tools_only` and `test_source_failure_degrades`, and `tests/agents/test_diagnostics.py::test_paging_and_trace_splitting`
+  - [x] 47.3 Write `tests/agents/test_hazard.py::test_picture_fields_from_tools_only` and `test_source_failure_degrades`, and `tests/agents/test_diagnostics.py::test_paging_and_trace_splitting`
     - _Requirements: 6.3, 6.5, 6.7, 7.1, 7.2, 7.3, 7.4, 7.5_ §7.5.2, §7.5.3, §21.5 [qa-eval-engineer]
-  - [ ] 47.4 Write `tests/agents/test_dispatch_plan.py` covering ranking, routing, the veto paths, `test_commander_drafts_switching` and `test_replan_changes_an_input`
+  - [x] 47.4 Write `tests/agents/test_dispatch_plan.py` covering ranking, routing, the veto paths, `test_commander_drafts_switching` and `test_replan_changes_an_input`
     - _Requirements: 8.1, 8.2, 8.4, 8.5, 8.6, 8.8, 11.6_ §7.5.4, §21.5 [qa-eval-engineer]
 
 ## Wave 5: the Graph, the commit gate and periods

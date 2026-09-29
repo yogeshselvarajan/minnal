@@ -117,9 +117,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 16.1 Write `patterns/agui-minnal/domain/periods.py` (pure) with `PeriodRequest`, `PeriodValidation` and `validate_period_request` rejecting a period below 1, requiring last completed plus 1 when history is available, and trusting the request with `sequence_trusted=False` when it is not
     - _Requirements: 3.14, 3.15_ §6.4, §11.3 [agent-engineer]
 
-- [ ] 17. Verify period validation
+- [x] 17. Verify period validation
   - _Requirements: 3.14, 3.15_ §20, §11.2 [qa-eval-engineer]
-  - [ ] 17.1 Write property test for Property 52
+  - [x] 17.1 Write property test for Property 52
     - **Property 52: single-flight per incident**
     - **Validates: Requirements 3.15, 3.14**
     - `test_property_P52_single_flight` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`

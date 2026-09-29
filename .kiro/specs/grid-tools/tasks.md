@@ -226,7 +226,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 - [x] 65. [platform-engineer] Write `GridToolsDataConstruct`: the single table with `gsi1`, PITR, the TTL attribute and the environment-driven removal policy; the idempotency table; the geometry bucket _Requirements: 14.1, 14.5_ _Design: §7.2, §16.1_
   - [ ]* 65.1 [platform-engineer] Add the KMS customer managed key for the outage and token tables _Requirements: 14.3_ _Design: §16.1_
 
-- [ ] 66. [platform-engineer] Write `IntakeConstruct`: the hazard and intake FIFO queues with content-based deduplication, the shared DLQ and redrive policies, the Flood_Ingestor mapping at batch size 1, and the Event_Ingestor mapping at batch size 10 with `ReportBatchItemFailures` _Requirements: 18.8, 3.4, 18.6_ _Design: §16.1, §5.8, §5.10_
+- [x] 66. [platform-engineer] Write `IntakeConstruct`: the hazard and intake FIFO queues with content-based deduplication, the shared DLQ and redrive policies, the Flood_Ingestor mapping at batch size 1, and the Event_Ingestor mapping at batch size 10 with `ReportBatchItemFailures` _Requirements: 18.8, 3.4, 18.6_ _Design: §16.1, §5.8, §5.10_
 
 - [ ] 67. [platform-engineer] Write `EventsConstruct`: the two EventBridge rules with the configured sources and `SqsParameters.MessageGroupId` from the incident id, and the scoped EventBridge role _Requirements: 18.8, 13.2_ _Design: §16.1_
 

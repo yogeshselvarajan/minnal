@@ -1,0 +1,155 @@
+import * as cdk from "aws-cdk-lib"
+import * as lambda from "aws-cdk-lib/aws-lambda"
+import { execSync } from "child_process"
+import * as fs from "fs"
+import * as path from "path"
+import { ILocalBundling } from "aws-cdk-lib"
+
+/**
+ * Local, Docker-free bundling for grid-tools Lambda assets (design §3.2, option (c)).
+ *
+ * Every tool and backend Lambda ships as one atomic artefact: its own package, a copy of
+ * `gateway/tools/_shared`, the pinned Python dependencies resolved for arm64, and the three
+ * read-only `data/` collections so `_shared/grid.py` loads the Grid at cold start with no
+ * repository-relative path (design §3.2, §22.3, R1.1). Imports are `from _shared import ...`
+ * in both the deployed Lambda and the tests, because `pythonpath = ["gateway/tools"]` puts
+ * the same directory on the path.
+ *
+ * `uv pip install --python-platform aarch64-manylinux2014 --only-binary=:all:` resolves the
+ * manylinux arm64 wheels for shapely and pyproj on any host, so no Docker arm64 emulation is
+ * needed — the emulation that is blocked on the build host (docs/plans/autopilot-state.md).
+ * A Docker image is declared as the CDK fallback so a machine without `uv` still builds.
+ */
+
+// Runtime dependencies bundled into every asset (pinned to the repo lockfile). Powertools is
+// supplied by the Lambda layer instead, so it is intentionally absent here.
+const RUNTIME_DEPS = [
+  "pydantic==2.13.5",
+  "pydantic-settings==2.15.0",
+  "jsonschema==4.26.0",
+  "shapely==2.1.2",
+  "pyproj==3.8.0",
+  "python-ulid==4.0.1",
+  "pyyaml==6.0.3",
+]
+
+// AWS Lambda Powertools for Python, arm64 layer (matches the FAST feedback Lambda convention).
+export function powertoolsLayerArn(region: string): string {
+  return `arn:aws:lambda:${region}:017000801446:layer:AWSLambdaPowertoolsPythonV3-python312-arm64:18`
+}
+
+/** Absolute path to the repository root (two levels up from infra-cdk/lib). */
+export function repoRoot(): string {
+  return path.resolve(__dirname, "..", "..", "..")
+}
+
+/** Absolute path to a `gateway/tools/<name>` directory. */
+export function toolDir(name: string): string {
+  return path.join(repoRoot(), "gateway", "tools", name)
+}
+
+/**
+ * Copy a directory tree, skipping caches and test scaffolding that must never ship in a
+ * Lambda asset.
+ */
+function copyTree(src: string, dest: string): void {
+  fs.mkdirSync(dest, { recursive: true })
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (entry.name === "__pycache__" || entry.name.endsWith(".pyc")) {
+      continue
+    }
+    const from = path.join(src, entry.name)
+    const to = path.join(dest, entry.name)
+    if (entry.isDirectory()) {
+      copyTree(from, to)
+    } else {
+      fs.copyFileSync(from, to)
+    }
+  }
+}
+
+/**
+ * Build the local-bundling hook that assembles an asset directory: the Lambda's own package,
+ * `_shared`, the three `data/` collections, and the pinned dependencies (arm64 wheels).
+ */
+function localBundling(sourceDir: string): ILocalBundling {
+  return {
+    tryBundle(outputDir: string): boolean {
+      // uv is required for the Docker-free path; fall back to Docker bundling if absent.
+      try {
+        execSync("uv --version", { stdio: "ignore" })
+      } catch {
+        return false
+      }
+
+      const root = repoRoot()
+
+      // 1. The Lambda's own package (handler, logic, adapters, models, schemas).
+      copyTree(sourceDir, outputDir)
+
+      // 2. The shared package, at the same import path the tests use.
+      copyTree(path.join(root, "gateway", "tools", "_shared"), path.join(outputDir, "_shared"))
+
+      // 3. The three read-only data collections, so _shared/grid.py loads the Grid from the
+      //    bundled copy (design §3.2, §22.3) with no repository-relative path.
+      const dataOut = path.join(outputDir, "data")
+      for (const collection of ["grid", "facilities", "crews"]) {
+        copyTree(path.join(root, "data", collection), path.join(dataOut, collection))
+      }
+
+      // 4. Dependencies resolved as arm64 manylinux wheels — no Docker, no host toolchain.
+      execSync(
+        `uv pip install ${RUNTIME_DEPS.join(" ")} ` +
+          `--python-platform aarch64-manylinux2014 --only-binary=:all: --target "${outputDir}"`,
+        { stdio: "inherit", cwd: root }
+      )
+
+      return true
+    },
+  }
+}
+
+/**
+ * Build a `lambda.Code` for a grid-tools Lambda from its `gateway/tools/<name>` directory,
+ * with the local bundling of §3.2 and a declared Docker fallback.
+ */
+export function toolCode(name: string): lambda.Code {
+  const sourceDir = toolDir(name)
+  return lambda.Code.fromAsset(sourceDir, {
+    bundling: {
+      // Docker image is the declared fallback used only when `uv` is unavailable; the local
+      // hook above is attempted first and succeeds on any host with uv (design §3.2).
+      image: lambda.Runtime.PYTHON_3_12.bundlingImage,
+      command: [
+        "bash",
+        "-c",
+        [
+          "cp -r /asset-input/. /asset-output/",
+          "cp -r gateway/tools/_shared /asset-output/_shared",
+          "mkdir -p /asset-output/data",
+          "cp -r data/grid data/facilities data/crews /asset-output/data/",
+          `pip install ${RUNTIME_DEPS.join(" ")} --target /asset-output`,
+        ].join(" && "),
+      ],
+      local: localBundling(sourceDir),
+    },
+  })
+}
+
+/** Standard Powertools environment variables for every grid-tools Lambda (design §13, §16.1). */
+export function powertoolsEnv(serviceName: string, extra: Record<string, string> = {}): Record<string, string> {
+  return {
+    POWERTOOLS_SERVICE_NAME: serviceName,
+    POWERTOOLS_METRICS_NAMESPACE: "Minnal",
+    POWERTOOLS_LOG_LEVEL: "INFO",
+    POWERTOOLS_LOGGER_LOG_EVENT: "false",
+    ...extra,
+  }
+}
+
+/** A cdk.Duration helper kept here so constructs share one visibility-timeout ratio (§16.1). */
+export function visibilityForConsumer(consumerTimeout: cdk.Duration): cdk.Duration {
+  // Visibility timeout >= 6x the consumer timeout (design §16.1), so a slow batch never
+  // becomes visible again mid-processing.
+  return cdk.Duration.seconds(consumerTimeout.toSeconds() * 6)
+}

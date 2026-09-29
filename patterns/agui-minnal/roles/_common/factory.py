@@ -29,7 +29,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from botocore.config import Config as BotocoreConfig
 from strands import Agent
-from strands.models import BedrockModel
+from strands.models import BedrockModel, Model
 
 if TYPE_CHECKING:
     from config.settings import Settings
@@ -66,11 +66,11 @@ class Emitter(Protocol):
 class RoleDeps:
     """Everything a role needs, all injected. No role reads ``os.environ`` (R1.3, R1.4).
 
-    ``model`` is a ``BedrockModel`` in ``aws`` mode and a ``Scripted_Model`` offline; both satisfy
-    the Strands model interface, so a node wrapper never branches on which it holds.
+    ``model`` is a ``BedrockModel`` in ``aws`` mode and a ``Scripted_Model`` offline; both are
+    Strands ``Model`` instances, so a node wrapper never branches on which it holds.
     """
 
-    model: object  # BedrockModel in aws mode, Scripted_Model offline
+    model: Model  # BedrockModel in aws mode, Scripted_Model (a Model subclass) offline
     tools: tuple[object, ...]  # already filtered for this role (§8.1)
     emitter: Emitter
     clock: Clock

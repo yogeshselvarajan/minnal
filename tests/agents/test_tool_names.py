@@ -15,10 +15,15 @@ Validates: Requirements 13.2, 13.3 (design §8.1.1, §21.5).
 
 from __future__ import annotations
 
+import json
+import re
+from pathlib import Path
+
 import pytest
 
-# ``gateway_clients.names`` resolves via the conftest ``sys.path`` insert of the pattern root,
+# ``gateway_clients.*`` resolves via the conftest ``sys.path`` insert of the pattern root,
 # so ruff groups it with third-party imports.
+from gateway_clients.filters import GATEWAY_ALLOW_LISTS  # type: ignore[import-not-found]
 from gateway_clients.names import (  # type: ignore[import-not-found]
     gateway_tool_name,
     normalise_tool_name,
@@ -86,3 +91,85 @@ def test_target_name_rejects_a_non_bare_name() -> None:
     # Act + Assert: it is rejected rather than silently producing a nonsense target.
     with pytest.raises(ValueError, match="bare snake_case"):
         target_name("dispatch-crew-target___dispatch_crew")
+
+
+# --- Task 38.2: derived filter names must match the CDK targets and the Cedar actions ---------
+#
+# Validates: Requirements 13.2, 13.3, 14.10 (design §21.5).
+#
+# Three sources must agree so a filter is never silently emptied and a Cedar permit never
+# outlives the allow-list it was written for (design §21.5, R9 in the risk register):
+#
+#   1. ``gateway_tool_name(bare)`` from ``gateway_clients/names.py`` — the name this design derives;
+#   2. the target names the CDK creates for each Lambda tool;
+#   3. the action suffixes in the Cedar policy files.
+#
+# SCOPING (task 38.2). The CDK Gateway targets are a Wave-9 deliverable (task 76) and do NOT
+# exist yet, so the "corresponds to a target the CDK creates" half is asserted against what this
+# spec DOES own now: the four read tools' ``tool_spec.json`` ``name``s and their derived
+# ``gateway_tool_name``s. See ``TODO(wave9-cdk)`` below — the CDK-target cross-check completes in
+# task 76's verification, and this test must NOT fail on absent CDK constructs. The Cedar half is
+# scoped to THIS spec's ``gateway/policies/agent-team-runtime.cedar`` (the four read-tool permits),
+# which MUST pass fully: every action it names is a tool a role may call, and no action references
+# a tool no role may call. The FAST sample ``policy.cedar`` and the ``grid-tools`` permits (which
+# live in a file not yet on this branch) are other specs' actions and are excluded as
+# ``KNOWN_OTHER_SPEC_ACTIONS`` exactly as the design's §21.5 example does.
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+_READ_TOOLS = ("get_flood_status", "list_open_outages", "get_proposal_status", "list_crews")
+_THIS_SPEC_CEDAR = _REPO_ROOT / "gateway" / "policies" / "agent-team-runtime.cedar"
+_CEDAR_ACTION = re.compile(r'AgentCore::Action::"([^"]+)"')
+
+
+def _read_tool_spec_name(tool: str) -> str:
+    """The single ``name`` a read tool's ``tool_spec.json`` declares (a one-element array)."""
+    spec_path = _REPO_ROOT / "gateway" / "tools" / tool / "tool_spec.json"
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    assert isinstance(spec, list) and len(spec) == 1, f"{tool}: tool_spec must be a 1-element array"
+    return str(spec[0]["name"])
+
+
+def _cedar_actions(path: Path) -> set[str]:
+    """Every ``AgentCore::Action`` suffix referenced in a Cedar policy file."""
+    return set(_CEDAR_ACTION.findall(path.read_text(encoding="utf-8")))
+
+
+def test_derived_filter_matches_cdk_and_cedar_targets() -> None:
+    """Derived names, read-tool specs and this spec's Cedar actions agree (R13.2, R13.3, R14.10)."""
+    # --- CDK-target half (scoped to the read tools this spec owns) -----------------------------
+    # Each read tool's derived Gateway name is ``<tool>-target___<tool>`` and round-trips: the
+    # target segment is the tool in kebab-case plus ``-target``, and normalising the derived name
+    # recovers the bare tool. The bare tool must equal the ``name`` the tool_spec declares, so the
+    # thing the CDK will register (task 76) is exactly the thing the filter derives.
+    for tool in _READ_TOOLS:
+        derived = gateway_tool_name(tool)
+        target = derived.split("___")[0]
+        assert target == f"{tool.replace('_', '-')}-target", f"{tool}: bad target {target!r}"
+        assert normalise_tool_name(derived) == tool
+        assert _read_tool_spec_name(tool) == tool, (
+            f"{tool}: tool_spec name disagrees with the derived bare name"
+        )
+    # TODO(wave9-cdk): task 76's verification cross-checks these derived target names against the
+    # Gateway targets the CDK actually creates in ``infra-cdk/lib/`` (they do not exist on this
+    # branch). Do NOT fail here on their absence; this half is complete for the read tools now.
+
+    # --- Cedar half (this spec's policy file MUST pass fully) ----------------------------------
+    # Every ``gateway_tool_name`` the design derives across every role's allow-list.
+    derived_all = {
+        gateway_tool_name(bare)
+        for role in GATEWAY_ALLOW_LISTS
+        for bare in GATEWAY_ALLOW_LISTS[role]
+    }
+    # This spec's Cedar file names exactly the four read-tool actions, each of which is a derived
+    # name of a tool a role may call. No action here references a tool no role may call.
+    cedar_actions = _cedar_actions(_THIS_SPEC_CEDAR)
+    assert cedar_actions == {gateway_tool_name(t) for t in _READ_TOOLS}, (
+        "this spec's Cedar actions drifted from the four read-tool derived names"
+    )
+    orphans = cedar_actions - derived_all
+    assert not orphans, f"Cedar permits reference tools no role may call: {sorted(orphans)}"
+    # Every action's suffix is the tool's own bare name (the ``<target>___<tool>`` form holds).
+    for action in cedar_actions:
+        target, tool = action.split("___")
+        assert normalise_tool_name(action) == tool
+        assert target == f"{tool.replace('_', '-')}-target"

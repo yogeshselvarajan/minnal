@@ -438,3 +438,79 @@ tool-loop vectors (`requests_forbidden_tool`, `endless_tools`) are expressed as 
 `toolUse` intents in `Model.stream`; the enforcement (ToolFilters allow-list, per-node tool-call
 budget) is the graph's and is verified by the integration property tests in the qa lane (task 68),
 not by this model.
+
+## 2026-10-01 — task 66: In_Process_Tool_Server — two reconciliations (agent-engineer lane)
+
+Built `patterns/agui-minnal/offline/tool_server.py` (§18.2, R22.2, R13.4, R9.9). Two places where
+the design's §18.2 sketch meets working-tree reality; neither changes the design's intent.
+
+### 1. The seven grid-tools `*_lambda.py` handlers are typed stubs, not implemented
+
+§18.2's `TOOLS` map references `record_outage_lambda.lambda_handler` … `propose_switching_lambda.
+lambda_handler`. On this branch those seven modules exist but carry **no `lambda_handler`**: the
+grid-tools merge (`b83a05f`, "logic.py / adapters.py / <name>_lambda.py are typed stubs filled in
+later waves") shipped the tool *contracts* (`tool_spec.json`, strict `input.schema.json`,
+`models.py`) but not the handlers, which are a later **grid-tools**-spec wave, not part of
+agent-team-runtime. Only the four read tools of THIS spec (`get_flood_status`, `list_open_outages`,
+`get_proposal_status`, `list_crews`) have a working `lambda_handler`.
+
+**Resolution (autopilot "stub the dependency behind an interface"):** `TOOLS` maps each of the
+eleven bare tool names to the **dotted module path** of its `*_lambda.py` (not to the function
+object), and the handler is resolved lazily on first call via `_handler(name)`. So:
+- Importing `tool_server` never fails on an unfilled sibling-spec handler.
+- `list_tools` is built from each tool's real `tool_spec.json` and returns all **eleven** now
+  (every spec file exists), so the MCP tool surface is complete and stable.
+- `call_tool`/`invoke_tool` for the four read tools runs the real handler, real envelope, real
+  error codes and (for write tools, when they land) the real idempotency store — nothing stubbed.
+- `call_tool` for one of the seven grid-tools tools raises a clear `RuntimeError` naming the tool
+  and its module ("its grid-tools handler is not implemented yet on this branch") rather than a
+  silent skip. **The moment grid-tools fills those handlers, this module wires them with zero
+  change** — the map already names them.
+This keeps §18.2's eleven-entry map verbatim and its guarantee ("the handler's own tool-name
+check runs, the real envelope/error-codes/idempotency store are exercised") true for every tool
+that has a handler, and loud for every tool that does not yet.
+
+### 2. `build_server(ports)` — the `ports` argument is intentionally not threaded into handlers
+
+§18.2 signs `build_server(ports: "Ports")`. But every `*_lambda.py` builds **its own**
+`Settings()` and, through `make_ports`, its own backend adapters (verified in
+`get_flood_status/adapters.py::make_reader(Settings())`). Injecting a `Ports` bundle into the
+handlers would *bypass* the very reader/repo construction path the offline run is meant to
+exercise ("do not bypass how handlers construct their readers/repos"). So `build_server` keeps a
+`ports: object | None = None` parameter for design fidelity and to signal the caller selected a
+backend via `make_ports`, but does **not** pass it to the handlers: the backend is chosen once, by
+`MINNAL_BACKEND` in the process environment (the replay runner, task 67, sets `MINNAL_BACKEND=
+local`; §18.3). The server opens no socket (stdio transport only, via `run_stdio`) and holds no
+boto3 client itself.
+
+### Target naming verified (§19.4 / §8.1.1)
+
+The fake Lambda `client_context.custom["bedrockAgentCoreToolName"]` is built by
+`gateway_clients.names.gateway_tool_name(tool)` — the single existing target-naming helper — which
+yields `<tool-in-kebab>-target___<tool>`, e.g. `get-flood-status-target___get_flood_status`. This
+matches design §19.4 (`get-flood-status-target … list-crews-target`) and the `test_read_permits.py`
+action names exactly. Each handler's `_routed_tool_name` splits on `"___"` and compares only the
+bare tail to its `_TOOL_NAME`, so the target prefix only has to be present and well-formed; using
+the shared helper guarantees it is the same string the CDK targets and Cedar actions name. Verified
+by smoke: a `get_flood_status` handler given a `list-crews-target___list_crews` context returns
+`NOT_FOUND` (the check fires), while the correctly-routed context returns `ok` — the check is
+exercised, not bypassed.
+
+### `record_outage` (task 66.2)
+
+Registered in `TOOLS` for fixture ingest only. No role's `GATEWAY_ALLOW_LISTS`/`LOCAL_ALLOW_LISTS`
+allow-lists it and `NEVER_ALLOWED` names it (`gateway_clients/filters.py`), so the server is
+deliberately *more* permissive than any role and Property 45 (task 38.5) tests a real filter, not a
+stub. Its handler is one of the seven stubs above, so an actual `record_outage` call raises the
+clear `RuntimeError` until the grid-tools handler lands; the registration (the thing task 66.2
+requires) is present now.
+
+### Checks (this file only; task 68 owns the tests)
+
+`uv run ruff check patterns/agui-minnal/offline` → All checks passed. `ruff format --check` → clean.
+`uv run mypy patterns/agui-minnal/offline` → Success, no issues (7 source files). `tests/
+test_no_claude.py` → 9 passed (the offline tree is in its scan targets). Import-smoke (throwaway,
+deleted; not left as a test file): `build_server` imports, `list_tools` yields 11 tools each with
+an inputSchema, `invoke_tool("get_flood_status", …)` against a local-backed seeded incident returns
+a well-formed `ok` envelope, an unknown incident returns `NOT_FOUND`, an unknown tool raises
+`ValueError`. No tasks ticked, no commit (runner commits after verification).

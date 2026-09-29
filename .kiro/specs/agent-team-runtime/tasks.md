@@ -542,11 +542,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 65.4 Add the adversarial scripts `adversarial_types_clearance`, `adversarial_claims_approval`, `adversarial_requests_forbidden_tool`, `adversarial_endless_tools`, `adversarial_obeys_injection` and `adversarial_safety_claims_clear`, one per STRIDE vector
     - _Requirements: 17.4, 17.7, 12.6, 13.2, 16.2, 5.3_ §18.1, §10.5 [agent-engineer]
 
-- [ ] 66. The in-process tool server
+- [x] 66. The in-process tool server
   - _Requirements: 9.9, 13.4, 22.2_ §18.2 [agent-engineer]
-  - [ ] 66.1 Write `patterns/agui-minnal/offline/tool_server.py` exposing all eleven handlers, the seven `grid-tools` handlers and the four read tools, as MCP tools over stdio, invoking each `*_lambda.py` handler with a fake Lambda context carrying `bedrockAgentCoreToolName` as `<target>___<tool>` so the handler's own tool-name check runs and the real envelope, error codes and idempotency store are exercised
+  - [x] 66.1 Write `patterns/agui-minnal/offline/tool_server.py` exposing all eleven handlers, the seven `grid-tools` handlers and the four read tools, as MCP tools over stdio, invoking each `*_lambda.py` handler with a fake Lambda context carrying `bedrockAgentCoreToolName` as `<target>___<tool>` so the handler's own tool-name check runs and the real envelope, error codes and idempotency store are exercised
     - _Requirements: 22.2_ §18.2 [agent-engineer]
-  - [ ] 66.2 Register `record_outage` on the server for fixture ingest only, deliberately making the server more permissive than any role so the allow-list tests are testing something real
+  - [x] 66.2 Register `record_outage` on the server for fixture ingest only, deliberately making the server more permissive than any role so the allow-list tests are testing something real
     - _Requirements: 13.4, 9.9, 22.2_ §18.2 [agent-engineer]
 
 - [ ] 67. The replay runner

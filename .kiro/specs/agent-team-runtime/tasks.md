@@ -261,13 +261,13 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 34.2 Write `all_tools_for(role, registry, local)` as the single place a tool list is built, raising when a role allow-lists a local tool with no provider wired up
     - _Requirements: 13.2, 13.3, 13.7_ §8.1.4 [agent-engineer]
 
-- [ ] 35. Identity and the client registry
+- [x] 35. Identity and the client registry
   - _Requirements: 13.1, 13.2, 13.7, 13.9_ §8.2, §8.1.3 [agent-engineer]
-  - [ ] 35.1 Write `patterns/agui-minnal/gateway_clients/identity.py` with `RoleIdentityProvider` caching a client-credentials token per role, refreshing at 80 percent of the lifetime, and reading the client secret from Secrets Manager by ARN and never from config or code
+  - [x] 35.1 Write `patterns/agui-minnal/gateway_clients/identity.py` with `RoleIdentityProvider` caching a client-credentials token per role, refreshing at 80 percent of the lifetime, and reading the client secret from Secrets Manager by ARN and never from config or code
     - _Requirements: 13.1, 13.9_ §8.2 [agent-engineer]
-  - [ ] 35.2 Write `patterns/agui-minnal/gateway_clients/registry.py` with `RoleClientRegistry` building one `MCPClient` per role with `tool_filters_for(role)`, `prefix="gateway"` and `startup_timeout=30`, fetching the token inside the transport factory so every reconnection is fresh
+  - [x] 35.2 Write `patterns/agui-minnal/gateway_clients/registry.py` with `RoleClientRegistry` building one `MCPClient` per role with `tool_filters_for(role)`, `prefix="gateway"` and `startup_timeout=30`, fetching the token inside the transport factory so every reconnection is fresh
     - _Requirements: 13.1, 13.2_ §8.1.3 [agent-engineer]
-  - [ ] 35.3 Add `verify_allow_lists` comparing normalised names against an unfiltered `list_tools_sync(tool_filters={})` and failing at start-up naming the role and the missing tools
+  - [x] 35.3 Add `verify_allow_lists` comparing normalised names against an unfiltered `list_tools_sync(tool_filters={})` and failing at start-up naming the role and the missing tools
     - _Requirements: 13.7_ §8.1.3 [agent-engineer]
 
 - [ ] 36. Commit identity mapping

@@ -102,14 +102,14 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 14.1 Add `derive_idempotency_key` to `patterns/agui-minnal/domain/ids.py`: the `0x1F`-joined byte layout with the `minnal.idem.v1` tag, `node#iteration`, `item_id` and the optional clearance, BLAKE2b at 16 bytes, the top two bits cleared, encoded as 26 Crockford characters matching `^[0-7][0-9A-HJKMNP-TV-Z]{25}$`
     - _Requirements: 15.1, 15.2, 15.8_ §6.3 [agent-engineer]
 
-- [ ] 15. Verify idempotency keys
+- [x] 15. Verify idempotency keys
   - _Requirements: 15.1, 15.2, 15.3, 15.4, 15.6, 15.7, 15.8, 15.9_ §20, §6.3 [qa-eval-engineer]
-  - [ ] 15.1 Write property test for Property 50
+  - [x] 15.1 Write property test for Property 50
     - **Property 50: idempotency keys are valid, deterministic and distinct**
     - **Validates: Requirements 15.2, 15.3, 15.4, 15.8, 15.9, 15.6**
     - `test_property_P50_idempotency_keys` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 15.2, 15.3, 15.4, 15.8, 15.9, 15.6_ §20, §6.3 [qa-eval-engineer]
-  - [ ] 15.2 Write `tests/agents/test_key_examples.py` asserting the eight worked examples in §6.3 reproduce exactly, so the byte layout cannot drift silently
+  - [x] 15.2 Write `tests/agents/test_key_examples.py` asserting the eight worked examples in §6.3 reproduce exactly, so the byte layout cannot drift silently
     - _Requirements: 15.1, 15.2, 15.7_ §6.3 [qa-eval-engineer]
 
 - [x] 16. Period validation and numbering

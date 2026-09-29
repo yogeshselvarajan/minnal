@@ -446,3 +446,30 @@ dispatch_crew's mirror carries `safety_clearance_id`+`flood_check` as required
 - Generator run twice → identical sha256 (deterministic).
 - `ruff check gateway` clean; `ruff format --check gateway` clean.
 - `pytest -q tests/tools` → 256 passed (imports intact; no tests added here).
+
+### Wave 5 tests (Tasks 60-64, qa-eval-engineer)
+
+Added `tests/policy/`: `_cedar.py` (in-process cedarpy harness over the *real*
+`grid-tools.cedar` + generated mirror, `{{GATEWAY_ARN}}` bound to a test id),
+`conftest.py` (registers the 200-example Hypothesis profiles — the built-in
+`default` is only 100, so a policy-only run must overwrite it — plus local-backend
+defaults), `test_cedar_matrix.py` (Task 60), `test_policy_file.py` (Task 61),
+`test_property_P26_*.py` (Task 62), `test_property_P25_*.py` (Task 63) and
+`test_tool_checks_hold_without_policy.py` (Task 64).
+
+**Clarification (not a bug), surfaced by the P26 property and confirmed against
+the matrix rows 17-19.** The mirror declares `flood_check.intersects` as a
+**required** nested field for both `dispatch_crew` and `propose_switching`, and
+`flood_check` itself as required for `dispatch_crew` (optional for switching).
+cedarpy therefore refuses to *build* a request whose `flood_check` is present but
+omits `intersects`, or (for dispatch) omits `flood_check` entirely: the engine
+returns `NoDecision` at request-build time rather than reaching the `has` guard in
+the forbid. This is the same safe outcome (not-Allow = the tool is never invoked)
+and is exactly what design A3 anticipates — "Gateway input-schema validation runs
+before policy evaluation" — so the `has intersects` guard in §10.2 is the belt to
+the schema's braces, still load-bearing for the *absent-`flood_check`* case on
+`propose_switching` (which builds and is denied by the forbid). The P26 oracle
+models this explicitly (`_schema_invalid`): a present-but-incomplete `flood_check`
+is never Allowed for any action, including `de_energise`. No policy or mirror
+change is needed; recorded here so a future reader does not mistake the
+`NoDecision` for a missing forbid.

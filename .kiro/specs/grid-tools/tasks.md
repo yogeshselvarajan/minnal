@@ -213,7 +213,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 61. [qa-eval-engineer] Write `policy/test_policy_file.py`: `test_every_statement_cites_a_requirement`, `test_policy_fields_declared_in_subset_specs`, `test_cedar_mirror_regenerates_from_subset_specs` _Requirements: 12.1, 12.6_ _Design: §10.2, §10.4_
 
-- [ ] 62. [qa-eval-engineer] Write property test for Property 26 `[SAFETY]` (Cedar forbids unsafe input and default-denies everything else) _Requirements: 12.2, 12.3, 12.4, 12.7_ _Design: §18 P26_
+- [x] 62. [qa-eval-engineer] Write property test for Property 26 `[SAFETY]` (Cedar forbids unsafe input and default-denies everything else) _Requirements: 12.2, 12.3, 12.4, 12.7_ _Design: §18 P26_
 
 - [ ] 63. [qa-eval-engineer] Write property test for Property 25 `[SAFETY]` (`de_energise` is never blocked, in the Logic and in the policy, with any combination of absent fields) _Requirements: 10.5, 10.7, 10.8, 12.3_ _Design: §18 P25_
 

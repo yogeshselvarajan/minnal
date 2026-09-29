@@ -17,14 +17,13 @@ import os
 
 from hypothesis import settings
 
-# Registering an already-registered profile name is harmless; guard anyway so a
-# combined run (tests/tools + tests/policy) never double-registers noisily.
-if "default" not in settings._profiles:  # type: ignore[attr-defined]
-    settings.register_profile("default", max_examples=200)
-if "ci" not in settings._profiles:  # type: ignore[attr-defined]
-    settings.register_profile("ci", max_examples=200, derandomize=True, deadline=None)
-if "quick" not in settings._profiles:  # type: ignore[attr-defined]
-    settings.register_profile("quick", max_examples=50)
+# Register unconditionally (re-registration overwrites): Hypothesis ships a
+# built-in `default` profile capped at 100 examples, so we must replace it with
+# the 200-example one (R16.3) rather than skip when the name already exists. This
+# mirrors tests/tools/conftest.py so a policy-only run is full strength.
+settings.register_profile("default", max_examples=200)
+settings.register_profile("ci", max_examples=200, derandomize=True, deadline=None)
+settings.register_profile("quick", max_examples=50)
 settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "default"))
 
 # Fake AWS credentials: construction never touches a real credential chain.

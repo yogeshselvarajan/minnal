@@ -209,7 +209,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 59. [platform-engineer] Write the Cedar schema mirror generator: build `gateway/policies/schema/gateway-schema.json` from the seven **subset** `tool_spec.json` files only, carrying types and requiredness and no enums or patterns _Requirements: 12.6, 12.7_ _Design: §10.4_
 
-- [ ] 60. [qa-eval-engineer] Write `policy/test_cedar_matrix.py`: all 21 rows of §10.5, including `de_energise` allowed with `intersects: true`, with no `flood_check` at all, and while the feed is stale or unknown; `energise` denied without `flood_check` and without nested `intersects`; the unlisted tool; and the hypothetical approval action _Requirements: 12.7, 12.3, 12.4_ _Design: §10.5_
+- [x] 60. [qa-eval-engineer] Write `policy/test_cedar_matrix.py`: all 21 rows of §10.5, including `de_energise` allowed with `intersects: true`, with no `flood_check` at all, and while the feed is stale or unknown; `energise` denied without `flood_check` and without nested `intersects`; the unlisted tool; and the hypothetical approval action _Requirements: 12.7, 12.3, 12.4_ _Design: §10.5_
 
 - [ ] 61. [qa-eval-engineer] Write `policy/test_policy_file.py`: `test_every_statement_cites_a_requirement`, `test_policy_fields_declared_in_subset_specs`, `test_cedar_mirror_regenerates_from_subset_specs` _Requirements: 12.1, 12.6_ _Design: §10.2, §10.4_
 

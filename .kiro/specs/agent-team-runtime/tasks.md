@@ -342,9 +342,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 44.1 Write `roles/hazard/agent.py` whose wrapper computes `is_safe_for_dispatch` as `flood_status == "fresh"` rather than trusting the model, wraps every web source untrusted, emits a citation per source, marks a failed source unavailable without failing the period, and ends the node with `budget_exceeded` rather than continuing to search
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8_ §7.5.2 [agent-engineer]
 
-- [ ] 45. The diagnostics agent
+- [x] 45. The diagnostics agent
   - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.10_ §7.5.3 [agent-engineer]
-  - [ ] 45.1 Write `roles/diagnostics/agent.py` paging `list_open_outages` in code until the token is absent or the budget is reached, splitting clusters at 1000 outage IDs per `trace_upstream_device` call, reporting one suspected device per group when `common_device_id` is null, carrying `unlocated_outage_ids` through, placing any `untrusted_note` only in an untrusted block, and recommending switching without calling `propose_switching`
+  - [x] 45.1 Write `roles/diagnostics/agent.py` paging `list_open_outages` in code until the token is absent or the budget is reached, splitting clusters at 1000 outage IDs per `trace_upstream_device` call, reporting one suspected device per group when `common_device_id` is null, carrying `unlocated_outage_ids` through, placing any `untrusted_note` only in an untrusted block, and recommending switching without calling `propose_switching`
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.10_ §7.5.3 [agent-engineer]
 
 - [ ] 46. Dispatch planning

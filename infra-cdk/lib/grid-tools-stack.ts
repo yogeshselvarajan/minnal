@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib"
 import { Construct } from "constructs"
 import { AppConfig } from "./utils/config-manager"
+import { EventsConstruct } from "./grid-tools/events-construct"
 import { GridToolsDataConstruct } from "./grid-tools/grid-tools-data-construct"
 import { IntakeConstruct } from "./grid-tools/intake-construct"
 import { minnalTags } from "./grid-tools/naming"
@@ -19,6 +20,7 @@ export interface GridToolsStackProps extends cdk.StackProps {
 export class GridToolsStack extends cdk.Stack {
   public readonly data: GridToolsDataConstruct
   public readonly intake: IntakeConstruct
+  public readonly eventsRouting: EventsConstruct
 
   constructor(scope: Construct, id: string, props: GridToolsStackProps) {
     super(scope, id, props)
@@ -31,6 +33,12 @@ export class GridToolsStack extends cdk.Stack {
       config,
       table: this.data.table,
       deadLetterQueue: this.data.deadLetterQueue,
+    })
+
+    this.eventsRouting = new EventsConstruct(this, "EventsRouting", {
+      config,
+      hazardQueue: this.intake.hazardQueue,
+      intakeQueue: this.intake.intakeQueue,
     })
 
     // Project-wide tags on every resource in the stack (steering `infra-cdk.md`).

@@ -228,7 +228,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 66. [platform-engineer] Write `IntakeConstruct`: the hazard and intake FIFO queues with content-based deduplication, the shared DLQ and redrive policies, the Flood_Ingestor mapping at batch size 1, and the Event_Ingestor mapping at batch size 10 with `ReportBatchItemFailures` _Requirements: 18.8, 3.4, 18.6_ _Design: §16.1, §5.8, §5.10_
 
-- [ ] 67. [platform-engineer] Write `EventsConstruct`: the two EventBridge rules with the configured sources and `SqsParameters.MessageGroupId` from the incident id, and the scoped EventBridge role _Requirements: 18.8, 13.2_ _Design: §16.1_
+- [x] 67. [platform-engineer] Write `EventsConstruct`: the two EventBridge rules with the configured sources and `SqsParameters.MessageGroupId` from the incident id, and the scoped EventBridge role _Requirements: 18.8, 13.2_ _Design: §16.1_
 
 - [ ] 68. [platform-engineer] Write `GatewayToolsConstruct`: the seven tool functions on arm64 with local `uv` bundling, `_shared` copied in, and `data/grid`, `data/facilities` and `data/crews` copied into every tool asset so `_shared/grid.py` can load the Grid at cold start, the seven Gateway targets from the subset specs, per-function roles, reserved concurrency and the Gateway rate limits _Requirements: 14.1, 14.2, 1.1_ _Design: §3.2, §16.1, §16.2_
 

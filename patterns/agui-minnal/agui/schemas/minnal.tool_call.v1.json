@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.example/schemas/agui/minnal.tool_call.v1.json",
+  "title": "MinnalToolCall",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_id", "operational_period", "agent", "tool",
+               "input_summary", "output_summary", "duration_ms", "ok"],
+  "properties": {
+    "incident_id": { "type": "string", "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "operational_period": { "type": "integer", "minimum": 1 },
+    "correlation_id": { "type": "string", "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "agent": { "type": "string", "minLength": 1, "maxLength": 32 },
+    "tool": {
+      "type": "string",
+      "enum": ["trace_upstream_device", "check_flood_geofence", "plan_crew_route",
+               "rank_restoration_jobs", "dispatch_crew", "propose_switching",
+               "get_flood_status", "list_open_outages", "get_proposal_status",
+               "list_crews", "open_meteo_forecast", "web_search", "browser",
+               "kb_retrieve"]
+    },
+    "input_summary": { "type": "string", "maxLength": 280 },
+    "output_summary": { "type": "string", "maxLength": 280 },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "ok": { "type": "boolean" },
+    "error_code": {
+      "type": "string",
+      "enum": ["VALIDATION_ERROR", "NOT_FOUND", "CONFLICT", "SAFETY_VIOLATION",
+               "UPSTREAM_ERROR", "RATE_LIMITED", "INTERNAL"]
+    },
+    "item_id": { "type": "string", "pattern": "^itm_(dsp|swi)_[0-9a-f]{12}$" }
+  }
+}

@@ -51,11 +51,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 6.3 Write `tests/agents/test_models.py::test_temperatures_and_timeouts` asserting 0.2, 0.1 and 0.0 for the reasoning tier and an explicit request timeout on every model
     - _Requirements: 2.3, 2.4_ §7.3, §15.4 [qa-eval-engineer]
 
-- [ ] 7. Glass-box event schemas
+- [x] 7. Glass-box event schemas
   - _Requirements: 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8, 18.9_ §12.3 [agent-engineer]
-  - [ ] 7.1 Write the six `minnal.*` JSON Schemas in `patterns/agui-minnal/agui/schemas/`: `minnal.agent_step.v1.json`, `minnal.tool_call.v1.json`, `minnal.citation.v1.json`, `minnal.veto.v1.json`, `minnal.approval_request.v1.json` and `minnal.map_update.v1.json`, each requiring `incident_id` and `operational_period`, constraining `task_token_ref` to the `ttr_` form, and carrying no personal-data field
+  - [x] 7.1 Write the six `minnal.*` JSON Schemas in `patterns/agui-minnal/agui/schemas/`: `minnal.agent_step.v1.json`, `minnal.tool_call.v1.json`, `minnal.citation.v1.json`, `minnal.veto.v1.json`, `minnal.approval_request.v1.json` and `minnal.map_update.v1.json`, each requiring `incident_id` and `operational_period`, constraining `task_token_ref` to the `ttr_` form, and carrying no personal-data field
     - _Requirements: 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.9_ §12.3 [agent-engineer]
-  - [ ] 7.2 Write `patterns/agui-minnal/agui/validate.py` (pure) validating an event against its schema before emit
+  - [x] 7.2 Write `patterns/agui-minnal/agui/validate.py` (pure) validating an event against its schema before emit
     - _Requirements: 18.8_ §12.3 [agent-engineer]
 
 - [ ] 8. Domain event schemas

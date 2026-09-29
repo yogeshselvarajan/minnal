@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.example/schemas/agui/minnal.veto.v1.json",
+  "title": "MinnalVeto",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_id", "operational_period", "reason", "source"],
+  "properties": {
+    "incident_id": { "type": "string", "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "operational_period": { "type": "integer", "minimum": 1 },
+    "rule_id": {
+      "type": "string",
+      "enum": ["FLOOD_ROUTE", "FLOOD_DESTINATION", "FLOOD_ENERGISE",
+               "FLOOD_DATA_UNAVAILABLE", "FLOOD_CHANGED", "CLEARANCE_INVALID",
+               "CREW_SIZE"]
+    },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "proposal_id": { "type": "string", "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "item_id": { "type": "string", "pattern": "^itm_(dsp|swi)_[0-9a-f]{12}$" },
+    "source": { "type": "string", "enum": ["tool", "advisory"] },
+    "iteration": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "hazard_ids": { "type": "array", "items": { "type": "string", "pattern": "^FP-\\d+$" } },
+    "is_final": { "type": "boolean", "description": "true when the item is now blocked" }
+  }
+}

@@ -430,18 +430,18 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 53.1 Write the `pio` and `scribe` slot Code_Nodes returning a typed `not_implemented` result with no model call and no tool call, with inputs carrying everything the later roles need, no Gateway client, and no Memory write access for `scribe`
     - _Requirements: 21.1, 21.2, 21.3, 21.4, 21.5, 21.6_ §5.5 [agent-engineer]
 
-- [ ] 54. Verify the commit gate and the slots
+- [x] 54. Verify the commit gate and the slots
   - _Requirements: 9.4, 9.5, 9.6, 9.7, 9.8, 10.4, 10.5, 12.1, 12.2, 12.6, 15.5, 21.2, 21.3, 21.4, 21.5, 21.6_ §20, §9, §5.5 [qa-eval-engineer]
-  - [ ] 54.1 Write property test for Property 44
+  - [x] 54.1 Write property test for Property 44
     - **Property 44: no approval capability exists [SAFETY]**
     - **Validates: Requirements 12.1, 12.2, 12.6**
     - `test_property_P44_no_approval_capability` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 12.1, 12.2, 12.6_ §20, §9.5 [qa-eval-engineer]
-  - [ ] 54.2 Write `tests/agents/test_commit_gate.py` with `test_no_model_call_in_commit`, `test_conflict_is_authoritative`, `test_veto_codes_not_retried`, `test_retry_uses_same_key` and `test_conflict_never_mutates_key`
+  - [x] 54.2 Write `tests/agents/test_commit_gate.py` with `test_no_model_call_in_commit`, `test_conflict_is_authoritative`, `test_veto_codes_not_retried`, `test_retry_uses_same_key` and `test_conflict_never_mutates_key`
     - _Requirements: 9.4, 9.5, 9.6, 9.7, 9.8, 15.5_ §9, §21.5 [qa-eval-engineer]
-  - [ ] 54.3 Write `tests/agents/test_no_approval_path.py::test_no_module_references_approval` walking the AST for any approval API reference
+  - [x] 54.3 Write `tests/agents/test_no_approval_path.py::test_no_module_references_approval` walking the AST for any approval API reference
     - _Requirements: 12.1_ §9.5, §21.5 [qa-eval-engineer]
-  - [ ] 54.4 Write `tests/agents/test_slots.py` with `test_pio_and_scribe_return_not_implemented` and `test_slot_inputs_carry_required_context`, and `tests/agents/test_preventive.py::test_flag_carried_and_null_is_unknown`
+  - [x] 54.4 Write `tests/agents/test_slots.py` with `test_pio_and_scribe_return_not_implemented` and `test_slot_inputs_carry_required_context`, and `tests/agents/test_preventive.py::test_flag_carried_and_null_is_unknown`
     - _Requirements: 21.2, 21.3, 21.4, 21.5, 21.6, 10.4, 10.5_ §5.5, §10.3, §21.5 [qa-eval-engineer]
 
 - [x] 55. Periods, the lease and the summary

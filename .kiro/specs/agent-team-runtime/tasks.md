@@ -464,7 +464,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 56.3 Write `tests/agents/test_audit.py` with `test_every_item_has_an_audit_record` and `test_node_metrics_recorded`
     - _Requirements: 5.9, 16.8_ §5.4, §21.5 [qa-eval-engineer]
 
-- [ ] 57. **Checkpoint: run the tests so far.** `uv run ruff check patterns gateway && uv run pytest -q tests/agents tests/tools`, then `uv run pytest -m safety`
+- [x] 57. **Checkpoint: run the tests so far.** `uv run ruff check patterns gateway && uv run pytest -q tests/agents tests/tools`, then `uv run pytest -m safety`
   - _Requirements: 25.3, 25.5, 25.8_ §21 [qa-eval-engineer]
 
 ## Wave 6: glass box, memory and observability

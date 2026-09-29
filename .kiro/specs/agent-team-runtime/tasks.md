@@ -330,11 +330,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - `test_property_P49_repair_then_typed_failure` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 4.2, 4.3, 4.4, 4.6, 4.5_ §20, §7.4 [qa-eval-engineer]
 
-- [ ] 43. The commander and agents-as-tools
+- [x] 43. The commander and agents-as-tools
   - _Requirements: 3.5, 12.5, 12.6, 13.5_ §7.5.1 [agent-engineer]
-  - [ ] 43.1 Write `roles/commander/agent.py` with both node entry points, reading the previous period's decisions through `get_proposal_status` and never inferring a decision from conversation history
+  - [x] 43.1 Write `roles/commander/agent.py` with both node entry points, reading the previous period's decisions through `get_proposal_status` and never inferring a decision from conversation history
     - _Requirements: 3.5, 12.5, 12.6_ §7.5.1 [agent-engineer]
-  - [ ] 43.2 Write `as_readonly_tool` exposing a role to the commander with every write tool stripped, comparing normalised names against `WRITE_TOOLS`
+  - [x] 43.2 Write `as_readonly_tool` exposing a role to the commander with every write tool stripped, comparing normalised names against `WRITE_TOOLS`
     - _Requirements: 13.5_ §7.5.1 [agent-engineer]
 
 - [ ] 44. The hazard agent

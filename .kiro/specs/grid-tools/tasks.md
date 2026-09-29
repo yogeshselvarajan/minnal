@@ -163,7 +163,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 46. [geo-data-engineer] Wire `approval_handler/`: the API Gateway handler over the task-25.1 Logic — Cognito claims in, the decide-once conditional update, the approval-time flood re-test, the crew-lock release, `SendTaskSuccess`/`SendTaskFailure`, the decision events named from the proposal kind, and `ApprovalLatencyMs` _Requirements: 11.2, 11.3, 11.4, 11.7, 11.8, 11.9, 9.10, 13.5, 2.3_ _Design: §5.9_
 
-- [ ] 47. [geo-data-engineer] Write `token_vault/` and wire `work_order_expirer/`: single-use token storage, and the handler over the task-25.1 expirer Logic marking the proposal expired, the clearance used, the crew lock released and the expiry event emitted _Requirements: 11.1, 11.6, 13.5, 9.10_ _Design: §5.9, §5.11, §6.6_
+- [x] 47. [geo-data-engineer] Write `token_vault/` and wire `work_order_expirer/`: single-use token storage, and the handler over the task-25.1 expirer Logic marking the proposal expired, the clearance used, the crew lock released and the expiry event emitted _Requirements: 11.1, 11.6, 13.5, 9.10_ _Design: §5.9, §5.11, §6.6_
 
 _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here because each one exercises a handler, a store transaction or the Approval_Handler, none of which exists before this wave._
 

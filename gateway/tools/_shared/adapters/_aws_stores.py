@@ -328,12 +328,14 @@ class DynamoTokenVault:
     def __init__(self, table: DynamoTable) -> None:
         self._table = table
 
-    def store(self, incident_id: str, ttr: str, task_token: str) -> None:
+    def store(
+        self, incident_id: str, ttr: str, task_token: str, proposal_id: str | None = None
+    ) -> None:
         item = {
             "pk": _pk(incident_id),
             "sk": f"TTR#{ttr}",
             "task_token": task_token,
-            "proposal_id": ttr,
+            "proposal_id": proposal_id if proposal_id is not None else ttr,
         }
         try:
             self._table.put_if_absent(item)

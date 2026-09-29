@@ -24,8 +24,15 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
 from _shared import events as event_builder
+from _shared.adapters._local_backend import LocalStore as LocalStoreLike
+from _shared.adapters._local_backend import key as _store_key
 from _shared.ids import new_id
 from _shared.ports import Proposal, StartedWorkOrder
+
+
+def _ttr_key(incident_id: str, ttr: str) -> str:
+    """Return the store key for a ``TTR#`` item (matches the store adapters)."""
+    return _store_key(f"INC#{incident_id}", f"TTR#{ttr}")
 
 
 class TaskAlreadySettled(Exception):
@@ -43,14 +50,31 @@ class _Order:
 
 
 class LocalTokenVault:
-    """A single-use token vault (§12.3, R11.1)."""
+    """A single-use token vault (§12.3, R11.1).
 
-    def __init__(self) -> None:
+    Keeps the token in memory for the single-use ``take`` and, when a
+    :class:`LocalStore` is provided, also writes the ``TTR#`` store item
+    (``proposal_id`` + ``task_token``) so ``ProposalStore.record_decision`` can
+    resolve the Proposal from the ref, matching the AWS vault (§12.3, R11.7).
+    """
+
+    def __init__(self, store: LocalStoreLike | None = None) -> None:
         self._tokens: dict[str, str | None] = {}
+        self._store = store
 
-    def store(self, incident_id: str, ttr: str, task_token: str) -> None:
-        """Store the token under its Task_Token_Ref, once (§11.6)."""
+    def store(
+        self, incident_id: str, ttr: str, task_token: str, proposal_id: str | None = None
+    ) -> None:
+        """Store the token under its ref, once, and link the ``TTR#`` item (§11.6)."""
         self._tokens.setdefault(self._key(incident_id, ttr), task_token)
+        if self._store is not None:
+            self._store.put_if_not_exists(
+                _ttr_key(incident_id, ttr),
+                {
+                    "proposal_id": proposal_id if proposal_id is not None else ttr,
+                    "task_token": task_token,
+                },
+            )
 
     def take(self, incident_id: str, ttr: str) -> str | None:
         """Take the token once; a second call returns None (§12.3)."""

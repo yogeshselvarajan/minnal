@@ -94,7 +94,7 @@ def make_local_ports(settings: Settings) -> Ports:
         The wired local :class:`Ports`.
     """
     store = make_local_store(settings.local_store_dir)
-    vault = LocalTokenVault()
+    vault = LocalTokenVault(store)
     osm_path = _repo_data_dir() / _OSM_EXTRACT
     router = LocalRouter(
         mode=settings.local_router_mode,

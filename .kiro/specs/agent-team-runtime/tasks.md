@@ -288,7 +288,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - _Requirements: 13.2, 13.3, 14.10_ §21.5 [qa-eval-engineer]
   - [x] 38.3 Write `tests/agents/test_allow_lists.py::test_start_up_fails_on_missing_tool` against a fake Gateway that omits one allow-listed tool, and `test_tool_identity_matches_cedar` asserting `TOOL_IDENTITY` matches the `grid-tools` Cedar permits
     - _Requirements: 13.7, 9.10, 13.10_ §8.1.3, §8.3, §21.5 [qa-eval-engineer]
-  - [ ] 38.4 Write `tests/agents/test_identity_fallback.py::test_collapsed_permit_keeps_forbids` asserting the collapsed permit still denies every case the `forbid` rules deny
+  - [x] 38.4 Write `tests/agents/test_identity_fallback.py::test_collapsed_permit_keeps_forbids` asserting the collapsed permit still denies every case the `forbid` rules deny
     - _Requirements: 13.6_ §8.4, §21.5 [qa-eval-engineer]
   - [ ] 38.5 Write property test for Property 45
     - **Property 45: only allow-listed tools execute [SAFETY]**

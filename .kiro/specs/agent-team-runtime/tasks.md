@@ -373,11 +373,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 5: the Graph, the commit gate and periods
 
-- [ ] 48. Edges, routing and the builder
+- [x] 48. Edges, routing and the builder
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.12, 3.13, 11.11, 11.14, 16.9_ §4.3.2, §4.1 [agent-engineer]
-  - [ ] 48.1 Write `patterns/agui-minnal/graph/edges.py` (pure) with `linear`, `needs_replanning`, `ready_to_commit`, `budget_exit_before_safety`, `budget_exit_after_safety` and `to_summary`, every normal edge guarded on `not working_exhausted()` and every budget edge on `working_exhausted()`, with the two budget destinations disjoint on `safety_ran` so exactly one successor can fire
+  - [x] 48.1 Write `patterns/agui-minnal/graph/edges.py` (pure) with `linear`, `needs_replanning`, `ready_to_commit`, `budget_exit_before_safety`, `budget_exit_after_safety` and `to_summary`, every normal edge guarded on `not working_exhausted()` and every budget edge on `working_exhausted()`, with the two budget destinations disjoint on `safety_ran` so exactly one successor can fire
     - _Requirements: 3.2, 3.3, 11.11, 11.14, 16.9_ §4.3.2 [agent-engineer]
-  - [ ] 48.2 Write `patterns/agui-minnal/graph/builder.py` with `build_period_graph(deps)` adding the nine nodes, the edges above, `set_entry_point("commander_objectives")`, `set_max_node_executions`, `set_execution_timeout` and `reset_on_revisit(True)`, and carrying `incident_id` and `operational_period` in the invocation state
+  - [x] 48.2 Write `patterns/agui-minnal/graph/builder.py` with `build_period_graph(deps)` adding the nine nodes, the edges above, `set_entry_point("commander_objectives")`, `set_max_node_executions`, `set_execution_timeout` and `reset_on_revisit(True)`, and carrying `incident_id` and `operational_period` in the invocation state
     - _Requirements: 3.1, 3.4, 3.12, 3.13_ §4.1, §4.4 [agent-engineer]
 
 - [ ] 49. Verify the Graph and routing
@@ -390,15 +390,15 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 49.2 Write `tests/agents/test_graph_shape.py` with `test_node_set_is_exact`, `test_safety_precedes_commit_on_every_path` and `test_execution_limits_set`
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.12, 3.13, 22.8_ §4.1, §21.5 [qa-eval-engineer]
 
-- [ ] 50. The safety node wrapper
+- [x] 50. The safety node wrapper
   - _Requirements: 3.9, 5.1, 5.2, 5.4, 5.5, 5.7, 5.9, 10.1, 10.2, 11.1, 11.2, 11.3, 11.10, 16.4_ §7.5.5, §4.3.5 [agent-engineer]
-  - [ ] 50.1 Write the `safety` wrapper issuing exactly one `check_flood_geofence` per dispatch item and per `energise` switching item in a fixed code-driven order, passing `target_kind: route` with the stored `route_id` and never route coordinates, recording every clearance and `flood_check` in the Clearance_Ledger, making no call for a `de_energise` item, and recording the audit fields per item
+  - [x] 50.1 Write the `safety` wrapper issuing exactly one `check_flood_geofence` per dispatch item and per `energise` switching item in a fixed code-driven order, passing `target_kind: route` with the stored `route_id` and never route coordinates, recording every clearance and `flood_check` in the Clearance_Ledger, making no call for a `de_energise` item, and recording the audit fields per item
     - _Requirements: 3.9, 5.1, 5.2, 5.7, 5.9, 10.1, 11.10_ §7.5.5, §4.3.4 [agent-engineer]
-  - [ ] 50.2 Add `record_safety_veto` blocking an item in the same pass when its iteration reaches the cap, with the reason naming the `rule_id`, so `open_vetoed_items` can never return an item at the cap
+  - [x] 50.2 Add `record_safety_veto` blocking an item in the same pass when its iteration reaches the cap, with the reason naming the `rule_id`, so `open_vetoed_items` can never return an item at the cap
     - _Requirements: 11.1, 11.2, 11.3_ §4.3.5 [agent-engineer]
-  - [ ] 50.3 Add the advisory-veto model turn with knowledge-base retrieval, requiring a reason and at least one citation per advisory veto, folded as a union with the tool verdicts, and treat `FLOOD_DATA_UNAVAILABLE` as a veto that is not retried within the period
+  - [x] 50.3 Add the advisory-veto model turn with knowledge-base retrieval, requiring a reason and at least one citation per advisory veto, folded as a union with the tool verdicts, and treat `FLOOD_DATA_UNAVAILABLE` as a veto that is not retried within the period
     - _Requirements: 5.4, 5.5, 5.6_ §7.5.5, §5.6 [agent-engineer]
-  - [ ] 50.4 Add `close_safety_node` converting every undecided gated item into a veto when a budget ends the node, while leaving `de_energise` items committable
+  - [x] 50.4 Add `close_safety_node` converting every undecided gated item into a veto when a budget ends the node, while leaving `de_energise` items committable
     - _Requirements: 16.4, 10.2_ §14.4 [agent-engineer]
 
 - [ ] 51. Verify the safety node and the veto loop
@@ -416,18 +416,18 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 51.3 Write `tests/agents/test_safety_node.py` with `test_advisory_veto_requires_citation`, `test_route_passed_by_id_not_coordinates`, and a test that other items continue while one is blocked
     - _Requirements: 5.5, 5.7, 11.4, 11.9_ §7.5.5, §21.5 [qa-eval-engineer]
 
-- [ ] 52. The commit gate
+- [x] 52. The commit gate
   - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.10, 9.11, 10.3, 10.4, 10.5, 10.6, 10.7, 15.5, 15.6_ §9.1, §9.2, §9.3 [agent-engineer]
-  - [ ] 52.1 Write `patterns/agui-minnal/graph/nodes/dispatch_commit.py` as a `MultiAgentBase` Code_Node making no model call, selecting the commit set from the Clearance_Ledger, copying `safety_clearance_id`, `flood_check` and `route_id` from the ledger, choosing the client per tool through `TOOL_IDENTITY`, and blocking every refused item with an explicit reason
+  - [x] 52.1 Write `patterns/agui-minnal/graph/nodes/dispatch_commit.py` as a `MultiAgentBase` Code_Node making no model call, selecting the commit set from the Clearance_Ledger, copying `safety_clearance_id`, `flood_check` and `route_id` from the ledger, choosing the client per tool through `TOOL_IDENTITY`, and blocking every refused item with an explicit reason
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.10, 9.11_ §9.1, §8.3 [agent-engineer]
-  - [ ] 52.2 Add the bypass path committing a `de_energise` item with no `safety_clearance_id` and no `flood_check`, carrying `is_preventive_safety_measure` into the `pio` slot input with null reported as unknown, and still routing it to `waiting_approval`
+  - [x] 52.2 Add the bypass path committing a `de_energise` item with no `safety_clearance_id` and no `flood_check`, carrying `is_preventive_safety_measure` into the `pio` slot input with null reported as unknown, and still routing it to `waiting_approval`
     - _Requirements: 10.3, 10.4, 10.5, 10.6, 10.7_ §9.1, §10.3 [agent-engineer]
-  - [ ] 52.3 Add the retry and error policy: at most three attempts on `UPSTREAM_ERROR` or `RATE_LIMITED` with the identical key, a veto with no retry on every `SAFETY_VIOLATION` rule, and `CONFLICT` treated as authoritative without a second proposal and without mutating the key
+  - [x] 52.3 Add the retry and error policy: at most three attempts on `UPSTREAM_ERROR` or `RATE_LIMITED` with the identical key, a veto with no retry on every `SAFETY_VIOLATION` rule, and `CONFLICT` treated as authoritative without a second proposal and without mutating the key
     - _Requirements: 9.6, 9.7, 9.8, 15.5, 15.6_ §9.2, §9.3 [agent-engineer]
 
-- [ ] 53. The pio and scribe slots
+- [x] 53. The pio and scribe slots
   - _Requirements: 21.1, 21.2, 21.3, 21.4, 21.5, 21.6_ §5.5 [agent-engineer]
-  - [ ] 53.1 Write the `pio` and `scribe` slot Code_Nodes returning a typed `not_implemented` result with no model call and no tool call, with inputs carrying everything the later roles need, no Gateway client, and no Memory write access for `scribe`
+  - [x] 53.1 Write the `pio` and `scribe` slot Code_Nodes returning a typed `not_implemented` result with no model call and no tool call, with inputs carrying everything the later roles need, no Gateway client, and no Memory write access for `scribe`
     - _Requirements: 21.1, 21.2, 21.3, 21.4, 21.5, 21.6_ §5.5 [agent-engineer]
 
 - [ ] 54. Verify the commit gate and the slots
@@ -444,15 +444,15 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 54.4 Write `tests/agents/test_slots.py` with `test_pio_and_scribe_return_not_implemented` and `test_slot_inputs_carry_required_context`, and `tests/agents/test_preventive.py::test_flag_carried_and_null_is_unknown`
     - _Requirements: 21.2, 21.3, 21.4, 21.5, 21.6, 10.4, 10.5_ §5.5, §10.3, §21.5 [qa-eval-engineer]
 
-- [ ] 55. Periods, the lease and the summary
+- [x] 55. Periods, the lease and the summary
   - _Requirements: 3.13, 3.14, 3.15, 4.5, 11.8, 12.3, 12.4, 12.11, 12.12, 16.3_ §11.1, §11.2, §11.4 [agent-engineer]
-  - [ ] 55.1 Write the period table adapter with `acquire_lease` as a conditional put succeeding when no lease exists or the lease has expired, `release_lease` conditional on the lease token so a run cannot delete its successor's lease, and the period record write; this table is the only one this spec writes
+  - [x] 55.1 Write the period table adapter with `acquire_lease` as a conditional put succeeding when no lease exists or the lease has expired, `release_lease` conditional on the lease token so a run cannot delete its successor's lease, and the period record write; this table is the only one this spec writes
     - _Requirements: 3.15, 12.11_ §11.2 [agent-engineer]
-  - [ ] 55.2 Write the start-request handling in `agent.py`: parse `StartPeriodRequest` from `forwardedProps`, validate, acquire the lease, and return rejections as AG-UI `RUN_ERROR` carrying `CONFLICT` or `VALIDATION_ERROR`
+  - [x] 55.2 Write the start-request handling in `agent.py`: parse `StartPeriodRequest` from `forwardedProps`, validate, acquire the lease, and return rejections as AG-UI `RUN_ERROR` carrying `CONFLICT` or `VALIDATION_ERROR`
     - _Requirements: 3.13, 3.14, 3.15_ §11.1 [agent-engineer]
-  - [ ] 55.3 Add the last-completed-period query, `period_outcome` computing `completed`, `degraded`, `truncated` or `failed`, and the `PeriodSummary` assembly listing failures, blocked items with their rule ids, locked crews, approved jobs awaiting completion, effort-table substitutions and whether the sequence was trusted
+  - [x] 55.3 Add the last-completed-period query, `period_outcome` computing `completed`, `degraded`, `truncated` or `failed`, and the `PeriodSummary` assembly listing failures, blocked items with their rule ids, locked crews, approved jobs awaiting completion, effort-table substitutions and whether the sequence was trusted
     - _Requirements: 4.5, 11.8, 12.12, 16.3_ §11.3, §11.4 [agent-engineer]
-  - [ ] 55.4 Emit `minnal.approval_request` per created proposal carrying only the `ttr_<ULID>` reference in `task_token_ref`, never holding, logging or emitting a raw Step Functions task token
+  - [x] 55.4 Emit `minnal.approval_request` per created proposal carrying only the `ttr_<ULID>` reference in `task_token_ref`, never holding, logging or emitting a raw Step Functions task token
     - _Requirements: 12.3, 12.4_ §12.1, §9.5 [agent-engineer]
 
 - [ ] 56. Verify periods and the audit record

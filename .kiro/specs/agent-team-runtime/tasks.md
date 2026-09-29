@@ -112,9 +112,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 15.2 Write `tests/agents/test_key_examples.py` asserting the eight worked examples in §6.3 reproduce exactly, so the byte layout cannot drift silently
     - _Requirements: 15.1, 15.2, 15.7_ §6.3 [qa-eval-engineer]
 
-- [ ] 16. Period validation and numbering
+- [x] 16. Period validation and numbering
   - _Requirements: 3.14, 3.15_ §6.4, §11.3 [agent-engineer]
-  - [ ] 16.1 Write `patterns/agui-minnal/domain/periods.py` (pure) with `PeriodRequest`, `PeriodValidation` and `validate_period_request` rejecting a period below 1, requiring last completed plus 1 when history is available, and trusting the request with `sequence_trusted=False` when it is not
+  - [x] 16.1 Write `patterns/agui-minnal/domain/periods.py` (pure) with `PeriodRequest`, `PeriodValidation` and `validate_period_request` rejecting a period below 1, requiring last completed plus 1 when history is available, and trusting the request with `sequence_trusted=False` when it is not
     - _Requirements: 3.14, 3.15_ §6.4, §11.3 [agent-engineer]
 
 - [ ] 17. Verify period validation

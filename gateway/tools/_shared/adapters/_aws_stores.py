@@ -109,10 +109,9 @@ class DynamoOutageStore:
         if isinstance(exc.outcome, tx.AttachToExisting):
             existing = self.get_open_by_key(incident_id, draft.outage_key)
             if existing is not None:
-                attached = self.attach_report(
-                    incident_id, existing.outage_id, draft.report_id, None
-                )
-                return CreateOutageResult(outage=attached, created=False)
+                # The key is already owned: return the open Outage unattached so the
+                # caller's _attach applies escalation exactly once (§5.1 step 6/7, R4.13).
+                return CreateOutageResult(outage=existing, created=False)
         if isinstance(exc.outcome, tx.ReturnStored):
             replay = self.get_by_report_id(incident_id, draft.report_id)
             if replay is not None:

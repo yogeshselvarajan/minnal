@@ -156,8 +156,9 @@ class LocalOutageStore:
             return CreateOutageResult(outage=replay, created=False, replayed=True)
         existing = self.get_open_by_key(incident_id, draft.outage_key)
         if existing is not None:
-            attached = self.attach_report(incident_id, existing.outage_id, draft.report_id, None)
-            return CreateOutageResult(outage=attached, created=False)
+            # The key is already owned: hand the open Outage back unattached so the
+            # caller's _attach applies escalation exactly once (§5.1 step 6/7, R4.13).
+            return CreateOutageResult(outage=existing, created=False)
         outage_id = new_id("out")
         outage = _draft_to_outage(outage_id, draft)
         try:
@@ -183,10 +184,9 @@ class LocalOutageStore:
         except ConditionFailed:
             existing = self.get_open_by_key(incident_id, draft.outage_key)
             if existing is not None:
-                attached = self.attach_report(
-                    incident_id, existing.outage_id, draft.report_id, None
-                )
-                return CreateOutageResult(outage=attached, created=False)
+                # Racing create lost the key: return the open Outage unattached so
+                # the caller's _attach applies escalation exactly once (R4.13).
+                return CreateOutageResult(outage=existing, created=False)
             replay = self.get_by_report_id(incident_id, draft.report_id)
             if replay is not None:
                 return CreateOutageResult(outage=replay, created=False, replayed=True)

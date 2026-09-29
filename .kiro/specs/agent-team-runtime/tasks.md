@@ -337,9 +337,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 43.2 Write `as_readonly_tool` exposing a role to the commander with every write tool stripped, comparing normalised names against `WRITE_TOOLS`
     - _Requirements: 13.5_ §7.5.1 [agent-engineer]
 
-- [ ] 44. The hazard agent
+- [x] 44. The hazard agent
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8_ §7.5.2 [agent-engineer]
-  - [ ] 44.1 Write `roles/hazard/agent.py` whose wrapper computes `is_safe_for_dispatch` as `flood_status == "fresh"` rather than trusting the model, wraps every web source untrusted, emits a citation per source, marks a failed source unavailable without failing the period, and ends the node with `budget_exceeded` rather than continuing to search
+  - [x] 44.1 Write `roles/hazard/agent.py` whose wrapper computes `is_safe_for_dispatch` as `flood_status == "fresh"` rather than trusting the model, wraps every web source untrusted, emits a citation per source, marks a failed source unavailable without failing the period, and ends the node with `budget_exceeded` rather than continuing to search
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8_ §7.5.2 [agent-engineer]
 
 - [ ] 45. The diagnostics agent

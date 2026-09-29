@@ -16,11 +16,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 2.1 Confirm the `dev` dependency group already pins `hypothesis`, `pytest-socket`, `moto`, `freezegun`, `pytest`, `ruff` and `mypy`, and `uv add --group dev` any of them that is absent, including `ruff` and `mypy` if they are not already present; then register in `tests/agents/conftest.py` the `safety` marker, the `default` and `ci` profiles at 200 examples with `ci` derandomised and no database, and a local-only `quick` profile at 50
     - _Requirements: 25.3, 25.5, 25.8_ §21.3 [qa-eval-engineer]
 
-- [ ] 3. Spike OQ1: AG-UI `Custom` events through the adapter
+- [x] 3. Spike OQ1: AG-UI `Custom` events through the adapter
   - _Requirements: 18.1, 18.11_ §12.2, §22.5 [agent-engineer]
-  - [ ] 3.1 Install `ag-ui-strands==0.1.9` in the uv environment, run the FAST `StrandsAgent` adapter over a trivial agent with the §12.2 merge wrapper, and assert one `minnal.agent_step` `Custom` event arrives in the consumed stream, in order, with its `value` intact
+  - [x] 3.1 Install `ag-ui-strands==0.1.9` in the uv environment, run the FAST `StrandsAgent` adapter over a trivial agent with the §12.2 merge wrapper, and assert one `minnal.agent_step` `Custom` event arrives in the consumed stream, in order, with its `value` intact
     - _Requirements: 18.1, 18.11_ §12.2, §22.5 [agent-engineer]
-  - [ ] 3.2 Write `docs/adr/0005-agui-custom-event-transport.md` recording the result and choosing either the primary merged-stream design or the second-channel fallback of a period record plus a read endpoint with the same schemas
+  - [x] 3.2 Write `docs/adr/0005-agui-custom-event-transport.md` recording the result and choosing either the primary merged-stream design or the second-channel fallback of a period record plus a read endpoint with the same schemas
     - _Requirements: 18.1_ §12.2, §22.5 [agent-engineer]
 
 - [ ] 4. Spike OQ2: structured output on both models

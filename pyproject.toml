@@ -47,6 +47,10 @@ select = ["E", "F", "I", "B", "UP", "SIM", "S", "ASYNC", "PL", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]
+# Spike scripts are throwaway verification harnesses (design §22.5 S1/S2), kept as
+# evidence for ADRs 0005/0006. Like tests, they assert; they also print their result.
+"patterns/agui-minnal/agui/spikes/**" = ["S101", "T201"]
+"patterns/agui-minnal/roles/_common/spikes/**" = ["S101", "T201"]
 
 [tool.mypy]
 python_version = "3.12"

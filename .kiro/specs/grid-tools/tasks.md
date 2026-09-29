@@ -131,7 +131,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 36. [qa-eval-engineer] Write property test for Property 32 `[SAFETY]` (flood reads are snapshot-consistent or they fail) _Requirements: 3.11, 6.7_ _Design: §18 P32_
 
-- [ ] 37. [qa-eval-engineer] Write property test for Property 16 `[SAFETY]` (an unreadable flood store never reports "clear") _Requirements: 6.7, 1.10_ _Design: §18 P16_
+- [x] 37. [qa-eval-engineer] Write property test for Property 16 `[SAFETY]` (an unreadable flood store never reports "clear") _Requirements: 6.7, 1.10_ _Design: §18 P16_
 
 - [ ] 38. [qa-eval-engineer] Write property test for Property 27 (the store adapters behave identically in `local` and `aws`) _Requirements: 17.1, 17.2, 17.5_ _Design: §18 P27, §15.5_
 

@@ -233,18 +233,18 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 31.1 Write `gateway/policies/agent-team-runtime.cedar` with one role-scoped permit per read tool, `get_flood_status` to `hazard` and `safety`, `list_open_outages` to `diagnostics`, `get_proposal_status` to `commander` and `list_crews` to `dispatch`, each guarding `has` before `getTag`, each commented with this requirement, and no `forbid` added or altered
     - _Requirements: 14.10_ §8.6.5 [platform-engineer]
 
-- [ ] 32. Verify the read tools
+- [x] 32. Verify the read tools
   - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.8, 14.10, 14.11, 14.12, 14.13_ §20, §8.6 [qa-eval-engineer]
-  - [ ] 32.1 Write `tests/tools/test_read_tools_spec.py::test_gateway_subset_only` asserting every read-tool `tool_spec.json` is a one-element array using only the five Gateway keywords with no `oneOf`, and that the spec, the strict schema and the Pydantic model agree on property names
+  - [x] 32.1 Write `tests/tools/test_read_tools_spec.py::test_gateway_subset_only` asserting every read-tool `tool_spec.json` is a one-element array using only the five Gateway keywords with no `oneOf`, and that the spec, the strict schema and the Pydantic model agree on property names
     - _Requirements: 14.1, 14.2, 14.4_ §8.6, §21.5 [qa-eval-engineer]
-  - [ ] 32.2 Write `tests/tools/test_read_tools_errors.py::test_error_table` covering `NOT_FOUND` for an unknown incident, `UPSTREAM_ERROR` with `retryable: true` for an unreadable store, and `VALIDATION_ERROR` for a tampered continuation token
+  - [x] 32.2 Write `tests/tools/test_read_tools_errors.py::test_error_table` covering `NOT_FOUND` for an unknown incident, `UPSTREAM_ERROR` with `retryable: true` for an unreadable store, and `VALIDATION_ERROR` for a tampered continuation token
     - _Requirements: 14.11_ §8.6, §21.5 [qa-eval-engineer]
-  - [ ] 32.3 Write property test for Property 57
+  - [x] 32.3 Write property test for Property 57
     - **Property 57: read tools never write, and their pages are complete, disjoint and stable**
     - **Validates: Requirements 14.3, 14.6, 14.12, 14.5, 14.8, 14.13**
     - `test_property_P57_read_tools_are_read_only` in `tests/tools/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 14.3, 14.6, 14.12, 14.5, 14.8, 14.13_ §20, §8.6 [qa-eval-engineer]
-  - [ ] 32.4 Write `tests/policy/test_read_permits.py` with an allow and a deny case per permit
+  - [x] 32.4 Write `tests/policy/test_read_permits.py` with an allow and a deny case per permit
     - _Requirements: 14.10_ §8.6.5, §21.1 [qa-eval-engineer]
 
 ## Wave 3: Gateway clients, identity and filtering

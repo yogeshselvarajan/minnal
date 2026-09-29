@@ -140,3 +140,35 @@ tasks own a `[SAFETY]` property). The pre-existing baseline is untouched: the 14
 remain confined to `patterns/utils/auth.py`/`ssm.py` (FAST template), and
 `tests/test_network_blocked.py` is the known sandbox socket artifact — neither is this lane's.
 No push (orchestrator pushes).
+
+## 2026-09-29 — Wave 1 agent-engineer lane: shared contract module placement (tasks 12, 22, 24)
+
+The design's node contracts (§5) are needed by pure Wave-1 modules that land *before* the
+node-contracts task (24): `domain/jobs.py` (task 12) imports `Item`, `Job`, `SuspectedDevice`,
+`CoveredOutage`, `ProposalDecision`; `domain/precedence.py` (task 22.2) imports `Item`. §3
+marks all of `domain/` pure (no strands), and §5.6 shows `precedence.py` importing its clearance
+types `from .state`. To keep `domain` free of any `strands`/`graph` dependency and to respect
+task order, the shared *value* contracts Wave-1 needs live in a new pure module
+`patterns/agui-minnal/domain/contracts.py` (frozen, extra="forbid", verbatim §5.1/§5.2/§5.3
+field lists). Task 24 extends the contract surface (the node input/output models,
+`SafetyDecision`, `BlockedItem`, `NodeFailure`, `AuditEntry`, `LockedCrew`, `PeriodSummary`,
+`PioIn`, `ScribeIn`, and `reject_safety_fields`) and the per-role `roles/*/schemas.py`, re-using
+these base types rather than redefining them. This is the closest safe reading of "the shared
+contract module" that keeps the purity rule (§3.1) intact.
+
+## 2026-09-29 — grid-tools shape vs §5 contracts: two reconciled differences (task 12)
+
+1. **device_type casing.** grid-tools `trace_upstream_device` returns `DeviceType` capitalised
+   (`Substation`/`Feeder`/`Lateral`/`DT` per `_shared/grid.py`), while the agent-team
+   `SuspectedDevice.device_type` and the `effort.yaml`/`DEVICE_SKILL` keys are lowercase
+   (`substation`/`feeder`/`lateral`/`dt`, §5.3, §6.2). The lowercase form is the agent-team's
+   own contract *after* the diagnostics wrapper normalises the trace group; the pure
+   `assemble_jobs`/`build_switching_items` operate only on the normalised lowercase
+   `SuspectedDevice`. The casing bridge is a wrapper concern (Wave-4, task 39+), not a domain
+   concern — no domain change needed, recorded so the wrapper author maps it.
+2. **`effort_crew_minutes` bound.** grid-tools `Job` uses `Field(gt=0)`; design §5.2 uses
+   `Field(ge=1)`. Identical for integers. `contracts.Job` follows the design (`ge=1`).
+3. **symptom severity (criterion 4.13).** `record_outage/logic.py` `_SEVERITY_ORDER` is
+   `submerged_equipment > downed_wire > sparking > partial_power > no_power`. `jobs.SYMPTOM_SEVERITY`
+   (index 0 = worst) reproduces this exactly; `worst_symptom` uses `min` over the rank, so it
+   matches grid-tools with no drift. No conflict.

@@ -82,11 +82,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 11.1 Write `tests/agents/test_tool_names.py::test_normalise_is_idempotent_and_total` covering all three spellings, double application, and a name with no target segment
     - _Requirements: 13.2, 13.3_ §8.1.1, §21.5 [qa-eval-engineer]
 
-- [ ] 12. Item identity and job assembly
+- [x] 12. Item identity and job assembly
   - _Requirements: 8.9, 8.11, 8.12, 8.13, 7.9, 8.8, 15.2_ §6.1, §6.2, §6.3 [agent-engineer]
-  - [ ] 12.1 Write `patterns/agui-minnal/domain/ids.py` (pure) with `derive_item_id` from incident, period, kind and subject, deliberately excluding `crew_id` and `route_id` so a re-plan keeps the same item, plus `crockford_encode_128`
+  - [x] 12.1 Write `patterns/agui-minnal/domain/ids.py` (pure) with `derive_item_id` from incident, period, kind and subject, deliberately excluding `crew_id` and `route_id` so a re-plan keeps the same item, plus `crockford_encode_128`
     - _Requirements: 8.9, 15.2_ §6.1, §6.3 [agent-engineer]
-  - [ ] 12.2 Write `patterns/agui-minnal/domain/jobs.py` (pure) with `assemble_jobs` taking `customers_restored`, `waiting_seconds`, `is_make_safe` and `required_skill` from tool data and `effort_crew_minutes` from the effort table with the fallback reported, `worst_symptom` ordered as `grid-tools` criterion 4.13, and `build_switching_items` skipping devices covered by an Open_Proposal
+  - [x] 12.2 Write `patterns/agui-minnal/domain/jobs.py` (pure) with `assemble_jobs` taking `customers_restored`, `waiting_seconds`, `is_make_safe` and `required_skill` from tool data and `effort_crew_minutes` from the effort table with the fallback reported, `worst_symptom` ordered as `grid-tools` criterion 4.13, and `build_switching_items` skipping devices covered by an Open_Proposal
     - _Requirements: 8.11, 8.12, 8.13, 7.9, 8.8_ §6.2 [agent-engineer]
 
 - [ ] 13. Verify job assembly

@@ -181,7 +181,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [ ] 50. [qa-eval-engineer] Write property test for Property 19 (write-tool idempotency) _Requirements: 1.9_ _Design: §18 P19_
 
-- [ ] 51. [qa-eval-engineer] Write property test for Property 34 (idempotency never caches a retryable failure) _Requirements: 1.9, 1.12_ _Design: §18 P34_
+- [x] 51. [qa-eval-engineer] Write property test for Property 34 (idempotency never caches a retryable failure) _Requirements: 1.9, 1.12_ _Design: §18 P34_
 
 - [ ] 52. [qa-eval-engineer] Write property test for Property 14 (outage identity survives concurrency, duplicates and crashes) _Requirements: 4.1, 4.2, 4.3, 1.9_ _Design: §18 P14_
 

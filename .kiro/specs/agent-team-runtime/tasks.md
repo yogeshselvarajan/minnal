@@ -140,9 +140,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 19.2 Write `tests/agents/test_budget_reserve.py` with `test_working_node_cannot_consume_reserve`, `test_exit_after_safety_still_commits` and `test_exit_before_safety_defers_all`
     - _Requirements: 16.9_ §14.6, §21.5 [qa-eval-engineer]
 
-- [ ] 20. Untrusted-content containment
+- [x] 20. Untrusted-content containment
   - _Requirements: 17.1, 17.2, 17.3, 17.5_ §6.6 [agent-engineer]
-  - [ ] 20.1 Write `patterns/agui-minnal/domain/untrusted.py` (pure) with the open and close markers, `escape_delimiters` neutralising the delimiter substrings, `truncate_marked` with an explicit marker, and `wrap_untrusted` as the only way untrusted text enters a prompt
+  - [x] 20.1 Write `patterns/agui-minnal/domain/untrusted.py` (pure) with the open and close markers, `escape_delimiters` neutralising the delimiter substrings, `truncate_marked` with an explicit marker, and `wrap_untrusted` as the only way untrusted text enters a prompt
     - _Requirements: 17.1, 17.2, 17.3, 17.5_ §6.6 [agent-engineer]
 
 - [ ] 21. Verify untrusted containment

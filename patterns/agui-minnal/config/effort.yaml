@@ -1,0 +1,31 @@
+# Effort table for restoration jobs, in crew-minutes.
+# Source: powers/minnal-gridops/skills/restoration-priority/SKILL.md (tier and effort
+# guidance) plus docs/domain/ics-and-restoration.md. Values are planning estimates for
+# the synthetic Chennai grid, not a utility's published standards.
+version: 1
+default: 90                 # used when a (device_type, symptom) pair is absent
+table:
+  substation:
+    submerged_equipment: 480
+    downed_wire: 240
+    sparking: 180
+    partial_power: 150
+    no_power: 150
+  feeder:
+    submerged_equipment: 300
+    downed_wire: 180
+    sparking: 120
+    partial_power: 90
+    no_power: 90
+  lateral:
+    submerged_equipment: 180
+    downed_wire: 120
+    sparking: 90
+    partial_power: 60
+    no_power: 60
+  dt:
+    submerged_equipment: 150
+    downed_wire: 90
+    sparking: 75
+    partial_power: 45
+    no_power: 45

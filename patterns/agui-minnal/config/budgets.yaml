@@ -1,0 +1,31 @@
+# Per-node and per-period budgets for one Operational_Period (design §14.1, §14.6).
+# The period wall clock fits the 90-second engineering-standards performance budget
+# (R16.7) with headroom for the offline-harness measurement. reserve_tokens and
+# reserve_seconds are ring-fenced for dispatch_commit + commander_summary and no earlier
+# node may consume them (R16.9). max_node_executions and execution_timeout_seconds are set
+# consistently with the per-period budgets (R16.6). model.request_timeout_seconds and
+# tool.request_timeout_seconds are explicit on every call; no client default is relied on
+# (R16.5).
+version: 1
+period:
+  max_tokens: 220000            # sum across all nodes, both turns each
+  wall_clock_seconds: 240       # hard ceiling; the demo target is under 90
+  reserve_tokens: 20000         # ring-fenced for dispatch_commit + commander_summary
+  reserve_seconds: 60           # ditto, in wall clock
+nodes:
+  commander_objectives: { timeout_seconds: 20, max_tool_calls: 4 }
+  hazard:               { timeout_seconds: 25, max_tool_calls: 8 }
+  diagnostics:          { timeout_seconds: 30, max_tool_calls: 12 }
+  dispatch_plan:        { timeout_seconds: 35, max_tool_calls: 20 }
+  safety:               { timeout_seconds: 30, max_tool_calls: 20 }
+  dispatch_commit:      { timeout_seconds: 30, max_tool_calls: 24 }
+  pio:                  { timeout_seconds: 1,  max_tool_calls: 0 }
+  scribe:               { timeout_seconds: 1,  max_tool_calls: 0 }
+  commander_summary:    { timeout_seconds: 25, max_tool_calls: 0 }
+graph:
+  max_node_executions: 24       # 9 nodes + up to 3 loop passes of 2 nodes + headroom
+  execution_timeout_seconds: 240
+model:
+  request_timeout_seconds: 20   # explicit on every BedrockModel (R16.5)
+tool:
+  request_timeout_seconds: 15   # explicit on every Gateway call

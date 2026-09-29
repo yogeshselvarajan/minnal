@@ -30,13 +30,13 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 4.2 Write `docs/adr/0006-structured-output-contract-shape.md` choosing the unchanged §5 contracts or the flattened model-facing shapes; if model access is unavailable, record the spike as blocked and adopt the flattened fallback pre-emptively
     - _Requirements: 4.1, 4.2_ §5, §22.5 [agent-engineer]
 
-- [ ] 5. Configuration
+- [x] 5. Configuration
   - _Requirements: 1.4, 2.1, 2.7, 8.12, 16.1, 16.5, 16.6, 16.9_ §7.1, §15.1, §6.2 [agent-engineer]
-  - [ ] 5.1 Write `patterns/agui-minnal/config/settings.py` as the single `Settings(BaseSettings)`, the only environment reader in the pattern, with `model_for(role)` merging the `default` entry under the per-agent entry of `models.yaml` and failing at start-up naming the role when neither exists
+  - [x] 5.1 Write `patterns/agui-minnal/config/settings.py` as the single `Settings(BaseSettings)`, the only environment reader in the pattern, with `model_for(role)` merging the `default` entry under the per-agent entry of `models.yaml` and failing at start-up naming the role when neither exists
     - _Requirements: 1.4, 2.1, 2.7_ §7.1, §15.1 [agent-engineer]
-  - [ ] 5.2 Add `patterns/agui-minnal/config/effort.yaml` with the (device type, symptom) effort table, the documented default, and the `restoration-priority` skill source citation in a comment
+  - [x] 5.2 Add `patterns/agui-minnal/config/effort.yaml` with the (device type, symptom) effort table, the documented default, and the `restoration-priority` skill source citation in a comment
     - _Requirements: 8.12_ §6.2 [agent-engineer]
-  - [ ] 5.3 Add `patterns/agui-minnal/config/budgets.yaml` with per-node timeouts and tool-call caps, the period token and wall-clock budgets, the reserve of 20000 tokens and 60 seconds, the graph execution limits, and the explicit model and tool request timeouts
+  - [x] 5.3 Add `patterns/agui-minnal/config/budgets.yaml` with per-node timeouts and tool-call caps, the period token and wall-clock budgets, the reserve of 20000 tokens and 60 seconds, the graph execution limits, and the explicit model and tool request timeouts
     - _Requirements: 16.1, 16.5, 16.6, 16.9_ §14.1, §14.6 [agent-engineer]
 
 - [ ] 6. Verify the model configuration

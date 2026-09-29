@@ -1,167 +1,124 @@
-"""Model settings for Minnal agents, loaded from ``models.yaml``.
+"""The single environment reader for the agent pattern (R1.4).
 
-``models.yaml`` next to this file is the single source of truth for model IDs
-(see ``.kiro/steering/models.md``). No model ID string belongs in Python code.
-
-This module is self-contained (only pydantic, pydantic-settings and PyYAML), so
-it can be imported with ``patterns/agui-minnal`` on ``sys.path``
-(``from config.settings import Settings``) because the hyphenated pattern folder
-is not an importable package name.
+No other module under ``patterns/agui-minnal/`` reads ``os.environ``; roles and the graph
+receive a ``Settings`` instance (or values derived from it) through dependency injection so
+tests can supply their own. ``models.yaml`` is the sole source of model IDs (R2.1); this
+module never hard-codes a model ID, temperature or a fallback (R2.7).
 """
 
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cached_property
 from pathlib import Path
-from typing import Final
+from typing import Any
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, ValidationError, model_validator
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-MODELS_CONFIG_ENV_VAR: Final = "MINNAL_MODELS_CONFIG"
-DEFAULT_MODELS_CONFIG_PATH: Final = Path(__file__).resolve().parent / "models.yaml"
+_CONFIG_DIR = Path(__file__).resolve().parent
+_MODELS_YAML = _CONFIG_DIR / "models.yaml"
+_BUDGETS_YAML = _CONFIG_DIR / "budgets.yaml"
 
-REASONING_TIER_AGENTS: Final = frozenset({"commander", "diagnostics", "safety"})
-MAX_REASONING_TEMPERATURE: Final = 0.3
-
-
-class ModelConfigError(Exception):
-    """Raised when ``models.yaml`` is missing, malformed or breaks a model rule.
-
-    Deliberately not a ``ValueError``: pydantic would wrap a ``ValueError`` raised during
-    ``Settings`` construction in its own ``ValidationError`` and hide this type from callers.
-    """
+# The default request timeout applied to a BedrockModel when budgets.yaml is unavailable in
+# a unit test. Production always reads budgets.yaml (§14.1, R16.5); this is only the floor.
+_DEFAULT_MODEL_REQUEST_TIMEOUT_SECONDS = 20
 
 
-class UnknownAgentError(LookupError):
-    """Raised when a model is requested for an agent not listed in ``models.yaml``."""
-
-    def __init__(self, agent: str, known_agents: tuple[str, ...]) -> None:
-        self.agent = agent
-        self.known_agents = known_agents
-        super().__init__(
-            f"Unknown agent {agent!r}: not listed under 'agents' in models.yaml. "
-            f"Known agents: {', '.join(known_agents)}"
-        )
+class ConfigError(RuntimeError):
+    """Raised at start-up for a missing or malformed configuration (R2.7)."""
 
 
-class ModelSettings(BaseModel):
-    """Fully resolved model and inference settings for one agent."""
+class ModelSpec(BaseModel):
+    """The resolved model configuration for one Role. Every field is explicit (R2.4)."""
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     model_id: str = Field(min_length=1)
-    temperature: float = Field(ge=0.0)
-    max_tokens: int = Field(gt=0)
+    temperature: float = Field(ge=0.0, le=1.0)
+    max_tokens: int = Field(ge=1)
+    request_timeout_seconds: int = Field(ge=1)
 
 
-class _AgentOverride(BaseModel):
-    """Per-agent entry in ``models.yaml``; unset fields inherit from ``default``."""
-
-    model_config = ConfigDict(frozen=True, extra="forbid")
-
-    model_id: str | None = Field(default=None, min_length=1)
-    temperature: float | None = Field(default=None, ge=0.0)
-    max_tokens: int | None = Field(default=None, gt=0)
-
-
-class _EmbeddingsSettings(BaseModel):
-    model_config = ConfigDict(frozen=True, extra="forbid")
-
-    model_id: str = Field(min_length=1)
-
-
-class ModelsFile(BaseModel):
-    """Schema of ``models.yaml``, with agent entries resolved against ``default``."""
-
-    model_config = ConfigDict(frozen=True, extra="forbid")
-
-    default: ModelSettings
-    agents: dict[str, _AgentOverride]
-    embeddings: _EmbeddingsSettings
-
-    def resolve(self, agent: str) -> ModelSettings:
-        """Merge an agent's entry over ``default``.
-
-        Raises:
-            UnknownAgentError: If ``agent`` is not listed under ``agents``.
-        """
-        override = self.agents.get(agent)
-        if override is None:
-            raise UnknownAgentError(agent, tuple(self.agents))
-        merged = self.default.model_dump() | override.model_dump(exclude_none=True)
-        return ModelSettings.model_validate(merged)
-
-    @model_validator(mode="after")
-    def _check_reasoning_tier_temperature(self) -> ModelsFile:
-        # models.md rule 4: Commander, Diagnostics and Safety run at temperature <= 0.3.
-        for agent in sorted(REASONING_TIER_AGENTS & self.agents.keys()):
-            temperature = self.resolve(agent).temperature
-            if temperature > MAX_REASONING_TEMPERATURE:
-                raise ValueError(
-                    f"Agent {agent!r} has temperature {temperature}; reasoning-tier agents "
-                    f"must use temperature <= {MAX_REASONING_TEMPERATURE} (models.md rule 4)"
-                )
-        return self
-
-
-def load_models_file(path: Path) -> ModelsFile:
-    """Read and validate a ``models.yaml`` file.
-
-    Raises:
-        ModelConfigError: If the file cannot be read, is not valid YAML, or fails validation.
-    """
-    try:
-        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
-    except OSError as exc:
-        raise ModelConfigError(f"Cannot read models config {path}: {exc}") from exc
-    except yaml.YAMLError as exc:
-        raise ModelConfigError(f"Models config {path} is not valid YAML: {exc}") from exc
-    try:
-        return ModelsFile.model_validate(raw)
-    except ValidationError as exc:
-        raise ModelConfigError(f"Models config {path} is invalid:\n{exc}") from exc
+def _load_yaml(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        raise ConfigError(f"required config file is missing: {path}")
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ConfigError(f"config file is not a mapping: {path}")
+    return data
 
 
 class Settings(BaseSettings):
-    """Minnal runtime settings.
+    """Environment-backed settings for the agent pattern.
 
-    The models config path comes from ``MINNAL_MODELS_CONFIG`` and defaults to the
-    ``models.yaml`` next to this module. The file is loaded and validated when the
-    ``Settings`` object is created, so a bad config fails at startup.
+    The two config-file paths are overridable through the environment only so a test or an
+    alternate deployment can point at a fixture; the model catalogue itself is never in the
+    environment (R2.1).
     """
 
-    model_config = SettingsConfigDict(env_prefix="MINNAL_", extra="forbid", frozen=True)
+    model_config = SettingsConfigDict(
+        env_prefix="MINNAL_",
+        frozen=True,
+        extra="ignore",
+    )
 
-    models_config: Path = DEFAULT_MODELS_CONFIG_PATH
+    models_path: Path = _MODELS_YAML
+    budgets_path: Path = _BUDGETS_YAML
 
-    _models: ModelsFile = PrivateAttr()
+    @cached_property
+    def _models(self) -> dict[str, Any]:
+        return _load_yaml(self.models_path)
 
-    def model_post_init(self, context: object, /) -> None:
-        """Load ``models.yaml`` eagerly so configuration errors surface on startup."""
-        self._models = load_models_file(self.models_config)
+    @cached_property
+    def _model_request_timeout_seconds(self) -> int:
+        """Read the explicit model request timeout from budgets.yaml (§14.1, R16.5)."""
+        try:
+            budgets = _load_yaml(self.budgets_path)
+        except ConfigError:
+            return _DEFAULT_MODEL_REQUEST_TIMEOUT_SECONDS
+        model_section = budgets.get("model", {})
+        timeout = model_section.get("request_timeout_seconds")
+        if not isinstance(timeout, int) or timeout < 1:
+            return _DEFAULT_MODEL_REQUEST_TIMEOUT_SECONDS
+        return timeout
 
-    @property
-    def agents(self) -> tuple[str, ...]:
-        """Agent names configured in ``models.yaml``, in file order."""
-        return tuple(self._models.agents)
+    def model_for(self, role: str) -> ModelSpec:
+        """Resolve a Role's model, merging ``default`` under its per-agent entry (§15.1).
 
-    @property
-    def embeddings_model_id(self) -> str:
-        """Model ID for knowledge-base embeddings."""
-        return self._models.embeddings.model_id
-
-    def model_for(self, agent: str) -> ModelSettings:
-        """Return the model settings for ``agent``, merged over ``default``.
-
-        Raises:
-            UnknownAgentError: If ``agent`` is not listed under ``agents`` in ``models.yaml``.
+        A per-agent entry inherits any key it omits (temperature, max_tokens) from
+        ``default``. A Role with no per-agent entry and no usable default fails here,
+        naming the Role; there is no hard-coded fallback anywhere (R2.7).
         """
-        return self._models.resolve(agent)
+        models = self._models
+        default = models.get("default")
+        agents = models.get("agents", {})
+        per_agent = agents.get(role)
 
+        if per_agent is None and default is None:
+            raise ConfigError(
+                f"no model configuration for role {role!r}: it has no entry under "
+                f"'agents' and 'default' is absent in {self.models_path}"
+            )
 
-@lru_cache(maxsize=1)
-def get_settings() -> Settings:
-    """Process-wide ``Settings`` instance; call ``get_settings.cache_clear()`` in tests."""
-    return Settings()
+        merged: dict[str, Any] = {}
+        if isinstance(default, dict):
+            merged.update(default)
+        if isinstance(per_agent, dict):
+            merged.update(per_agent)
+
+        if "model_id" not in merged:
+            raise ConfigError(f"no model_id resolvable for role {role!r} from {self.models_path}")
+
+        try:
+            return ModelSpec(
+                model_id=merged["model_id"],
+                temperature=merged["temperature"],
+                max_tokens=merged["max_tokens"],
+                request_timeout_seconds=self._model_request_timeout_seconds,
+            )
+        except KeyError as exc:
+            raise ConfigError(
+                f"model configuration for role {role!r} is missing {exc.args[0]!r} "
+                f"and 'default' does not supply it in {self.models_path}"
+            ) from exc

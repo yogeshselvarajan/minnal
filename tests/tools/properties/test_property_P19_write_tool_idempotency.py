@@ -22,9 +22,11 @@ code, offline:
   Outage write and returns the same ``outage_id``, even when non-key fields differ.
 
 Not a ``[SAFETY]`` property (design §18: P19 is unmarked), so it carries no
-``@pytest.mark.safety`` marker. The ``default``/``ci`` Hypothesis profiles (200
-examples) are loaded by the suite ``conftest.py``; the aws-mode clauses cap
-``max_examples`` for speed.
+``@pytest.mark.safety`` marker. The local clause (no moto cost) runs the full
+200-example gate (testing.md). The two aws-mode clauses each create a moto
+idempotency table per example (~45s at 200 examples, measured); they keep a
+reduced budget of 25 examples, justified and recorded in
+``docs/plans/decisions-log.md`` per the autopilot "log the decision" rule.
 """
 
 from __future__ import annotations
@@ -85,6 +87,8 @@ def _wrapped(body: object) -> object:
 )
 @example(key_id="a1", payload_value=7)  # known-bad: a same-key retry must not re-write
 @settings(
+    # moto creates an idempotency table per example (~45s at 200, measured); the
+    # budget is reduced with a justification logged in docs/plans/decisions-log.md.
     max_examples=25,
     deadline=None,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture],
@@ -115,6 +119,8 @@ def test_property_P19_same_key_same_payload_replays_once(key_id: str, payload_va
 )
 @example(key_id="c3", first_value=1, second_value=2)  # known-bad: changed body must conflict
 @settings(
+    # moto creates an idempotency table per example (~45s at 200, measured); the
+    # budget is reduced with a justification logged in docs/plans/decisions-log.md.
     max_examples=25,
     deadline=None,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture],
@@ -166,7 +172,7 @@ def _report(report_id: str, symptom: str) -> dict[str, object]:
 )
 @example(report_id="rep0", symptom="no_power")  # known-bad: a replayed report must not re-write
 @settings(
-    max_examples=50,
+    max_examples=200,  # in-memory only, no moto cost -> meets the >=200 gate (testing.md)
     deadline=None,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture],
 )

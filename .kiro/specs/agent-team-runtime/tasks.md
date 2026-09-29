@@ -249,9 +249,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 3: Gateway clients, identity and filtering
 
-- [ ] 33. Allow-lists and filters
+- [x] 33. Allow-lists and filters
   - _Requirements: 13.2, 13.3, 13.4_ §8.1.2 [agent-engineer]
-  - [ ] 33.1 Write `patterns/agui-minnal/gateway_clients/filters.py` (pure) with `GATEWAY_ALLOW_LISTS` and `LOCAL_ALLOW_LISTS` per role, `NEVER_ALLOWED` holding `record_outage`, `tool_filters_for` building `allowed` from a normalising callable and `rejected` from both a callable and the exact Gateway names, and `exact_gateway_allow_list` as the string-matcher fallback and parity source
+  - [x] 33.1 Write `patterns/agui-minnal/gateway_clients/filters.py` (pure) with `GATEWAY_ALLOW_LISTS` and `LOCAL_ALLOW_LISTS` per role, `NEVER_ALLOWED` holding `record_outage`, `tool_filters_for` building `allowed` from a normalising callable and `rejected` from both a callable and the exact Gateway names, and `exact_gateway_allow_list` as the string-matcher fallback and parity source
     - _Requirements: 13.2, 13.3, 13.4_ §8.1.2 [agent-engineer]
 
 - [ ] 34. Local tools

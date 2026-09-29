@@ -275,9 +275,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 36.1 Write `TOOL_IDENTITY` keyed by bare normalised names mapping `dispatch_crew` to `dispatch` and `propose_switching` to `commander`, and `client_for_tool` normalising first and raising for an unmapped tool
     - _Requirements: 9.10, 9.11, 13.10_ §8.3 [agent-engineer]
 
-- [ ] 37. The shared-identity fallback
+- [x] 37. The shared-identity fallback
   - _Requirements: 13.6_ §8.4 [agent-engineer]
-  - [ ] 37.1 Implement the fallback behind configuration, using one machine identity with per-role restriction resting on `ToolFilters`, and write an ADR in `docs/adr/` recording the choice and that Property 46 weakens to client selection
+  - [x] 37.1 Implement the fallback behind configuration, using one machine identity with per-role restriction resting on `ToolFilters`, and write an ADR in `docs/adr/` recording the choice and that Property 46 weakens to client selection
     - _Requirements: 13.6_ §8.4 [agent-engineer]
 
 - [ ] 38. Verify clients, filtering and identity

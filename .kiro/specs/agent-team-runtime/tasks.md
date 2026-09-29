@@ -401,19 +401,19 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 50.4 Add `close_safety_node` converting every undecided gated item into a veto when a budget ends the node, while leaving `de_energise` items committable
     - _Requirements: 16.4, 10.2_ §14.4 [agent-engineer]
 
-- [ ] 51. Verify the safety node and the veto loop
+- [x] 51. Verify the safety node and the veto loop
   - _Requirements: 4.5, 5.5, 5.7, 10.2, 11.2, 11.3, 11.4, 11.5, 11.7, 11.8, 11.9, 11.14, 16.4, 16.9_ §20, §4.3.5, §14.4 [qa-eval-engineer]
-  - [ ] 51.1 Write property test for Property 42
+  - [x] 51.1 Write property test for Property 42
     - **Property 42: the veto loop terminates and every item ends in exactly one state**
     - **Validates: Requirements 11.2, 11.3, 11.5, 11.14, 4.5**
     - `test_property_P42_veto_loop_terminates` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 11.2, 11.3, 11.5, 11.14, 4.5_ §20, §4.3.5 [qa-eval-engineer]
-  - [ ] 51.2 Write property test for Property 54
+  - [x] 51.2 Write property test for Property 54
     - **Property 54: a budget-ended safety node leaves unchecked items vetoed [SAFETY]**
     - **Validates: Requirements 16.4, 16.9, 10.2**
     - `test_property_P54_budget_ended_safety` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 16.4, 16.9, 10.2_ §20, §14.4, §14.6 [qa-eval-engineer]
-  - [ ] 51.3 Write `tests/agents/test_safety_node.py` with `test_advisory_veto_requires_citation`, `test_route_passed_by_id_not_coordinates`, and a test that other items continue while one is blocked
+  - [x] 51.3 Write `tests/agents/test_safety_node.py` with `test_advisory_veto_requires_citation`, `test_route_passed_by_id_not_coordinates`, and a test that other items continue while one is blocked
     - _Requirements: 5.5, 5.7, 11.4, 11.9_ §7.5.5, §21.5 [qa-eval-engineer]
 
 - [x] 52. The commit gate

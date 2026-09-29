@@ -169,7 +169,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 27. [qa-eval-engineer] Write property test for Property 1 `[SAFETY]` (no accepted route or dispatch crosses a flood, against adversarial routers) _Requirements: 7.3, 7.4, 7.5, 9.3, 9.7_ _Design: §18 P1_
 
-- [ ] 28. [qa-eval-engineer] Write property test for Property 2 `[SAFETY]` (no energisation into water, including flooded customer areas) _Requirements: 10.2, 10.3, 11.4_ _Design: §18 P2_
+- [x] 28. [qa-eval-engineer] Write property test for Property 2 `[SAFETY]` (no energisation into water, including flooded customer areas) _Requirements: 10.2, 10.3, 11.4_ _Design: §18 P2_
 
 - [ ] 29. [qa-eval-engineer] Write property test for Property 17 `[SAFETY]` (only a matching, live, unused clearance is accepted; crew size vetoed) _Requirements: 9.2, 9.4, 10.4, 12.8_ _Design: §18 P17_
 

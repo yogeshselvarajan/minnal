@@ -21,11 +21,20 @@ from __future__ import annotations
 
 # ``gateway_clients`` resolves via the conftest ``sys.path`` insert of the pattern root, so ruff
 # groups it with third-party imports.
+from dataclasses import dataclass
+from pathlib import Path
+
+import pytest
 from gateway_clients.filters import (  # type: ignore[import-not-found]
     GATEWAY_ALLOW_LISTS,
     LOCAL_ALLOW_LISTS,
     NEVER_ALLOWED,
 )
+from gateway_clients.names import gateway_tool_name  # type: ignore[import-not-found]
+from gateway_clients.registry import RoleClientRegistry  # type: ignore[import-not-found]
+from graph.nodes.dispatch_commit import TOOL_IDENTITY  # type: ignore[import-not-found]
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # The §8.5 allow-list table, transcribed exactly. Gateway tools are filtered by ``ToolFilters``;
 # local tools are attached directly; both are enforced (§8.5). ``pio`` and ``scribe`` are stubs
@@ -98,3 +107,138 @@ def test_no_role_allow_lists_record_outage() -> None:
         assert not overlap, f"role {role!r} Gateway list hits NEVER_ALLOWED: {sorted(overlap)}"
     for role, local in LOCAL_ALLOW_LISTS.items():
         assert "record_outage" not in local, f"role {role!r} local list contains record_outage"
+
+
+# --- Task 38.3: start-up fails on a missing tool; TOOL_IDENTITY matches the grid-tools Cedar ---
+#
+# Validates: Requirements 13.7, 9.10, 13.10 (design §8.1.3, §8.3, §21.5).
+
+
+@dataclass(frozen=True)
+class _FakeInner:
+    """The ``.mcp_tool`` a Strands tool carries: the raw server-side ``name`` only."""
+
+    name: str
+
+
+@dataclass(frozen=True)
+class _FakeTool:
+    """A fake tool exposing the single attribute the registry reads: ``tool.mcp_tool.name``."""
+
+    mcp_tool: _FakeInner
+
+
+class _FakeGatewayClient:
+    """Fake ``MCPClient``: a context manager whose ``list_tools_sync`` returns fixed tools.
+
+    Mirrors the Strands ``MCPClient`` surface ``verify_allow_lists`` touches (§8.1.3): it is a
+    context manager, and ``list_tools_sync(tool_filters=...)`` returns objects with
+    ``.mcp_tool.name``. The tool names are the Gateway ``<target>___<tool>`` spelling, so the
+    check's normalisation is exercised, not bypassed.
+    """
+
+    def __init__(self, gateway_names: list[str]) -> None:
+        self._tools = [_FakeTool(_FakeInner(name)) for name in gateway_names]
+
+    def __enter__(self) -> _FakeGatewayClient:
+        return self
+
+    def __exit__(self, *_: object) -> None:
+        return None
+
+    def list_tools_sync(self, tool_filters: object = None) -> list[_FakeTool]:
+        # The check passes ``tool_filters={}`` to see everything the Gateway exposes; the fake
+        # ignores the filter and returns its full set, which is exactly the unfiltered listing.
+        return list(self._tools)
+
+
+class _FakeRegistry(RoleClientRegistry):
+    """A ``RoleClientRegistry`` whose ``client`` yields fakes; ``verify_allow_lists`` is unchanged.
+
+    The real ``verify_allow_lists`` (the code under test) is inherited verbatim; only the
+    transport-building ``client`` is replaced, so the test drives the actual start-up check over
+    a Gateway we control, with no network.
+    """
+
+    def __init__(self, per_role_gateway_names: dict[str, list[str]]) -> None:
+        # Bypass the real __init__ (which needs a URL and identity provider); this fake never
+        # builds a transport.
+        self._per_role = per_role_gateway_names
+
+    def client(self, role: str) -> _FakeGatewayClient:  # type: ignore[override]
+        return _FakeGatewayClient(self._per_role[role])
+
+
+def _full_gateway_names(role: str) -> list[str]:
+    """Every allow-listed Gateway tool of a role, in its ``<target>___<tool>`` spelling."""
+    return [gateway_tool_name(bare) for bare in sorted(GATEWAY_ALLOW_LISTS[role])]
+
+
+def test_start_up_fails_on_missing_tool() -> None:
+    """``verify_allow_lists`` raises, naming the role and the missing tool (R13.7)."""
+    # Arrange: the ``dispatch`` Gateway lists every allow-listed tool EXCEPT ``dispatch_crew``.
+    # A start-up that admitted this would let dispatch run believing it can commit when it cannot.
+    dispatch_names = [n for n in _full_gateway_names("dispatch") if "dispatch_crew" not in n]
+    registry = _FakeRegistry({"dispatch": dispatch_names})
+
+    # Act + Assert: the check fails at start-up, naming BOTH the role and the missing tool, so an
+    # operator sees exactly what is wrong rather than a silent under-provisioned agent.
+    with pytest.raises(RuntimeError) as excinfo:
+        registry.verify_allow_lists(["dispatch"])
+    message = str(excinfo.value)
+    assert "dispatch" in message
+    assert "dispatch_crew" in message
+
+
+def test_start_up_passes_when_every_tool_is_present() -> None:
+    """The check is silent when the Gateway exposes every allow-listed tool (R13.7).
+
+    Guards against a check that always raises: a complete Gateway (with an extra unrelated tool,
+    to prove ``missing`` is a subset test, not equality) must pass for every role that has tools.
+    """
+    # Arrange: each role's full allow-list plus one extra tool the role does not list.
+    per_role = {
+        role: [*_full_gateway_names(role), "some-other-target___some_other_tool"]
+        for role, tools in GATEWAY_ALLOW_LISTS.items()
+        if tools
+    }
+    registry = _FakeRegistry(per_role)
+
+    # Act + Assert: no exception for any role that has Gateway tools.
+    registry.verify_allow_lists(list(per_role))
+
+
+def test_tool_identity_matches_cedar() -> None:
+    """``TOOL_IDENTITY`` matches the ``grid-tools`` Cedar write-tool permits (R9.10, R13.10).
+
+    ``dispatch_commit`` selects its commit client by the role each write tool's Cedar permit
+    names: ``dispatch_crew`` under ``dispatch`` (grid-tools Permit B), ``propose_switching`` under
+    ``commander`` (grid-tools Permit C). A drift between ``TOOL_IDENTITY`` and those permits is a
+    commit under the wrong identity (Property 46), so it must fail the build.
+
+    SCOPING (task 38.3): the ``grid-tools`` Cedar file (``gateway/policies/grid-tools.cedar``) is
+    not on this branch — its task is unbuilt — so this asserts ``TOOL_IDENTITY`` against the
+    documented ``grid-tools`` permit mapping encoded in this spec's design §8.3 (Permit B and
+    Permit C). If that file lands later, this test cross-checks against it directly. The cross-file
+    check is otherwise pending grid-tools' Cedar landing (recorded in the build notes).
+    """
+    # The documented grid-tools permit mapping (design §8.3, grid-tools §10.2 Permits B and C).
+    documented = {"dispatch_crew": "dispatch", "propose_switching": "commander"}
+
+    grid_tools_cedar = _REPO_ROOT / "gateway" / "policies" / "grid-tools.cedar"
+    if grid_tools_cedar.exists():
+        # Cross-check the constant against the real permits: for each write tool, the single role
+        # its permit's ``getTag("minnal_role") == "<role>"`` guard names must equal TOOL_IDENTITY.
+        text = grid_tools_cedar.read_text(encoding="utf-8")
+        for tool, role in documented.items():
+            action = f"{tool.replace('_', '-')}-target___{tool}"
+            assert action in text, f"grid-tools Cedar has no permit action for {tool}"
+            assert f'"{role}"' in text, f"grid-tools Cedar names no {role!r} for {tool}"
+        assert documented == TOOL_IDENTITY, "TOOL_IDENTITY drifted from the grid-tools Cedar"
+    else:
+        # grid-tools Cedar absent: assert against the documented mapping (design §8.3). The
+        # cross-file check completes when grid-tools' .cedar lands.
+        assert documented == TOOL_IDENTITY, (
+            "TOOL_IDENTITY must match the documented grid-tools permit mapping (§8.3): "
+            f"dispatch_crew->dispatch, propose_switching->commander; got {TOOL_IDENTITY}"
+        )

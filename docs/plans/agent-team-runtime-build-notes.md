@@ -325,3 +325,39 @@ There is no incident registry in `_shared`. "Unknown incident" is read as "the
 `INC#<inc>` partition holds no item at all"; a known incident with no flood feed
 still returns its empty version-0 `unknown` flood set. This satisfies R14.11 while
 a fresh, seeded incident answers normally.
+
+
+## Task 38 (qa): cross-file checks pending other specs
+
+Two verification cross-checks in task 38 depend on files owned by other specs
+that are not on this branch yet. They are scoped down to what this spec owns and
+noted here so they are completed when the dependency lands:
+
+### 38.2 CDK Gateway targets (Wave-9, task 76)
+
+`test_derived_filter_matches_cdk_and_cedar_targets` asserts the "corresponds to a
+target the CDK creates" half against the four read tools' `tool_spec.json` `name`s
+and their derived `gateway_tool_name`s only, because the CDK Gateway targets in
+`infra-cdk/lib/` are a Wave-9 deliverable and do not exist yet. A `TODO(wave9-cdk)`
+in the test marks that task 76's verification completes the full CDK-target
+cross-check. The Cedar half (this spec's `gateway/policies/agent-team-runtime.cedar`)
+passes fully now.
+
+### 38.3 grid-tools Cedar permits
+
+`test_tool_identity_matches_cedar` asserts `TOOL_IDENTITY`
+(`dispatch_crew`->`dispatch`, `propose_switching`->`commander`) against the
+documented grid-tools permit mapping in design §8.3 (grid-tools §10.2 Permits B
+and C), because `gateway/policies/grid-tools.cedar` is not on this branch (its task
+is unbuilt). The test already contains the cross-file branch: when that `.cedar`
+file lands, the same test reads it and cross-checks the constant against the real
+permit actions and role guards. Cross-file check pending grid-tools' Cedar landing.
+
+### 38.4 grid-tools forbids
+
+`test_collapsed_permit_keeps_forbids` reconstructs the collapsed shared-identity
+permit (ADR 0007 / grid-tools §10.3) and the grid-tools §10.2 forbid rules from the
+grid-tools design (verbatim) and asserts the collapsed permit still denies every
+forbid case (the grid-tools §10.5 matrix deny rows). When
+`gateway/policies/grid-tools.cedar` lands, the forbid text can be read from it
+instead of reconstructed. Pending grid-tools' Cedar landing.

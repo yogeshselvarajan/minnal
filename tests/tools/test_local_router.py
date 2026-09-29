@@ -27,13 +27,26 @@ import json
 import socket
 from pathlib import Path
 
+import pytest
+from _shared import flood
 from _shared.adapters._local_router import LocalRouter
 from _shared.flood import FloodSet, HazardPolygon, hazard_index
 from _shared.geometry import buffer_metres, parse_geometry
 from plan_crew_route.logic import RouteAccepted, RouteVetoed, accept_route, avoidance_areas
 from shapely.geometry import LineString, mapping
 
-_INCIDENT = "inc_00000000000000000000000000"
+# A file-unique incident id: the module-level hazard-index cache is keyed by
+# (incident_id, version, buffer_m), so a distinct id keeps this suite's cached
+# indices from colliding with another suite's flood set at the same version.
+_INCIDENT = "inc_00000000000000000000R0UTER"
+
+
+@pytest.fixture(autouse=True)
+def _clear_index_cache() -> None:
+    """Start every test with an empty hazard-index cache (§8.5 isolation)."""
+    flood.clear_index_cache()
+
+
 _BUFFER_M = 25.0
 _SPEED_MPS = 8.0
 

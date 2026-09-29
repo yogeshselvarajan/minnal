@@ -407,3 +407,34 @@ kwarg on `Emitter.veto` (the Protocol in `roles/_common/factory.py`) and on the 
 test_advisory_veto_emits_one_event_without_rule_id` now asserts `source == "advisory"` on the
 emitted event, so the war room can distinguish a flood rule from a Safety Officer judgement
 (§12.3, R11.7). **Task 59.2 ticked.**
+
+## 2026-09-29 — task 65: ScriptedModel implements the real Strands `Model` ABC, not the §18.1 sketch
+
+Design §18.1 sketches `ScriptedModel(script, seed)` with a single `respond(node, output_model,
+context)` coroutine keyed by `(node, call_index)`. That surface is not the surface a node wrapper
+actually reaches: the wrappers build a **real** `strands.Agent` via `roles/_common/factory.build_agent`
+(whose `RoleDeps.model` is typed `strands.models.Model`) and drive it through
+`run_node_with_repair`, which calls `agent.invoke_async(...)` (→ `Model.stream`) and
+`agent.structured_output_async(output_model)` (→ `Model.structured_output`). A bare `respond`
+method would force a wrapper to branch on which model it holds — exactly what the kickoff and
+`RoleDeps` docstring forbid.
+
+Decision: `ScriptedModel` subclasses `strands.models.Model` and implements the real ABC verified
+against `strands-agents==1.42.0` (`strands/models/model.py`): `stream`, `structured_output`,
+`get_config`, `update_config`. The `(node, context)` the §18.1 sketch passed to `respond` are
+**bound at construction** instead — the runner builds one `ScriptedModel` per role, so the node
+identity the scripts key on is per-model-instance rather than a per-call argument that the Strands
+`Model` interface has no slot for. `structured_output` yields the last-event contract the Agent
+reads (`{"output": output_model(**payload)}`); building the object runs the real Pydantic
+validation (including `reject_safety_fields`), so a forbidden/omitted field raises exactly where a
+real model's bad output would and the one outer repair attempt is exercised. Verified: honest
+objectives return a valid object through a real `Agent`, and `adversarial_types_clearance` produces
+a typed `NodeFailure(reason=schema_invalid)` — never a spoofed clearance, never a raise through the
+graph.
+
+`scripts.py` is kept pure (pydantic + stdlib only, no strands/boto3/network/clock). The seeded
+`Script` is stateless; the `ScriptedModel` owns the `(node, call_index)` bookkeeping. Adversarial
+tool-loop vectors (`requests_forbidden_tool`, `endless_tools`) are expressed as gather-turn
+`toolUse` intents in `Model.stream`; the enforcement (ToolFilters allow-list, per-node tool-call
+budget) is the graph's and is verified by the integration property tests in the qa lane (task 68),
+not by this model.

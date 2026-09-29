@@ -531,15 +531,15 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 7: offline mode and the acceptance scenario
 
-- [ ] 65. The Scripted_Model and its scripts
+- [x] 65. The Scripted_Model and its scripts
   - _Requirements: 4.3, 5.3, 8.3, 8.7, 12.6, 13.2, 16.2, 17.4, 17.7, 22.1, 22.4_ §18.1, §10.5 [agent-engineer]
-  - [ ] 65.1 Write `patterns/agui-minnal/offline/scripted_model.py` as a deterministic model keyed by node and call index, seeded, with no randomness, no network and no clock read, implementing the gather turn and the structured-output path the node wrappers use
+  - [x] 65.1 Write `patterns/agui-minnal/offline/scripted_model.py` as a deterministic model keyed by node and call index, seeded, with no randomness, no network and no clock read, implementing the gather turn and the structured-output path the node wrappers use
     - _Requirements: 22.1, 22.4_ §18.1 [agent-engineer]
-  - [ ] 65.2 Write `patterns/agui-minnal/offline/scripts.py` (pure) with the honest scripts `honest_baseline`, `honest_multi_substation` and `honest_no_switching`
+  - [x] 65.2 Write `patterns/agui-minnal/offline/scripts.py` (pure) with the honest scripts `honest_baseline`, `honest_multi_substation` and `honest_no_switching`
     - _Requirements: 22.1, 22.4_ §18.1 [agent-engineer]
-  - [ ] 65.3 Add the confused scripts `confused_reorders_queue`, `confused_omits_field`, `confused_repeats_job` and `confused_picks_held_crew`
+  - [x] 65.3 Add the confused scripts `confused_reorders_queue`, `confused_omits_field`, `confused_repeats_job` and `confused_picks_held_crew`
     - _Requirements: 4.3, 8.3, 8.7_ §18.1 [agent-engineer]
-  - [ ] 65.4 Add the adversarial scripts `adversarial_types_clearance`, `adversarial_claims_approval`, `adversarial_requests_forbidden_tool`, `adversarial_endless_tools`, `adversarial_obeys_injection` and `adversarial_safety_claims_clear`, one per STRIDE vector
+  - [x] 65.4 Add the adversarial scripts `adversarial_types_clearance`, `adversarial_claims_approval`, `adversarial_requests_forbidden_tool`, `adversarial_endless_tools`, `adversarial_obeys_injection` and `adversarial_safety_claims_clear`, one per STRIDE vector
     - _Requirements: 17.4, 17.7, 12.6, 13.2, 16.2, 5.3_ §18.1, §10.5 [agent-engineer]
 
 - [ ] 66. The in-process tool server

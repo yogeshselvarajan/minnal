@@ -280,7 +280,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 37.1 Implement the fallback behind configuration, using one machine identity with per-role restriction resting on `ToolFilters`, and write an ADR in `docs/adr/` recording the choice and that Property 46 weakens to client selection
     - _Requirements: 13.6_ §8.4 [agent-engineer]
 
-- [ ] 38. Verify clients, filtering and identity
+- [x] 38. Verify clients, filtering and identity
   - _Requirements: 8.10, 9.9, 9.10, 13.1, 13.2, 13.3, 13.4, 13.5, 13.6, 13.7, 13.8, 13.10, 14.10_ §20, §8.1, §8.3 [qa-eval-engineer]
   - [x] 38.1 Write `tests/agents/test_allow_lists.py::test_allow_lists_match_spec` asserting each role's Gateway and local lists equal the §8.5 table exactly, that the dispatch agent's list is exactly `rank_restoration_jobs`, `plan_crew_route`, `dispatch_crew` and `list_crews`, and that no list contains `record_outage`
     - _Requirements: 8.10, 13.3, 13.4, 13.8_ §8.5, §21.5 [qa-eval-engineer]
@@ -295,7 +295,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - **Validates: Requirements 13.2, 13.3, 13.4, 13.5, 9.9**
     - `test_property_P45_allow_list_enforced` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 9.9_ §20, §8.1 [qa-eval-engineer]
-  - [ ] 38.6 Write property test for Property 46
+  - [x] 38.6 Write property test for Property 46
     - **Property 46: every commit call uses the identity its Cedar permit names [SAFETY]**
     - **Validates: Requirements 9.10, 9.11, 13.10, 13.1**
     - `test_property_P46_commit_identity` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`

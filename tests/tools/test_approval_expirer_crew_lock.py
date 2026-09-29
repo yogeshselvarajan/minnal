@@ -14,7 +14,9 @@ import approval_handler.approval_handler_lambda as approval_mod
 import pytest
 import work_order_expirer.work_order_expirer_lambda as expirer_mod
 from _shared.adapters._local_backend import key
-from _shared.ports import ClearanceDraft, Proposal
+from _shared.geometry import geometry_hash
+from _shared.ports import ClearanceDraft, Proposal, StoredRoute
+from shapely.geometry import LineString
 
 from tests.tools.handler_harness import build_harness, context_for
 
@@ -25,6 +27,9 @@ _PROPOSAL = "prp_0000000000000000000000000A"
 _CREW = "crew_000"
 _CLEARANCE = "sfc_00000000000000000000000001"
 _APPROVER_GROUP = "ic-approvers"
+_ROUTE_ID = "rte_00000000000000000000000001"
+# A short route line the FLOOD_CHANGED hazard is built to cover (§5.9, R11.4).
+_ROUTE_LINE = LineString([(80.30, 13.10), (80.31, 13.11)])
 
 
 def _patch(monkeypatch, module, harness) -> None:  # type: ignore[no-untyped-def]
@@ -112,6 +117,43 @@ def _far_hazard():  # type: ignore[no-untyped-def]
     )
 
 
+def _hazard_over_route():  # type: ignore[no-untyped-def]
+    """A fresh, active hazard whose polygon covers the seeded route line (FLOOD_CHANGED)."""
+    from _shared.flood import FloodPolygonUpdatedPayload  # noqa: PLC0415
+    from shapely.geometry import mapping  # noqa: PLC0415
+
+    return FloodPolygonUpdatedPayload(
+        flood_polygon_id="FP-9",
+        geometry=mapping(_ROUTE_LINE.envelope.buffer(0.001)),
+        status="active",
+        sim_time=_WALL,
+    )
+
+
+def _bind_route(harness) -> None:  # type: ignore[no-untyped-def]
+    """Persist a Route and point the seeded Proposal at it, so the re-check tests it."""
+    harness.ports.routes.put(
+        _INCIDENT,
+        StoredRoute(
+            route_id=_ROUTE_ID,
+            crew_id=_CREW,
+            job_id="job_0001",
+            line=_ROUTE_LINE,
+            geometry_hash=geometry_hash(
+                {"type": "LineString", "coordinates": list(_ROUTE_LINE.coords)}
+            ),
+            distance_m=100,
+            duration_seconds=60,
+            flood_set_version=1,
+        ),
+    )
+    # Re-write the PRP# item with route_id set (the seeded proposal has none).
+    prp_key = key(f"INC#{_INCIDENT}", f"PRP#{_PROPOSAL}")
+    item = harness.store.get(prp_key)
+    assert item is not None
+    harness.store.update_if(prp_key, {**item, "route_id": _ROUTE_ID}, lambda cur: cur is not None)
+
+
 # --- approval --------------------------------------------------------------
 
 
@@ -170,6 +212,61 @@ def test_approve_keeps_lock_and_emits_approved(monkeypatch: pytest.MonkeyPatch) 
     assert result["data"]["terminal_state"] == "approved"
     assert _crew_lock(h) is not None  # an approved dispatch keeps its lock
     assert "DispatchApproved" in h.events.names()
+
+
+def test_approve_after_flood_change_returns_safety_violation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Approving after the route floods returns SAFETY_VIOLATION and settles the veto.
+
+    The approval-time re-check finds the bound route now flooded, so the handler
+    fails the task, releases the crew lock, emits DispatchVetoed, and the response
+    envelope is ``ok:false`` SAFETY_VIOLATION carrying ``rule_id == FLOOD_CHANGED``
+    (design §5.9, §11.2 rows 11 & 28, P2/P18; R11.4, R11.9).
+    """
+    h = build_harness()
+    _seed_proposal(h)
+    _bind_route(h)
+    # A fresh hazard now covers the route: the re-check finds it flooded.
+    h.ports.flood.apply_flood_event(_INCIDENT, _hazard_over_route(), 1, _WALL)
+    _patch(monkeypatch, approval_mod, h)
+    assert _crew_lock(h) is not None
+
+    result = approval_mod.handler(_decision_event("approve"), _CTX)
+
+    assert result["ok"] is False
+    assert result["error"]["code"] == "SAFETY_VIOLATION"
+    assert result["error"]["rule_id"] == "FLOOD_CHANGED"
+    # Side effects happened: task failed, crew lock released, DispatchVetoed emitted.
+    assert _crew_lock(h) is None
+    assert "DispatchVetoed" in h.events.names()
+    assert "DispatchApproved" not in h.events.names()
+
+
+def test_approve_while_flood_feed_stale_returns_safety_violation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Approving while the flood feed is unknown/stale fails closed (R11.9).
+
+    No flood event has been ingested, so the re-check derives ``unknown`` and fails
+    closed: the response is ``ok:false`` SAFETY_VIOLATION with
+    ``rule_id == FLOOD_DATA_UNAVAILABLE``, the crew lock is released and the vetoed
+    event is emitted (design §5.9, §11.2 row 28, P15/P18).
+    """
+    h = build_harness()
+    _seed_proposal(h)
+    _bind_route(h)  # no apply_flood_event -> the feed is unknown (fails closed)
+    _patch(monkeypatch, approval_mod, h)
+    assert _crew_lock(h) is not None
+
+    result = approval_mod.handler(_decision_event("approve"), _CTX)
+
+    assert result["ok"] is False
+    assert result["error"]["code"] == "SAFETY_VIOLATION"
+    assert result["error"]["rule_id"] == "FLOOD_DATA_UNAVAILABLE"
+    assert _crew_lock(h) is None  # released on the fail-closed veto
+    assert "DispatchVetoed" in h.events.names()
+    assert "DispatchApproved" not in h.events.names()
 
 
 # --- work_order_expirer ----------------------------------------------------

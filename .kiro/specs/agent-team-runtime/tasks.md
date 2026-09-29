@@ -228,9 +228,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 30.2 Return the member count but never a crew member name or personal identifier, and report a crew whose lock record is missing as `free` because `dispatch_crew` re-checks the lock server-side
     - _Requirements: 14.3, 14.13_ §8.6.4 [geo-data-engineer]
 
-- [ ] 31. Cedar permits for the read tools
+- [x] 31. Cedar permits for the read tools
   - _Requirements: 14.10_ §8.6.5 [platform-engineer]
-  - [ ] 31.1 Write `gateway/policies/agent-team-runtime.cedar` with one role-scoped permit per read tool, `get_flood_status` to `hazard` and `safety`, `list_open_outages` to `diagnostics`, `get_proposal_status` to `commander` and `list_crews` to `dispatch`, each guarding `has` before `getTag`, each commented with this requirement, and no `forbid` added or altered
+  - [x] 31.1 Write `gateway/policies/agent-team-runtime.cedar` with one role-scoped permit per read tool, `get_flood_status` to `hazard` and `safety`, `list_open_outages` to `diagnostics`, `get_proposal_status` to `commander` and `list_crews` to `dispatch`, each guarding `has` before `getTag`, each commented with this requirement, and no `forbid` added or altered
     - _Requirements: 14.10_ §8.6.5 [platform-engineer]
 
 - [ ] 32. Verify the read tools

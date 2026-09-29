@@ -254,3 +254,17 @@ Root cause: `_shared/flood._rebuild_polygons` **removes the polygon record entir
 Direction of the failure: fail-*dangerous* for hazard membership only in the narrow "a cleared area is wrongly re-flagged as a hazard" sense (which is conservative for routing), but it is a genuine order/loss violation of P20's definitional equality and could equally drop a real clear. Fix belongs to the **geo-data lane** (`_shared/flood.py`): a cleared polygon must retain a tombstone carrying `last_sequence` (and `changed_in_version`) so the sequence guard still rejects a stale lower-sequence re-activation, while `hazard_geometries`/membership continue to exclude it. That is a decision-code change outside the qa-eval-engineer lane; the property is left honest and failing so the fix is verifiable.
 
 Status: task 43 BLOCKED on the geo-data fix. The property file is written and correct; it is intentionally NOT committed to the shared branch while red (it would poison the `-m safety` gate and task-57 checkpoint). Flagged to the orchestrator.
+
+### P19 (task 50) exposed a real geo-data gap — FLAGGED, property NOT weakened
+
+`test_property_P19_write_tool_idempotency.py` verifies P19's two clauses against the real `_shared.idempotency.wrap` (aws mode, moto-backed) and the local conditional-write path:
+
+- **Same key + same payload replays, body runs once** — PASSES.
+- **Local conditional-write idempotency** (record_outage by `report_id`) — PASSES.
+- **Same key + DIFFERENT payload → CONFLICT** — FAILS. Powertools does not raise; it silently replays the first stored result.
+
+Root cause: `_shared.idempotency.build_config` builds `IdempotencyConfig(event_key_jmespath=..., expires_after_seconds=..., raise_on_no_idempotency_key=True)` but sets **no `payload_validation_jmespath`**. Powertools only raises `IdempotencyValidationError` (which the handler maps to `CONFLICT`) when a payload-validation JMESPath is configured; without it, a second call under the same idempotency key with a different body just replays the original outcome. So P19's "the same key with a different payload returns `CONFLICT`" (R1.9) is not enforced.
+
+Verified directly with Powertools 3.35.0 + moto: same key + different payload replays the first result, body call count stays 1, no exception. Fix belongs to the **geo-data lane** (`gateway/tools/_shared/idempotency.py`): add `payload_validation_jmespath` to `build_config` selecting the request fields that must match under one key (for `plan_crew_route`/`dispatch_crew`/`propose_switching` whose key is a caller ULID). One-line change; outside the qa-eval-engineer lane.
+
+Status: task 50 BLOCKED on the geo-data fix. The property is left honest and (partly) failing; it is intentionally NOT committed to the shared branch while red (it would poison the task-57 checkpoint). Flagged to the orchestrator. NOTE: the aws-mode Powertools+moto property is also slow (~45 s for the failing run) — once the fix lands, keep the example budget modest or split the aws clause into a fixed handler test to stay within the suite's time envelope.

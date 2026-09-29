@@ -159,7 +159,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 44. [geo-data-engineer] Write `event_ingestor/`: the intake-queue handler at batch size 10 that processes in order, stops at the first failure and reports it plus every unprocessed message; reports through the `record_outage` Logic; `JobCompleted` closing Outages and releasing the crew lock conditional on `proposal_id` _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8_ _Design: §5.10, §7.4.6_
 
-- [ ] 45. [qa-eval-engineer] Write property test for Property 33 `[SAFETY]` (event intake matches the tool, and completed work frees the key and the lock) _Requirements: 18.1, 18.2, 18.3, 18.4, 18.7, 4.12, 9.10_ _Design: §18 P33_
+- [x] 45. [qa-eval-engineer] Write property test for Property 33 `[SAFETY]` (event intake matches the tool, and completed work frees the key and the lock) _Requirements: 18.1, 18.2, 18.3, 18.4, 18.7, 4.12, 9.10_ _Design: §18 P33_
 
 - [x] 46. [geo-data-engineer] Wire `approval_handler/`: the API Gateway handler over the task-25.1 Logic — Cognito claims in, the decide-once conditional update, the approval-time flood re-test, the crew-lock release, `SendTaskSuccess`/`SendTaskFailure`, the decision events named from the proposal kind, and `ApprovalLatencyMs` _Requirements: 11.2, 11.3, 11.4, 11.7, 11.8, 11.9, 9.10, 13.5, 2.3_ _Design: §5.9_
 

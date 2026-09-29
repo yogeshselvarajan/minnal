@@ -508,7 +508,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - _Requirements: 17.8, 20.1, 20.2, 20.7, 20.8_ §16.1, §6.6 [agent-engineer]
   - [x] 62.2 Propagate one `correlation_id` from the start request into every tool payload, span, log line and event
     - _Requirements: 20.3_ §16.2 [agent-engineer]
-  - [ ] 62.3 Emit the `Minnal` namespace metrics `PeriodsRun`, `ItemsProposed`, `ItemsBlocked`, `DispatchVetoed`, `NodeBudgetExceeded`, `PeriodDurationMs`, `AgentTokens` and `VetoLoopIterations`, recording token usage per agent per period, and logging a hash prefix of at most 12 hex characters where a correlation is needed instead of personal data
+  - [x] 62.3 Emit the `Minnal` namespace metrics `PeriodsRun`, `ItemsProposed`, `ItemsBlocked`, `DispatchVetoed`, `NodeBudgetExceeded`, `PeriodDurationMs`, `AgentTokens` and `VetoLoopIterations`, recording token usage per agent per period, and logging a hash prefix of at most 12 hex characters where a correlation is needed instead of personal data
     - _Requirements: 20.4, 20.5, 20.6_ §16.3 [agent-engineer]
   - [ ] 62.4 Emit `DeviceSuspected` per suspected device with `source: minnal.diagnostics`, schema-validated before publishing, and publish no invalid event
     - _Requirements: 12.7, 12.9_ §16.4 [agent-engineer]

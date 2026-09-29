@@ -10,7 +10,13 @@ import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks"
 import { Construct } from "constructs"
 import { AppConfig } from "../utils/config-manager"
 import { resourceName } from "./naming"
-import { powertoolsEnv, powertoolsLayerArn, toolCode } from "./tool-bundling"
+import {
+  acknowledgeLambdaRuntime,
+  makeFunctionRole,
+  powertoolsEnv,
+  powertoolsLayerArn,
+  toolCode,
+} from "./tool-bundling"
 
 export interface WorkflowConstructProps {
   config: AppConfig
@@ -46,7 +52,9 @@ export class WorkflowConstruct extends Construct {
     super(scope, id)
 
     const { config, table, userPoolId, dispatchCrewFn, proposeSwitchingFn } = props
-    const region = cdk.Stack.of(this).region
+    const stack = cdk.Stack.of(this)
+    const region = stack.region
+    const account = stack.account
     const powertoolsLayer = lambda.LayerVersion.fromLayerVersionArn(
       this,
       "PowertoolsLayer",
@@ -64,12 +72,19 @@ export class WorkflowConstruct extends Construct {
 
     const makeFn = (name: string, dir: string, service: string): lambda.Function => {
       const kebab = name.replace(/_/g, "-")
-      return new lambda.Function(this, name, {
+      const role = makeFunctionRole(this, `${name}Role`, {
+        roleName: resourceName(config, `fn-${kebab}`),
+        description: `grid-tools ${name} role (§12.1)`,
+        region,
+        account,
+      })
+      const fn = new lambda.Function(this, name, {
         functionName: resourceName(config, `fn-${kebab}`),
         runtime: lambda.Runtime.PYTHON_3_12,
         architecture: lambda.Architecture.ARM_64,
         handler: `${dir}_lambda.handler`,
         code: toolCode(dir),
+        role,
         timeout: cdk.Duration.seconds(30),
         memorySize: 512,
         layers: [powertoolsLayer],
@@ -81,6 +96,8 @@ export class WorkflowConstruct extends Construct {
           removalPolicy: cdk.RemovalPolicy.DESTROY,
         }),
       })
+      acknowledgeLambdaRuntime(fn)
+      return fn
     }
 
     // Token vault: the .waitForTaskToken target. Writes only TTR# items (§12.1).
@@ -170,7 +187,19 @@ export class WorkflowConstruct extends Construct {
     })
 
     // The state machine role invokes ONLY the vault and the expirer, and holds NO events:PutEvents
-    // (§16.1, §6.6, R13.5). The L2 LambdaInvoke grants add exactly those two invoke permissions.
+    // (§16.1, §6.6, R13.5). The L2 LambdaInvoke grants add `<fnArn>:*` for versions/aliases —
+    // CDK's standard invoke idiom, scoped to exactly those two functions. Acknowledge them.
+    // cdk-nag renders each finding with the invoked function's logical id, so build those exact ids.
+    for (const fn of [this.tokenVaultFn, this.workOrderExpirerFn]) {
+      const fnLogicalId = cdk.Stack.of(this).getLogicalId(fn.node.defaultChild as cdk.CfnElement)
+      cdk.Validations.of(this.stateMachine.role).acknowledge({
+        id: `AwsSolutions-IAM5[Resource::<${fnLogicalId}.Arn>:*]`,
+        reason:
+          "CDK LambdaInvoke idiom: lambda:InvokeFunction scoped to this function's ARN and its " +
+          "versions only. The machine invokes exactly the token-vault and expirer and holds no " +
+          "other permission — no events:PutEvents, no SendTask* (§16.1, §6.6, R13.5).",
+      })
+    }
 
     // Proposal tools start executions and emit their own events (§12.1). Grant here so the two
     // functions can begin a work order and publish Dispatch/Switching events. NOT SendTask* (R11.2).
@@ -183,6 +212,17 @@ export class WorkflowConstruct extends Construct {
     // The Approval_Handler is the only role that can resume a Work_Order (§12.1, R11.2).
     this.stateMachine.grantTaskResponse(this.approvalHandlerFn)
 
+    // Standard state-machine logging (logs: ALL) grants the CloudWatch Logs *delivery* actions on
+    // `*` — Step Functions requires these unscoped (they manage log-delivery resources, not the log
+    // group). This is the documented-wildcard class (like Logs creation, §12.1); acknowledge it.
+    cdk.Validations.of(this.stateMachine.role).acknowledge({
+      id: "AwsSolutions-IAM5[Resource::*]",
+      reason:
+        "Step Functions ALL-level logging requires CloudWatch Logs delivery actions (CreateLogDelivery, " +
+        "PutResourcePolicy, etc.) on `*` — they manage log-delivery resources with no ARN to scope to. " +
+        "This is the documented-wildcard class, same as Logs creation (§12.1, R14.1).",
+    })
+
     // API Gateway with the Cognito authorizer over the Approval_Handler (§16.1). Agents can never
     // reach it — the approver group check is a human-only gate, and agent clients are never in it.
     const userPool = cognito.UserPool.fromUserPoolId(this, "ApproverUserPool", userPoolId)
@@ -194,10 +234,13 @@ export class WorkflowConstruct extends Construct {
     this.api = new apigateway.RestApi(this, "ApprovalApi", {
       restApiName: resourceName(config, "approval-api"),
       description: "grid-tools Work_Order approval API (Cognito, human-only, §16.1)",
+      // No account-level CloudWatch execution role (which would pull in an AWS-managed policy,
+      // AwsSolutions-IAM4). Access logging goes straight to the log group below; X-Ray tracing and
+      // stage metrics need no such role.
+      cloudWatchRole: false,
       deployOptions: {
         stageName: "prod",
         tracingEnabled: true,
-        loggingLevel: apigateway.MethodLoggingLevel.INFO,
         metricsEnabled: true,
         accessLogDestination: new apigateway.LogGroupLogDestination(
           new logs.LogGroup(this, "ApprovalApiAccessLogs", {
@@ -209,12 +252,49 @@ export class WorkflowConstruct extends Construct {
         accessLogFormat: apigateway.AccessLogFormat.jsonWithStandardFields(),
       },
     })
+    // Basic request validation (body + params) at the API edge (AwsSolutions-APIG2); the Lambda
+    // does deep validation, but rejecting malformed requests early is cheap defence in depth.
+    const requestValidator = new apigateway.RequestValidator(this, "ApprovalRequestValidator", {
+      restApi: this.api,
+      requestValidatorName: resourceName(config, "approval-validator"),
+      validateRequestBody: true,
+      validateRequestParameters: true,
+    })
+
     // POST /approvals/{ttr} — decide one work order. Cognito authorizer validates the JWT before
     // the Lambda runs; the Lambda then enforces the approver group (§12.2).
     const approvals = this.api.root.addResource("approvals").addResource("{ttr}")
     approvals.addMethod("POST", new apigateway.LambdaIntegration(this.approvalHandlerFn), {
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
+      requestValidator,
+    })
+
+    // APIG3 (WAF) is a warning, not an error: the approval API is Cognito-authenticated and
+    // human-only; a WAF is out of scope for the demo tier (steering `infra-cdk.md` challenge tier).
+    cdk.Validations.of(this.api.deploymentStage).acknowledge({
+      id: "AwsSolutions-APIG3",
+      reason:
+        "Approval API is Cognito-authenticated, human-only and internal to the war room; a WAFv2 " +
+        "web ACL is out of scope for the challenge tier. Access logging and tracing are enabled.",
+    })
+    // APIG1 (method-level CloudWatch execution logging) needs the account-level APIGW CloudWatch
+    // role, which pulls in an AWS-managed policy (IAM4) whose finding id embeds `<AWS::Partition>`
+    // and cannot be acknowledged via the CDK-native API. JSON access logging (enabled above),
+    // X-Ray tracing and stage metrics cover observability without that role.
+    cdk.Validations.of(this.api.deploymentStage).acknowledge({
+      id: "AwsSolutions-APIG1",
+      reason:
+        "JSON access logging, X-Ray tracing and stage metrics are enabled. Method-level execution " +
+        "logging is omitted because it requires the account APIGW CloudWatch role (an AWS-managed " +
+        "policy), whose IAM4 finding cannot be acknowledged under cdk-nag v3 (§16.5).",
+    })
+    // APIG6 (per-method CloudWatch logging) — same rationale as APIG1.
+    cdk.Validations.of(this.api.deploymentStage).acknowledge({
+      id: "AwsSolutions-APIG6",
+      reason:
+        "Per-method execution logging is omitted for the same reason as APIG1: it requires the " +
+        "account APIGW CloudWatch role. Access logging + tracing + metrics are enabled instead.",
     })
   }
 

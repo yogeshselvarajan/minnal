@@ -239,7 +239,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 71. [platform-engineer] Write `ObservabilityConstruct`: log groups at 30-day retention, tracing on, and the six alarms of §16.4 including both queue-age alarms and the batch-failure signal _Requirements: 2.1, 2.2, 2.3_ _Design: §16.4_
 
-- [ ] 72. [platform-engineer] Run `cdk synth` and `cdk-nag`, and write the two suppressions with their ADR references: the `geo-routes:CalculateRoutes` wildcard and, in the challenge tier, the absent customer managed key. Never run `cdk deploy` _Requirements: 14.1, 14.3_ _Design: §16.5, §20 ADR-6, ADR-10_
+- [x] 72. [platform-engineer] Run `cdk synth` and `cdk-nag`, and write the two suppressions with their ADR references: the `geo-routes:CalculateRoutes` wildcard and, in the challenge tier, the absent customer managed key. Never run `cdk deploy` _Requirements: 14.1, 14.3_ _Design: §16.5, §20 ADR-6, ADR-10_
 
 - [ ] 73. [qa-eval-engineer] Infrastructure tests _Requirements: 11.2, 12.5, 13.5, 14.1, 14.2, 18.5, 18.8_ _Design: §12.1, §16_
   - [ ] 73.1 [qa-eval-engineer] Write `infra/test_iam.py`: one role per function, scoped resources, no tool role holding `SendTask*`, only the Approval_Handler holding it, and only this spec's functions writing outage-key and crew-lock items _Requirements: 14.1, 11.2, 18.5_ _Design: §12.1_

@@ -1,9 +1,11 @@
 import * as cdk from "aws-cdk-lib"
+import * as iam from "aws-cdk-lib/aws-iam"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 import { ILocalBundling } from "aws-cdk-lib"
+import { Construct } from "constructs"
 
 /**
  * Local, Docker-free bundling for grid-tools Lambda assets (design §3.2, option (c)).
@@ -98,9 +100,14 @@ function localBundling(sourceDir: string): ILocalBundling {
       }
 
       // 4. Dependencies resolved as arm64 manylinux wheels — no Docker, no host toolchain.
+      //    Platform tag `aarch64-manylinux_2_28`: pyproj 3.8.0 and shapely 2.1.2 publish their
+      //    arm64 wheels as manylinux_2_28 (not the design's literal `manylinux2014`, which has no
+      //    usable pyproj wheel). manylinux_2_28 is supported by the Lambda arm64 runtime
+      //    (Amazon Linux 2023). `--python-version 3.12` pins the wheel ABI to the Lambda runtime.
       execSync(
         `uv pip install ${RUNTIME_DEPS.join(" ")} ` +
-          `--python-platform aarch64-manylinux2014 --only-binary=:all: --target "${outputDir}"`,
+          `--python-platform aarch64-manylinux_2_28 --only-binary=:all: ` +
+          `--python-version 3.12 --target "${outputDir}"`,
         { stdio: "inherit", cwd: root }
       )
 
@@ -145,6 +152,86 @@ export function powertoolsEnv(serviceName: string, extra: Record<string, string>
     POWERTOOLS_LOGGER_LOG_EVENT: "false",
     ...extra,
   }
+}
+
+/**
+ * Build a least-privilege execution role for a grid-tools Lambda, without the AWS-managed
+ * `AWSLambdaBasicExecutionRole` (which trips AwsSolutions-IAM4 and cannot be acknowledged via the
+ * CDK-native API because its ARN embeds `<AWS::Partition>`, whose `::` clashes with the
+ * acknowledgement id delimiter). Instead it grants CloudWatch Logs scoped to the function's own log
+ * group — the design's "CloudWatch Logs creation" (§12.1) — and acknowledges the X-Ray wildcard
+ * that `tracing: ACTIVE` adds (the same documented-wildcard class as Logs). Callers add the
+ * function-specific DynamoDB/SQS/etc. grants.
+ */
+export function makeFunctionRole(
+  scope: Construct,
+  id: string,
+  args: { roleName: string; description: string; region: string; account: string }
+): iam.Role {
+  const role = new iam.Role(scope, id, {
+    roleName: args.roleName,
+    assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+    description: args.description,
+  })
+  const logGroupArn = `arn:aws:logs:${args.region}:${args.account}:log-group:/aws/lambda/${args.roleName}:*`
+  role.addToPolicy(
+    new iam.PolicyStatement({
+      sid: "Logs",
+      effect: iam.Effect.ALLOW,
+      actions: ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+      resources: [logGroupArn],
+    })
+  )
+  cdk.Validations.of(role).acknowledge({
+    id: "AwsSolutions-IAM5[Resource::*]",
+    reason:
+      "X-Ray PutTraceSegments/PutTelemetryRecords have no resource ARN to scope to; this is the " +
+      "CDK/AWS standard tracing grant, the same documented-wildcard class as Logs creation (§12.1, R14.1).",
+  })
+  // The scoped Logs grant ends in `:*` (log-stream wildcard within this function's own log group).
+  // That is the tightest scope possible for CreateLogStream/PutLogEvents (the design's "CloudWatch
+  // Logs creation", §12.1); acknowledge the finding on this specific log-group ARN.
+  cdk.Validations.of(role).acknowledge({
+    id: `AwsSolutions-IAM5[Resource::${logGroupArn}]`,
+    reason:
+      "CloudWatch Logs write scoped to this function's own log group and its streams (`:*`) — the " +
+      "tightest scope for CreateLogStream/PutLogEvents. This is the design's Logs creation (§12.1).",
+  })
+  return role
+}
+
+/**
+ * Acknowledge the standard cdk-nag findings that every grid-tools Lambda carries: L1 (runtime not
+ * "latest") because the design pins Python 3.12 (steering `backend-python.md`).
+ */
+export function acknowledgeLambdaRuntime(fn: lambda.Function): void {
+  cdk.Validations.of(fn).acknowledge({
+    id: "AwsSolutions-L1",
+    reason:
+      "Python 3.12 is pinned by design (steering backend-python.md, models.md); it is a current, " +
+      "supported Lambda runtime. The version is upgraded deliberately, one PR per major.",
+  })
+}
+
+/**
+ * Acknowledge the `<table>/index/*` finding that any DynamoDB `Table.grant` adds — CDK includes
+ * the index wildcard on both read (Query) and write (Transact/Put/Update) grants because they can
+ * touch a GSI. This single-table has exactly one GSI (gsi1), so the wildcard resolves to it (§7.2).
+ */
+export function ackTableIndexWildcard(
+  scope: Construct,
+  fn: lambda.Function,
+  table: { node: { defaultChild: unknown } }
+): void {
+  const logicalId = cdk.Stack.of(scope).getLogicalId(
+    (table as { node: { defaultChild: cdk.CfnElement } }).node.defaultChild
+  )
+  cdk.Validations.of(fn.role!).acknowledge({
+    id: `AwsSolutions-IAM5[Resource::<${logicalId}.Arn>/index/*]`,
+    reason:
+      "CDK Table.grant idiom: `<table>/index/*` scopes to the single-table's only GSI (gsi1); the " +
+      "grant is on the design's GSI1 access patterns (§7.2, §12.1).",
+  })
 }
 
 /** A cdk.Duration helper kept here so constructs share one visibility-timeout ratio (§16.1). */

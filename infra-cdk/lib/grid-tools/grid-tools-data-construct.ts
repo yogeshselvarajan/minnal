@@ -96,5 +96,30 @@ export class GridToolsDataConstruct extends Construct {
       enforceSSL: true,
       retentionPeriod: cdk.Duration.days(14),
     })
+
+    // Suppression 2 of 2 (§16.5): the absent customer managed key. In the challenge tier the data
+    // layer uses service-managed encryption at rest; the CMK is deferred (R14.3, task 65.1, ADR-6).
+    // The DLQ is a source of hazard/report/job data too, so it carries the same rationale.
+    // cdk-nag v3: acknowledge on each construct with CDK-native Validations.
+    const cmkReason =
+      "Challenge tier uses service-managed (SSE-SQS) encryption at rest; the customer managed " +
+      "key is deferred (R14.3, design ADR-6, optional task 65.1)."
+    cdk.Validations.of(this.deadLetterQueue).acknowledge({ id: "AwsSolutions-SQS2", reason: cmkReason })
+    cdk.Validations.of(this.deadLetterQueue).acknowledge({
+      id: "AwsSolutions-SQS3",
+      reason:
+        "This IS the dead-letter queue for the two intake FIFO queues; it needs no DLQ of its " +
+        "own (design §16.1, §16.4).",
+    })
+    // S3 server access logs on the geometry bucket are out of scope for the challenge tier: the
+    // bucket blocks public access, enforces TLS and SSE, and is versioned; CloudTrail data events
+    // cover audit needs (steering `infra-cdk.md` challenge tier). Access logging would need a second
+    // log bucket that itself trips the same rule.
+    cdk.Validations.of(this.geometryBucket).acknowledge({
+      id: "AwsSolutions-S1",
+      reason:
+        "Geometry bucket blocks public access, enforces TLS + SSE and is versioned; S3 server " +
+        "access logging is out of scope for the challenge tier (would need a second log bucket).",
+    })
   }
 }

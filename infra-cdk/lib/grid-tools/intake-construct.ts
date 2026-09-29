@@ -1,5 +1,6 @@
 import * as cdk from "aws-cdk-lib"
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb"
+import * as iam from "aws-cdk-lib/aws-iam"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import * as logs from "aws-cdk-lib/aws-logs"
 import * as sqs from "aws-cdk-lib/aws-sqs"
@@ -7,7 +8,15 @@ import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources"
 import { Construct } from "constructs"
 import { AppConfig } from "../utils/config-manager"
 import { resourceName } from "./naming"
-import { powertoolsEnv, powertoolsLayerArn, toolCode, visibilityForConsumer } from "./tool-bundling"
+import {
+  ackTableIndexWildcard,
+  acknowledgeLambdaRuntime,
+  makeFunctionRole,
+  powertoolsEnv,
+  powertoolsLayerArn,
+  toolCode,
+  visibilityForConsumer,
+} from "./tool-bundling"
 
 export interface IntakeConstructProps {
   config: AppConfig
@@ -42,7 +51,9 @@ export class IntakeConstruct extends Construct {
     super(scope, id)
 
     const { config, table, deadLetterQueue } = props
-    const region = cdk.Stack.of(this).region
+    const stack = cdk.Stack.of(this)
+    const region = stack.region
+    const account = stack.account
     const powertoolsLayer = lambda.LayerVersion.fromLayerVersionArn(
       this,
       "PowertoolsLayer",
@@ -84,12 +95,19 @@ export class IntakeConstruct extends Construct {
     }
 
     // Flood_Ingestor: batch size 1, its own role (no events:PutEvents, no state machine).
+    const floodRole = makeFunctionRole(this, "FloodIngestorRole", {
+      roleName: resourceName(config, "flood-ingestor"),
+      description: "grid-tools Flood_Ingestor role (§12.1)",
+      region,
+      account,
+    })
     this.floodIngestor = new lambda.Function(this, "FloodIngestor", {
       functionName: resourceName(config, "flood-ingestor"),
       runtime: lambda.Runtime.PYTHON_3_12,
       architecture: lambda.Architecture.ARM_64,
       handler: "flood_ingestor_lambda.handler",
       code: toolCode("flood_ingestor"),
+      role: floodRole,
       timeout: floodTimeout,
       memorySize: 512,
       layers: [powertoolsLayer],
@@ -104,18 +122,33 @@ export class IntakeConstruct extends Construct {
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       }),
     })
-    // Flood_Ingestor reads the flood set, applies the optimistic-lock transaction and writes
-    // large geometry to the bucket; it needs read/write on the table only (§12.1).
-    table.grantReadWriteData(this.floodIngestor)
+    acknowledgeLambdaRuntime(this.floodIngestor)
+    // Flood_Ingestor reads the flood set, applies the optimistic-lock transaction and updates the
+    // head; it touches only base-table items (FLOODSET/FLOOD#), no GSI (§12.1). Scoped actions.
+    table.grant(
+      this.floodIngestor,
+      "dynamodb:GetItem",
+      "dynamodb:Query",
+      "dynamodb:TransactWriteItems",
+      "dynamodb:UpdateItem"
+    )
+    ackTableIndexWildcard(this, this.floodIngestor, table)
 
     // Event_Ingestor: batch size 10 with ReportBatchItemFailures; needs DeleteItem for OKEY#/CREW#
     // (release on JobCompleted, §12.1). No events:PutEvents: it emits nothing.
+    const eventRole = makeFunctionRole(this, "EventIngestorRole", {
+      roleName: resourceName(config, "event-ingestor"),
+      description: "grid-tools Event_Ingestor role (§12.1)",
+      region,
+      account,
+    })
     this.eventIngestor = new lambda.Function(this, "EventIngestor", {
       functionName: resourceName(config, "event-ingestor"),
       runtime: lambda.Runtime.PYTHON_3_12,
       architecture: lambda.Architecture.ARM_64,
       handler: "event_ingestor_lambda.handler",
       code: toolCode("event_ingestor"),
+      role: eventRole,
       timeout: eventTimeout,
       memorySize: 512,
       layers: [powertoolsLayer],
@@ -131,7 +164,26 @@ export class IntakeConstruct extends Construct {
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       }),
     })
-    table.grantReadWriteData(this.eventIngestor)
+    acknowledgeLambdaRuntime(this.eventIngestor)
+    // Event_Ingestor closes Outages and releases locks: GetItem/Query/Transact/Update/Delete on the
+    // table and gsi1 (open_outages_under queries by DT, §7.3). DeleteItem is for OKEY#/CREW# only.
+    table.grant(
+      this.eventIngestor,
+      "dynamodb:GetItem",
+      "dynamodb:Query",
+      "dynamodb:TransactWriteItems",
+      "dynamodb:UpdateItem",
+      "dynamodb:DeleteItem"
+    )
+    this.eventIngestor.addToRolePolicy(
+      new iam.PolicyStatement({
+        sid: "QueryGsi1",
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:Query"],
+        resources: [`${table.tableArn}/index/gsi1`],
+      })
+    )
+    ackTableIndexWildcard(this, this.eventIngestor, table)
 
     // Event source mappings. Batch size 1 for the hazard side; batch size 10 with partial-batch
     // response for the intake side (design §2.1, §16.1, R18.8). The SqsEventSource grants each

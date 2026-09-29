@@ -361,3 +361,36 @@ grid-tools design (verbatim) and asserts the collapsed permit still denies every
 forbid case (the grid-tools §10.5 matrix deny rows). When
 `gateway/policies/grid-tools.cedar` lands, the forbid text can be read from it
 instead of reconstructed. Pending grid-tools' Cedar landing.
+
+## 2026-10-01 — Wave-6 verifier (qa-eval-engineer): BUILDER BUG — advisory veto emitted as `source: tool`
+
+Found while writing task 59.2 (`tests/agents/test_veto_events.py`). Reachable in production;
+not a test defect.
+
+### Symptom
+For an **advisory** veto (a Safety Officer judgement with no tool `rule_id`), the recorded
+`graph.state.VetoRecord.source` is `"advisory"`, but the emitted `minnal.veto` glass-box event
+carries `source: "tool"`. The war room therefore cannot distinguish a deterministic flood-rule
+veto from a Safety Officer advisory veto — which is exactly the distinction §12.3 says `source`
+exists to carry, and which R11.7 ("the emitted veto reflects the actual veto") requires.
+
+### Root cause (builder code — do not edit in this lane)
+- `roles/_common/factory.py` `Emitter` Protocol (line ~62) declares:
+  `def veto(self, *, rule_id, reason, proposal_id) -> None: ...` — it has **no `source` parameter**.
+- `roles/safety/agent.py` `record_safety_veto` records the correct source on the `VetoRecord`
+  (`"tool" if rule_id else "advisory"`) but calls
+  `emitter.veto(rule_id=rule_id, reason=reason, proposal_id=...)` — it cannot pass `source`.
+- The concrete `agui/emitter.py` `GlassBoxEmitter.veto` defaults `source="tool"`, so every advisory
+  veto is emitted as `source: tool`. (`_apply_advisory_vetoes` reaches this path with `rule_id=None`.)
+
+### Fix (for the owning builder, agent-engineer lane)
+Add `source` to the `Emitter.veto` Protocol and have `record_safety_veto` pass
+`source="tool" if rule_id else "advisory"` (mirroring the `VetoRecord`), or infer `source` from
+`rule_id` inside `GlassBoxEmitter.veto`. The former is preferred (explicit, matches the record).
+
+### Test-lane handling
+`test_veto_events.py::test_advisory_veto_emits_one_event_without_rule_id` deliberately does NOT
+assert the emitted `source` (asserting the correct value would fail on this bug; asserting the
+wrong value would encode the defect). The mandated R18.5 fields (rule_id, reason, proposal_id) are
+fully covered and pass. **Task 59.2 is left unticked** pending the fix; 59.1 (Property 58) is
+complete and green (Property 58 does not exercise the advisory-source distinction).

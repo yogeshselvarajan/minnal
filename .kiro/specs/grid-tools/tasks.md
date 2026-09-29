@@ -189,7 +189,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 54. [qa-eval-engineer] Write property test for Property 22 `[SAFETY]` (no personal data in logs, metrics, events or validation output) _Requirements: 1.4, 2.4, 2.5, 4.8_ _Design: §18 P22_
 
-- [ ] 55. [qa-eval-engineer] Write property test for Property 30 (every emitted event validates and vetoes carry a `rule_id`) _Requirements: 13.1, 13.2, 13.3, 9.8_ _Design: §18 P30_
+- [x] 55. [qa-eval-engineer] Write property test for Property 30 (every emitted event validates and vetoes carry a `rule_id`) _Requirements: 13.1, 13.2, 13.3, 9.8_ _Design: §18 P30_
 
 - [ ] 56. [qa-eval-engineer] Handler unit and error-path tests _Requirements: 2.1, 2.2, 2.3, 15.2_ _Design: §11.2, §13_
   - [ ] 56.1 [qa-eval-engineer] Write the `record_outage` handler tests: meter requirements, DT resolution ties, study-area rejection, extra-contact rejection, retry, attach, escalation, restored-key reopen _Requirements: 4.2, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 4.11, 4.12, 4.13_ _Design: §5.1_

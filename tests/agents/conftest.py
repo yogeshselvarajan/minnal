@@ -26,13 +26,17 @@ from pathlib import Path
 import pytest
 from hypothesis import settings
 
-# Make the repository root importable so ``import patterns...`` and the pattern packages resolve
-# the same way they do under the ``pythonpath`` entries in ``pyproject.toml``. Belt-and-braces:
-# the agent test modules are collected as rootdir-relative modules (no ``__init__.py``), so they
-# do not shadow any product package. Confined to the harness; no pyproject change.
+# Make the repository root and the agent pattern root importable. ``patterns/agui-minnal`` is
+# the import root the deployed container and ``mypy_path`` use, so ``config.settings``,
+# ``domain.*``, ``graph.*`` and the role packages resolve here exactly as they do in production
+# (design §3, §21.1). The repo root lets ``import tests.test_no_claude`` reuse the shared scanner.
+# Belt-and-braces: the agent test modules are collected as rootdir-relative modules (no
+# ``__init__.py``), so they do not shadow any product package. Confined to the harness.
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-if str(_REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(_REPO_ROOT))
+_PATTERN_ROOT = _REPO_ROOT / "patterns" / "agui-minnal"
+for _path in (_REPO_ROOT, _PATTERN_ROOT):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
 # Design §21.3 profile names and sizes. ``deadline=None`` keeps property tests from flaking on a
 # slow example (first-run JIT, large drawn inputs); correctness, not latency, is what they assert.

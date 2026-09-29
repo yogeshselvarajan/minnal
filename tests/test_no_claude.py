@@ -18,6 +18,17 @@ MODELS_YAML = REPO_ROOT / "patterns" / "agui-minnal" / "config" / "models.yaml"
 
 SCAN_TARGETS: tuple[str, ...] = (
     "patterns",
+    # agent-team-runtime trees, named explicitly so the guard still covers each one if the
+    # broad "patterns" entry is ever narrowed, and so evals is covered (R2.5). Named subtrees
+    # under "patterns" are already scanned by the broad entry; the scanner skips any that do
+    # not exist yet, so listing them before they land is harmless.
+    "patterns/agui-minnal/roles",
+    "patterns/agui-minnal/graph",
+    "patterns/agui-minnal/gateway_clients",
+    "patterns/agui-minnal/agui",
+    "patterns/agui-minnal/memory",
+    "patterns/agui-minnal/offline",
+    "evals/agent-team-runtime",
     "gateway",
     "infra-cdk/lib",
     "infra-cdk/config.yaml",

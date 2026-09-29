@@ -185,7 +185,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 52. [qa-eval-engineer] Write property test for Property 14 (outage identity survives concurrency, duplicates and crashes) _Requirements: 4.1, 4.2, 4.3, 1.9_ _Design: §18 P14_
 
-- [ ] 53. [qa-eval-engineer] Write property test for Property 21 (exactly one well-formed envelope that leaks nothing) _Requirements: 1.4, 1.5, 1.6, 1.11_ _Design: §18 P21_
+- [x] 53. [qa-eval-engineer] Write property test for Property 21 (exactly one well-formed envelope that leaks nothing) _Requirements: 1.4, 1.5, 1.6, 1.11_ _Design: §18 P21_
 
 - [ ] 54. [qa-eval-engineer] Write property test for Property 22 `[SAFETY]` (no personal data in logs, metrics, events or validation output) _Requirements: 1.4, 2.4, 2.5, 4.8_ _Design: §18 P22_
 

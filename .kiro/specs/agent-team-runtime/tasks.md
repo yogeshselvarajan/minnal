@@ -488,13 +488,13 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 59.2 Write a test that one `minnal.veto` event is emitted per veto, carrying `rule_id`, `reason` and `proposal_id` where one exists
     - _Requirements: 11.7_ §12.1, §12.3 [qa-eval-engineer]
 
-- [ ] 60. Memory
+- [x] 60. Memory
   - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7_ §13 [agent-engineer]
   - [x] 60.1 Write `patterns/agui-minnal/memory/namespaces.py` (pure) with `session_id` zero-padded to four digits so lexical order equals numeric order, `incident_namespace`, and the lessons namespace constants
     - _Requirements: 19.1, 19.4_ §13.1 [agent-engineer]
   - [x] 60.2 Write `patterns/agui-minnal/memory/session.py` with the per-period session-manager provider returning `None` when no memory is configured, using the incident as `actor_id` and the period as `session_id`
     - _Requirements: 19.1, 19.4, 19.7_ §13.2 [agent-engineer]
-  - [ ] 60.3 Write the period-summary write and the previous-period read, degrading to no history on failure without failing the period, writing no callback number, name or citizen free text, and treating lessons as read-only
+  - [x] 60.3 Write the period-summary write and the previous-period read, degrading to no history on failure without failing the period, writing no callback number, name or citizen free text, and treating lessons as read-only
     - _Requirements: 19.2, 19.3, 19.5, 19.6_ §13.3, §13.4, §13.5 [agent-engineer]
 
 - [ ] 61. Verify memory

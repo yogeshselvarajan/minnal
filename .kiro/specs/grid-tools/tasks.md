@@ -175,7 +175,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 30. [qa-eval-engineer] Write property test for Property 15 `[SAFETY]` (unknown or stale flood data fails closed in every tool, in both feed modes) _Requirements: 3.9, 3.10, 6.8, 7.10, 8.10, 9.9, 10.7, 11.9_ _Design: §18 P15_
 
-- [ ] 48. [qa-eval-engineer] Write property test for Property 18 `[SAFETY]` (a flood change after the clearance blocks both proposal and approval) _Requirements: 9.3, 10.2, 11.4_ _Design: §18 P18_
+- [x] 48. [qa-eval-engineer] Write property test for Property 18 `[SAFETY]` (a flood change after the clearance blocks both proposal and approval) _Requirements: 9.3, 10.2, 11.4_ _Design: §18 P18_
 
 - [ ] 49. [qa-eval-engineer] Write property test for Property 23 (a work order is decided exactly once, by a human, with no token leak) _Requirements: 11.1, 11.2, 11.3, 11.6, 11.7, 11.8, 9.8_ _Design: §18 P23_
 

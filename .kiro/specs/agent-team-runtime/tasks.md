@@ -221,11 +221,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 29.2 Return `task_token_ref` as `ttr_<ULID>` only, never a raw Step Functions token
     - _Requirements: 14.3, 14.9_ §8.6.3 [geo-data-engineer]
 
-- [ ] 30. `list_crews`
+- [x] 30. `list_crews`
   - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.11, 14.12, 14.13_ §8.6.4 [geo-data-engineer]
-  - [ ] 30.1 Write `gateway/tools/list_crews/` with the two-file schema, returning `crew_id`, member count, skills, depot and availability `free` or `held` with the holding `proposal_id` and its status, and optional availability and skill filters
+  - [x] 30.1 Write `gateway/tools/list_crews/` with the two-file schema, returning `crew_id`, member count, skills, depot and availability `free` or `held` with the holding `proposal_id` and its status, and optional availability and skill filters
     - _Requirements: 14.1, 14.2, 14.4, 14.11, 14.12_ §8.6.4 [geo-data-engineer]
-  - [ ] 30.2 Return the member count but never a crew member name or personal identifier, and report a crew whose lock record is missing as `free` because `dispatch_crew` re-checks the lock server-side
+  - [x] 30.2 Return the member count but never a crew member name or personal identifier, and report a crew whose lock record is missing as `free` because `dispatch_crew` re-checks the lock server-side
     - _Requirements: 14.3, 14.13_ §8.6.4 [geo-data-engineer]
 
 - [ ] 31. Cedar permits for the read tools

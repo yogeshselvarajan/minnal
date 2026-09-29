@@ -1,0 +1,28 @@
+[
+  {
+    "name": "list_crews",
+    "description": "List the crews available to one incident with their identifier, number of members, skills (any of make_safe, overhead_line, switching, underground_cable), depot location as a GeoJSON Point, and availability. Availability is free, or held when the crew is already committed to a proposal awaiting approval or approved, in which case the holding proposal id and its status (waiting_approval or approved) are given. Optionally filter by availability (free or held) and by a required skill. Read-only. Plan work only for crews reported free with at least two members: storm work requires a minimum two-person crew, and a crew held by another proposal must not be double-committed. No crew member names or personal identifiers are returned.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident identifier, a ULID with the inc_ prefix, matching ^inc_[0-9A-HJKMNP-TV-Z]{26}$."
+        },
+        "availability": {
+          "type": "string",
+          "description": "Optional filter, one of free or held. Omit for all crews."
+        },
+        "required_skill": {
+          "type": "string",
+          "description": "Optional filter: only crews holding this skill. One of make_safe, overhead_line, switching, underground_cable."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional correlation identifier, a ULID with the corr_ prefix. Echoed in the response and in every log line."
+        }
+      },
+      "required": ["incident_id"]
+    }
+  }
+]

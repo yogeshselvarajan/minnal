@@ -129,7 +129,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
   - [x] 35.4 [qa-eval-engineer] Write `test_consistent_read_used_for_flood_set`, `test_torn_snapshot_retries_then_upstream_error` and `test_only_verified_snapshot_is_cached` _Requirements: 3.6, 3.11_ _Design: §7.4.7_
   - [x] 35.5 [qa-eval-engineer] Write `test_bounded_retries_and_error_mapping` _Requirements: 1.10_ _Design: §11.4_
 
-- [ ] 36. [qa-eval-engineer] Write property test for Property 32 `[SAFETY]` (flood reads are snapshot-consistent or they fail) _Requirements: 3.11, 6.7_ _Design: §18 P32_
+- [x] 36. [qa-eval-engineer] Write property test for Property 32 `[SAFETY]` (flood reads are snapshot-consistent or they fail) _Requirements: 3.11, 6.7_ _Design: §18 P32_
 
 - [ ] 37. [qa-eval-engineer] Write property test for Property 16 `[SAFETY]` (an unreadable flood store never reports "clear") _Requirements: 6.7, 1.10_ _Design: §18 P16_
 

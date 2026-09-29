@@ -211,3 +211,43 @@ already in `domain/contracts.py` (task 12) and `ClearanceLedgerEntry` in `graph/
 
 reject_safety_fields runs as a `@model_validator(mode="before")` so it fires inside
 structured_output_async and the SDK feeds the named security reason back to the model (§7.4).
+
+## Checkpoint 26 — ruff-cleaning the FAST template `patterns/utils`
+
+Checkpoint 26's literal gate (`ruff check patterns gateway`) surfaced 14 pre-existing
+lint errors, all confined to the FAST template files `patterns/utils/auth.py` and
+`patterns/utils/ssm.py` (imported in phase 00, not owned by any agent-team-runtime lane).
+Fixed the closest-safe, behaviour-preserving way and committed separately from any task:
+
+- **B904** (7×) — added `from err` / `from e` to the `raise` statements inside `except`
+  clauses in `ssm.get_ssm_parameter` and `auth.get_secret`. Only sets `__cause__`; the
+  exception types and messages raised are unchanged.
+- **RUF010** (1×, auto-fixed) — `{str(e)}` → `{e!s}` in `auth.get_secret`. Equivalent.
+- **PLR2004** (1×) — replaced the magic `200` in `if response.status_code != 200:` with a
+  module-level `HTTP_OK = 200` constant. Same comparison.
+- **E501** on multi-line statements (4×) — moved three `# nosemgrep:` directives from the
+  trailing `)` onto the line immediately preceding the `logger` call (semgrep honours the
+  directive on the preceding line); reflowed the `verify_signature` directive's prose reason
+  onto extra comment lines. No code behaviour change.
+- **E501 that cannot be shortened without a behaviour change** — three `# nosemgrep:` comment
+  lines whose fully-qualified rule ID
+  (`python.lang.security.audit.logging.logger-credential-leak.python-logger-credential-disclosure`)
+  is itself >100 chars and must stay intact on one line for the security scanner. Rather than
+  break the directive, added a **scoped `per-file-ignores` entry** in `pyproject.toml` exempting
+  only `patterns/utils/auth.py` from `E501`; every other rule still applies to that file. This
+  is the config equivalent of a scoped `# noqa: E501` and changes no runtime behaviour.
+
+Note: `ruff format --check` on these two vendored template files was already failing before this
+change (pre-existing multi-line style the FAST template shipped). The checkpoint command is
+`ruff check` (not `format`), which now passes; format was left untouched to keep the diff minimal.
+
+Checkpoint-26 result — all four commands green:
+- `uv run ruff check patterns gateway` → All checks passed!
+- `uv run mypy patterns/agui-minnal/domain` → Success: no issues found in 8 source files
+- `uv run pytest -q tests/agents` → 115 passed
+- `uv run pytest -m safety` → 41 passed, 292 deselected
+
+Known environment artifact (out of checkpoint scope): `tests/test_network_blocked.py::
+test_connecting_a_socket_to_an_external_address_raises` fails because the sandbox black-holes
+external TCP (TimeoutError, not RuntimeError). Not under `tests/agents` and not marked `safety`,
+so it does not affect steps 3–4; left untouched.

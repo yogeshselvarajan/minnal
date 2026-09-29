@@ -195,7 +195,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 25.2 Write `tests/agents/test_contracts.py::test_all_frozen_extra_forbid` and `tests/agents/test_purity.py` walking the AST of every pure module and failing on any `boto3`, `botocore` or `strands` import, on a direct `grid-tools` table write, or on AWS credentials in an agent
     - _Requirements: 1.8, 4.1, 12.11, 13.9_ §3.1, §21.5 [qa-eval-engineer]
 
-- [ ] 26. **Checkpoint: run the tests so far.** `uv run ruff check patterns gateway && uv run mypy patterns/agui-minnal/domain && uv run pytest -q tests/agents`, then `uv run pytest -m safety`
+- [x] 26. **Checkpoint: run the tests so far.** `uv run ruff check patterns gateway && uv run mypy patterns/agui-minnal/domain && uv run pytest -q tests/agents`, then `uv run pytest -m safety`
   - _Requirements: 25.3, 25.5, 25.8_ §21 [qa-eval-engineer]
 
 ## Wave 2: the four read-only tools

@@ -247,6 +247,7 @@ def test_property_P1_adversarial_router_output_is_retested(data: st.DataObject) 
         assert not oracle_clear
 
 
+@pytest.mark.safety
 def test_property_P1_adversarial_router_ignores_avoidance() -> None:
     """A fixed crossing: adversarial mode returns the unsafe line and the re-test vetoes."""
     polygons = [_KNOWN_BAD_POLY]

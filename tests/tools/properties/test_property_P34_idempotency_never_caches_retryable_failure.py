@@ -17,15 +17,19 @@ record, so the same-key retry re-executes and can succeed. A body that returns a
 is asserted by the exception type Powertools raises for a concurrent in-progress
 record, which the handler maps to a retryable ``CONFLICT``.
 
-Not a ``[SAFETY]`` property (design §18: P34 is unmarked). The ``default``/``ci``
-profiles (200 examples) apply; the aws-mode examples are bounded for speed.
+Not a ``[SAFETY]`` property (design §18: P34 is unmarked). Both ``@given`` clauses
+are aws-mode and moto-backed: each creates an idempotency table per example (~45s
+at 200 examples, measured), so they keep a reduced budget of 25 examples, justified
+and recorded in ``docs/plans/decisions-log.md`` per the autopilot "log the decision"
+rule. The in-flight clause is a single deterministic example (no ``@given``, so the
+count gate does not apply).
 """
 
 from __future__ import annotations
 
 import boto3
 import pytest
-from _shared.errors import RateLimited, UpstreamError
+from _shared.errors import ConflictError, RateLimited, UpstreamError
 from _shared.idempotency import wrap
 from _shared.settings import Settings
 from hypothesis import HealthCheck, example, given, settings
@@ -69,6 +73,8 @@ def _wrapped(body: object) -> object:
 )
 @example(key_id="a1", retryable="upstream")  # known-bad: a transient failure must not poison
 @settings(
+    # moto creates an idempotency table per example (~45s at 200, measured); the
+    # budget is reduced with a justification logged in docs/plans/decisions-log.md.
     max_examples=25,
     deadline=None,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture],
@@ -103,6 +109,8 @@ def test_property_P34_retryable_failure_is_not_cached(key_id: str, retryable: st
 @given(key_id=st.text(alphabet="0123456789abcdef", min_size=3, max_size=6))
 @example(key_id="b2")  # known-bad: an ok result must replay without re-running
 @settings(
+    # moto creates an idempotency table per example (~45s at 200, measured); the
+    # budget is reduced with a justification logged in docs/plans/decisions-log.md.
     max_examples=25,
     deadline=None,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture],
@@ -130,14 +138,14 @@ def test_property_P34_in_flight_duplicate_maps_to_retryable_conflict() -> None:
     """A duplicate arriving while the first call is in flight is a retryable CONFLICT.
 
     Powertools raises ``IdempotencyAlreadyInProgressError`` for a concurrent
-    in-progress record; the handler maps that to ``CONFLICT`` with
-    ``retryable: true`` (R1.12). Here the in-progress record is written, then a
-    second call with the same key hits it and raises that error.
+    in-progress record; :func:`_shared.idempotency.wrap` maps that to
+    :class:`_shared.errors.ConflictError` with code ``CONFLICT`` and
+    ``retryable: true`` (R1.12, §11.2 row 34, §11.7). Here the in-progress record
+    is written, then a second call with the same key hits it while the first is
+    still open, and ``wrap`` surfaces the retryable ``CONFLICT`` — not the raw
+    Powertools exception and not a non-retryable conflict. The property's docstring
+    always claimed this mapping; the product now implements it in ``wrap``.
     """
-    from aws_lambda_powertools.utilities.idempotency.exceptions import (  # noqa: PLC0415
-        IdempotencyAlreadyInProgressError,
-    )
-
     depth = {"n": 0}
 
     with mock_aws():
@@ -152,5 +160,10 @@ def test_property_P34_in_flight_duplicate_maps_to_retryable_conflict() -> None:
             return {"result": "ok"}
 
         wrapped_inner = _wrapped(body)
-        with pytest.raises(IdempotencyAlreadyInProgressError):
+        with pytest.raises(ConflictError) as excinfo:
             wrapped_inner(req={"incident_id": _INCIDENT, "idempotency_key": "inflight", "v": 1})
+
+        # A concurrent duplicate is a retryable CONFLICT: the agent waits and
+        # retries the same key (R1.12, §11.7), unlike same-key/different-payload.
+        assert excinfo.value.code == "CONFLICT"
+        assert excinfo.value.retryable is True

@@ -14,6 +14,7 @@ No socket, no ``boto3``/``botocore`` (R17.1).
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from decimal import Decimal
 from typing import Literal, cast
 
 from _shared import flood
@@ -424,6 +425,11 @@ class LocalProposalStore:
         current = self._store.get(clearance_key)
         if current is None:
             return
+        # Write-once, matching the AWS ``SET used_by = if_not_exists(used_by, :prp)``
+        # (R11.6): never clobber an existing consumer, so a clearance already
+        # consumed by another Proposal keeps that binding (P27).
+        if current.get("used_by") not in (None, ""):
+            return
         used = dict(current)
         used["used_by"] = proposal_id
         try:
@@ -450,17 +456,21 @@ def _opt_str(value: object) -> str | None:
 
 
 def _as_int(value: object) -> int:
-    """Coerce a stored value to ``int`` (JSON numbers arrive as int/float/str)."""
+    """Coerce a stored value to ``int`` (numbers arrive as int/float/str/Decimal).
+
+    DynamoDB returns every number as :class:`decimal.Decimal`, so the shared
+    item-mappers (used by both the local and AWS stores) must accept it (P27).
+    """
     if isinstance(value, bool):  # bool is an int subclass; reject it explicitly
         raise TypeError("expected an integer, got bool")
-    if isinstance(value, (int, float, str)):
+    if isinstance(value, (int, float, str, Decimal)):
         return int(value)
     raise TypeError(f"expected an integer, got {type(value).__name__}")
 
 
 def _as_float(value: object) -> float:
-    """Coerce a stored value to ``float``."""
-    if isinstance(value, (int, float, str)):
+    """Coerce a stored value to ``float`` (DynamoDB numbers arrive as Decimal)."""
+    if isinstance(value, (int, float, str, Decimal)):
         return float(value)
     raise TypeError(f"expected a number, got {type(value).__name__}")
 
@@ -627,15 +637,22 @@ def _outage_from_item(item: Item) -> Outage:
 
 
 def _clearance_item(clearance: Clearance) -> Item:
-    return {
+    item: Item = {
         "clearance_id": clearance.clearance_id,
         "purpose": clearance.purpose,
         "bound_to": clearance.bound_to,
         "bound_kind": clearance.bound_kind,
         "flood_set_version": clearance.flood_set_version,
         "expires_at": clearance.expires_at,
-        "used_by": clearance.used_by,
     }
+    # Only write ``used_by`` when set: DynamoDB stores a Python ``None`` as a NULL
+    # attribute, which would make the single-use consume condition
+    # ``attribute_not_exists(used_by)`` false and wrongly veto every fresh
+    # clearance (§7.4.1); an absent attribute is the correct "unused" state, and
+    # the local store reads a missing key back as ``None`` identically (P27).
+    if clearance.used_by is not None:
+        item["used_by"] = clearance.used_by
+    return item
 
 
 def _clearance_from_item(incident_id: str, item: Item) -> Clearance:
@@ -692,18 +709,26 @@ def _route_from_item(item: Item) -> StoredRoute:
 
 
 def _proposal_item(proposal: Proposal) -> Item:
-    return {
+    # Optional fields are omitted when unset rather than stored as a DynamoDB
+    # NULL attribute: the decide-once guard is ``attribute_not_exists(decided_at)``
+    # (§7.4.4), which a stored NULL would falsely fail, so a NULL ``decided_at``
+    # would make every decision a no-op in aws mode. An absent attribute is the
+    # correct "not yet set" state, and the local store reads a missing key back
+    # as ``None`` identically (P27).
+    item: Item = {
         "proposal_id": proposal.proposal_id,
         "kind": proposal.kind,
         "status": proposal.status,
         "created_at": proposal.created_at,
+        "is_preventive_safety_measure": proposal.is_preventive_safety_measure,
+    }
+    optional: dict[str, object | None] = {
         "crew_id": proposal.crew_id,
         "device_id": proposal.device_id,
         "action": proposal.action,
         "route_id": proposal.route_id,
         "clearance_id": proposal.clearance_id,
         "job_id": proposal.job_id,
-        "is_preventive_safety_measure": proposal.is_preventive_safety_measure,
         "task_token_ref": proposal.task_token_ref,
         "wo_id": proposal.wo_id,
         "decision": proposal.decision,
@@ -711,6 +736,8 @@ def _proposal_item(proposal: Proposal) -> Item:
         "decided_by": proposal.decided_by,
         "reason": proposal.reason,
     }
+    item.update({name: value for name, value in optional.items() if value is not None})
+    return item
 
 
 _ProposalStatus = Literal["waiting_approval", "approved", "rejected", "vetoed", "expired", "failed"]

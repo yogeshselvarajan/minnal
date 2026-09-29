@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.example/schemas/tools/list_open_outages/input.json",
+  "title": "ListOpenOutagesInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_id"],
+  "properties": {
+    "incident_id": { "type": "string", "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "substation_id": { "type": "string", "pattern": "^sub_\\d+$" },
+    "page_size": { "type": "integer", "minimum": 1, "maximum": 500, "default": 200 },
+    "continuation_token": { "type": "string", "maxLength": 512 },
+    "correlation_id": { "type": "string", "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$" }
+  }
+}

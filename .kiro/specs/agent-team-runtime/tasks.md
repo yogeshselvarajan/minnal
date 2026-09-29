@@ -207,11 +207,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 27.2 Write the pure `logic.py` returning `flood_set_version`, the status literal `unknown`, `fresh` or `stale`, `feed_mode`, `last_feed_at` and per polygon its id, status and `area_sqm` from a per-polygon equal-area projection, and the handler returning the shared envelope with `NOT_FOUND` and `UPSTREAM_ERROR` paths
     - _Requirements: 14.3, 14.5, 14.11, 14.12_ §8.6.1, §8.7 [geo-data-engineer]
 
-- [ ] 28. `list_open_outages`
+- [x] 28. `list_open_outages`
   - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.6, 14.7, 14.11, 14.12_ §8.6.2 [geo-data-engineer]
-  - [ ] 28.1 Write `gateway/tools/list_open_outages/` with the two-file schema, the `(reported_at, outage_id)` total order, a bounded page size, and an opaque continuation token carrying incident and filter with a keyed BLAKE2b tag so a tampered token gives `VALIDATION_ERROR`
+  - [x] 28.1 Write `gateway/tools/list_open_outages/` with the two-file schema, the `(reported_at, outage_id)` total order, a bounded page size, and an opaque continuation token carrying incident and filter with a keyed BLAKE2b tag so a tampered token gives `VALIDATION_ERROR`
     - _Requirements: 14.1, 14.2, 14.4, 14.6, 14.11, 14.12_ §8.6.2 [geo-data-engineer]
-  - [ ] 28.2 Return a citizen note only in a field named `untrusted_note`, and never a callback number, callback token or name
+  - [x] 28.2 Return a citizen note only in a field named `untrusted_note`, and never a callback number, callback token or name
     - _Requirements: 14.3, 14.7_ §8.6.2 [geo-data-engineer]
 
 - [ ] 29. `get_proposal_status`

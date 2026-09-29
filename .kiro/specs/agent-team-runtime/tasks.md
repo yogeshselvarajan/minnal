@@ -317,9 +317,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 40.2 Write `tests/agents/test_layout.py::test_role_packages_and_factories` asserting each role package has `agent.py`, `prompt.md`, `schemas.py` and `tools.py`, that the factory takes all dependencies as arguments, that no module outside `settings.py` reads `os.environ`, and that modules and functions respect the size limits
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.7_ §3, §7.1, §21.5 [qa-eval-engineer]
 
-- [ ] 41. Structured output and the outer repair
+- [x] 41. Structured output and the outer repair
   - _Requirements: 4.2, 4.3, 4.4, 4.6_ §7.4 [agent-engineer]
-  - [ ] 41.1 Write `patterns/agui-minnal/roles/_common/repair.py` with `run_node_with_repair` running a gather turn then a typed turn via `structured_output_async(output_model)`, catching `StructuredOutputException` and `ValidationError`, allowing exactly one outer repair attempt with the errors supplied through `wrap_untrusted`, then returning a typed `NodeFailure` with the failing field locations
+  - [x] 41.1 Write `patterns/agui-minnal/roles/_common/repair.py` with `run_node_with_repair` running a gather turn then a typed turn via `structured_output_async(output_model)`, catching `StructuredOutputException` and `ValidationError`, allowing exactly one outer repair attempt with the errors supplied through `wrap_untrusted`, then returning a typed `NodeFailure` with the failing field locations
     - _Requirements: 4.2, 4.3, 4.4, 4.6_ §7.4 [agent-engineer]
 
 - [ ] 42. Verify structured output and repair

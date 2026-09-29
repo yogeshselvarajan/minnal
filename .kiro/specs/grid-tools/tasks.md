@@ -261,7 +261,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [ ] 77. [qa-eval-engineer] Write `test_adversarial_cases_are_generated`, `test_minimal_counterexample_is_reported` and `test_sockets_blocked_and_no_wall_clock_reads` _Requirements: 16.4, 16.6, 16.7_ _Design: §19.2, §19.3_
 
-- [ ] 78. [geo-data-engineer] Write the README section for `gateway/tools/`: the agent-facing call order `plan_crew_route → check_flood_geofence(route_id) → dispatch_crew`, the two-file schema rule, and the `MINNAL_BACKEND=local` instructions _Requirements: 17.1, 6.1_ _Design: §3.3, §5.3_
+- [x] 78. [geo-data-engineer] Write the README section for `gateway/tools/`: the agent-facing call order `plan_crew_route → check_flood_geofence(route_id) → dispatch_crew`, the two-file schema rule, and the `MINNAL_BACKEND=local` instructions _Requirements: 17.1, 6.1_ _Design: §3.3, §5.3_
   - [ ]* 78.1 [geo-data-engineer] Add the staging-point suggestion and the Make-safe nearest-point exception to `plan_crew_route` _Requirements: 7.9_ _Design: §5.4_
   - [ ]* 78.2 [geo-data-engineer] Add the `modify` decision kind to the Approval_Handler _Requirements: 11.5_ _Design: §5.9_
   - [ ]* 78.3 [geo-data-engineer] Add the outbox record and sweeper for failed event publishing _Requirements: 13.4_ _Design: §11.5_

@@ -155,7 +155,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 42. [geo-data-engineer] Write `flood_ingestor/`: the hazard-queue handler at batch size 1, schema and geometry validation to the DLQ, the optimistic-lock transaction, the bounded re-read-and-re-apply, the heartbeat path, the configurable source filter, and cache invalidation _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.8, 3.9, 3.12, 18.8_ _Design: §5.8, §7.4.5_
 
-- [ ] 43. [qa-eval-engineer] Write property test for Property 20 `[SAFETY]` (flood ingestion is order-safe and loses no update under interleaved appliers) _Requirements: 3.1, 3.2, 3.3, 3.8, 3.12_ _Design: §18 P20_
+- [x] 43. [qa-eval-engineer] Write property test for Property 20 `[SAFETY]` (flood ingestion is order-safe and loses no update under interleaved appliers) _Requirements: 3.1, 3.2, 3.3, 3.8, 3.12_ _Design: §18 P20_
 
 - [x] 44. [geo-data-engineer] Write `event_ingestor/`: the intake-queue handler at batch size 10 that processes in order, stops at the first failure and reports it plus every unprocessed message; reports through the `record_outage` Logic; `JobCompleted` closing Outages and releasing the crew lock conditional on `proposal_id` _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8_ _Design: §5.10, §7.4.6_
 

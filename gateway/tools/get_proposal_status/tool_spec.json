@@ -1,0 +1,32 @@
+[
+  {
+    "name": "get_proposal_status",
+    "description": "Report the human decision on dispatch and switching proposals. Called with a proposal id, it returns that proposal's kind (dispatch or switching), status (one of waiting_approval, approved, rejected, vetoed, expired, failed), the decision reason when one exists, and an opaque task token reference (ttr_ followed by a 26-character ULID; never a raw task token). Called without a proposal id, it returns the incident's open proposals, filtered by the optional status list whose allowed values are waiting_approval and approved and whose default is both. Read-only: it cannot approve, reject or modify anything, and no tool exists that can. This is the ONLY way to learn a decision; never assume an approval from conversation history.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident identifier, a ULID with the inc_ prefix, matching ^inc_[0-9A-HJKMNP-TV-Z]{26}$."
+        },
+        "proposal_id": {
+          "type": "string",
+          "description": "Optional single proposal identifier, prp_ followed by a 26-character ULID. When omitted, the incident's open proposals are listed."
+        },
+        "status": {
+          "type": "array",
+          "description": "Optional status filter used only when proposal_id is omitted. Allowed values: waiting_approval and approved (each may appear once). Defaults to both when omitted.",
+          "items": {
+            "type": "string",
+            "description": "One of waiting_approval or approved."
+          }
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional correlation identifier, a ULID with the corr_ prefix. Echoed in the response and in every log line."
+        }
+      },
+      "required": ["incident_id"]
+    }
+  }
+]

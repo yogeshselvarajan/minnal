@@ -214,11 +214,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 28.2 Return a citizen note only in a field named `untrusted_note`, and never a callback number, callback token or name
     - _Requirements: 14.3, 14.7_ §8.6.2 [geo-data-engineer]
 
-- [ ] 29. `get_proposal_status`
+- [x] 29. `get_proposal_status`
   - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.8, 14.9, 14.11, 14.12_ §8.6.3 [geo-data-engineer]
-  - [ ] 29.1 Write `gateway/tools/get_proposal_status/` with the two-file schema, single-id mode scoped to the incident and answering `NOT_FOUND` for another incident's proposal, and list mode taking the optional `status` filter over `waiting_approval` and `approved` defaulting to both
+  - [x] 29.1 Write `gateway/tools/get_proposal_status/` with the two-file schema, single-id mode scoped to the incident and answering `NOT_FOUND` for another incident's proposal, and list mode taking the optional `status` filter over `waiting_approval` and `approved` defaulting to both
     - _Requirements: 14.1, 14.2, 14.4, 14.8, 14.11, 14.12_ §8.6.3 [geo-data-engineer]
-  - [ ] 29.2 Return `task_token_ref` as `ttr_<ULID>` only, never a raw Step Functions token
+  - [x] 29.2 Return `task_token_ref` as `ttr_<ULID>` only, never a raw Step Functions token
     - _Requirements: 14.3, 14.9_ §8.6.3 [geo-data-engineer]
 
 - [ ] 30. `list_crews`

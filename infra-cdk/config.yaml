@@ -56,3 +56,16 @@ bedrock:
   # https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
   inference_profile_destination_regions:
     us: [us-east-1, us-east-2, us-west-2]
+
+# grid-tools spec infrastructure (design §16). Environment-driven knobs only;
+# no ARNs, account IDs or Regions live here (those come from the CDK env).
+grid_tools:
+  env: dev                         # drives resource names + DynamoDB removal policy (RETAIN outside dev)
+  approval_timeout_minutes: 30     # rendered into the work-order state machine as TimeoutSeconds (§6.6)
+  flood_max_age_minutes: 30        # flood-set freshness window; feeds the staleness alarm (R3.9, §16.4)
+  flood_event_sources:             # EventBridge source allow-list routed to the FIFO queues (§16.1)
+    - minnal.simulator
+  policy_mode: ENFORCE             # Cedar association mode; ENFORCE everywhere used for the demo (R12.5, §16.3)
+  policy_log_only_envs: []         # environments in which LOG_ONLY is deliberately allowed (§16.3)
+  tool_reserved_concurrency: 20    # per-tool Lambda hard ceiling (DoS mitigation, §12.5 threat 10)
+  gateway_rate_limit_per_minute: 60 # Gateway rate limit per caller per target (R14.2)

@@ -153,7 +153,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
   - [x] 41.7 [geo-data-engineer] Write `dispatch_crew_lambda.py`: the proposal transaction with clearance consumption and crew lock, the work-order start, the token vaulting and `DispatchProposed` _Requirements: 9.1, 9.6, 9.8, 9.9, 2.3_ _Design: §5.6, §7.4.1, §7.4.2_
   - [x] 41.8 [geo-data-engineer] Write `propose_switching_lambda.py`: the same flow without a crew lock, plus `is_preventive_safety_measure` reported as unknown when the feed is not fresh _Requirements: 10.1, 10.5, 10.7, 2.3_ _Design: §5.7_
 
-- [ ] 42. [geo-data-engineer] Write `flood_ingestor/`: the hazard-queue handler at batch size 1, schema and geometry validation to the DLQ, the optimistic-lock transaction, the bounded re-read-and-re-apply, the heartbeat path, the configurable source filter, and cache invalidation _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.8, 3.9, 3.12, 18.8_ _Design: §5.8, §7.4.5_
+- [x] 42. [geo-data-engineer] Write `flood_ingestor/`: the hazard-queue handler at batch size 1, schema and geometry validation to the DLQ, the optimistic-lock transaction, the bounded re-read-and-re-apply, the heartbeat path, the configurable source filter, and cache invalidation _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.8, 3.9, 3.12, 18.8_ _Design: §5.8, §7.4.5_
 
 - [ ] 43. [qa-eval-engineer] Write property test for Property 20 `[SAFETY]` (flood ingestion is order-safe and loses no update under interleaved appliers) _Requirements: 3.1, 3.2, 3.3, 3.8, 3.12_ _Design: §18 P20_
 

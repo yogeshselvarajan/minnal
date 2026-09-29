@@ -63,8 +63,11 @@ files = [
 
 # shapely and pyproj ship no type stubs; the pure-geometry core is fully hinted on
 # our side, so treat only these third-party imports as untyped (design §8, R16.4).
+# boto3/botocore ship no stubs and the mypy_boto3_* service stubs are not a runtime
+# dependency; they appear only in the AWS adapters (never in logic), so treat them
+# as untyped there. Logic and _shared pure modules import none of them (R14.4).
 [[tool.mypy.overrides]]
-module = ["shapely.*", "pyproj.*"]
+module = ["shapely.*", "pyproj.*", "boto3.*", "botocore.*", "mypy_boto3_dynamodb.*", "mypy_boto3_s3.*"]
 ignore_missing_imports = true
 
 # sample_tool is the untyped FAST template skeleton (predates grid-tools, not a

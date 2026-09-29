@@ -455,13 +455,13 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 55.4 Emit `minnal.approval_request` per created proposal carrying only the `ttr_<ULID>` reference in `task_token_ref`, never holding, logging or emitting a raw Step Functions task token
     - _Requirements: 12.3, 12.4_ §12.1, §9.5 [agent-engineer]
 
-- [ ] 56. Verify periods and the audit record
+- [x] 56. Verify periods and the audit record
   - _Requirements: 3.5, 3.6, 3.7, 3.8, 3.10, 3.14, 3.15, 4.5, 5.9, 11.8, 12.3, 12.5, 12.12, 16.8_ §11, §4.5 [qa-eval-engineer]
-  - [ ] 56.1 Write `tests/agents/test_period_lifecycle.py` covering the five lifecycle states and the two rejection paths, and `tests/agents/test_summary.py` with `test_blocked_items_reported` and `test_locked_crews_listed`
+  - [x] 56.1 Write `tests/agents/test_period_lifecycle.py` covering the five lifecycle states and the two rejection paths, and `tests/agents/test_summary.py` with `test_blocked_items_reported` and `test_locked_crews_listed`
     - _Requirements: 3.14, 3.15, 4.5, 11.8, 12.12_ §11, §21.5 [qa-eval-engineer]
-  - [ ] 56.2 Write `tests/agents/test_period_flow.py` with `test_node_order_and_tool_calls` and `test_approval_request_and_next_period_read`
+  - [x] 56.2 Write `tests/agents/test_period_flow.py` with `test_node_order_and_tool_calls` and `test_approval_request_and_next_period_read`
     - _Requirements: 3.5, 3.6, 3.7, 3.8, 3.10, 12.3, 12.5_ §4.5, §21.5 [qa-eval-engineer]
-  - [ ] 56.3 Write `tests/agents/test_audit.py` with `test_every_item_has_an_audit_record` and `test_node_metrics_recorded`
+  - [x] 56.3 Write `tests/agents/test_audit.py` with `test_every_item_has_an_audit_record` and `test_node_metrics_recorded`
     - _Requirements: 5.9, 16.8_ §5.4, §21.5 [qa-eval-engineer]
 
 - [ ] 57. **Checkpoint: run the tests so far.** `uv run ruff check patterns gateway && uv run pytest -q tests/agents tests/tools`, then `uv run pytest -m safety`

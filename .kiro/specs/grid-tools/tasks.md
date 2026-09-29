@@ -255,16 +255,16 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 74. [geo-data-engineer] Write `gateway/local/replay.py`: the driver that reads the committed fixture, applies hazard events through the Flood_Ingestor Logic and reports through the Event_Ingestor Logic, runs the tool sequence at the flood peak, drives an approval, applies `JobCompleted`, and writes `events.jsonl` and a run summary _Requirements: 17.1, 17.5, 18.1, 18.3_ _Design: §15.4_
 
-- [ ] 75. [qa-eval-engineer] Write `test_fixture_drives_tools_end_to_end`: the fixture replay in `local` mode must dedupe 408 reports, cross all three flood transitions, veto an energise on `sub_004`, complete one dispatch-to-approval cycle, and close its outages _Requirements: 17.5, 18.2, 18.3_ _Design: §15.4_
+- [x] 75. [qa-eval-engineer] Write `test_fixture_drives_tools_end_to_end`: the fixture replay in `local` mode must dedupe 408 reports, cross all three flood transitions, veto an energise on `sub_004`, complete one dispatch-to-approval cycle, and close its outages _Requirements: 17.5, 18.2, 18.3_ _Design: §15.4_
 
-- [ ] 76. [qa-eval-engineer] Write `test_property_coverage.py`: the bijection between the `Property N` headings in `design.md` and the collected `test_property_P*` tests, the naming rule, resolvable `Validates:` criteria, and the safety marker on every `[SAFETY]` property _Requirements: 16.1, 16.2, 16.5, 16.8, 16.9_ _Design: §19.3_
+- [x] 76. [qa-eval-engineer] Write `test_property_coverage.py`: the bijection between the `Property N` headings in `design.md` and the collected `test_property_P*` tests, the naming rule, resolvable `Validates:` criteria, and the safety marker on every `[SAFETY]` property _Requirements: 16.1, 16.2, 16.5, 16.8, 16.9_ _Design: §19.3_
 
-- [ ] 77. [qa-eval-engineer] Write `test_adversarial_cases_are_generated`, `test_minimal_counterexample_is_reported` and `test_sockets_blocked_and_no_wall_clock_reads` _Requirements: 16.4, 16.6, 16.7_ _Design: §19.2, §19.3_
+- [x] 77. [qa-eval-engineer] Write `test_adversarial_cases_are_generated`, `test_minimal_counterexample_is_reported` and `test_sockets_blocked_and_no_wall_clock_reads` _Requirements: 16.4, 16.6, 16.7_ _Design: §19.2, §19.3_
 
 - [x] 78. [geo-data-engineer] Write the README section for `gateway/tools/`: the agent-facing call order `plan_crew_route → check_flood_geofence(route_id) → dispatch_crew`, the two-file schema rule, and the `MINNAL_BACKEND=local` instructions _Requirements: 17.1, 6.1_ _Design: §3.3, §5.3_
   - [ ]* 78.1 [geo-data-engineer] Add the staging-point suggestion and the Make-safe nearest-point exception to `plan_crew_route` _Requirements: 7.9_ _Design: §5.4_
   - [ ]* 78.2 [geo-data-engineer] Add the `modify` decision kind to the Approval_Handler _Requirements: 11.5_ _Design: §5.9_
   - [ ]* 78.3 [geo-data-engineer] Add the outbox record and sweeper for failed event publishing _Requirements: 13.4_ _Design: §11.5_
 
-- [ ] 79. [qa-eval-engineer] Checkpoint: ensure all tests pass. Run `scripts/spec-complete.sh grid-tools && uv run ruff check gateway && uv run pytest -q tests/tools tests/policy tests/infra`, `uv run pytest -m safety`, and a successful `cdk synth` (verification only — nothing is authored or deployed here); all must exit 0 _Requirements: 15.1, 15.2, 15.3, 16.5_ _Design: §19_
+- [x] 79. [qa-eval-engineer] Checkpoint: ensure all tests pass. Run `scripts/spec-complete.sh grid-tools && uv run ruff check gateway && uv run pytest -q tests/tools tests/policy tests/infra`, `uv run pytest -m safety`, and a successful `cdk synth` (verification only — nothing is authored or deployed here); all must exit 0 _Requirements: 15.1, 15.2, 15.3, 16.5_ _Design: §19_
   - [ ]* 79.1 [qa-eval-engineer] Write the deferred performance benchmarks: cold start under 1.5 s and p95 under 800 ms, marked `slow` and non-gating _Requirements: 15.4, 15.5_ _Design: §19.1_

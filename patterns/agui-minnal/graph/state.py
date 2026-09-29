@@ -79,6 +79,11 @@ class PeriodState:
     lease_token: str
 
     items: dict[str, Item] = field(default_factory=dict)
+    # Per-device customer counts from the diagnostics trace, keyed by device_id. Written by the
+    # diagnostics node from trace_upstream_device results and read by the dispatch node's
+    # PlanContext through the graph adapter, so a re-plan reuses the same tool-sourced counts and
+    # no model number reaches assemble_jobs (R8.13, carry-forward note 2 threading contract).
+    customers_by_device: dict[str, int] = field(default_factory=dict)
     clearance_ledger: dict[str, ClearanceLedgerEntry] = field(default_factory=dict)
     veto_iterations: dict[str, int] = field(default_factory=dict)
     vetoes: list[VetoRecord] = field(default_factory=list)

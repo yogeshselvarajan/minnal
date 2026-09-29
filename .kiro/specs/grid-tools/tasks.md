@@ -215,7 +215,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 62. [qa-eval-engineer] Write property test for Property 26 `[SAFETY]` (Cedar forbids unsafe input and default-denies everything else) _Requirements: 12.2, 12.3, 12.4, 12.7_ _Design: §18 P26_
 
-- [ ] 63. [qa-eval-engineer] Write property test for Property 25 `[SAFETY]` (`de_energise` is never blocked, in the Logic and in the policy, with any combination of absent fields) _Requirements: 10.5, 10.7, 10.8, 12.3_ _Design: §18 P25_
+- [x] 63. [qa-eval-engineer] Write property test for Property 25 `[SAFETY]` (`de_energise` is never blocked, in the Logic and in the policy, with any combination of absent fields) _Requirements: 10.5, 10.7, 10.8, 12.3_ _Design: §18 P25_
 
 - [ ] 64. [qa-eval-engineer] Write `test_tool_checks_hold_without_policy`: the tool-side clearance and flood checks still refuse with the policy absent or in `LOG_ONLY` _Requirements: 12.8_ _Design: §10.1, §12.5_
 

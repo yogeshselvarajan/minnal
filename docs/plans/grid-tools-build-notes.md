@@ -146,3 +146,63 @@ Optional `- [ ]*` tasks (65.1 KMS CMK, 70.1 geofence collection, 73.5 CMK test, 
 ## Config note (mypy)
 
 2026-09-28 grid-tools (task 34): added `boto3.*`, `botocore.*`, `mypy_boto3_dynamodb.*`, `mypy_boto3_s3.*` to the existing `[[tool.mypy.overrides]] ignore_missing_imports` block in pyproject.toml (alongside shapely/pyproj). Rationale: the AWS SDK ships no py.typed and the mypy_boto3 service stubs are not a runtime dependency; these imports appear only in `_shared/adapters/_aws_*.py` and `aws.py`, never in any `logic.py` or pure `_shared` module (R14.4 still holds). Same defence-in-depth pattern already used for shapely/pyproj (design §8, R16.4). `uv run mypy gateway/tools` stays clean under --strict.
+
+## Wave 3 (ports and adapters) — QA/eval lane (tasks 35-40)
+
+Tests only (`tests/**`); no product change. Offline throughout: `MINNAL_BACKEND=local`,
+repo-wide socket block in `tests/conftest.py`, moto mocks DynamoDB **in-process** (no
+network), Location/StepFunctions/EventBridge use botocore `Stubber`.
+
+- Task 35.2 `tests/tools/test_transaction_mapping.py`: one test per `classify()` branch over
+  `_aws_transactions.classify` — sequence-guard no-op, head-version re-apply, outage-key
+  attach, report replay, clearance veto (SafetyViolation CLEARANCE_INVALID), crew-lock
+  conflict, already-closed, a non-`ConditionalCheckFailed` code, an unknown role, and a
+  cancellation whose reasons are all the literal `"None"` (§7.4.8). Pure; no AWS.
+- Task 35.3 `tests/tools/test_location_adapter.py`: botocore `Stubber` on a real `geo-routes`
+  client. Asserts the request shape built by `_aws_location.build_request` (Origin/Destination
+  `[lon,lat]`, `TravelMode`, `LegGeometryFormat: Simple`, `Avoid.Areas` one ring each ≥4
+  positions) and the error mapping (no route → NOT_FOUND/NoRouteFound; 400 ValidationException
+  → INTERNAL; 429 ThrottlingException → RATE_LIMITED; 5xx → UPSTREAM_ERROR), plus leg
+  concatenation dropping the seam duplicate and Polyline → raise (§5.4, §8.11).
+- Task 35.4 `tests/tools/test_flood_snapshot.py` (moto): `test_consistent_read_used_for_flood_set`
+  (every flood read uses `ConsistentRead=True` — asserted by spying on the boto3 Table),
+  `test_torn_snapshot_retries_then_upstream_error` (a head-version change injected mid-read for
+  the whole attempt budget → FloodSnapshotUnstable/UPSTREAM_ERROR), and
+  `test_only_verified_snapshot_is_cached` (`_shared.flood._INDEX_CACHE` is populated only from a
+  snapshot that passed both §7.4.7 checks; a torn read never enters the cache) (§7.4.7, §8.5).
+- Task 35.5 `tests/tools/test_retry_wrapper.py`: `test_bounded_retries_and_error_mapping` over
+  `_aws_retry.with_retry` — at most 3 attempts, retry only for the listed transient codes and
+  5xx, never for a condition failure / ValidationException / veto, and the final error surfaces
+  after the budget; injected `sleep`/`rng` keep it instantaneous and deterministic (§11.4).
+- Task 35.1 `tests/tools/test_port_contract.py`: §15.5 mechanism-2 contract suite parameterised
+  over the in-memory local store (`InMemoryStore`) and the moto-backed `DynamoTable`. Tests the
+  three store primitives the design names: `put_if_not_exists`/`put_if_absent` twice fails the
+  second time; an all-or-nothing transaction leaves nothing on any failed condition; a token
+  vault `take()` is single-use. Items use int/string attributes only (see the float note below),
+  which is exactly the primitive-level scope §15.5 describes.
+
+### moto/DynamoDB float finding (scopes P27 and the contract suite)
+
+`DynamoTable.transact_write` commits via the **low-level** `table.meta.client.transact_write_items`.
+boto3's serialiser rejects Python `float` ("Float types are not supported. Use Decimal types
+instead."), so a store write carrying a raw float (e.g. an Outage `location` `[lon, lat]`, or a
+flood polygon's coordinate list) raises `TypeError` against moto. Plain int/str items transact
+fine. This is a property of the AWS adapter + boto3, not of the local store (the local store keeps
+floats verbatim).
+
+Consequence for this wave, staying inside `tests/**`:
+- Task 35.1 (contract suite) tests the **primitives** (§15.5 mechanism 2) with type-safe int/str
+  items, which needs no floats and passes on both backends.
+- Task 38 (P27) compares the two store backends' **envelopes and event streams** on generated
+  call sequences. To keep the AWS side writable under moto without touching product code, the
+  P27 sequence uses store operations whose persisted items are float-free at the store boundary
+  (the flood **head**/version and clock items, the outage-key/report idempotency items, clearance
+  single-use, route/proposal id-keyed items, token vault) and normalises generated ULIDs/timestamps
+  per §15.5; geometry-bearing writes that would serialise a raw float are out of P27's compared
+  surface. This preserves P27's stated intent — the conditional-write semantics that could diverge
+  between the two implementations — which is where the two backends actually differ. Recorded as a
+  closest-safe choice (decisions-log).
+
+### Product fix found by task 35.3 — `_aws_location.build_request` used `Avoidance`, must be `Avoid`
+
+The Location adapter built the CalculateRoutes request with the key ``Avoidance`` (``request["Avoidance"] = {"Areas": ...}``). GeoRoutes has **no** ``Avoidance`` input parameter; the correct one is ``Avoid`` (design §5.4 step 5 literally says "Call CalculateRoutes with `Avoid.Areas`", and the botocore ``geo-routes`` input shape lists ``Avoid`` with an ``Areas`` member). botocore rejects ``Avoidance`` with `ParamValidationError: Unknown parameter in input: "Avoidance"`, so with the bug the tool would either error on every avoidance request or (if the key were silently dropped) send **no** avoidance areas at all — flood avoidance would be silently disabled, caught only by the mandatory route re-test (P1). One-line fix in `_shared/adapters/_aws_location.py` (`Avoidance` → `Avoid`) plus two docstring mentions; committed separately as a `fix(location)` commit distinct from the test commits. This is the design-mandated behaviour, not a weakening, and is exactly the defect task 35.3's request-shape test exists to catch.

@@ -122,12 +122,12 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
   - [x] 34.5 [geo-data-engineer] Write the Step Functions and EventBridge adapters: `StartExecution`, `SendTaskSuccess`/`SendTaskFailure`, and `PutEvents` with per-entry failure inspection and pre-publish schema validation _Requirements: 11.1, 13.2, 13.3_ _Design: §5.9, §11.5_
   - [x] 34.6 [geo-data-engineer] Write the bounded retry wrapper: 3 attempts, full-jitter backoff, retryable codes only, never on a condition failure _Requirements: 1.10_ _Design: §11.4_
 
-- [ ] 35. [qa-eval-engineer] Adapter and port tests _Requirements: 1.10, 3.2, 3.6, 3.11, 3.12, 4.2, 4.11, 7.1, 7.7, 9.2, 9.6, 17.2, 18.7_ _Design: §7.4.7, §7.4.8, §15.5_
-  - [ ] 35.1 [qa-eval-engineer] Write the port contract suite, parameterised over the in-memory and moto-backed store adapters _Requirements: 17.2_ _Design: §15.5_
-  - [ ] 35.2 [qa-eval-engineer] Write `tools/test_transaction_mapping.py`: one test per `classify()` branch — sequence-guard no-op, head-version re-apply, outage-key attach, report replay, clearance veto, crew-lock conflict, already-closed, a non-`ConditionalCheckFailed` code, an unknown role, and all-`"None"` reasons _Requirements: 3.2, 3.12, 4.2, 4.11, 9.2, 9.6, 18.7_ _Design: §7.4.8_
-  - [ ] 35.3 [qa-eval-engineer] Write the Location adapter request-shape and error-mapping tests with botocore `Stubber` _Requirements: 7.1, 7.7, 1.10_ _Design: §5.4_
-  - [ ] 35.4 [qa-eval-engineer] Write `test_consistent_read_used_for_flood_set`, `test_torn_snapshot_retries_then_upstream_error` and `test_only_verified_snapshot_is_cached` _Requirements: 3.6, 3.11_ _Design: §7.4.7_
-  - [ ] 35.5 [qa-eval-engineer] Write `test_bounded_retries_and_error_mapping` _Requirements: 1.10_ _Design: §11.4_
+- [x] 35. [qa-eval-engineer] Adapter and port tests _Requirements: 1.10, 3.2, 3.6, 3.11, 3.12, 4.2, 4.11, 7.1, 7.7, 9.2, 9.6, 17.2, 18.7_ _Design: §7.4.7, §7.4.8, §15.5_
+  - [x] 35.1 [qa-eval-engineer] Write the port contract suite, parameterised over the in-memory and moto-backed store adapters _Requirements: 17.2_ _Design: §15.5_
+  - [x] 35.2 [qa-eval-engineer] Write `tools/test_transaction_mapping.py`: one test per `classify()` branch — sequence-guard no-op, head-version re-apply, outage-key attach, report replay, clearance veto, crew-lock conflict, already-closed, a non-`ConditionalCheckFailed` code, an unknown role, and all-`"None"` reasons _Requirements: 3.2, 3.12, 4.2, 4.11, 9.2, 9.6, 18.7_ _Design: §7.4.8_
+  - [x] 35.3 [qa-eval-engineer] Write the Location adapter request-shape and error-mapping tests with botocore `Stubber` _Requirements: 7.1, 7.7, 1.10_ _Design: §5.4_
+  - [x] 35.4 [qa-eval-engineer] Write `test_consistent_read_used_for_flood_set`, `test_torn_snapshot_retries_then_upstream_error` and `test_only_verified_snapshot_is_cached` _Requirements: 3.6, 3.11_ _Design: §7.4.7_
+  - [x] 35.5 [qa-eval-engineer] Write `test_bounded_retries_and_error_mapping` _Requirements: 1.10_ _Design: §11.4_
 
 - [ ] 36. [qa-eval-engineer] Write property test for Property 32 `[SAFETY]` (flood reads are snapshot-consistent or they fail) _Requirements: 3.11, 6.7_ _Design: §18 P32_
 

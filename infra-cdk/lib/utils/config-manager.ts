@@ -63,6 +63,36 @@ export interface AppConfig {
   }
   /** Bedrock model allow-list inputs for runtime IAM (models.md rule 3). */
   bedrock: BedrockConfig
+  /** grid-tools spec infrastructure knobs (design §16). */
+  grid_tools: GridToolsConfig
+}
+
+/**
+ * Configuration for the grid-tools spec constructs (design §16).
+ *
+ * Everything a reviewer would expect to be environment-driven lives here: the
+ * environment name (which drives the DynamoDB removal policy and resource names),
+ * the approval timeout and flood freshness windows, the EventBridge source
+ * allow-list, per-tool reserved concurrency and Gateway rate limits, and the
+ * Cedar policy-engine mode. No ARNs, account IDs or Regions are hard-coded.
+ */
+export interface GridToolsConfig {
+  /** Deployment environment, e.g. "dev", "staging", "prod". Drives naming and removal policy. */
+  env: string
+  /** Approval task-token timeout in minutes; rendered into the state machine as seconds (§6.6). */
+  approval_timeout_minutes: number
+  /** Flood-set freshness window in minutes; feeds the staleness alarm (§16.4, R3.9). */
+  flood_max_age_minutes: number
+  /** EventBridge `source` values routed to the intake/hazard queues (§16.1, flood_event_sources). */
+  flood_event_sources: string[]
+  /** Cedar policy engine association mode. ENFORCE everywhere used for the demo (§16.3, R12.5). */
+  policy_mode: "ENFORCE" | "LOG_ONLY"
+  /** Environments in which LOG_ONLY is permitted; anything else is rejected (§16.3). */
+  policy_log_only_envs: string[]
+  /** Per-tool Lambda reserved concurrency, the hard DoS ceiling (§12.5 threat 10, R14.2). */
+  tool_reserved_concurrency: number
+  /** Gateway rate limit (requests) per caller per target (§12.5 threat 10, R14.2). */
+  gateway_rate_limit_per_minute: number
 }
 
 /**
@@ -183,10 +213,12 @@ export class ConfigManager {
 
       const pattern = parsedConfig.backend?.pattern || "strands-single-agent"
       const bedrock = this._parseBedrockConfig(parsedConfig.bedrock, pattern, configPath)
+      const gridTools = this._parseGridToolsConfig(parsedConfig.grid_tools, configPath)
 
       return {
         stack_name_base: stackNameBase,
         bedrock,
+        grid_tools: gridTools,
         admin_user_email: parsedConfig.admin_user_email || null,
         backend: {
           pattern,
@@ -236,6 +268,91 @@ export class ConfigManager {
       destinations[prefix] = [...new Set(regions)]
     }
     return { models_file: modelsFile, inference_profile_destination_regions: destinations }
+  }
+
+  /**
+   * Parse and validate the grid-tools block, applying safe defaults.
+   *
+   * The one non-obvious rule is §16.3: `policy_mode: LOG_ONLY` is only allowed
+   * when the environment name appears in `policy_log_only_envs`. Because LOG_ONLY
+   * evaluates Cedar without blocking, allowing it by accident would silently
+   * disable the boundary safety veto, so it is rejected here — a deploy in that
+   * mode must be a deliberate, visible config act.
+   */
+  private _parseGridToolsConfig(
+    raw: Partial<GridToolsConfig> | undefined,
+    configPath: string
+  ): GridToolsConfig {
+    const env = (raw?.env ?? "dev").trim()
+    if (!/^[a-z][a-z0-9-]{0,19}$/.test(env)) {
+      throw new Error(
+        `grid_tools.env '${env}' in ${configPath} must be lower-case letters, digits and hyphens ` +
+          `(1-20 chars, starting with a letter).`
+      )
+    }
+
+    const approvalTimeoutMinutes = raw?.approval_timeout_minutes ?? 30
+    if (!Number.isInteger(approvalTimeoutMinutes) || approvalTimeoutMinutes <= 0) {
+      throw new Error(
+        `grid_tools.approval_timeout_minutes in ${configPath} must be a positive integer (minutes).`
+      )
+    }
+
+    const floodMaxAgeMinutes = raw?.flood_max_age_minutes ?? 30
+    if (!Number.isInteger(floodMaxAgeMinutes) || floodMaxAgeMinutes <= 0) {
+      throw new Error(
+        `grid_tools.flood_max_age_minutes in ${configPath} must be a positive integer (minutes).`
+      )
+    }
+
+    const floodEventSources =
+      raw?.flood_event_sources && raw.flood_event_sources.length > 0
+        ? raw.flood_event_sources
+        : ["minnal.simulator"]
+    if (!floodEventSources.every(s => typeof s === "string" && s.length > 0)) {
+      throw new Error(
+        `grid_tools.flood_event_sources in ${configPath} must be a non-empty list of source strings.`
+      )
+    }
+
+    const logOnlyEnvs = raw?.policy_log_only_envs ?? []
+    const policyMode = raw?.policy_mode ?? "ENFORCE"
+    if (policyMode !== "ENFORCE" && policyMode !== "LOG_ONLY") {
+      throw new Error(
+        `grid_tools.policy_mode '${policyMode}' in ${configPath} must be 'ENFORCE' or 'LOG_ONLY'.`
+      )
+    }
+    if (policyMode === "LOG_ONLY" && !logOnlyEnvs.includes(env)) {
+      throw new Error(
+        `grid_tools.policy_mode 'LOG_ONLY' is not permitted for environment '${env}' in ${configPath}. ` +
+          `Add '${env}' to grid_tools.policy_log_only_envs to allow it deliberately (design §16.3).`
+      )
+    }
+
+    const reservedConcurrency = raw?.tool_reserved_concurrency ?? 20
+    if (!Number.isInteger(reservedConcurrency) || reservedConcurrency <= 0) {
+      throw new Error(
+        `grid_tools.tool_reserved_concurrency in ${configPath} must be a positive integer.`
+      )
+    }
+
+    const rateLimit = raw?.gateway_rate_limit_per_minute ?? 60
+    if (!Number.isInteger(rateLimit) || rateLimit <= 0) {
+      throw new Error(
+        `grid_tools.gateway_rate_limit_per_minute in ${configPath} must be a positive integer.`
+      )
+    }
+
+    return {
+      env,
+      approval_timeout_minutes: approvalTimeoutMinutes,
+      flood_max_age_minutes: floodMaxAgeMinutes,
+      flood_event_sources: [...floodEventSources],
+      policy_mode: policyMode,
+      policy_log_only_envs: [...logOnlyEnvs],
+      tool_reserved_concurrency: reservedConcurrency,
+      gateway_rate_limit_per_minute: rateLimit,
+    }
   }
 
   public getProps(): AppConfig {

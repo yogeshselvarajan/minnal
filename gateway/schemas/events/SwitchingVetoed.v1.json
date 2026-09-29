@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/events/SwitchingVetoed.v1.json",
+  "title": "SwitchingVetoed",
+  "description": "Emitted by propose_switching or the Approval_Handler when an energise proposal is refused by a safety rule (R13.2). de_energise is never vetoed. Every veto carries a rule_id from the closed set (P30). Carries hazard, device and service-area ids but no hazard geometry (§13.1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "incident_id",
+    "correlation_id",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "SwitchingVetoed"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "const": "minnal.grid-tools"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "device_id",
+        "action",
+        "rule_id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "switching"
+        },
+        "proposal_id": {
+          "type": "string",
+          "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "device_id": {
+          "type": "string",
+          "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+        },
+        "action": {
+          "type": "string",
+          "const": "energise"
+        },
+        "rule_id": {
+          "type": "string",
+          "enum": [
+            "FLOOD_ENERGISE",
+            "FLOOD_DATA_UNAVAILABLE",
+            "CLEARANCE_INVALID",
+            "FLOOD_CHANGED"
+          ]
+        },
+        "hazard_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^FP-\\d+$"
+          }
+        },
+        "device_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+          }
+        },
+        "service_area_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sa_[a-z0-9_]+$"
+          }
+        }
+      }
+    }
+  }
+}

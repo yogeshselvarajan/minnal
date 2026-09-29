@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/tools/plan_crew_route.input.json",
+  "title": "PlanCrewRouteInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id",
+    "idempotency_key",
+    "crew_id",
+    "destination_kind"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "crew_id": {
+      "type": "string",
+      "pattern": "^crew_\\d+$"
+    },
+    "destination_kind": {
+      "type": "string",
+      "enum": ["point", "device"]
+    },
+    "coordinates": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        { "type": "number", "minimum": -180, "maximum": 180 },
+        { "type": "number", "minimum": -90, "maximum": 90 }
+      ],
+      "items": false
+    },
+    "device_id": {
+      "type": "string",
+      "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    }
+  }
+}

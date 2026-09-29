@@ -1,0 +1,446 @@
+{
+  "AgentCore": {
+    "actions": {
+      "check-flood-geofence-target___check_flood_geofence": {
+        "appliesTo": {
+          "context": {
+            "attributes": {
+              "input": {
+                "attributes": {
+                  "coordinates": {
+                    "element": {
+                      "type": "Long"
+                    },
+                    "required": false,
+                    "type": "Set"
+                  },
+                  "correlation_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "device_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "idempotency_key": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "incident_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "purpose": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "route_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "target_kind": {
+                    "required": true,
+                    "type": "String"
+                  }
+                },
+                "type": "Record"
+              }
+            },
+            "type": "Record"
+          },
+          "principalTypes": [
+            "OAuthUser"
+          ],
+          "resourceTypes": [
+            "Gateway"
+          ]
+        }
+      },
+      "dispatch-crew-target___dispatch_crew": {
+        "appliesTo": {
+          "context": {
+            "attributes": {
+              "input": {
+                "attributes": {
+                  "correlation_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "crew_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "flood_check": {
+                    "attributes": {
+                      "flood_check_id": {
+                        "required": true,
+                        "type": "String"
+                      },
+                      "intersects": {
+                        "required": true,
+                        "type": "Boolean"
+                      }
+                    },
+                    "required": true,
+                    "type": "Record"
+                  },
+                  "idempotency_key": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "incident_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "job_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "route_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "safety_clearance_id": {
+                    "required": true,
+                    "type": "String"
+                  }
+                },
+                "type": "Record"
+              }
+            },
+            "type": "Record"
+          },
+          "principalTypes": [
+            "OAuthUser"
+          ],
+          "resourceTypes": [
+            "Gateway"
+          ]
+        }
+      },
+      "plan-crew-route-target___plan_crew_route": {
+        "appliesTo": {
+          "context": {
+            "attributes": {
+              "input": {
+                "attributes": {
+                  "coordinates": {
+                    "element": {
+                      "type": "Long"
+                    },
+                    "required": false,
+                    "type": "Set"
+                  },
+                  "correlation_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "crew_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "destination_kind": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "device_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "idempotency_key": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "incident_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "job_id": {
+                    "required": false,
+                    "type": "String"
+                  }
+                },
+                "type": "Record"
+              }
+            },
+            "type": "Record"
+          },
+          "principalTypes": [
+            "OAuthUser"
+          ],
+          "resourceTypes": [
+            "Gateway"
+          ]
+        }
+      },
+      "propose-switching-target___propose_switching": {
+        "appliesTo": {
+          "context": {
+            "attributes": {
+              "input": {
+                "attributes": {
+                  "action": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "correlation_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "device_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "flood_check": {
+                    "attributes": {
+                      "flood_check_id": {
+                        "required": true,
+                        "type": "String"
+                      },
+                      "intersects": {
+                        "required": true,
+                        "type": "Boolean"
+                      }
+                    },
+                    "required": false,
+                    "type": "Record"
+                  },
+                  "idempotency_key": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "incident_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "reason": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "safety_clearance_id": {
+                    "required": false,
+                    "type": "String"
+                  }
+                },
+                "type": "Record"
+              }
+            },
+            "type": "Record"
+          },
+          "principalTypes": [
+            "OAuthUser"
+          ],
+          "resourceTypes": [
+            "Gateway"
+          ]
+        }
+      },
+      "rank-restoration-jobs-target___rank_restoration_jobs": {
+        "appliesTo": {
+          "context": {
+            "attributes": {
+              "input": {
+                "attributes": {
+                  "correlation_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "incident_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "jobs": {
+                    "element": {
+                      "attributes": {
+                        "customers_restored": {
+                          "required": true,
+                          "type": "Long"
+                        },
+                        "device_id": {
+                          "required": true,
+                          "type": "String"
+                        },
+                        "effort_crew_minutes": {
+                          "required": true,
+                          "type": "Long"
+                        },
+                        "has_no_safe_route": {
+                          "required": false,
+                          "type": "Boolean"
+                        },
+                        "is_individual_service": {
+                          "required": false,
+                          "type": "Boolean"
+                        },
+                        "is_make_safe": {
+                          "required": true,
+                          "type": "Boolean"
+                        },
+                        "job_id": {
+                          "required": true,
+                          "type": "String"
+                        },
+                        "required_skill": {
+                          "required": true,
+                          "type": "String"
+                        },
+                        "waiting_seconds": {
+                          "required": true,
+                          "type": "Long"
+                        }
+                      },
+                      "type": "Record"
+                    },
+                    "required": true,
+                    "type": "Set"
+                  }
+                },
+                "type": "Record"
+              }
+            },
+            "type": "Record"
+          },
+          "principalTypes": [
+            "OAuthUser"
+          ],
+          "resourceTypes": [
+            "Gateway"
+          ]
+        }
+      },
+      "record-outage-target___record_outage": {
+        "appliesTo": {
+          "context": {
+            "attributes": {
+              "input": {
+                "attributes": {
+                  "callback_ref": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "correlation_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "dt_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "incident_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "is_emergency": {
+                    "required": false,
+                    "type": "Boolean"
+                  },
+                  "location": {
+                    "attributes": {
+                      "coordinates": {
+                        "element": {
+                          "type": "Long"
+                        },
+                        "required": true,
+                        "type": "Set"
+                      },
+                      "type": {
+                        "required": true,
+                        "type": "String"
+                      }
+                    },
+                    "required": true,
+                    "type": "Record"
+                  },
+                  "meter_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "note": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "report_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "reported_at": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "source": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "symptom": {
+                    "required": true,
+                    "type": "String"
+                  }
+                },
+                "type": "Record"
+              }
+            },
+            "type": "Record"
+          },
+          "principalTypes": [
+            "OAuthUser"
+          ],
+          "resourceTypes": [
+            "Gateway"
+          ]
+        }
+      },
+      "trace-upstream-device-target___trace_upstream_device": {
+        "appliesTo": {
+          "context": {
+            "attributes": {
+              "input": {
+                "attributes": {
+                  "correlation_id": {
+                    "required": false,
+                    "type": "String"
+                  },
+                  "incident_id": {
+                    "required": true,
+                    "type": "String"
+                  },
+                  "outage_ids": {
+                    "element": {
+                      "type": "String"
+                    },
+                    "required": true,
+                    "type": "Set"
+                  }
+                },
+                "type": "Record"
+              }
+            },
+            "type": "Record"
+          },
+          "principalTypes": [
+            "OAuthUser"
+          ],
+          "resourceTypes": [
+            "Gateway"
+          ]
+        }
+      }
+    },
+    "entityTypes": {
+      "Gateway": {
+        "shape": {
+          "attributes": {},
+          "type": "Record"
+        }
+      },
+      "OAuthUser": {
+        "shape": {
+          "attributes": {},
+          "type": "Record"
+        },
+        "tags": {
+          "type": "String"
+        }
+      }
+    }
+  }
+}

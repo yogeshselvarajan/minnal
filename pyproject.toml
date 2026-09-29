@@ -10,6 +10,7 @@ dependencies = [
     "jsonschema==4.26.0",
     "pydantic==2.13.5",
     "pydantic-settings==2.15.0",
+    "pyproj==3.8.0",
     "python-ulid==4.0.1",
     "pyyaml==6.0.3",
     "shapely==2.1.2",
@@ -18,11 +19,13 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "cedarpy==4.12.1",
     "freezegun==1.5.5",
     "hypothesis==6.168.3",
     "moto==5.2.3",
     "mypy==2.3.1",
     "pytest==9.1.1",
+    "pytest-socket==0.8.1",
     "ruff==0.16.9",
     "types-jsonschema==4.26.0.20260518",
     "types-PyYAML==6.0.12.20260906",
@@ -47,16 +50,36 @@ python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
 explicit_package_bases = true
-mypy_path = ["patterns/agui-minnal"]
+# gateway/tools is on the path so tool logic imports `_shared.*` and sibling tool
+# modules exactly as the deployed Lambda does (design §3, §3.2); patterns stays for
+# the agent domain code.
+mypy_path = ["patterns/agui-minnal", "gateway/tools"]
 files = [
     "patterns/agui-minnal/config/settings.py",
     "patterns/agui-minnal/domain",
+    "gateway/tools/_shared",
     "gateway/tools/*/logic.py",
 ]
 
+# shapely and pyproj ship no type stubs; the pure-geometry core is fully hinted on
+# our side, so treat only these third-party imports as untyped (design §8, R16.4).
+# boto3/botocore ship no stubs and the mypy_boto3_* service stubs are not a runtime
+# dependency; they appear only in the AWS adapters (never in logic), so treat them
+# as untyped there. Logic and _shared pure modules import none of them (R14.4).
+[[tool.mypy.overrides]]
+module = ["shapely.*", "pyproj.*", "boto3.*", "botocore.*", "mypy_boto3_dynamodb.*", "mypy_boto3_s3.*"]
+ignore_missing_imports = true
+
+# sample_tool is the untyped FAST template skeleton (predates grid-tools, not a
+# grid-tools logic module); it is not held to --strict so the gateway/tools gate
+# is clean without touching template code that Day-1 cleanup will remove.
+[[tool.mypy.overrides]]
+module = ["sample_tool.*"]
+ignore_errors = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["."]
+pythonpath = [".", "gateway/tools"]
 markers = [
     "safety: required safety-gate property test (design.md Safety gate, R20.5)",
     "slow: non-gating performance benchmark (Requirement 19, DEFERRED)",

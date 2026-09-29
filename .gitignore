@@ -18,3 +18,6 @@ coverage/
 .kiroster/runs/*.stderr
 
 simulator/runs/
+
+# Local replay driver store and outputs (gateway/local/replay.py, design §15.2/§15.4)
+.local/

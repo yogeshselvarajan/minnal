@@ -564,3 +564,47 @@ in `test_assets_grid_loading.py` and is intentionally NOT added to git while red
 the phase's `pytest -q tests/infra` gate — same policy the Wave-3/4 QA notes used for the P20/
 P19/P34/escalation blockers). Sub-tasks 73.1-73.4 are green and ticked; 73.6/73 stay unticked.
 Flagged to the orchestrator for the platform/geo-data lane.
+## Wave 6 — cold-start data-path fix (geo-data lane, R1.1)
+
+Task 73.6 exposed a genuine defect in this lane (recorded above under Wave 3/Wave 1
+"Task 8 grid data location"): `_shared/grid.py` and `_shared/reference.py` computed the
+default data dir as `Path(__file__).resolve().parents[3]/"data"`. In the repo tree
+`parents[3]` is the repo root, so `/data` was correct and every in-repo test passed. But
+`tool-bundling.ts` (task 68 `localBundling`) assembles each Lambda asset as
+`<asset>/_shared/grid.py` with the three collections copied to `<asset>/data/{grid,
+facilities,crews}`. From the bundled `<asset>/_shared/grid.py`, `parents[3]` climbs ABOVE
+the asset root (to `infra-cdk/` at synth time, and to a nonexistent ancestor in the real
+Lambda), so `load_grid()`/`load_crews()` — called with no `data_dir` by
+`adapters/_aws_stores.py` at cold start — raised `FileNotFoundError` for every grid-tools
+tool in aws mode. This violated design §3.2/§22.3 ("loads the Grid at cold start ... with
+no repository-relative path") and R1.1.
+
+**Fix (both files).** `_DEFAULT_DATA_DIR` is now the asset-relative sibling of `_shared`:
+`Path(__file__).resolve().parents[1]/"data"`, which is exactly `<asset>/data` in the
+deployed Lambda (data is a sibling of `_shared`, per §3.2). Verified against
+`gateway-tools-construct.ts` / `tool-bundling.ts`: the construct copies `_shared` to
+`<asset>/_shared` and `data/<collection>` to `<asset>/data/<collection>`, so the asset
+layout the default must match is `<asset>/data` = `parents[1]/data` from `grid.py`.
+
+Because the source tree keeps the collections at `<repo>/data` (a sibling of
+`gateway/tools`, not of `_shared`), `load_grid()`/`load_crews()` resolve their base through
+a new pure `_resolve_data_dir(data_dir)`:
+1. an explicit `data_dir` argument wins (tests pass it — unchanged behaviour);
+2. else the asset-relative `_DEFAULT_DATA_DIR` when its required subdirs exist (deployed
+   asset: `grid/`+`facilities/` for the grid, `crews/` for reference);
+3. else the repo-root `data/` (`parents[3]/data`) — a dev/test-checkout fallback only.
+
+The candidate order (explicit → asset-relative → repo-root) resolves correctly in BOTH the
+bundled asset and the repo, with the baked-in default (`_DEFAULT_DATA_DIR`, which the qa
+cold-start test reads) always asset-relative and NO repository-relative climb and no
+`/var/task` hardcode.
+
+**Verification.** A throwaway temp-dir simulation copied `_shared` + `data/{grid,
+facilities,crews}` beside it exactly as the bundler does, imported `_shared.grid` /
+`_shared.reference` from the asset root, and confirmed `_DEFAULT_DATA_DIR == <asset>/data`
+and that cold-start `load_grid()`/`load_crews()` resolve with no `data_dir`; the repo
+default still resolves via the fallback. `MINNAL_BACKEND=local uv run pytest -q tests/tools
+tests/policy tests/infra` = 320 passed (the qa lane's honest cold-start test
+`tests/infra/test_assets_grid_loading.py` now passes; it stays owned/added by the qa lane,
+NOT this lane, and task 73.6 is left unticked). `ruff check gateway`, `ruff format --check
+gateway`, `mypy gateway/tools` all clean.

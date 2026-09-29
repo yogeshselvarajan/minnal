@@ -19,8 +19,47 @@ from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
 
-_DEFAULT_DATA_DIR = Path(__file__).resolve().parents[3] / "data"
+_HERE = Path(__file__).resolve()
+"""This module's absolute path (``.../_shared/reference.py``)."""
+
+_DEFAULT_DATA_DIR = _HERE.parents[1] / "data"
+"""Default data location: the ``data`` sibling of ``_shared`` inside the bundled Lambda asset.
+
+In the deployed asset the layout is ``<asset>/_shared/reference.py`` with ``<asset>/data/``
+(design §3.2, §22.3): the data is a sibling of the ``_shared`` package, so the default resolves
+from ``reference.py``'s own location — ``parents[1]/data`` — with NO repository-relative climb
+(R1.1). The bundling step copies ``data/`` next to ``_shared`` for exactly this reason.
+"""
+
 _CREWS_FILE = "crews/crews.geojson"
+
+# Crew reference data lives in the ``crews`` collection; used to detect whether the asset-relative
+# default is populated (deployed asset) or whether we are running from the repo checkout, where the
+# collections live at the repository root instead.
+_REQUIRED_SUBDIRS: tuple[str, ...] = ("crews",)
+
+# Repository-checkout fallback: in the source tree the collections live at ``<repo>/data`` rather
+# than beside ``_shared``. Dev/test convenience only; the deployed asset always resolves through
+# ``_DEFAULT_DATA_DIR`` above. NOT the baked-in default (which stays asset-relative).
+_REPO_DATA_DIR = _HERE.parents[3] / "data"
+
+
+def _resolve_data_dir(data_dir: Path | None) -> Path:
+    """Resolve the data dir to use, preferring an explicit arg, then asset, then repo checkout.
+
+    Args:
+        data_dir: An explicit override (tests pass this). When None, resolves the default.
+
+    Returns:
+        The asset-relative default when present (deployed Lambda), else the repository-checkout
+        location (dev/tests). The asset-relative path is always the baked-in default; the repo
+        location is a fallback used only when running from the source tree.
+    """
+    if data_dir is not None:
+        return data_dir
+    if all((_DEFAULT_DATA_DIR / sub).is_dir() for sub in _REQUIRED_SUBDIRS):
+        return _DEFAULT_DATA_DIR
+    return _REPO_DATA_DIR
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,7 +93,7 @@ def load_crews(data_dir: Path | None = None) -> Crews:
     Returns:
         An immutable :class:`Crews` lookup.
     """
-    base = data_dir if data_dir is not None else _DEFAULT_DATA_DIR
+    base = _resolve_data_dir(data_dir)
     features = _load_features(base / _CREWS_FILE)
     crews = {crew.crew_id: crew for crew in (_crew(feature) for feature in features)}
     return Crews(crews)

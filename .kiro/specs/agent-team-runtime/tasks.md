@@ -178,11 +178,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - `test_property_P43_de_energise_never_gated` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 10.1, 10.2, 10.3, 10.6, 3.9_ §20, §4.3.4, §10.3 [qa-eval-engineer]
 
-- [ ] 24. Node contracts
+- [x] 24. Node contracts
   - _Requirements: 4.1, 4.7, 4.8, 17.4, 21.3, 21.4_ §5 [agent-engineer]
-  - [ ] 24.1 Write the per-role `schemas.py` files and the shared contract module with every model frozen and `extra="forbid"`: `Item`, `Job`, `SafetyDecision`, `ClearanceLedgerEntry`, `BlockedItem`, `NodeFailure`, `AuditEntry`, `LockedCrew`, `PeriodSummary`, and the slot inputs `PioIn` and `ScribeIn`; treat a missing downstream input as a typed failure rather than an empty success, so a degraded period is never reported as complete
+  - [x] 24.1 Write the per-role `schemas.py` files and the shared contract module with every model frozen and `extra="forbid"`: `Item`, `Job`, `SafetyDecision`, `ClearanceLedgerEntry`, `BlockedItem`, `NodeFailure`, `AuditEntry`, `LockedCrew`, `PeriodSummary`, and the slot inputs `PioIn` and `ScribeIn`; treat a missing downstream input as a typed failure rather than an empty success, so a degraded period is never reported as complete
     - _Requirements: 4.1, 4.7, 4.8, 21.3, 21.4_ §5 [agent-engineer]
-  - [ ] 24.2 Add `reject_safety_fields` as a Pydantic pre-validator on every model-node output model, naming the security reason so the repair prompt and the audit log are precise
+  - [x] 24.2 Add `reject_safety_fields` as a Pydantic pre-validator on every model-node output model, naming the security reason so the repair prompt and the audit log are precise
     - _Requirements: 17.4_ §5.7 [agent-engineer]
 
 - [ ] 25. Verify node contracts and purity

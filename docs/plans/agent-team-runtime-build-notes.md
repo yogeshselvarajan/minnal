@@ -186,3 +186,28 @@ task-25 AST purity walk over `domain/` and `graph/state.py` still passes, and `m
 (pyproject `patterns/agui-minnal`) resolves the cross-package import. `PeriodState.failures`/
 `.audit` are typed `list[object]` for now (the `NodeFailure`/`AuditEntry` contract models land
 in task 24, §5.4); §4.2's forward-ref strings carried the same deferral. mypy --strict clean.
+
+## 2026-09-29 — Wave 1 task 24: shared node-contract module placement + module-size split
+
+Task 24 names "the shared contract module". The base value types it lists (`Item`, `Job`) are
+already in `domain/contracts.py` (task 12) and `ClearanceLedgerEntry` in `graph/state.py`
+(task 22). To keep `domain/` lean and pure and to stay under the 400-line module limit
+(backend-python.md), the split is:
+
+- `domain/contracts.py` (pure) — the base value types domain logic needs: NodeContext, Citation,
+  Item, Job, ProposalDecision, CoveredOutage, SuspectedDevice, HazardPolygonView, SituationPicture,
+  CrewView, VetoFeedback, BlockedItem, CommittedProposal, SafetyDecision, NodeFailure, AuditEntry,
+  LockedCrew, and `reject_safety_fields` (+ `_walk_keys`), the shared pre-validator. All frozen,
+  extra="forbid".
+- `roles/_common/contracts.py` (the shared node-contract module) — the per-node input/output
+  contracts (ObjectivesIn/Out, HazardIn/SituationPicture use, DiagnosticsIn/Out, PlanIn/PlanOut,
+  SafetyIn/SafetyOut, CommitIn/CommitOut), PeriodSummary, and the slot inputs PioIn/ScribeIn +
+  SlotResult, importing the base value types from `domain.contracts` and the clearance/veto types
+  from `graph.state`. `reject_safety_fields` is applied there as a pre-validator on every
+  model-node OUTPUT model (ObjectivesOut, the model-facing PlanDraft/SafetyDraft, HazardOut...).
+- `roles/<role>/schemas.py` — each role re-exports its own node's input/output models from the
+  shared module and defines its model-facing (flattened, ADR 0006) output model carrying
+  `reject_safety_fields`, so the role package matches backend-python.md's per-role layout.
+
+reject_safety_fields runs as a `@model_validator(mode="before")` so it fires inside
+structured_output_async and the SDK feeds the named security reason back to the model (§7.4).

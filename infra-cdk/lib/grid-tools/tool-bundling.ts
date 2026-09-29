@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib"
 import * as iam from "aws-cdk-lib/aws-iam"
 import * as lambda from "aws-cdk-lib/aws-lambda"
+import * as logs from "aws-cdk-lib/aws-logs"
 import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
@@ -166,19 +167,27 @@ export function powertoolsEnv(serviceName: string, extra: Record<string, string>
 export function makeFunctionRole(
   scope: Construct,
   id: string,
-  args: { roleName: string; description: string; region: string; account: string }
+  args: { roleName: string; description: string; logGroup: logs.LogGroup }
 ): iam.Role {
   const role = new iam.Role(scope, id, {
     roleName: args.roleName,
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
     description: args.description,
   })
-  const logGroupArn = `arn:aws:logs:${args.region}:${args.account}:log-group:/aws/lambda/${args.roleName}:*`
+  // Scope Logs to the function's OWN log-group construct via its `Fn::GetAtt` ARN (plus the `:*`
+  // stream wildcard), NOT a hand-built `arn:aws:logs:<region>:<account>:...` string. This is the
+  // env-agnostic fix: cdk-nag renders the finding for a `Fn::GetAtt` resource as the token-free
+  // `<LogGroupLogicalId.Arn>:*` (the same `<logicalId.Arn>` form the table/bucket acks already use),
+  // so the acknowledgement `id` below is a concrete string at synth whether or not an account is
+  // resolved. Interpolating `account`/`region` produced an unresolved token used as a map key →
+  // `KeyMustResolveToString` hard-fail on env-agnostic synth; pseudo-parameters (`<AWS::Partition>`)
+  // can't be used either because the `::` is reserved in an acknowledgement id.
+  const logGroupArn = `${args.logGroup.logGroupArn}:*`
   role.addToPolicy(
     new iam.PolicyStatement({
       sid: "Logs",
       effect: iam.Effect.ALLOW,
-      actions: ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+      actions: ["logs:CreateLogStream", "logs:PutLogEvents"],
       resources: [logGroupArn],
     })
   )
@@ -190,9 +199,14 @@ export function makeFunctionRole(
   })
   // The scoped Logs grant ends in `:*` (log-stream wildcard within this function's own log group).
   // That is the tightest scope possible for CreateLogStream/PutLogEvents (the design's "CloudWatch
-  // Logs creation", §12.1); acknowledge the finding on this specific log-group ARN.
+  // Logs creation", §12.1); acknowledge the finding on this specific log-group ARN. The `id` uses the
+  // log group's logical id (a `Fn::GetAtt` render), so it resolves at synth regardless of a resolved
+  // account.
+  const logGroupLogicalId = cdk.Stack.of(scope).getLogicalId(
+    args.logGroup.node.defaultChild as cdk.CfnElement
+  )
   cdk.Validations.of(role).acknowledge({
-    id: `AwsSolutions-IAM5[Resource::${logGroupArn}]`,
+    id: `AwsSolutions-IAM5[Resource::<${logGroupLogicalId}.Arn>:*]`,
     reason:
       "CloudWatch Logs write scoped to this function's own log group and its streams (`:*`) — the " +
       "tightest scope for CreateLogStream/PutLogEvents. This is the design's Logs creation (§12.1).",

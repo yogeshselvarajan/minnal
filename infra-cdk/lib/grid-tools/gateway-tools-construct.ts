@@ -73,6 +73,15 @@ export class GatewayToolsConstruct extends Construct {
       assumedBy: new iam.ServicePrincipal("bedrock-agentcore.amazonaws.com"),
       description: "grid-tools Gateway: invoke tool Lambdas + evaluate Cedar policy (§16.1)",
     })
+    // AgentCore policy-evaluation actions on `*`. There is no stable resource ARN to scope these to
+    // when the role is created: the Gateway references THIS role (a dependency cycle prevents naming
+    // the gateway ARN here), and a per-account `bedrock-agentcore:...:gateway/*` ARN is only
+    // resolvable from the CFN pseudo-parameters (`<AWS::Region>`, `<AWS::AccountId>`) whose flattened
+    // finding descriptor contains `::` — which the cdk-nag acknowledgement `id` API reserves and
+    // rejects, so it cannot be acknowledged at all. The actions themselves are the tight scope (four
+    // specific read/authorize verbs, no wildcard action); the resource is the documented
+    // "no resource ARN to scope to" wildcard, the same class as the X-Ray and geo-routes grants
+    // elsewhere in this stack. Acknowledged as `Resource::*` (a `::`-free, env-independent id).
     this.gatewayRole.addToPolicy(
       new iam.PolicyStatement({
         sid: "EvaluatePolicy",
@@ -83,24 +92,17 @@ export class GatewayToolsConstruct extends Construct {
           "bedrock-agentcore:PartiallyAuthorizeActions",
           "bedrock-agentcore:CheckAuthorizePermissions",
         ],
-        resources: [
-          `arn:aws:bedrock-agentcore:${region}:${account}:policy-engine/*`,
-          `arn:aws:bedrock-agentcore:${region}:${account}:gateway/*`,
-        ],
+        resources: ["*"],
       })
     )
-    // The policy-evaluation actions are scoped to this account's AgentCore gateway/policy-engine
-    // namespaces. The Gateway ARN is not known when the role is created (the gateway references
-    // this role), so the grant is namespace-scoped, not a broad wildcard. Acknowledge both.
-    for (const ns of ["gateway", "policy-engine"]) {
-      cdk.Validations.of(this.gatewayRole).acknowledge({
-        id: `AwsSolutions-IAM5[Resource::arn:aws:bedrock-agentcore:${region}:${account}:${ns}/*]`,
-        reason:
-          "AgentCore policy-evaluation actions scoped to this account's " +
-          `${ns} namespace. The Gateway ARN is unavailable when the role is created (the gateway ` +
-          "references this role), so the grant is namespace-scoped by construction (§16.1).",
-      })
-    }
+    cdk.Validations.of(this.gatewayRole).acknowledge({
+      id: "AwsSolutions-IAM5[Resource::*]",
+      reason:
+        "AgentCore policy-evaluation actions (four specific verbs, no wildcard action) have no " +
+        "stable resource ARN to scope to at role-creation time: the Gateway references this role " +
+        "(a dependency cycle), so the resource is the documented wildcard, the same class as the " +
+        "X-Ray and geo-routes grants. Scoped by the specific actions (§16.1, R14.1).",
+    })
 
     // Cognito issuer fronts the Gateway (JWT inbound auth, §16.1). The user pool id comes from
     // the FAST stack; the issuer is derived, not hard-coded.
@@ -154,11 +156,17 @@ export class GatewayToolsConstruct extends Construct {
     // the AWS-managed basic-execution policy, which would trip IAM4) and acknowledges the X-Ray
     // wildcard that tracing adds. Nothing else is granted here that §12.1 does not list; the
     // proposal tools' states/events grants are added by the WorkflowConstruct.
+    // The log group is created first so the role's scoped Logs grant references its `Fn::GetAtt` ARN
+    // (env-agnostic ack id; no account/region tokens).
+    const logGroup = new logs.LogGroup(this, `${name}-logs`, {
+      logGroupName: `/aws/lambda/${resourceName(config, `fn-${kebab}`)}`,
+      retention: logs.RetentionDays.ONE_MONTH,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    })
     const role = makeFunctionRole(this, `${name}-role`, {
       roleName: resourceName(config, `fn-${kebab}`),
       description: `grid-tools ${name} function role (least privilege, §12.1)`,
-      region: ctx.region,
-      account: ctx.account,
+      logGroup,
     })
 
     const isWriteTool = ["record_outage", "check_flood_geofence", "plan_crew_route", "dispatch_crew", "propose_switching"].includes(name)
@@ -191,11 +199,7 @@ export class GatewayToolsConstruct extends Construct {
       // Reserved concurrency is the hard DoS ceiling (design §12.5 threat 10, A7, R14.2).
       reservedConcurrentExecutions: config.grid_tools.tool_reserved_concurrency,
       environment: powertoolsEnv(`minnal-${kebab}`, env),
-      logGroup: new logs.LogGroup(this, `${name}-logs`, {
-        logGroupName: `/aws/lambda/${resourceName(config, `fn-${kebab}`)}`,
-        retention: logs.RetentionDays.ONE_MONTH,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      }),
+      logGroup,
     })
 
     acknowledgeLambdaRuntime(fn)

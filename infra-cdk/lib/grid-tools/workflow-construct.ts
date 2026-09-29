@@ -54,7 +54,6 @@ export class WorkflowConstruct extends Construct {
     const { config, table, userPoolId, dispatchCrewFn, proposeSwitchingFn } = props
     const stack = cdk.Stack.of(this)
     const region = stack.region
-    const account = stack.account
     const powertoolsLayer = lambda.LayerVersion.fromLayerVersionArn(
       this,
       "PowertoolsLayer",
@@ -72,11 +71,17 @@ export class WorkflowConstruct extends Construct {
 
     const makeFn = (name: string, dir: string, service: string): lambda.Function => {
       const kebab = name.replace(/_/g, "-")
+      // Log group first so the role's scoped Logs grant references its `Fn::GetAtt` ARN (env-agnostic
+      // ack id; no account/region tokens).
+      const logGroup = new logs.LogGroup(this, `${name}Logs`, {
+        logGroupName: `/aws/lambda/${resourceName(config, `fn-${kebab}`)}`,
+        retention: logs.RetentionDays.ONE_MONTH,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      })
       const role = makeFunctionRole(this, `${name}Role`, {
         roleName: resourceName(config, `fn-${kebab}`),
         description: `grid-tools ${name} role (§12.1)`,
-        region,
-        account,
+        logGroup,
       })
       const fn = new lambda.Function(this, name, {
         functionName: resourceName(config, `fn-${kebab}`),
@@ -90,11 +95,7 @@ export class WorkflowConstruct extends Construct {
         layers: [powertoolsLayer],
         tracing: lambda.Tracing.ACTIVE,
         environment: powertoolsEnv(service, baseEnv),
-        logGroup: new logs.LogGroup(this, `${name}Logs`, {
-          logGroupName: `/aws/lambda/${resourceName(config, `fn-${kebab}`)}`,
-          retention: logs.RetentionDays.ONE_MONTH,
-          removalPolicy: cdk.RemovalPolicy.DESTROY,
-        }),
+        logGroup,
       })
       acknowledgeLambdaRuntime(fn)
       return fn

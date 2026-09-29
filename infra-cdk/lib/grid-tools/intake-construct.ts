@@ -53,7 +53,6 @@ export class IntakeConstruct extends Construct {
     const { config, table, deadLetterQueue } = props
     const stack = cdk.Stack.of(this)
     const region = stack.region
-    const account = stack.account
     const powertoolsLayer = lambda.LayerVersion.fromLayerVersionArn(
       this,
       "PowertoolsLayer",
@@ -94,12 +93,17 @@ export class IntakeConstruct extends Construct {
       MINNAL_EMERGENCY_NUMBER: "112",
     }
 
-    // Flood_Ingestor: batch size 1, its own role (no events:PutEvents, no state machine).
+    // Flood_Ingestor: batch size 1, its own role (no events:PutEvents, no state machine). The log
+    // group is created first so the role's scoped Logs grant references its `Fn::GetAtt` ARN.
+    const floodLogs = new logs.LogGroup(this, "FloodIngestorLogs", {
+      logGroupName: `/aws/lambda/${resourceName(config, "flood-ingestor")}`,
+      retention: logs.RetentionDays.ONE_MONTH,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    })
     const floodRole = makeFunctionRole(this, "FloodIngestorRole", {
       roleName: resourceName(config, "flood-ingestor"),
       description: "grid-tools Flood_Ingestor role (§12.1)",
-      region,
-      account,
+      logGroup: floodLogs,
     })
     this.floodIngestor = new lambda.Function(this, "FloodIngestor", {
       functionName: resourceName(config, "flood-ingestor"),
@@ -116,11 +120,7 @@ export class IntakeConstruct extends Construct {
         ...commonEnv,
         MINNAL_HAZARD_QUEUE_URL: this.hazardQueue.queueUrl,
       }),
-      logGroup: new logs.LogGroup(this, "FloodIngestorLogs", {
-        logGroupName: `/aws/lambda/${resourceName(config, "flood-ingestor")}`,
-        retention: logs.RetentionDays.ONE_MONTH,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      }),
+      logGroup: floodLogs,
     })
     acknowledgeLambdaRuntime(this.floodIngestor)
     // Flood_Ingestor reads the flood set, applies the optimistic-lock transaction and updates the
@@ -136,11 +136,15 @@ export class IntakeConstruct extends Construct {
 
     // Event_Ingestor: batch size 10 with ReportBatchItemFailures; needs DeleteItem for OKEY#/CREW#
     // (release on JobCompleted, §12.1). No events:PutEvents: it emits nothing.
+    const eventLogs = new logs.LogGroup(this, "EventIngestorLogs", {
+      logGroupName: `/aws/lambda/${resourceName(config, "event-ingestor")}`,
+      retention: logs.RetentionDays.ONE_MONTH,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    })
     const eventRole = makeFunctionRole(this, "EventIngestorRole", {
       roleName: resourceName(config, "event-ingestor"),
       description: "grid-tools Event_Ingestor role (§12.1)",
-      region,
-      account,
+      logGroup: eventLogs,
     })
     this.eventIngestor = new lambda.Function(this, "EventIngestor", {
       functionName: resourceName(config, "event-ingestor"),
@@ -158,11 +162,7 @@ export class IntakeConstruct extends Construct {
         MINNAL_INTAKE_QUEUE_URL: this.intakeQueue.queueUrl,
         MINNAL_INTAKE_BATCH_SIZE: "10",
       }),
-      logGroup: new logs.LogGroup(this, "EventIngestorLogs", {
-        logGroupName: `/aws/lambda/${resourceName(config, "event-ingestor")}`,
-        retention: logs.RetentionDays.ONE_MONTH,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      }),
+      logGroup: eventLogs,
     })
     acknowledgeLambdaRuntime(this.eventIngestor)
     // Event_Ingestor closes Outages and releases locks: GetItem/Query/Transact/Update/Delete on the

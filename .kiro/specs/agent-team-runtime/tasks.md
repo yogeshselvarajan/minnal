@@ -303,11 +303,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 4: role agents
 
-- [ ] 39. Factories and prompts
+- [x] 39. Factories and prompts
   - _Requirements: 1.3, 1.5, 1.6, 2.1, 2.4, 16.5_ §7.1, §7.2 [agent-engineer]
-  - [ ] 39.1 Write `patterns/agui-minnal/roles/_common/factory.py` with `RoleDeps`, `load_prompt` reading `prompt.md` verbatim with no interpolation slots, `build_agent`, and `build_bedrock_model` taking the model ID, temperature, max tokens and explicit request timeout from `Settings`
+  - [x] 39.1 Write `patterns/agui-minnal/roles/_common/factory.py` with `RoleDeps`, `load_prompt` reading `prompt.md` verbatim with no interpolation slots, `build_agent`, and `build_bedrock_model` taking the model ID, temperature, max tokens and explicit request timeout from `Settings`
     - _Requirements: 1.3, 2.1, 2.4, 16.5_ §7.1 [agent-engineer]
-  - [ ] 39.2 Write the five `prompt.md` files for `commander`, `hazard`, `diagnostics`, `dispatch` and `safety`, each with the six headings Role, Inputs, Output, Limits, Untrusted data and Never, naming the role's allow-listed tools and its prohibitions
+  - [x] 39.2 Write the five `prompt.md` files for `commander`, `hazard`, `diagnostics`, `dispatch` and `safety`, each with the six headings Role, Inputs, Output, Limits, Untrusted data and Never, naming the role's allow-listed tools and its prohibitions
     - _Requirements: 1.5, 1.6_ §7.2, §7.5 [agent-engineer]
 
 - [ ] 40. Verify factories and prompts

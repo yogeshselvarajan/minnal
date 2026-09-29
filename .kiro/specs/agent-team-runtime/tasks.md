@@ -549,11 +549,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 66.2 Register `record_outage` on the server for fixture ingest only, deliberately making the server more permissive than any role so the allow-list tests are testing something real
     - _Requirements: 13.4, 9.9, 22.2_ §18.2 [agent-engineer]
 
-- [ ] 67. The replay runner
+- [x] 67. The replay runner
   - _Requirements: 22.1, 22.3, 22.5, 22.7, 22.9_ §18.3, §18.5 [agent-engineer]
-  - [ ] 67.1 Write `patterns/agui-minnal/offline/replay_runner.py` calling `make_ports` with `MINNAL_BACKEND=local`, freezing the clock at the fixture's first `sim_time`, ingesting `FloodPolygonUpdated` and `WeatherTick` through the flood ingestor logic and `OutageReported` and `MeterLastGasp` through `record_outage`, then running one period and writing `agui-stream.jsonl`, `events.jsonl` and the period record
+  - [x] 67.1 Write `patterns/agui-minnal/offline/replay_runner.py` calling `make_ports` with `MINNAL_BACKEND=local`, freezing the clock at the fixture's first `sim_time`, ingesting `FloodPolygonUpdated` and `WeatherTick` through the flood ingestor logic and `OutageReported` and `MeterLastGasp` through `record_outage`, then running one period and writing `agui-stream.jsonl`, `events.jsonl` and the period record
     - _Requirements: 22.1, 22.3, 22.7_ §18.3, §18.5 [agent-engineer]
-  - [ ] 67.2 Add the explicit socket guard so an accidental network call fails loudly, and confirm the backend is selected only in `make_ports` and never branched on elsewhere
+  - [x] 67.2 Add the explicit socket guard so an accidental network call fails loudly, and confirm the backend is selected only in `make_ports` and never branched on elsewhere
     - _Requirements: 22.5, 22.9_ §18.3 [agent-engineer]
 
 - [ ] 68. Verify offline mode and the acceptance scenario

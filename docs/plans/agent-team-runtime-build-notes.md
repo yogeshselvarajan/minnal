@@ -514,3 +514,109 @@ deleted; not left as a test file): `build_server` imports, `list_tools` yields 1
 an inputSchema, `invoke_tool("get_flood_status", …)` against a local-backed seeded incident returns
 a well-formed `ok` envelope, an unknown incident returns `NOT_FOUND`, an unknown tool raises
 `ValueError`. No tasks ticked, no commit (runner commits after verification).
+
+## 2026-10-01 — task 67: replay runner — structure complete, two stubbed dependencies documented
+
+Built `patterns/agui-minnal/offline/replay_runner.py` (§18.3, §18.5, R22.1/R22.3/R22.5/R22.7/R22.9)
+plus two private helper modules to stay under the 400-line module limit (backend-python.md):
+`offline/_replay_ingest.py` (fixture decode + event→ingest mapping) and
+`offline/_replay_artefacts.py` (the three §18.5 artefact writers + the socket guard). Line counts:
+replay_runner 392, _replay_ingest 250, _replay_artefacts 151.
+
+### CLI
+
+`python -m offline.replay_runner --fixture data/fixtures/replay-michaung-style.jsonl --seed 20231205
+--script honest_baseline --period 1` with `patterns/agui-minnal` and `gateway/tools` on `sys.path`
+(the deployed-container / tests / mypy import root; the hyphenated `patterns/agui-minnal` folder is
+not an importable package, decisions-log 2026-09-28). Running the file directly
+(`python patterns/agui-minnal/offline/replay_runner.py ...`) also works: the `__main__` guard calls
+`_bootstrap_sys_path()` to add those two roots before `main` runs, and `main` imports the helper
+modules lazily so the bootstrap takes effect. The design's literal
+`python -m patterns.agui_minnal.offline.replay_runner` form cannot resolve against the hyphenated
+directory (no `patterns/agui_minnal` package); the two working forms above are the closest-safe
+reconciliation and both were smoke-run.
+
+### Steps 1-2 are real; ingest is wired behind the existing lazy interface and fails loudly
+
+- Step 1: `_local_ports()` forces `MINNAL_BACKEND=local` (and defaults the required
+  `MINNAL_EMERGENCY_NUMBER`) and calls `make_ports(Settings())`. The backend is selected ONLY
+  inside `make_ports`; the runner never imports an adapter, reads `settings.backend`, or branches
+  on the backend (R22.9). `freeze_clock` sets the local `FrozenClock`'s wall and incident readings
+  to the fixture's first `sim_time` (`2023-12-05T00:00:00Z`), so every ingest/period timestamp is
+  deterministic (R22.1, R22.4).
+- Step 2 ingest (`_replay_ingest`): `WeatherTick`→`ports.flood.apply_heartbeat` and
+  `FloodPolygonUpdated`→`ports.flood.apply_flood_event` (the Flood_Ingestor logic — verified
+  functional: 721 heartbeats + 3 flood applies land through the real `LocalFloodStore`, version
+  advances). `OutageReported`/`MeterLastGasp`→`record_outage` via `offline.tool_server.invoke_tool`
+  (the real handler over the in-process server). `record_outage` is one of the seven grid-tools
+  stubs, so the FIRST `OutageReported` raises the tool server's clear `RuntimeError` and the run
+  reports it and exits 1. Meter mapping: `source=meter`, `symptom=no_power` (a last-gasp has no
+  symptom in its payload; a meter reporting its last gasp has lost supply), `meter_id`/`dt_id`
+  passed through, `report_id` derived deterministically as `rep_meter_<meter_id>_<sequence>` (a
+  pure function of the fixture, never a minted id). Citizen mapping: `source=citizen`, the fixture's
+  own `report_id`, `symptom`, `location`, `callback_token`→`callback_ref`, `is_emergency` passed
+  through (the handler re-derives the authoritative flag). `correlation_id` threads the fixture's id.
+
+### Exact RuntimeError observed (expected, NOT this task's bug)
+
+```
+tool 'record_outage' has no lambda_handler in 'record_outage.record_outage_lambda': its grid-tools
+handler is not implemented yet on this branch
+```
+
+exit code 1, printed to stderr with no stack trace. This is the tool server's lazy-resolution
+error (task 66), surfaced — not swallowed, not degraded (`_require_ok` also raises loudly on any
+non-`ok` envelope). Flood/weather ingest succeeds first; the failure is at the first outage call.
+
+### Two dependencies stubbed behind interfaces (autopilot rule); zero-change when they land
+
+1. **grid-tools `record_outage` handler** — reached in step 2 as above, behind the tool server's
+   existing lazy `_handler` interface. No change here when it lands.
+2. **the offline period orchestrator (steps 3-4)** — step 3 (`build_offline_period`, the default
+   `PeriodBuilder`) is where the Graph is assembled with one `ScriptedModel` per role + a
+   `ScriptContext` and the real per-role registry over the in-process server. TWO prerequisites of
+   this are owned by other lanes and are NOT on this branch, so the default raises a descriptive
+   `NotImplementedError` naming the gap rather than silently building a partial graph:
+   - the **five model-node graph executors** — a `MultiAgentBase` wrapping each role's
+     `run_*`/`run_node_with_repair` turn and the `PeriodState` mutation. Only the Code_Nodes
+     (`DispatchCommitNode`, the pio/scribe slots) exist; `GraphDeps` needs all nine executors and
+     the existing tests (`test_graph_shape`, `test_period_flow`) drive only the graph *shape* with
+     stub executors, never a real model-node run. There is no task in Waves 0-6 that builds these
+     wrappers; the offline runner (task 67) is where a real end-to-end period is first assembled.
+   - a **stdio transport for `RoleClientRegistry`** — its only transport today is
+     `streamablehttp_client` (HTTP); it cannot address the in-process stdio server.
+   Because step 2 fails first, a live run never reaches step 3, so this second stub never executes
+   in practice; it is documented and behind the injectable `PeriodBuilder` seam so a test can drive
+   steps 4-6 with a fake, and the default works with zero change once the two prerequisites land.
+   Steps 4-6 themselves are real and correct: `run_period` calls the verified
+   `Graph.invoke_async(task, invocation_state)` with `initial_invocation_state(period_state)`;
+   `assert_acceptance` makes the exact §18.4 assertions off `result.execution_order[*].node_id`
+   (the verified accessor) and the recorded `PeriodState` (`vetoes`, `veto_iterations`,
+   `commit_ran`); `write_artefacts` writes `agui-stream.jsonl` (monotonic `seq` per event, §12.5),
+   `events.jsonl` and `period-0001.json` under `.local/agent-team-runtime/<incident>/`.
+
+### Socket guard (task 67.2) — subclass, not function
+
+`install_socket_guard` replaces `socket.socket` with `_GuardedSocket`, a **subclass** of
+`socket.socket` whose `__init__` raises on `AF_INET`/`AF_INET6` (including the default family). A
+subclass (rather than a plain function) is required because `ssl` does `class SSLSocket(socket)` at
+import time — and `pyproj` (pulled in transitively by `_shared.geometry`) imports `ssl`; replacing
+`socket.socket` with a function broke that import (`TypeError: function() argument 'code' must be
+code`). Verified: `AF_UNIX` and any non-INET family pass through untouched, `AF_INET`/default are
+refused with a clear message, `ssl.SSLSocket` remains a `socket.socket` subclass, and the in-process
+stdio MCP transport (a pipe over stdin/stdout, never a socket) is unaffected — the tool server still
+builds under the guard. The guard is installed at the very top of `main`, before any ingest.
+
+### Artefacts
+
+`.local/agent-team-runtime/<incident>/{agui-stream.jsonl,events.jsonl,period-0001.json}`. Added
+`.local/` to the repo `.gitignore` (it was absent; `.local/grid-tools` was only implicitly covered
+by the local store's own dir). Confirmed `git check-ignore .local/agent-team-runtime` → ignored.
+
+### Checks (this task's files only; task 68 owns the tests)
+
+`uv run ruff check patterns/agui-minnal/offline` → All checks passed. `ruff format --check` → clean
+(10 files). `uv run mypy patterns/agui-minnal/offline` → Success, no issues (10 source files).
+`tests/test_no_claude.py` → 9 passed (offline tree in scan). Import-smoke and both CLI forms run;
+the live acceptance run fails at the expected `record_outage` RuntimeError (exit 1). No tasks
+ticked, no throwaway test files left, no commit (the runner commits after verification).

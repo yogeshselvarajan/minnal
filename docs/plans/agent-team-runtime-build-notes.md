@@ -82,3 +82,25 @@ harness (`patterns/agui-minnal/roles/_common/spikes/oq2_structured_output.py`) i
 call it would make, guarded behind `MINNAL_ALLOW_LIVE_BEDROCK=1`; it printed the PlanOut
 Converse tool-input schema at nesting depth 8 with `anyOf` on every optional Item field,
 which is the concrete evidence for the concern. Re-run when Bedrock access exists.
+
+## 2026-09-29 — Wave 0 agent-engineer lane COMPLETE (tasks 1, 3, 4, 5, 7)
+
+All agent-engineer Wave-0 tasks done, one commit each on `feat/agent-team-runtime`:
+- T1 pinned the seven §1.6 runtime deps (strands-agents downgraded 1.57.1->1.42.0,
+  bedrock-agentcore 1.23.1->1.18.1; added ag-ui-strands, mcp, PyJWT[crypto]); requirements.txt
+  already matched uv.lock.
+- T3 spike OQ1 PASS -> ADR 0005 adopts the merged-stream design; a minnal.agent_step Custom
+  event survives the ag-ui-strands adapter stream in order with value intact.
+- T4 spike OQ2 BLOCKED (offline/no Bedrock) -> ADR 0006 adopts the flattened model-facing
+  fallback pre-emptively; stored §5 contracts unchanged.
+- T5 config/settings.py (single Settings, model_for merges default under per-agent, fails
+  naming the role), config/effort.yaml (§6.2 verbatim + citation), config/budgets.yaml
+  (§14.1 verbatim).
+- T7 six minnal.* JSON Schemas + pure agui/validate.py.
+
+Gate state for this lane's files: ruff check + ruff format clean, mypy --strict clean on
+settings.py and validate.py, tests/test_no_claude.py 9 passed, full pytest 217 passed (the
+sole deselected test is the pre-existing environment-artifact tests/test_network_blocked.py).
+
+NOT done in this lane (out of Wave-0 agent-engineer scope, other lanes): T2, T6, T9 are
+qa-eval-engineer; T8 is geo-data-engineer. No push (orchestrator pushes).

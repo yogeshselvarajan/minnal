@@ -1,0 +1,78 @@
+[
+  {
+    "name": "rank_restoration_jobs",
+    "description": "Rank candidate restoration jobs into the order crews should work them, following standard utility practice: make-safe work first, then jobs feeding critical facilities such as hospitals and water or sewage pumping, then substations and main feeders, then laterals and distribution transformers, then individual services. Within a tier the tool prefers the job restoring the most customers per crew-hour, then the one waiting longest. Jobs whose equipment sits in an active flood hazard, or that you flagged as having no safe route, come back as blocked rather than ranked, and while flood data is missing or stale every job except make-safe work is blocked. The tier comes from the grid, not from you. Do NOT use this tool to dispatch, to invent effort estimates, or to override the tier of a critical-facility job.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "incident_id",
+        "jobs"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident this call belongs to. Format inc_ followed by a 26-character ULID."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional. corr_ followed by a 26-character ULID. Reuse one id across a whole operational step."
+        },
+        "jobs": {
+          "type": "array",
+          "description": "Between 1 and 500 candidate jobs.",
+          "items": {
+            "type": "object",
+            "description": "One unit of restoration work on one device.",
+            "required": [
+              "job_id",
+              "device_id",
+              "is_make_safe",
+              "customers_restored",
+              "effort_crew_minutes",
+              "waiting_seconds",
+              "required_skill"
+            ],
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "description": "Your id for the job, 1 to 64 characters."
+              },
+              "device_id": {
+                "type": "string",
+                "description": "The device to work on. One of sub_, fdr_, lat_ or dt_ followed by digits."
+              },
+              "is_make_safe": {
+                "type": "boolean",
+                "description": "True for downed, submerged or arcing equipment and any public-danger report."
+              },
+              "is_individual_service": {
+                "type": "boolean",
+                "description": "Optional. True for a single service connection. Defaults to false."
+              },
+              "customers_restored": {
+                "type": "integer",
+                "description": "Customers this job restores. Zero or more."
+              },
+              "effort_crew_minutes": {
+                "type": "integer",
+                "description": "Estimated crew-minutes. Must be 1 or more."
+              },
+              "waiting_seconds": {
+                "type": "integer",
+                "description": "Seconds this job has been waiting. Zero or more."
+              },
+              "required_skill": {
+                "type": "string",
+                "description": "Skill the crew needs. One of make_safe, overhead_line, switching, underground_cable."
+              },
+              "has_no_safe_route": {
+                "type": "boolean",
+                "description": "Optional. Set true when plan_crew_route could not find a safe route. Defaults to false."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

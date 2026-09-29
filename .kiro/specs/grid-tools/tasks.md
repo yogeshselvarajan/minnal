@@ -14,130 +14,130 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 ## Wave 0 — Contracts
 
-- [ ] 0. [agent-engineer] Add the dependencies with `uv add`: runtime `aws-lambda-powertools`, `pydantic`, `shapely`, `pyproj`, `python-ulid`, `jsonschema`; dev `hypothesis`, `pytest`, `pytest-socket`, `moto`, `cedarpy`, `mypy`, `ruff`. Pin exact versions, commit `uv.lock`, and record the versions relied on in the commit body _Requirements: 15.2, 16.4_ _Design: header stack_
+- [x] 0. [agent-engineer] Add the dependencies with `uv add`: runtime `aws-lambda-powertools`, `pydantic`, `shapely`, `pyproj`, `python-ulid`, `jsonschema`; dev `hypothesis`, `pytest`, `pytest-socket`, `moto`, `cedarpy`, `mypy`, `ruff`. Pin exact versions, commit `uv.lock`, and record the versions relied on in the commit body _Requirements: 15.2, 16.4_ _Design: header stack_
 
-- [ ] 1. [geo-data-engineer] Shared contract modules _Requirements: 1.5, 1.6, 1.8, 1.11, 14.5, 17.6, 17.7_ _Design: §4.3, §4.4, §9.1, §14_
-  - [ ] 1.1 [geo-data-engineer] Write `_shared/errors.py`: `MinnalError` hierarchy, `InputValidationError` (never named `ValidationError`), `SafetyViolation` that cannot be built without a `rule_id`, `FloodSnapshotUnstable`, the `ErrorCode` and `RuleId` literals _Requirements: 1.5, 1.6_ _Design: §4.4_
-  - [ ] 1.2 [geo-data-engineer] Write `_shared/envelope.py`: `Envelope`, `ErrorBody`, `ok()`, `err()`, the 280-character `summary` guard, and the fixed public-message vocabulary per `ErrorCode` _Requirements: 1.5, 1.6_ _Design: §4.3, §11.3_
-  - [ ] 1.3 [geo-data-engineer] Write `_shared/ids.py`: ULID generation and prefix validators for `out_`, `fck_`, `sfc_`, `prp_`, `wo_`, `ttr_`, `rte_`, `corr_`, `inc_` _Requirements: 1.11_ _Design: §4.3_
-  - [ ] 1.4 [geo-data-engineer] Write `_shared/clock.py`: the `Clock` protocol with `wall_now()` and `incident_now()` and no generic `now()`, plus `FrozenClock` for tests _Requirements: 1.11, 6.4, 11.6_ _Design: §9.1_
-  - [ ] 1.5 [geo-data-engineer] Write `_shared/settings.py`: every setting in the §14 table with its bounds, the `MINNAL_BACKEND` switch, `default_feed_mode`, `flood_event_sources`, the two queue URLs, and the six cross-field start-up validations _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
-  - [ ] 1.6 [geo-data-engineer] Write `_shared/models.py`: `ToolInput`, `Job`, `FloodCheckRef`, the geometry value objects, and the `EmergencyEscalation` record _Requirements: 1.8, 1.11_ _Design: §4.3_
+- [x] 1. [geo-data-engineer] Shared contract modules _Requirements: 1.5, 1.6, 1.8, 1.11, 14.5, 17.6, 17.7_ _Design: §4.3, §4.4, §9.1, §14_
+  - [x] 1.1 [geo-data-engineer] Write `_shared/errors.py`: `MinnalError` hierarchy, `InputValidationError` (never named `ValidationError`), `SafetyViolation` that cannot be built without a `rule_id`, `FloodSnapshotUnstable`, the `ErrorCode` and `RuleId` literals _Requirements: 1.5, 1.6_ _Design: §4.4_
+  - [x] 1.2 [geo-data-engineer] Write `_shared/envelope.py`: `Envelope`, `ErrorBody`, `ok()`, `err()`, the 280-character `summary` guard, and the fixed public-message vocabulary per `ErrorCode` _Requirements: 1.5, 1.6_ _Design: §4.3, §11.3_
+  - [x] 1.3 [geo-data-engineer] Write `_shared/ids.py`: ULID generation and prefix validators for `out_`, `fck_`, `sfc_`, `prp_`, `wo_`, `ttr_`, `rte_`, `corr_`, `inc_` _Requirements: 1.11_ _Design: §4.3_
+  - [x] 1.4 [geo-data-engineer] Write `_shared/clock.py`: the `Clock` protocol with `wall_now()` and `incident_now()` and no generic `now()`, plus `FrozenClock` for tests _Requirements: 1.11, 6.4, 11.6_ _Design: §9.1_
+  - [x] 1.5 [geo-data-engineer] Write `_shared/settings.py`: every setting in the §14 table with its bounds, the `MINNAL_BACKEND` switch, `default_feed_mode`, `flood_event_sources`, the two queue URLs, and the six cross-field start-up validations _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
+  - [x] 1.6 [geo-data-engineer] Write `_shared/models.py`: `ToolInput`, `Job`, `FloodCheckRef`, the geometry value objects, and the `EmergencyEscalation` record _Requirements: 1.8, 1.11_ _Design: §4.3_
 
-- [ ] 2. [geo-data-engineer] Write the six emitted event schemas in `gateway/schemas/events/`: `DispatchProposed`, `DispatchVetoed`, `DispatchApproved`, `SwitchingProposed`, `SwitchingVetoed`, `SwitchingApproved`, each with `additionalProperties: false` and the closed `rule_id` set _Requirements: 13.1, 13.2_ _Design: §7.2, §11.5_
+- [x] 2. [geo-data-engineer] Write the six emitted event schemas in `gateway/schemas/events/`: `DispatchProposed`, `DispatchVetoed`, `DispatchApproved`, `SwitchingProposed`, `SwitchingVetoed`, `SwitchingApproved`, each with `additionalProperties: false` and the closed `rule_id` set _Requirements: 13.1, 13.2_ _Design: §7.2, §11.5_
 
-- [ ] 3. [geo-data-engineer] Tool contracts: two files per tool, Gateway subset plus strict schema _Requirements: 1.2, 1.9, 6.1, 10.8, 12.6_ _Design: §3.3, §5_
-  - [ ] 3.1 [geo-data-engineer] `record_outage`: `tool_spec.json` in the five-keyword subset with constraints in `description` prose, `input.schema.json` strict, and `RecordOutageInput` _Requirements: 1.2, 4.4, 4.8_ _Design: §3.3, §5.1_
-  - [ ] 3.2 [geo-data-engineer] `trace_upstream_device`: the same three artefacts _Requirements: 1.2, 5.7_ _Design: §3.3, §5.2_
-  - [ ] 3.3 [geo-data-engineer] `check_flood_geofence`: the same three artefacts, with `target_kind` flattening `point`/`line`/`polygon`/`device`/`route` and the kind-to-field `model_validator` _Requirements: 1.2, 6.1_ _Design: §3.3, §5.3_
-  - [ ] 3.4 [geo-data-engineer] `plan_crew_route`: the same three artefacts, with `destination_kind` flattening and the `idempotency_key` _Requirements: 1.2, 1.9_ _Design: §3.3, §5.4_
-  - [ ] 3.5 [geo-data-engineer] `rank_restoration_jobs`: the same three artefacts, with the nested `items` job object _Requirements: 1.2, 8.9_ _Design: §3.3, §5.5_
-  - [ ] 3.6 [geo-data-engineer] `dispatch_crew`: the same three artefacts, declaring `safety_clearance_id` and `flood_check` so the Cedar schema contains them _Requirements: 1.2, 12.6_ _Design: §3.3, §5.6_
-  - [ ] 3.7 [geo-data-engineer] `propose_switching`: the same three artefacts, with `safety_clearance_id` and `flood_check` **optional** and a `model_validator` requiring them only for `energise` _Requirements: 1.2, 10.8, 12.6_ _Design: §3.3, §5.7_
+- [x] 3. [geo-data-engineer] Tool contracts: two files per tool, Gateway subset plus strict schema _Requirements: 1.2, 1.9, 6.1, 10.8, 12.6_ _Design: §3.3, §5_
+  - [x] 3.1 [geo-data-engineer] `record_outage`: `tool_spec.json` in the five-keyword subset with constraints in `description` prose, `input.schema.json` strict, and `RecordOutageInput` _Requirements: 1.2, 4.4, 4.8_ _Design: §3.3, §5.1_
+  - [x] 3.2 [geo-data-engineer] `trace_upstream_device`: the same three artefacts _Requirements: 1.2, 5.7_ _Design: §3.3, §5.2_
+  - [x] 3.3 [geo-data-engineer] `check_flood_geofence`: the same three artefacts, with `target_kind` flattening `point`/`line`/`polygon`/`device`/`route` and the kind-to-field `model_validator` _Requirements: 1.2, 6.1_ _Design: §3.3, §5.3_
+  - [x] 3.4 [geo-data-engineer] `plan_crew_route`: the same three artefacts, with `destination_kind` flattening and the `idempotency_key` _Requirements: 1.2, 1.9_ _Design: §3.3, §5.4_
+  - [x] 3.5 [geo-data-engineer] `rank_restoration_jobs`: the same three artefacts, with the nested `items` job object _Requirements: 1.2, 8.9_ _Design: §3.3, §5.5_
+  - [x] 3.6 [geo-data-engineer] `dispatch_crew`: the same three artefacts, declaring `safety_clearance_id` and `flood_check` so the Cedar schema contains them _Requirements: 1.2, 12.6_ _Design: §3.3, §5.6_
+  - [x] 3.7 [geo-data-engineer] `propose_switching`: the same three artefacts, with `safety_clearance_id` and `flood_check` **optional** and a `model_validator` requiring them only for `energise` _Requirements: 1.2, 10.8, 12.6_ _Design: §3.3, §5.7_
 
-- [ ] 4. [qa-eval-engineer] Contract tests _Requirements: 1.1, 1.2, 1.4, 1.11, 13.1, 14.5, 16.3, 16.4, 17.6, 17.7_ _Design: §3.3, §19.3_
-  - [ ] 4.1 [qa-eval-engineer] Write `test_tool_spec_uses_only_gateway_subset`: walk all seven `tool_spec.json` at every depth and fail on any keyword outside `type`, `description`, `properties`, `required`, `items`; plus `test_no_oneof_anywhere` _Requirements: 1.2_ _Design: §3.3_
-  - [ ] 4.2 [qa-eval-engineer] Write `test_input_schema_is_strict` and the parity test between `input.schema.json`, `tool_spec.json` property names and each Pydantic model _Requirements: 1.2, 1.4_ _Design: §3.3_
-  - [ ] 4.3 [qa-eval-engineer] Write `test_every_tool_has_five_files` and `test_six_event_schemas_are_strict` _Requirements: 1.1, 13.1_ _Design: §3, §7.2_
-  - [ ] 4.4 [qa-eval-engineer] Write `test_settings_validation_and_ranges`, `test_default_backend_is_aws`, `test_invalid_backend_fails_startup` _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
-  - [ ] 4.5 [qa-eval-engineer] Write `tests/conftest.py`: socket blocking, fake AWS credentials, the `default`, `ci` and `quick` Hypothesis profiles, and `test_profiles_registered_and_min_examples` _Requirements: 16.3, 16.4_ _Design: §19.3_
-  - [ ] 4.6 [qa-eval-engineer] Write `test_times_ids_and_geojson_conventions` for the wire conventions _Requirements: 1.11_ _Design: §4.3_
+- [x] 4. [qa-eval-engineer] Contract tests _Requirements: 1.1, 1.2, 1.4, 1.11, 13.1, 14.5, 16.3, 16.4, 17.6, 17.7_ _Design: §3.3, §19.3_
+  - [x] 4.1 [qa-eval-engineer] Write `test_tool_spec_uses_only_gateway_subset`: walk all seven `tool_spec.json` at every depth and fail on any keyword outside `type`, `description`, `properties`, `required`, `items`; plus `test_no_oneof_anywhere` _Requirements: 1.2_ _Design: §3.3_
+  - [x] 4.2 [qa-eval-engineer] Write `test_input_schema_is_strict` and the parity test between `input.schema.json`, `tool_spec.json` property names and each Pydantic model _Requirements: 1.2, 1.4_ _Design: §3.3_
+  - [x] 4.3 [qa-eval-engineer] Write `test_every_tool_has_five_files` and `test_six_event_schemas_are_strict` _Requirements: 1.1, 13.1_ _Design: §3, §7.2_
+  - [x] 4.4 [qa-eval-engineer] Write `test_settings_validation_and_ranges`, `test_default_backend_is_aws`, `test_invalid_backend_fails_startup` _Requirements: 14.5, 17.6, 17.7_ _Design: §14_
+  - [x] 4.5 [qa-eval-engineer] Write `tests/conftest.py`: socket blocking, fake AWS credentials, the `default`, `ci` and `quick` Hypothesis profiles, and `test_profiles_registered_and_min_examples` _Requirements: 16.3, 16.4_ _Design: §19.3_
+  - [x] 4.6 [qa-eval-engineer] Write `test_times_ids_and_geojson_conventions` for the wire conventions _Requirements: 1.11_ _Design: §4.3_
 
 ---
 
 ## Wave 1 — Pure foundations
 
-- [ ] 5. [geo-data-engineer] Write `_shared/geometry.py`: UTM 44N `buffer_metres` with the 1 m outward slack, `validate_geometry`, boundary-inclusive `intersects_any`, `geometry_hash` canonicalisation at 6 dp, `snap_to_cell` in projected metres, `exterior_ring_coords`, `simplify_outward` by convex hull _Requirements: 6.5, 6.6_ _Design: §8.1, §8.2, §8.3, §8.4, §8.9, §8.10_
+- [x] 5. [geo-data-engineer] Write `_shared/geometry.py`: UTM 44N `buffer_metres` with the 1 m outward slack, `validate_geometry`, boundary-inclusive `intersects_any`, `geometry_hash` canonicalisation at 6 dp, `snap_to_cell` in projected metres, `exterior_ring_coords`, `simplify_outward` by convex hull _Requirements: 6.5, 6.6_ _Design: §8.1, §8.2, §8.3, §8.4, §8.9, §8.10_
 
-- [ ] 6. [geo-data-engineer] Write `_shared/flood.py`: `HazardPolygon` with `changed_in_version`, `FloodSet` with `feed_mode` and both feed timestamps, `is_hazard`, `derive_status` with the replay and live rules, `hazard_index` with the prepared STRtree and the version-keyed cache, `apply_flood_event`, `apply_heartbeat` _Requirements: 3.3, 3.8, 3.9_ _Design: §6.1, §6.2, §8.5, §9.2_
+- [x] 6. [geo-data-engineer] Write `_shared/flood.py`: `HazardPolygon` with `changed_in_version`, `FloodSet` with `feed_mode` and both feed timestamps, `is_hazard`, `derive_status` with the replay and live rules, `hazard_index` with the prepared STRtree and the version-keyed cache, `apply_flood_event`, `apply_heartbeat` _Requirements: 3.3, 3.8, 3.9_ _Design: §6.1, §6.2, §8.5, §9.2_
 
-- [ ] 7. [qa-eval-engineer] Write property test for Property 28 (the Incident_Clock and `last_feed_at` never decrease) _Requirements: 3.5, 3.8_ _Design: §18 P28_
+- [x] 7. [qa-eval-engineer] Write property test for Property 28 (the Incident_Clock and `last_feed_at` never decrease) _Requirements: 3.5, 3.8_ _Design: §18 P28_
 
-- [ ] 8. [geo-data-engineer] Write `_shared/grid.py`: the immutable radial forest loaded from the bundled GeoJSON, `ancestors_or_self`, `downstream_set`, `dts_downstream`, `service_area_of`, `supplying_dt` with the smallest-id tie rule, `has_critical_facility_downstream`, `in_study_area` _Requirements: 4.7, 5.5, 8.2_ _Design: §4.1, §8.6_
+- [x] 8. [geo-data-engineer] Write `_shared/grid.py`: the immutable radial forest loaded from the bundled GeoJSON, `ancestors_or_self`, `downstream_set`, `dts_downstream`, `service_area_of`, `supplying_dt` with the smallest-id tie rule, `has_critical_facility_downstream`, `in_study_area` _Requirements: 4.7, 5.5, 8.2_ _Design: §4.1, §8.6_
 
-- [ ] 9. [qa-eval-engineer] Test infrastructure _Requirements: 14.4, 15.2, 16.6, 17.1, 17.2_ _Design: §19.2, §15.1_
-  - [ ] 9.1 [qa-eval-engineer] Write `tests/tools/oracles.py`: the brute-force buffered-distance flood oracle, the naive LCA oracle, and the outage-ledger oracle reused from `replay-simulator` _Requirements: 16.6_ _Design: §19.2_
-  - [ ] 9.2 [qa-eval-engineer] Write `tests/tools/strategies.py`: `radial_grids`, `hazard_polygons`, `adversarial_routes`, `clearance_mutations`, `flood_event_streams` (including two events sharing one `sim_time`), `apply_interleavings`, `job_lists`, `report_streams`, `job_completed_streams` _Requirements: 16.6_ _Design: §19.2_
-  - [ ] 9.3 [qa-eval-engineer] Write `tests/tools/fakes.py`: `InMemoryTable` with `put_if_not_exists`, `update_if` and all-or-nothing `transact_write`, `FakeRouter`, `FakeWorkflow`, `CapturingLogger`, `ListEventPublisher` _Requirements: 15.2, 17.1_ _Design: §15.1_
-  - [ ] 9.4 [qa-eval-engineer] Write `test_pure_modules_import_no_boto3` and `test_logic_never_reads_backend_setting` as AST scans _Requirements: 14.4, 17.2_ _Design: §2.4, §15.5_
+- [x] 9. [qa-eval-engineer] Test infrastructure _Requirements: 14.4, 15.2, 16.6, 17.1, 17.2_ _Design: §19.2, §15.1_
+  - [x] 9.1 [qa-eval-engineer] Write `tests/tools/oracles.py`: the brute-force buffered-distance flood oracle, the naive LCA oracle, and the outage-ledger oracle reused from `replay-simulator` _Requirements: 16.6_ _Design: §19.2_
+  - [x] 9.2 [qa-eval-engineer] Write `tests/tools/strategies.py`: `radial_grids`, `hazard_polygons`, `adversarial_routes`, `clearance_mutations`, `flood_event_streams` (including two events sharing one `sim_time`), `apply_interleavings`, `job_lists`, `report_streams`, `job_completed_streams` _Requirements: 16.6_ _Design: §19.2_
+  - [x] 9.3 [qa-eval-engineer] Write `tests/tools/fakes.py`: `InMemoryTable` with `put_if_not_exists`, `update_if` and all-or-nothing `transact_write`, `FakeRouter`, `FakeWorkflow`, `CapturingLogger`, `ListEventPublisher` _Requirements: 15.2, 17.1_ _Design: §15.1_
+  - [x] 9.4 [qa-eval-engineer] Write `test_pure_modules_import_no_boto3` and `test_logic_never_reads_backend_setting` as AST scans _Requirements: 14.4, 17.2_ _Design: §2.4, §15.5_
 
 ---
 
 ## Wave 2 — Pure logic per tool
 
-- [ ] 10. [geo-data-engineer] Write `record_outage/logic.py`: `derive_outage_key`, `build_draft`, `emergency_advice` from configuration, the attach-and-escalate rules with the sticky emergency flag and `symptom_most_severe` _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.7, 4.10, 4.11, 4.12, 4.13_ _Design: §5.1, §8.9_
+- [x] 10. [geo-data-engineer] Write `record_outage/logic.py`: `derive_outage_key`, `build_draft`, `emergency_advice` from configuration, the attach-and-escalate rules with the sticky emergency flag and `symptom_most_severe` _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.7, 4.10, 4.11, 4.12, 4.13_ _Design: §5.1, §8.9_
 
-- [ ] 11. [qa-eval-engineer] Write property test for Property 7 (at most one open Outage per Outage_Key; report counts equal distinct report ids) _Requirements: 4.1, 4.2, 4.3, 4.11_ _Design: §18 P7_
+- [x] 11. [qa-eval-engineer] Write property test for Property 7 (at most one open Outage per Outage_Key; report counts equal distinct report ids) _Requirements: 4.1, 4.2, 4.3, 4.11_ _Design: §18 P7_
 
-- [ ] 12. [qa-eval-engineer] Write property test for Property 31 `[SAFETY]` (emergency flag and advice, and sticky escalation on attach) _Requirements: 4.4, 4.5, 4.13_ _Design: §18 P31_
+- [x] 12. [qa-eval-engineer] Write property test for Property 31 `[SAFETY]` (emergency flag and advice, and sticky escalation on attach) _Requirements: 4.4, 4.5, 4.13_ _Design: §18 P31_
 
-- [ ] 13. [geo-data-engineer] Write `trace_upstream_device/logic.py`: `lowest_common` by common path prefix, per-substation grouping, `customers_downstream_reporting_pct`, unlocated-outage handling, order-invariant output _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.8_ _Design: §5.2, §8.7_
+- [x] 13. [geo-data-engineer] Write `trace_upstream_device/logic.py`: `lowest_common` by common path prefix, per-substation grouping, `customers_downstream_reporting_pct`, unlocated-outage handling, order-invariant output _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.8_ _Design: §5.2, §8.7_
 
-- [ ] 14. [qa-eval-engineer] Write property test for Property 4 (the returned device is the lowest common ancestor-or-self) _Requirements: 5.1, 5.2, 5.3_ _Design: §18 P4_
+- [x] 14. [qa-eval-engineer] Write property test for Property 4 (the returned device is the lowest common ancestor-or-self) _Requirements: 5.1, 5.2, 5.3_ _Design: §18 P4_
 
-- [ ] 15. [qa-eval-engineer] Write property test for Property 24 (trace is invariant to order and duplicates and splits cleanly across substations) _Requirements: 5.4, 5.6, 5.8_ _Design: §18 P24_
+- [x] 15. [qa-eval-engineer] Write property test for Property 24 (trace is invariant to order and duplicates and splits cleanly across substations) _Requirements: 5.4, 5.6, 5.8_ _Design: §18 P24_
 
-- [ ] 16. [geo-data-engineer] Write `check_flood_geofence/logic.py`: `check_target` for all five `target_kind`s including `route`, the device footprint covering downstream devices and their DT service areas, `clearance_for` binding to the route hash or device id with a Wall_Clock expiry _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_ _Design: §5.3, §8.6_
+- [x] 16. [geo-data-engineer] Write `check_flood_geofence/logic.py`: `check_target` for all five `target_kind`s including `route`, the device footprint covering downstream devices and their DT service areas, `clearance_for` binding to the route hash or device id with a Wall_Clock expiry _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_ _Design: §5.3, §8.6_
 
-- [ ] 17. [qa-eval-engineer] Write property test for Property 13 `[SAFETY]` (the flood check equals the independent buffered oracle, boundary included) _Requirements: 6.1, 6.2, 6.5_ _Design: §18 P13_
+- [x] 17. [qa-eval-engineer] Write property test for Property 13 `[SAFETY]` (the flood check equals the independent buffered oracle, boundary included) _Requirements: 6.1, 6.2, 6.5_ _Design: §18 P13_
 
-- [ ] 18. [geo-data-engineer] Write `plan_crew_route/logic.py`: `avoidance_areas` with union, exterior rings only and outward simplification; `accept_route` re-testing the returned line; the destination check _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_ _Design: §5.4, §8.10_
+- [x] 18. [geo-data-engineer] Write `plan_crew_route/logic.py`: `avoidance_areas` with union, exterior rings only and outward simplification; `accept_route` re-testing the returned line; the destination check _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_ _Design: §5.4, §8.10_
 
-- [ ] 19. [qa-eval-engineer] Write property test for Property 29 (the ring handed to the router always contains the buffered hazard) _Requirements: 7.1, 7.2_ _Design: §18 P29_
+- [x] 19. [qa-eval-engineer] Write property test for Property 29 (the ring handed to the router always contains the buffered hazard) _Requirements: 7.1, 7.2_ _Design: §18 P29_
 
-- [ ] 20. [geo-data-engineer] Write `rank_restoration_jobs/logic.py`: `assign_tier` from the Grid with the deciding rule, the exact-`Fraction` sort key, the three-way partition, and the stale-data blocking rule _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.10_ _Design: §5.5, §8.8_
+- [x] 20. [geo-data-engineer] Write `rank_restoration_jobs/logic.py`: `assign_tier` from the Grid with the deciding rule, the exact-`Fraction` sort key, the three-way partition, and the stale-data blocking rule _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.10_ _Design: §5.5, §8.8_
 
-- [ ] 21. [qa-eval-engineer] Write property test for Property 3 (a critical job never ranks below cheaper ordinary work) _Requirements: 8.1, 8.2, 8.3_ _Design: §18 P3_
+- [x] 21. [qa-eval-engineer] Write property test for Property 3 (a critical job never ranks below cheaper ordinary work) _Requirements: 8.1, 8.2, 8.3_ _Design: §18 P3_
 
-- [ ] 22. [qa-eval-engineer] Write property test for Property 10 (make-safe work always precedes everything else) _Requirements: 8.1, 8.2_ _Design: §18 P10_
+- [x] 22. [qa-eval-engineer] Write property test for Property 10 (make-safe work always precedes everything else) _Requirements: 8.1, 8.2_ _Design: §18 P10_
 
-- [ ] 23. [qa-eval-engineer] Write property test for Property 11 (the output is a partition and blocked jobs never appear in `dispatchable`) _Requirements: 8.4, 8.5, 8.6, 8.7_ _Design: §18 P11_
+- [x] 23. [qa-eval-engineer] Write property test for Property 11 (the output is a partition and blocked jobs never appear in `dispatchable`) _Requirements: 8.4, 8.5, 8.6, 8.7_ _Design: §18 P11_
 
-- [ ] 24. [qa-eval-engineer] Write property test for Property 12 (the ranking is a total order and permutation-invariant) _Requirements: 8.1, 8.6_ _Design: §18 P12_
+- [x] 24. [qa-eval-engineer] Write property test for Property 12 (the ranking is a total order and permutation-invariant) _Requirements: 8.1, 8.6_ _Design: §18 P12_
 
-- [ ] 25. [geo-data-engineer] Write `dispatch_crew/logic.py`: `validate_dispatch` with the clearance checks, the route re-test against the current flood set, the two-person rule and the skill check, returning a typed decision _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.7_ _Design: §5.6_
+- [x] 25. [geo-data-engineer] Write `dispatch_crew/logic.py`: `validate_dispatch` with the clearance checks, the route re-test against the current flood set, the two-person rule and the skill check, returning a typed decision _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.7_ _Design: §5.6_
 
-- [ ] 25.1 [geo-data-engineer] Write `approval_handler/logic.py` (`authorise` on the approver-group claim, and `decide` returning a typed decision from the work order, the re-check outcome and the principal) and `work_order_expirer/logic.py` (the terminal-state and release decisions), both as pure functions over typed inputs with no adapter calls _Requirements: 11.3, 11.4, 11.6, 11.7, 11.9, 9.10_ _Design: §4.1, §5.9, §5.11_
+- [x] 25.1 [geo-data-engineer] Write `approval_handler/logic.py` (`authorise` on the approver-group claim, and `decide` returning a typed decision from the work order, the re-check outcome and the principal) and `work_order_expirer/logic.py` (the terminal-state and release decisions), both as pure functions over typed inputs with no adapter calls _Requirements: 11.3, 11.4, 11.6, 11.7, 11.9, 9.10_ _Design: §4.1, §5.9, §5.11_
 
-- [ ] 26. [geo-data-engineer] Write `propose_switching/logic.py`: `validate_switching` with the energise footprint over devices and service areas, the clearance requirement scoped to `energise`, and the `de_energise` path that no flood rule can refuse _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8_ _Design: §5.7, §8.6_
+- [x] 26. [geo-data-engineer] Write `propose_switching/logic.py`: `validate_switching` with the energise footprint over devices and service areas, the clearance requirement scoped to `energise`, and the `de_energise` path that no flood rule can refuse _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8_ _Design: §5.7, §8.6_
 
-- [ ] 31. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools` and `uv run mypy gateway/tools` over every `logic.py` and `_shared` module, and confirm the wave-2 property tests pass at 200 examples _Requirements: 15.1, 15.2_ _Design: §19.1_
+- [x] 31. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools` and `uv run mypy gateway/tools` over every `logic.py` and `_shared` module, and confirm the wave-2 property tests pass at 200 examples _Requirements: 15.1, 15.2_ _Design: §19.1_
 
 ---
 
 ## Wave 3 — Ports and adapters
 
-- [ ] 32. [geo-data-engineer] Write `_shared/ports.py`: every Protocol from §4.2, including the snapshot contract on `FloodStore`, `close_outage`, `open_outages_under`, `release_crew_lock` and `mark_clearance_used` _Requirements: 3.6, 3.11, 9.10, 18.3_ _Design: §4.2_
+- [x] 32. [geo-data-engineer] Write `_shared/ports.py`: every Protocol from §4.2, including the snapshot contract on `FloodStore`, `close_outage`, `open_outages_under`, `release_crew_lock` and `mark_clearance_used` _Requirements: 3.6, 3.11, 9.10, 18.3_ _Design: §4.2_
 
-- [ ] 33. [geo-data-engineer] Local adapters _Requirements: 17.1, 17.2, 17.3, 17.4_ _Design: §15.1, §15.2, §15.3, §8.12_
-  - [ ] 33.1 [geo-data-engineer] Write `_shared/adapters/local.py` store side: the in-memory and file-backed stores with conditional writes and all-or-nothing transactions, atomic file replacement, and the §15.2 layout _Requirements: 17.1, 17.2_ _Design: §15.1, §15.2_
-  - [ ] 33.2 [geo-data-engineer] Write the local `RouteProvider` with all three modes: `straight`, `graph` removing road edges that intersect buffered hazards, and `adversarial` returning unsafe lines _Requirements: 17.3_ _Design: §8.12_
-  - [ ] 33.3 [geo-data-engineer] Write `InProcessWorkOrder`, `LocalTokenVault` and `ListEventPublisher` with schema validation, plus `tick()` driving the expirer logic _Requirements: 17.4_ _Design: §15.3_
+- [x] 33. [geo-data-engineer] Local adapters _Requirements: 17.1, 17.2, 17.3, 17.4_ _Design: §15.1, §15.2, §15.3, §8.12_
+  - [x] 33.1 [geo-data-engineer] Write `_shared/adapters/local.py` store side: the in-memory and file-backed stores with conditional writes and all-or-nothing transactions, atomic file replacement, and the §15.2 layout _Requirements: 17.1, 17.2_ _Design: §15.1, §15.2_
+  - [x] 33.2 [geo-data-engineer] Write the local `RouteProvider` with all three modes: `straight`, `graph` removing road edges that intersect buffered hazards, and `adversarial` returning unsafe lines _Requirements: 17.3_ _Design: §8.12_
+  - [x] 33.3 [geo-data-engineer] Write `InProcessWorkOrder`, `LocalTokenVault` and `ListEventPublisher` with schema validation, plus `tick()` driving the expirer logic _Requirements: 17.4_ _Design: §15.3_
 
-- [ ] 34. [geo-data-engineer] AWS adapters _Requirements: 1.10, 3.2, 3.6, 3.11, 3.12, 7.1, 7.6, 7.7, 11.1, 13.2, 13.3, 18.3_ _Design: §7.3, §7.4, §8.11, §11.4_
-  - [ ] 34.1 [geo-data-engineer] Write the DynamoDB adapter: the §7.2 item shapes, the §7.3 access patterns, the §7.4 conditional writes and transactions, and the large-geometry S3 fallback _Requirements: 3.6, 4.1, 4.11, 9.2, 9.6, 18.3_ _Design: §7.2, §7.3, §7.4_
-  - [ ] 34.2 [geo-data-engineer] Write `classify()` for `TransactionCanceledException`: read `CancellationReasons` positionally, treat the literal `"None"` as no error, and map each item role to no-op, re-apply, attach, replay, veto, conflict or raise _Requirements: 3.2, 3.12, 4.2, 4.11, 9.2, 9.6, 18.7_ _Design: §7.4.8_
-  - [ ] 34.3 [geo-data-engineer] Write `get_flood_set` snapshot reads: head, polygons, head again, the `changed_in_version` check, bounded retries then `UPSTREAM_ERROR`, and cache population only from a verified snapshot _Requirements: 3.11, 6.7_ _Design: §7.4.7, §8.5_
-  - [ ] 34.4 [geo-data-engineer] Write the Amazon Location adapter: `CalculateRoutes` with `Avoid.Areas`, `LegGeometryFormat: Simple`, leg concatenation, and the 400/429/500 error mapping _Requirements: 7.1, 7.6, 7.7, 1.10_ _Design: §5.4, §8.11_
-  - [ ] 34.5 [geo-data-engineer] Write the Step Functions and EventBridge adapters: `StartExecution`, `SendTaskSuccess`/`SendTaskFailure`, and `PutEvents` with per-entry failure inspection and pre-publish schema validation _Requirements: 11.1, 13.2, 13.3_ _Design: §5.9, §11.5_
-  - [ ] 34.6 [geo-data-engineer] Write the bounded retry wrapper: 3 attempts, full-jitter backoff, retryable codes only, never on a condition failure _Requirements: 1.10_ _Design: §11.4_
+- [x] 34. [geo-data-engineer] AWS adapters _Requirements: 1.10, 3.2, 3.6, 3.11, 3.12, 7.1, 7.6, 7.7, 11.1, 13.2, 13.3, 18.3_ _Design: §7.3, §7.4, §8.11, §11.4_
+  - [x] 34.1 [geo-data-engineer] Write the DynamoDB adapter: the §7.2 item shapes, the §7.3 access patterns, the §7.4 conditional writes and transactions, and the large-geometry S3 fallback _Requirements: 3.6, 4.1, 4.11, 9.2, 9.6, 18.3_ _Design: §7.2, §7.3, §7.4_
+  - [x] 34.2 [geo-data-engineer] Write `classify()` for `TransactionCanceledException`: read `CancellationReasons` positionally, treat the literal `"None"` as no error, and map each item role to no-op, re-apply, attach, replay, veto, conflict or raise _Requirements: 3.2, 3.12, 4.2, 4.11, 9.2, 9.6, 18.7_ _Design: §7.4.8_
+  - [x] 34.3 [geo-data-engineer] Write `get_flood_set` snapshot reads: head, polygons, head again, the `changed_in_version` check, bounded retries then `UPSTREAM_ERROR`, and cache population only from a verified snapshot _Requirements: 3.11, 6.7_ _Design: §7.4.7, §8.5_
+  - [x] 34.4 [geo-data-engineer] Write the Amazon Location adapter: `CalculateRoutes` with `Avoid.Areas`, `LegGeometryFormat: Simple`, leg concatenation, and the 400/429/500 error mapping _Requirements: 7.1, 7.6, 7.7, 1.10_ _Design: §5.4, §8.11_
+  - [x] 34.5 [geo-data-engineer] Write the Step Functions and EventBridge adapters: `StartExecution`, `SendTaskSuccess`/`SendTaskFailure`, and `PutEvents` with per-entry failure inspection and pre-publish schema validation _Requirements: 11.1, 13.2, 13.3_ _Design: §5.9, §11.5_
+  - [x] 34.6 [geo-data-engineer] Write the bounded retry wrapper: 3 attempts, full-jitter backoff, retryable codes only, never on a condition failure _Requirements: 1.10_ _Design: §11.4_
 
-- [ ] 35. [qa-eval-engineer] Adapter and port tests _Requirements: 1.10, 3.2, 3.6, 3.11, 3.12, 4.2, 4.11, 7.1, 7.7, 9.2, 9.6, 17.2, 18.7_ _Design: §7.4.7, §7.4.8, §15.5_
-  - [ ] 35.1 [qa-eval-engineer] Write the port contract suite, parameterised over the in-memory and moto-backed store adapters _Requirements: 17.2_ _Design: §15.5_
-  - [ ] 35.2 [qa-eval-engineer] Write `tools/test_transaction_mapping.py`: one test per `classify()` branch — sequence-guard no-op, head-version re-apply, outage-key attach, report replay, clearance veto, crew-lock conflict, already-closed, a non-`ConditionalCheckFailed` code, an unknown role, and all-`"None"` reasons _Requirements: 3.2, 3.12, 4.2, 4.11, 9.2, 9.6, 18.7_ _Design: §7.4.8_
-  - [ ] 35.3 [qa-eval-engineer] Write the Location adapter request-shape and error-mapping tests with botocore `Stubber` _Requirements: 7.1, 7.7, 1.10_ _Design: §5.4_
-  - [ ] 35.4 [qa-eval-engineer] Write `test_consistent_read_used_for_flood_set`, `test_torn_snapshot_retries_then_upstream_error` and `test_only_verified_snapshot_is_cached` _Requirements: 3.6, 3.11_ _Design: §7.4.7_
-  - [ ] 35.5 [qa-eval-engineer] Write `test_bounded_retries_and_error_mapping` _Requirements: 1.10_ _Design: §11.4_
+- [x] 35. [qa-eval-engineer] Adapter and port tests _Requirements: 1.10, 3.2, 3.6, 3.11, 3.12, 4.2, 4.11, 7.1, 7.7, 9.2, 9.6, 17.2, 18.7_ _Design: §7.4.7, §7.4.8, §15.5_
+  - [x] 35.1 [qa-eval-engineer] Write the port contract suite, parameterised over the in-memory and moto-backed store adapters _Requirements: 17.2_ _Design: §15.5_
+  - [x] 35.2 [qa-eval-engineer] Write `tools/test_transaction_mapping.py`: one test per `classify()` branch — sequence-guard no-op, head-version re-apply, outage-key attach, report replay, clearance veto, crew-lock conflict, already-closed, a non-`ConditionalCheckFailed` code, an unknown role, and all-`"None"` reasons _Requirements: 3.2, 3.12, 4.2, 4.11, 9.2, 9.6, 18.7_ _Design: §7.4.8_
+  - [x] 35.3 [qa-eval-engineer] Write the Location adapter request-shape and error-mapping tests with botocore `Stubber` _Requirements: 7.1, 7.7, 1.10_ _Design: §5.4_
+  - [x] 35.4 [qa-eval-engineer] Write `test_consistent_read_used_for_flood_set`, `test_torn_snapshot_retries_then_upstream_error` and `test_only_verified_snapshot_is_cached` _Requirements: 3.6, 3.11_ _Design: §7.4.7_
+  - [x] 35.5 [qa-eval-engineer] Write `test_bounded_retries_and_error_mapping` _Requirements: 1.10_ _Design: §11.4_
 
-- [ ] 36. [qa-eval-engineer] Write property test for Property 32 `[SAFETY]` (flood reads are snapshot-consistent or they fail) _Requirements: 3.11, 6.7_ _Design: §18 P32_
+- [x] 36. [qa-eval-engineer] Write property test for Property 32 `[SAFETY]` (flood reads are snapshot-consistent or they fail) _Requirements: 3.11, 6.7_ _Design: §18 P32_
 
-- [ ] 37. [qa-eval-engineer] Write property test for Property 16 `[SAFETY]` (an unreadable flood store never reports "clear") _Requirements: 6.7, 1.10_ _Design: §18 P16_
+- [x] 37. [qa-eval-engineer] Write property test for Property 16 `[SAFETY]` (an unreadable flood store never reports "clear") _Requirements: 6.7, 1.10_ _Design: §18 P16_
 
-- [ ] 38. [qa-eval-engineer] Write property test for Property 27 (the store adapters behave identically in `local` and `aws`) _Requirements: 17.1, 17.2, 17.5_ _Design: §18 P27, §15.5_
+- [x] 38. [qa-eval-engineer] Write property test for Property 27 (the store adapters behave identically in `local` and `aws`) _Requirements: 17.1, 17.2, 17.5_ _Design: §18 P27, §15.5_
 
-- [ ] 39. [qa-eval-engineer] Write the local-router tests: `test_graph_mode_removes_flooded_edges`, `test_adversarial_mode_returns_unsafe_lines`, `test_local_router_output_is_retested`, `test_local_mode_opens_no_socket` _Requirements: 17.1, 17.3_ _Design: §8.12_
+- [x] 39. [qa-eval-engineer] Write the local-router tests: `test_graph_mode_removes_flooded_edges`, `test_adversarial_mode_returns_unsafe_lines`, `test_local_router_output_is_retested`, `test_local_mode_opens_no_socket` _Requirements: 17.1, 17.3_ _Design: §8.12_
 
-- [ ] 40. [qa-eval-engineer] Write the local work-order tests: `test_fake_work_order_single_decision_human_only` and `test_tick_runs_the_expirer_logic` _Requirements: 17.4_ _Design: §15.3_
+- [x] 40. [qa-eval-engineer] Write the local work-order tests: `test_fake_work_order_single_decision_human_only` and `test_tick_runs_the_expirer_logic` _Requirements: 17.4_ _Design: §15.3_
 
 ---
 

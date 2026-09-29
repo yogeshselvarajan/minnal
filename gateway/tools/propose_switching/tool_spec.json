@@ -1,0 +1,64 @@
+[
+  {
+    "name": "propose_switching",
+    "description": "Propose a switching action on a grid device and start the human approval workflow: energise to restore supply, or de_energise to take equipment out of service. Energising requires a safety clearance from check_flood_geofence with purpose switching, and the tool independently re-tests every device downstream and the service areas its transformers supply; if any of them is in an active flood hazard the proposal is vetoed and no work order is created. De-energising is always permitted, needs neither a clearance nor a flood check, and is never blocked by a flood rule: when the area is flooded the proposal is marked as a preventive safety measure so public messages can say so. Nothing is switched by this call. Do NOT use it to send commands to field equipment or SCADA, and do NOT use energise to work around a flood veto.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "incident_id",
+        "idempotency_key",
+        "device_id",
+        "action",
+        "reason"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident this call belongs to. Format inc_ followed by a 26-character ULID."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional. corr_ followed by a 26-character ULID. Reuse one id across a whole operational step."
+        },
+        "idempotency_key": {
+          "type": "string",
+          "description": "Idempotency key. A 26-character ULID. Repeating it returns the first result instead of writing again."
+        },
+        "device_id": {
+          "type": "string",
+          "description": "The device to switch. One of sub_, fdr_, lat_ or dt_ followed by digits."
+        },
+        "action": {
+          "type": "string",
+          "description": "What to do. One of energise or de_energise."
+        },
+        "reason": {
+          "type": "string",
+          "description": "Plain-language justification shown to the human approver, 1 to 280 characters."
+        },
+        "safety_clearance_id": {
+          "type": "string",
+          "description": "Required for energise, omit for de_energise. From check_flood_geofence with purpose switching, bound to this device. Format sfc_ followed by a 26-character ULID."
+        },
+        "flood_check": {
+          "type": "object",
+          "description": "The flood verdict you received from check_flood_geofence.",
+          "required": [
+            "flood_check_id",
+            "intersects"
+          ],
+          "properties": {
+            "flood_check_id": {
+              "type": "string",
+              "description": "The fck_ id that check_flood_geofence returned."
+            },
+            "intersects": {
+              "type": "boolean",
+              "description": "The verdict you received. The gateway refuses the call when this is true, and the tool recomputes it anyway."
+            }
+          }
+        }
+      }
+    }
+  }
+]

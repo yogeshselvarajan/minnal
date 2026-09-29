@@ -1,0 +1,66 @@
+[
+  {
+    "name": "dispatch_crew",
+    "description": "Propose sending a crew to a job along a route that plan_crew_route already produced, and start the human approval workflow. Nobody is dispatched by this call: it creates a proposal and returns a task token reference that a human in the war room must approve. Pass the safety_clearance_id that check_flood_geofence issued for that same route_id, and the flood_check it returned. The tool re-reads the flood picture and re-tests the stored route, so a clearance for a different route, an expired or already-used clearance, a crew of fewer than two people, or a route that now touches water is refused. Do NOT use this tool to approve anything, do NOT dispatch without a route id, and do NOT retry with the same clearance after a refusal: obtain a fresh one.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "incident_id",
+        "idempotency_key",
+        "crew_id",
+        "job_id",
+        "route_id",
+        "safety_clearance_id",
+        "flood_check"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident this call belongs to. Format inc_ followed by a 26-character ULID."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional. corr_ followed by a 26-character ULID. Reuse one id across a whole operational step."
+        },
+        "idempotency_key": {
+          "type": "string",
+          "description": "Idempotency key. A 26-character ULID. Repeating it returns the first result instead of writing again."
+        },
+        "crew_id": {
+          "type": "string",
+          "description": "The crew to send. crew_ followed by digits."
+        },
+        "job_id": {
+          "type": "string",
+          "description": "The job to work, 1 to 64 characters."
+        },
+        "route_id": {
+          "type": "string",
+          "description": "The rte_ id that plan_crew_route returned and that the clearance is bound to."
+        },
+        "safety_clearance_id": {
+          "type": "string",
+          "description": "From check_flood_geofence with purpose route and target_kind route, for this exact route_id. Format sfc_ followed by a 26-character ULID."
+        },
+        "flood_check": {
+          "type": "object",
+          "description": "The flood verdict you received from check_flood_geofence.",
+          "required": [
+            "flood_check_id",
+            "intersects"
+          ],
+          "properties": {
+            "flood_check_id": {
+              "type": "string",
+              "description": "The fck_ id that check_flood_geofence returned."
+            },
+            "intersects": {
+              "type": "boolean",
+              "description": "The verdict you received. The gateway refuses the call when this is true, and the tool recomputes it anyway."
+            }
+          }
+        }
+      }
+    }
+  }
+]

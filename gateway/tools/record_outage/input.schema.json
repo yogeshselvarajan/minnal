@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/tools/record_outage.input.json",
+  "title": "RecordOutageInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id",
+    "report_id",
+    "source",
+    "symptom",
+    "location",
+    "reported_at"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "report_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "source": {
+      "type": "string",
+      "enum": ["citizen", "meter", "ui"]
+    },
+    "symptom": {
+      "type": "string",
+      "enum": [
+        "no_power",
+        "partial_power",
+        "downed_wire",
+        "sparking",
+        "submerged_equipment"
+      ]
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "coordinates"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Point"
+        },
+        "coordinates": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            { "type": "number", "minimum": -180, "maximum": 180 },
+            { "type": "number", "minimum": -90, "maximum": 90 }
+          ],
+          "items": false
+        }
+      }
+    },
+    "reported_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "meter_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "dt_id": {
+      "type": "string",
+      "pattern": "^dt_\\d+$"
+    },
+    "callback_ref": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "is_emergency": {
+      "type": "boolean"
+    }
+  }
+}

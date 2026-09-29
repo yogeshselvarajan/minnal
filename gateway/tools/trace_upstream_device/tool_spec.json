@@ -1,0 +1,31 @@
+[
+  {
+    "name": "trace_upstream_device",
+    "description": "Find the most-downstream grid device that lies upstream of every outage in a cluster: the likely failed equipment. Use it after clustering outage reports, to turn many customer complaints into one place to send a crew. The result gives the device type, customers downstream, the supply path from its substation, and the share of downstream transformers reporting. If the outages span more than one substation the tool splits them into per-substation groups instead of guessing one cause. Do NOT use it to record a suspicion, to dispatch a crew, or to judge safety: it is read-only and knows nothing about floods.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "incident_id",
+        "outage_ids"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident this call belongs to. Format inc_ followed by a 26-character ULID."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional. corr_ followed by a 26-character ULID. Reuse one id across a whole operational step."
+        },
+        "outage_ids": {
+          "type": "array",
+          "description": "Between 1 and 1000 distinct outage ids from record_outage, each out_ followed by a 26-character ULID.",
+          "items": {
+            "type": "string",
+            "description": "An outage id, out_ followed by a 26-character ULID."
+          }
+        }
+      }
+    }
+  }
+]

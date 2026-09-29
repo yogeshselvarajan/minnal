@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/tools/dispatch_crew.input.json",
+  "title": "DispatchCrewInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id",
+    "idempotency_key",
+    "crew_id",
+    "job_id",
+    "route_id",
+    "safety_clearance_id",
+    "flood_check"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "crew_id": {
+      "type": "string",
+      "pattern": "^crew_\\d+$"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "route_id": {
+      "type": "string",
+      "pattern": "^rte_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "safety_clearance_id": {
+      "type": "string",
+      "pattern": "^sfc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "flood_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["flood_check_id", "intersects"],
+      "properties": {
+        "flood_check_id": {
+          "type": "string",
+          "pattern": "^fck_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "intersects": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

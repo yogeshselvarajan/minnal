@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/events/JobCompleted.v1.json",
+  "title": "JobCompleted",
+  "description": "Published when a work order's field work is reported finished (R12.8; emission deferred by 12.10, §11.5). grid-tools R18 consumes it to close Outages and release the crew lock keyed on proposal_id. completed_by is present from v1 so adding a war-room-ui, crew-app or SCADA producer later is additive and needs no .v2 (§16.5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "incident_id",
+    "correlation_id",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "JobCompleted"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "const": "minnal.grid-tools"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposal_id",
+        "device_id",
+        "crew_id",
+        "completed_by"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "device_id": {
+          "type": "string",
+          "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+        },
+        "crew_id": {
+          "type": "string",
+          "pattern": "^crew_\\d+$"
+        },
+        "job_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "completed_by": {
+          "type": "string",
+          "description": "Who reported completion. human_operator in the challenge tier; crew_app and scada are additive future producers.",
+          "enum": ["human_operator", "crew_app", "scada"]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": ["restored", "made_safe", "abandoned"]
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    }
+  }
+}

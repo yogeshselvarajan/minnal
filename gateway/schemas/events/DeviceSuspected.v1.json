@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.dev/schemas/events/DeviceSuspected.v1.json",
+  "title": "DeviceSuspected",
+  "description": "Emitted by the diagnostics node, one per suspected Device, when trace_upstream_device turns an outage cluster into a likely failed device (R12.7). Built entirely from the trace_upstream_device result (common_device_id, path, outage ids and customers_downstream_reporting_pct); carries no citizen data (§16.4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "source",
+    "incident_id",
+    "correlation_id",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "event_type": {
+      "type": "string",
+      "const": "DeviceSuspected"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "string",
+      "const": "minnal.diagnostics"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device_id",
+        "device_type",
+        "path_from_substation",
+        "outage_ids",
+        "customers_downstream_reporting_pct"
+      ],
+      "properties": {
+        "device_id": {
+          "type": "string",
+          "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+        },
+        "device_type": {
+          "type": "string",
+          "enum": ["substation", "feeder", "lateral", "dt"]
+        },
+        "path_from_substation": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(sub|fdr|lat|dt)_\\d+$"
+          },
+          "minItems": 1
+        },
+        "outage_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^out_[0-9A-HJKMNP-TV-Z]{26}$"
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "customers_downstream_reporting_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "is_multi_substation_group": {
+          "type": "boolean",
+          "default": false
+        },
+        "recommend_switching": {
+          "type": "string",
+          "enum": ["none", "energise", "de_energise"]
+        }
+      }
+    }
+  }
+}

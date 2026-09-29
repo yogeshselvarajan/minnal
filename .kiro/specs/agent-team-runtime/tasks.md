@@ -145,9 +145,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 20.1 Write `patterns/agui-minnal/domain/untrusted.py` (pure) with the open and close markers, `escape_delimiters` neutralising the delimiter substrings, `truncate_marked` with an explicit marker, and `wrap_untrusted` as the only way untrusted text enters a prompt
     - _Requirements: 17.1, 17.2, 17.3, 17.5_ §6.6 [agent-engineer]
 
-- [ ] 21. Verify untrusted containment
+- [x] 21. Verify untrusted containment
   - _Requirements: 17.1, 17.2, 17.3, 17.5_ §20, §6.6 [qa-eval-engineer]
-  - [ ] 21.1 Write property test for Property 48
+  - [x] 21.1 Write property test for Property 48
     - **Property 48: untrusted content is contained [SAFETY]**
     - **Validates: Requirements 17.1, 17.2, 17.3, 17.5**
     - `test_property_P48_untrusted_containment` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`

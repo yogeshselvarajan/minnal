@@ -89,9 +89,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 12.2 Write `patterns/agui-minnal/domain/jobs.py` (pure) with `assemble_jobs` taking `customers_restored`, `waiting_seconds`, `is_make_safe` and `required_skill` from tool data and `effort_crew_minutes` from the effort table with the fallback reported, `worst_symptom` ordered as `grid-tools` criterion 4.13, and `build_switching_items` skipping devices covered by an Open_Proposal
     - _Requirements: 8.11, 8.12, 8.13, 7.9, 8.8_ §6.2 [agent-engineer]
 
-- [ ] 13. Verify job assembly
+- [x] 13. Verify job assembly
   - _Requirements: 8.11, 8.12, 8.13, 8.3, 7.9_ §20, §6.2 [qa-eval-engineer]
-  - [ ] 13.1 Write property test for Property 55
+  - [x] 13.1 Write property test for Property 55
     - **Property 55: job numbers come only from tools and config**
     - **Validates: Requirements 8.11, 8.12, 8.13, 8.3, 7.9**
     - `test_property_P55_job_numbers_from_tools` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`

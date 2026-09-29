@@ -171,7 +171,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 28. [qa-eval-engineer] Write property test for Property 2 `[SAFETY]` (no energisation into water, including flooded customer areas) _Requirements: 10.2, 10.3, 11.4_ _Design: §18 P2_
 
-- [ ] 29. [qa-eval-engineer] Write property test for Property 17 `[SAFETY]` (only a matching, live, unused clearance is accepted; crew size vetoed) _Requirements: 9.2, 9.4, 10.4, 12.8_ _Design: §18 P17_
+- [x] 29. [qa-eval-engineer] Write property test for Property 17 `[SAFETY]` (only a matching, live, unused clearance is accepted; crew size vetoed) _Requirements: 9.2, 9.4, 10.4, 12.8_ _Design: §18 P17_
 
 - [ ] 30. [qa-eval-engineer] Write property test for Property 15 `[SAFETY]` (unknown or stale flood data fails closed in every tool, in both feed modes) _Requirements: 3.9, 3.10, 6.8, 7.10, 8.10, 9.9, 10.7, 11.9_ _Design: §18 P15_
 

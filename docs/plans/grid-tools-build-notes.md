@@ -282,3 +282,65 @@ Root cause: `LocalOutageStore.create_open` (and `DynamoOutageStore.create_open` 
 Note this passes P31 (task 12), which tests the pure `escalation_on_attach` function directly — the defect is only in the store/handler integration path, which is exactly what a handler test catches. Fix belongs to the **geo-data lane**: either `create_open` should not attach the report on an existing-key hit (return `created=False` and let the handler's `_attach` apply escalation), or `create_open` should compute and apply the escalation itself from the draft's symptom. One store-layer change; outside the qa-eval-engineer lane.
 
 Status: the named `test_severe_attach_escalates_and_is_sticky` assertion is held back in `tests/tools/test_record_outage.py` (replaced by a first-report emergency-flag test that passes) and this bug is flagged. The other 9 record_outage handler error-path tests pass. Task 56.1 committed without the escalation assertion; re-add it once the store fix lands.
+
+## Wave 4 product-bug fixes (geo-data lane) — resolving the three QA findings above
+
+The three QA-lane findings (P20 tombstone, P19 payload validation, escalation-on-attach)
+are fixed in product code. Each is a design-mandated correctness fix, not a weakening; the
+held-back honest tests can be re-enabled by the qa lane and will pass. Verified against the
+real `LocalFloodStore`/`LocalOutageStore` and the real `wrap` (aws mode, moto) with a
+throwaway local check (not committed) before committing.
+
+### BUG 1 — P20 flood tombstone (`_shared/flood.py`, tasks 43)
+
+`_rebuild_polygons` no longer drops a `cleared` polygon from the set: it keeps it as a
+**tombstone** `HazardPolygon(status="cleared", last_sequence=<winning seq>,
+changed_in_version=<version>)`. So the per-polygon sequence guard in `apply_flood_event`
+(`existing is not None and seq <= existing.last_sequence`) still finds the record and
+rejects a later, lower-sequence `active`/`receding` re-activation — the highest sequence
+wins (P20, R3.2/R3.12). The tombstone is excluded from hazard membership because
+`is_hazard("cleared")` is False, so `hazard_geometries` and `hazard_index` never surface a
+cleared polygon (R3.3), and routing/ranking are unaffected. Both backends agree (P27):
+- Local store: the cleared tombstone stays in `new.polygons`, so it is persisted via
+  `_polygon_item` and is no longer in the `removed` (deleted) set; the snapshot read reads
+  it back with `status=cleared`.
+- AWS store: `_polygon_update_action` already did a conditional SET (never a delete) with
+  `attribute_not_exists(last_sequence) OR last_sequence < :seq`, so the FLOOD# item already
+  persisted; the pure fold now surfaces it in `FloodSet.polygons`, so both the fold guard
+  and the item guard reject the stale re-activation consistently.
+- Counterexample confirmed: FP-1 cleared@seq2 then FP-1 active@seq1 → `applied=False`,
+  FP-1 absent from `hazard_geometries` (highest sequence wins).
+
+### BUG 2 — P19 idempotency payload validation (`_shared/idempotency.py`, task 50)
+
+`build_config` now sets `payload_validation_jmespath="@"` (the whole request body). Under
+one idempotency key, an identical payload still replays without re-executing, but a changed
+argument fails Powertools' payload validation and raises `IdempotencyValidationError`
+(R1.9). `wrap` catches that one exception and re-raises it as `ConflictError` (code
+`CONFLICT`, `retryable=False`), which `run_tool` maps to a CONFLICT envelope. The distinct
+`IdempotencyAlreadyInProgressError` (retryable CONFLICT) and the body's own `UpstreamError`
+subclasses still propagate unchanged, so P34 (retryable-never-cached, in-flight-conflict) is
+untouched. Verified against Powertools 3.35.0 + moto: `payload_validation_jmespath="@"`
+raises on a differing field and replays on an identical payload; and the full aws-mode moto
+P34 suite stays green within the suite time envelope (`@` adds no examples, only one hash of
+the already-serialised payload per call). API confirmed via the Powertools idempotency docs
+(payload_validation_jmespath validates that the selected fields have not changed across
+requests for one key; a change raises IdempotencyValidationError) —
+https://docs.aws.amazon.com/powertools/python/latest/utilities/idempotency/ (content
+rephrased for compliance).
+
+### BUG 3 — escalation-on-attach (`_shared/adapters/_local_stores.py`, `_aws_stores.py`, task 56)
+
+`create_open` no longer attaches the report on an existing-open-key hit. On that path (both
+the up-front `get_open_by_key` hit and the transaction-cancellation `AttachToExisting`/local
+`ConditionFailed` path) it returns `CreateOutageResult(outage=existing, created=False)`
+**without** recording the report. The caller's `_attach` (record_outage handler and the
+Event_Ingestor `_apply_report`, both already present and unchanged) then recomputes
+`escalation_on_attach` from the incoming symptom and calls `attach_report` once, applying the
+escalation. So a severe symptom (e.g. `downed_wire`) attaching to an existing Outage now sets
+`is_emergency` (sticky, R4.11/R4.13, P31). This matches the ports contract docstring ("False
+when an open Outage already owned the key — the handler then attaches"). Idempotent under
+report_id replay (P14): a replay is caught by `get_by_report_id` (`replayed=True`) before any
+attach, so it never double-counts or re-escalates. Both backends agree (P27). Verified: a
+`no_power` create then a `downed_wire` attach → `is_emergency=True`; replay of the same
+report_id → `report_count` unchanged, `is_emergency` stays True.

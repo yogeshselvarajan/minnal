@@ -258,10 +258,16 @@ def _rebuild_polygons(
     seq: int,
     new_version: int,
 ) -> tuple[HazardPolygon, ...]:
-    """Return the polygon tuple after applying ``ev`` (§5.8 step 4c, 4d)."""
+    """Return the polygon tuple after applying ``ev`` (§5.8 step 4c, 4d).
+
+    A ``cleared`` polygon is not dropped: it is kept as a **tombstone** carrying
+    the winning ``last_sequence`` and ``changed_in_version`` so the per-polygon
+    sequence guard (R3.2, R3.12) still rejects a later, lower-sequence
+    re-activation and the highest sequence always wins (P20). It is excluded from
+    hazard membership because ``is_hazard('cleared')`` is False, so
+    :func:`hazard_geometries` and :func:`hazard_index` never surface it (R3.3).
+    """
     others = tuple(p for p in polygons if p.flood_polygon_id != ev.flood_polygon_id)
-    if not is_hazard(ev.status):
-        return others  # cleared: remove from the set (R3.3)
     updated = HazardPolygon(
         flood_polygon_id=ev.flood_polygon_id,
         geometry=ev.geometry,

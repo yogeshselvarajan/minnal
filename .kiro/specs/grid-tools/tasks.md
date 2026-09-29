@@ -137,7 +137,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 39. [qa-eval-engineer] Write the local-router tests: `test_graph_mode_removes_flooded_edges`, `test_adversarial_mode_returns_unsafe_lines`, `test_local_router_output_is_retested`, `test_local_mode_opens_no_socket` _Requirements: 17.1, 17.3_ _Design: §8.12_
 
-- [ ] 40. [qa-eval-engineer] Write the local work-order tests: `test_fake_work_order_single_decision_human_only` and `test_tick_runs_the_expirer_logic` _Requirements: 17.4_ _Design: §15.3_
+- [x] 40. [qa-eval-engineer] Write the local work-order tests: `test_fake_work_order_single_decision_human_only` and `test_tick_runs_the_expirer_logic` _Requirements: 17.4_ _Design: §15.3_
 
 ---
 

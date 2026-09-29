@@ -290,7 +290,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - _Requirements: 13.7, 9.10, 13.10_ §8.1.3, §8.3, §21.5 [qa-eval-engineer]
   - [x] 38.4 Write `tests/agents/test_identity_fallback.py::test_collapsed_permit_keeps_forbids` asserting the collapsed permit still denies every case the `forbid` rules deny
     - _Requirements: 13.6_ §8.4, §21.5 [qa-eval-engineer]
-  - [ ] 38.5 Write property test for Property 45
+  - [x] 38.5 Write property test for Property 45
     - **Property 45: only allow-listed tools execute [SAFETY]**
     - **Validates: Requirements 13.2, 13.3, 13.4, 13.5, 9.9**
     - `test_property_P45_allow_list_enforced` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`

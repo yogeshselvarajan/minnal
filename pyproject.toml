@@ -69,6 +69,7 @@ mypy_path = ["patterns/agui-minnal", "gateway/tools"]
 files = [
     "patterns/agui-minnal/config/settings.py",
     "patterns/agui-minnal/domain",
+    "patterns/agui-minnal/memory/namespaces.py",
     "gateway/tools/_shared",
     "gateway/tools/*/logic.py",
 ]

@@ -490,7 +490,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 - [ ] 60. Memory
   - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7_ §13 [agent-engineer]
-  - [ ] 60.1 Write `patterns/agui-minnal/memory/namespaces.py` (pure) with `session_id` zero-padded to four digits so lexical order equals numeric order, `incident_namespace`, and the lessons namespace constants
+  - [x] 60.1 Write `patterns/agui-minnal/memory/namespaces.py` (pure) with `session_id` zero-padded to four digits so lexical order equals numeric order, `incident_namespace`, and the lessons namespace constants
     - _Requirements: 19.1, 19.4_ §13.1 [agent-engineer]
   - [ ] 60.2 Write `patterns/agui-minnal/memory/session.py` with the per-period session-manager provider returning `None` when no memory is configured, using the incident as `actor_id` and the period as `session_id`
     - _Requirements: 19.1, 19.4, 19.7_ §13.2 [agent-engineer]

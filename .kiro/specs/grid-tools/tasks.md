@@ -230,7 +230,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 67. [platform-engineer] Write `EventsConstruct`: the two EventBridge rules with the configured sources and `SqsParameters.MessageGroupId` from the incident id, and the scoped EventBridge role _Requirements: 18.8, 13.2_ _Design: §16.1_
 
-- [ ] 68. [platform-engineer] Write `GatewayToolsConstruct`: the seven tool functions on arm64 with local `uv` bundling, `_shared` copied in, and `data/grid`, `data/facilities` and `data/crews` copied into every tool asset so `_shared/grid.py` can load the Grid at cold start, the seven Gateway targets from the subset specs, per-function roles, reserved concurrency and the Gateway rate limits _Requirements: 14.1, 14.2, 1.1_ _Design: §3.2, §16.1, §16.2_
+- [x] 68. [platform-engineer] Write `GatewayToolsConstruct`: the seven tool functions on arm64 with local `uv` bundling, `_shared` copied in, and `data/grid`, `data/facilities` and `data/crews` copied into every tool asset so `_shared/grid.py` can load the Grid at cold start, the seven Gateway targets from the subset specs, per-function roles, reserved concurrency and the Gateway rate limits _Requirements: 14.1, 14.2, 1.1_ _Design: §3.2, §16.1, §16.2_
 
 - [ ] 69. [platform-engineer] Write `WorkflowConstruct`: the Standard state machine ending in `Succeed`/`Fail` with no `putEvents`, the rendered `TimeoutSeconds`, the token vault, the expirer, the Approval_Handler, and API Gateway with the Cognito authorizer _Requirements: 11.1, 11.2, 11.3, 13.5_ _Design: §6.6, §16.1_
 

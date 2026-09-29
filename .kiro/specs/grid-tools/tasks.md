@@ -237,7 +237,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 - [x] 70. [platform-engineer] Write `GeoConstruct` and `PolicyConstruct`: the route calculator, and the policy engine associated in `ENFORCE` with one `create_policy` call per Cedar statement _Requirements: 12.5, 7.1_ _Design: §16.1, §16.3_
   - [ ]* 70.1 [platform-engineer] Add the geofence collection and the mirroring path for crew-entry alerts _Requirements: 3.7_ _Design: §5.8_
 
-- [ ] 71. [platform-engineer] Write `ObservabilityConstruct`: log groups at 30-day retention, tracing on, and the six alarms of §16.4 including both queue-age alarms and the batch-failure signal _Requirements: 2.1, 2.2, 2.3_ _Design: §16.4_
+- [x] 71. [platform-engineer] Write `ObservabilityConstruct`: log groups at 30-day retention, tracing on, and the six alarms of §16.4 including both queue-age alarms and the batch-failure signal _Requirements: 2.1, 2.2, 2.3_ _Design: §16.4_
 
 - [ ] 72. [platform-engineer] Run `cdk synth` and `cdk-nag`, and write the two suppressions with their ADR references: the `geo-routes:CalculateRoutes` wildcard and, in the challenge tier, the absent customer managed key. Never run `cdk deploy` _Requirements: 14.1, 14.3_ _Design: §16.5, §20 ADR-6, ADR-10_
 

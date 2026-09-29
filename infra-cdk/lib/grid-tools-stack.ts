@@ -5,6 +5,7 @@ import * as ssm from "aws-cdk-lib/aws-ssm"
 import { EventsConstruct } from "./grid-tools/events-construct"
 import { GatewayToolsConstruct } from "./grid-tools/gateway-tools-construct"
 import { GeoConstruct } from "./grid-tools/geo-construct"
+import { ObservabilityConstruct } from "./grid-tools/observability-construct"
 import { PolicyConstruct } from "./grid-tools/policy-construct"
 import { GridToolsDataConstruct } from "./grid-tools/grid-tools-data-construct"
 import { IntakeConstruct } from "./grid-tools/intake-construct"
@@ -30,6 +31,7 @@ export class GridToolsStack extends cdk.Stack {
   public readonly workflow: WorkflowConstruct
   public readonly geo: GeoConstruct
   public readonly policy: PolicyConstruct
+  public readonly observability: ObservabilityConstruct
 
   constructor(scope: Construct, id: string, props: GridToolsStackProps) {
     super(scope, id, props)
@@ -78,6 +80,27 @@ export class GridToolsStack extends cdk.Stack {
     this.policy = new PolicyConstruct(this, "Policy", {
       config,
       gateway: this.gatewayTools.gateway,
+    })
+
+    // Every function that emits Errors/Invocations: the seven tools, the two ingestors and the
+    // three workflow functions, so the per-function error-rate alarm covers all of them (§16.4).
+    const toolFunctions = [
+      ...Object.values(this.gatewayTools.tools).map(t => t.fn),
+      this.intake.floodIngestor,
+      this.intake.eventIngestor,
+      this.workflow.tokenVaultFn,
+      this.workflow.workOrderExpirerFn,
+      this.workflow.approvalHandlerFn,
+    ]
+
+    this.observability = new ObservabilityConstruct(this, "Observability", {
+      config,
+      hazardQueue: this.intake.hazardQueue,
+      intakeQueue: this.intake.intakeQueue,
+      deadLetterQueue: this.data.deadLetterQueue,
+      floodIngestor: this.intake.floodIngestor,
+      toolFunctions,
+      stateMachine: this.workflow.stateMachine,
     })
 
     // Project-wide tags on every resource in the stack (steering `infra-cdk.md`).

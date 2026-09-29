@@ -101,17 +101,49 @@ def test_attach_to_open_outage(patched) -> None:  # type: ignore[no-untyped-def]
 
 
 def test_first_report_emergency_symptom_sets_flag(patched) -> None:  # type: ignore[no-untyped-def]
-    """A first report with a severe symptom opens an emergency Outage (R4.5).
-
-    NOTE: the sticky-escalation-on-attach path through the handler is a confirmed
-    geo-data bug (create_open attaches with escalate=None, so a severe symptom
-    attaching to an existing Outage never escalates it). That named assertion
-    (`test_severe_attach_escalates_and_is_sticky`, R4.13) is held back pending the
-    geo-data fix — see grid-tools-build-notes.md and the decisions log. The pure
-    escalation logic itself is correct and covered by P31 (task 12).
-    """
+    """A first report with a severe symptom opens an emergency Outage (R4.5)."""
     result = handler_mod.handler(_event(symptom="downed_wire"), _CTX)
     assert result["data"]["is_emergency"] is True
+
+
+def test_severe_attach_escalates_and_is_sticky(patched) -> None:  # type: ignore[no-untyped-def]
+    """A severe report attaching to an open Outage escalates it, stickily (R4.13, P31).
+
+    A non-severe first report opens a non-emergency Outage; a severe second report
+    at the same cell attaches (no new Outage) and sets the stored ``is_emergency``
+    true. A third, non-severe report attaches too, and the flag stays true — the
+    escalation is sticky. Re-delivering the severe report_id does not double-count
+    the reports or re-escalate anything (R4.11/R4.13, §5.1 step 7).
+    """
+    # First: a plain no-power report opens a non-emergency Outage.
+    first = handler_mod.handler(_event(report_id="rep_001", symptom="no_power"), _CTX)
+    assert first["data"]["created"] is True
+    assert first["data"]["is_emergency"] is False
+    outage_id = first["data"]["outage_id"]
+
+    # Second: a severe downed-wire report at the same cell attaches and escalates.
+    severe = handler_mod.handler(_event(report_id="rep_002", symptom="downed_wire"), _CTX)
+    assert severe["data"]["created"] is False
+    assert severe["data"]["outage_id"] == outage_id
+    assert severe["data"]["is_emergency"] is True
+    assert severe["data"]["report_count"] == 2  # noqa: PLR2004 - two distinct reports
+    # The severe response carries the configured advice verbatim (R4.5).
+    assert severe["data"]["emergency_advice"] is not None
+    assert "10 m" in severe["data"]["emergency_advice"]
+
+    # Third: a later non-severe report attaches; the flag stays true (sticky).
+    later = handler_mod.handler(_event(report_id="rep_003", symptom="no_power"), _CTX)
+    assert later["data"]["outage_id"] == outage_id
+    assert later["data"]["is_emergency"] is True
+    assert later["data"]["report_count"] == 3  # noqa: PLR2004 - three distinct reports
+
+    # Re-delivering the severe report_id is a no-op: no double-count, no re-escalate.
+    replay = handler_mod.handler(_event(report_id="rep_002", symptom="downed_wire"), _CTX)
+    assert replay["data"]["outage_id"] == outage_id
+    assert replay["data"]["is_emergency"] is True
+    assert replay["data"]["report_count"] == 3  # noqa: PLR2004 - unchanged after replay
+    items = patched.store.query(key(f"INC#{_INCIDENT}", "OUT#"))
+    assert len(items) == 1  # still exactly one Outage
 
 
 def test_emergency_symptom_carries_configured_advice(patched) -> None:  # type: ignore[no-untyped-def]

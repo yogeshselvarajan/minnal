@@ -97,9 +97,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - `test_property_P55_job_numbers_from_tools` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 8.11, 8.12, 8.13, 8.3, 7.9_ §20, §6.2 [qa-eval-engineer]
 
-- [ ] 14. Idempotency keys
+- [x] 14. Idempotency keys
   - _Requirements: 15.1, 15.2, 15.8_ §6.3 [agent-engineer]
-  - [ ] 14.1 Add `derive_idempotency_key` to `patterns/agui-minnal/domain/ids.py`: the `0x1F`-joined byte layout with the `minnal.idem.v1` tag, `node#iteration`, `item_id` and the optional clearance, BLAKE2b at 16 bytes, the top two bits cleared, encoded as 26 Crockford characters matching `^[0-7][0-9A-HJKMNP-TV-Z]{25}$`
+  - [x] 14.1 Add `derive_idempotency_key` to `patterns/agui-minnal/domain/ids.py`: the `0x1F`-joined byte layout with the `minnal.idem.v1` tag, `node#iteration`, `item_id` and the optional clearance, BLAKE2b at 16 bytes, the top two bits cleared, encoded as 26 Crockford characters matching `^[0-7][0-9A-HJKMNP-TV-Z]{25}$`
     - _Requirements: 15.1, 15.2, 15.8_ §6.3 [agent-engineer]
 
 - [ ] 15. Verify idempotency keys

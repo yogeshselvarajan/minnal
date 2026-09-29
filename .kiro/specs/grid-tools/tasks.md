@@ -242,10 +242,10 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 - [x] 72. [platform-engineer] Run `cdk synth` and `cdk-nag`, and write the two suppressions with their ADR references: the `geo-routes:CalculateRoutes` wildcard and, in the challenge tier, the absent customer managed key. Never run `cdk deploy` _Requirements: 14.1, 14.3_ _Design: §16.5, §20 ADR-6, ADR-10_
 
 - [ ] 73. [qa-eval-engineer] Infrastructure tests _Requirements: 11.2, 12.5, 13.5, 14.1, 14.2, 18.5, 18.8_ _Design: §12.1, §16_
-  - [ ] 73.1 [qa-eval-engineer] Write `infra/test_iam.py`: one role per function, scoped resources, no tool role holding `SendTask*`, only the Approval_Handler holding it, and only this spec's functions writing outage-key and crew-lock items _Requirements: 14.1, 11.2, 18.5_ _Design: §12.1_
-  - [ ] 73.2 [qa-eval-engineer] Write `infra/test_cdk_intake.py`: two separate queues, the batch sizes, `ReportBatchItemFailures`, the redrive policies and the message-group mapping _Requirements: 18.8_ _Design: §16.1_
-  - [ ] 73.3 [qa-eval-engineer] Write `infra/test_cdk_policy.py` and `infra/test_cdk_gateway.py`: `ENFORCE` in demo environments, the rate limits and reserved concurrency, and construct snapshots _Requirements: 12.5, 14.2_ _Design: §16.2, §16.3_
-  - [ ] 73.4 [qa-eval-engineer] Write `test_state_machine_emits_no_events` and `test_one_emitter_per_event_name` _Requirements: 13.5_ _Design: §6.6, §11.5_
+  - [x] 73.1 [qa-eval-engineer] Write `infra/test_iam.py`: one role per function, scoped resources, no tool role holding `SendTask*`, only the Approval_Handler holding it, and only this spec's functions writing outage-key and crew-lock items _Requirements: 14.1, 11.2, 18.5_ _Design: §12.1_
+  - [x] 73.2 [qa-eval-engineer] Write `infra/test_cdk_intake.py`: two separate queues, the batch sizes, `ReportBatchItemFailures`, the redrive policies and the message-group mapping _Requirements: 18.8_ _Design: §16.1_
+  - [x] 73.3 [qa-eval-engineer] Write `infra/test_cdk_policy.py` and `infra/test_cdk_gateway.py`: `ENFORCE` in demo environments, the rate limits and reserved concurrency, and construct snapshots _Requirements: 12.5, 14.2_ _Design: §16.2, §16.3_
+  - [x] 73.4 [qa-eval-engineer] Write `test_state_machine_emits_no_events` and `test_one_emitter_per_event_name` _Requirements: 13.5_ _Design: §6.6, §11.5_
   - [ ]* 73.5 [qa-eval-engineer] Write `infra/test_cdk_data.py::test_cmk_used_when_enabled` _Requirements: 14.3_ _Design: §16.1_
   - [ ] 73.6 [qa-eval-engineer] Write `test_assets_contain_grid_data`: every tool asset bundles `_shared` and the three `data/` collections, and `Grid` loads from the bundled copy with no repository-relative path _Requirements: 1.1_ _Design: §3.2, §22.3_
 

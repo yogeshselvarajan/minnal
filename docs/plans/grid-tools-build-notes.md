@@ -473,3 +473,94 @@ models this explicitly (`_schema_invalid`): a present-but-incomplete `flood_chec
 is never Allowed for any action, including `de_energise`. No policy or mirror
 change is needed; recorded here so a future reader does not mistake the
 `NoDecision` for a missing forbid.
+
+## Wave 6 QA (qa-eval-engineer) — infrastructure tests (task 73)
+
+Added `tests/infra/` (with `__init__.py` and `conftest.py`) asserting on the SYNTHESIZED
+grid-tools CloudFormation template. Offline and deterministic: the tests load the committed/
+present template JSON (`infra-cdk/cdk.out/FAST-stack-grid-tools.template.json`); the
+session-scoped `template` fixture runs the documented standalone synth once via subprocess only
+when the template is absent (the single allowed subprocess, no network), and skips cleanly if it
+cannot run. No test hits AWS; the root socket block stays in force. Assertions parse the template
+dict and check resources by `Type`/`Properties` (Template-style, in Python).
+
+**How the template was obtained:** the template JSON was already present on disk at
+`infra-cdk/cdk.out/FAST-stack-grid-tools.template.json` (produced by the platform lane's
+standalone synth; `cdk.out/` is gitignored, so the template is not committed — the tests read
+whatever is present and re-synth once only if it is missing). All infra assertions ran against
+that present template.
+
+- 73.1 `test_iam.py`: one dedicated role per grid-tools function (12 functions, 12 distinct
+  roles); only the Approval_Handler role holds `states:SendTask*` and it cannot also
+  `StartExecution` (the R11.2 IAM split); only this stack's own function roles hold write actions
+  on the `minnal-<env>-grid-tools` table (the sole-writer invariant for Outage/`OKEY#`/`CREW#`,
+  §12.5 threat 15); the two read-only tools hold no write action; and the only `*`-resource
+  actions are the two documented ones (`geo-routes:CalculateRoutes`, X-Ray). PASS.
+- 73.2 `test_cdk_intake.py`: two separate FIFO work queues + one shared DLQ; both content-based
+  dedup; batch sizes {1, 10}; only the batch-10 intake mapping carries
+  `FunctionResponseTypes: ["ReportBatchItemFailures"]`; both redrive to the SAME DLQ with
+  `maxReceiveCount: 3`; each mapping binds to the matching ingestor; the two EventBridge rules
+  route weather/flood → hazard and outage/meter/job → intake and set
+  `MessageGroupId = $.detail.incident_id`; visibility timeouts are [180, 360] (6× the 30 s/60 s
+  consumer timeouts). PASS.
+- 73.3 `test_cdk_policy.py` + `test_cdk_gateway.py`: the Gateway associates the policy engine in
+  `ENFORCE`; exactly one policy engine; six `CfnPolicy` resources each bound to the engine with a
+  Cedar definition; policy-construct shape snapshot (1 engine / 6 policies / 1 gateway /
+  7 targets). Seven Gateway targets named `<tool>-target`; every tool sets reserved concurrency =
+  `tool_reserved_concurrency` (20) — the enforced DoS ceiling; tools are Python 3.12/arm64;
+  Gateway-tools shape snapshot. **Rate-limit note:** the Gateway rate limit is applied out-of-band
+  via the AgentCore control API and is NOT a CloudFormation-native Gateway/target property, so it
+  does not appear in the synthesized template (the construct records it as a CDK tag on the
+  target, which CFN does not render for `AWS::BedrockAgentCore::GatewayTarget` — verified: no
+  occurrence in template or metadata). Per design §16.1/§12.5/A7 the enforced ceiling is the
+  reserved concurrency (asserted in the template); the rate limit's single source of truth is the
+  config value, asserted to be a positive integer in `infra-cdk/config.yaml`. PASS.
+- 73.4 `test_cdk_events.py`: `test_state_machine_emits_no_events` (the one Standard state machine
+  definition contains no `PutEvents`, and its execution role holds no `events:PutEvents`) and
+  `test_one_emitter_per_event_name` (each of the six emitted event names is published only from
+  its R13.5-sanctioned module — `*Proposed`/`*Approved` from exactly one, `*Vetoed` from the
+  proposal tool, Approval_Handler and Work_Order_Expirer; the ingestors and read-only tools emit
+  none). PASS.
+- 73.5 CMK test: OPTIONAL/deferred, skipped as instructed (non-gating).
+
+### 73.6 — honest infra test exposes a GENUINE geo-data defect (FLAGGED, NOT weakened)
+
+`test_assets.py::test_every_tool_asset_bundles_shared_and_grid_data` PASSES: every grid-tools
+Lambda asset (read from each function's `Metadata["aws:asset:path"]`) bundles `_shared/grid.py`
+and `data/{grid,facilities,crews}/<name>.geojson`.
+
+The companion cold-start test **`test_assets_grid_loading.py::
+test_grid_loads_from_the_bundled_copy_with_no_repository_relative_path`** FAILS against the
+current product code — and it is correct to fail. Root cause (geo-data lane):
+
+- `gateway/tools/_shared/grid.py` sets `_DEFAULT_DATA_DIR =
+  Path(__file__).resolve().parents[3] / "data"` (and `reference.py` does the same). In the
+  repo tree, `gateway/tools/_shared/grid.py`.parents[3] is the repo root, so `data/` resolves —
+  which is why every in-repo test passes and the earlier Wave-1 note assumed the deployed asset
+  "resolves the same default".
+- In the BUNDLED Lambda asset the layout is `<asset>/_shared/grid.py` with the bundled data at
+  `<asset>/data/`. From `<asset>/_shared/grid.py`, `parents[3]` climbs ABOVE the asset root
+  (to `infra-cdk/` in this checkout, and to a nonexistent path in the real `/var/task` layout),
+  so `_DEFAULT_DATA_DIR` points at a **repository-relative path that does not exist in the
+  deployed Lambda**. The bundled `<asset>/data/` (beside `_shared`) is never found.
+- Impact: `load_grid()` / `load_crews()` are called with NO `data_dir` argument at cold start by
+  the AWS adapters (`_shared/adapters/_aws_stores.py: self._grid = load_grid()`), so every
+  grid-tools tool would raise `FileNotFoundError` at Lambda cold start in `aws` mode. This
+  violates design §3.2 / §22.3 and R1.1 ("loads the Grid at cold start ... with no
+  repository-relative path"), which is exactly what task 73.6's second clause verifies.
+
+Fix belongs to the **geo-data lane**, in `gateway/tools/_shared/grid.py` and
+`gateway/tools/_shared/reference.py`: resolve the default data dir relative to the module's own
+location so it finds `data/` beside `_shared` inside the asset (e.g.
+`_DEFAULT_DATA_DIR = Path(__file__).resolve().parent.parent / "data"` — from `_shared/grid.py`,
+`.parent` = `_shared`, `.parent.parent` = the asset root / `gateway/tools`; in the repo that is
+`gateway/tools/data`, so the fix must also bundle/point at the right place, or use
+`importlib.resources`). The precise resolution is the geo-data lane's call; the property is left
+honest and failing so the fix is verifiable.
+
+Status: task 73.6 (and therefore the parent task 73) BLOCKED on the geo-data fix. The passing
+bundling test is committed (`test_assets.py`); the honest cold-start test is written and correct
+in `test_assets_grid_loading.py` and is intentionally NOT added to git while red (it would break
+the phase's `pytest -q tests/infra` gate — same policy the Wave-3/4 QA notes used for the P20/
+P19/P34/escalation blockers). Sub-tasks 73.1-73.4 are green and ticked; 73.6/73 stay unticked.
+Flagged to the orchestrator for the platform/geo-data lane.

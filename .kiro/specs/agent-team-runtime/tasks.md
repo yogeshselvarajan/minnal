@@ -6,9 +6,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 0: setup, spikes and contracts
 
-- [ ] 1. Runtime dependencies
+- [x] 1. Runtime dependencies
   - _Requirements: 1.4, 2.4_ §1.6 [agent-engineer]
-  - [ ] 1.1 `uv add` the runtime dependencies exactly as the design names them: `strands-agents==1.42.0`, `ag-ui-strands==0.1.9`, `bedrock-agentcore==1.18.1`, `mcp==1.27.2`, `PyJWT[crypto]==2.13.0`, `pydantic-settings==2.15.0`, `pyyaml==6.0.3`, and keep `patterns/agui-minnal/requirements.txt` aligned with `uv.lock` via `uv export`
+  - [x] 1.1 `uv add` the runtime dependencies exactly as the design names them: `strands-agents==1.42.0`, `ag-ui-strands==0.1.9`, `bedrock-agentcore==1.18.1`, `mcp==1.27.2`, `PyJWT[crypto]==2.13.0`, `pydantic-settings==2.15.0`, `pyyaml==6.0.3`, and keep `patterns/agui-minnal/requirements.txt` aligned with `uv.lock` via `uv export`
     - _Requirements: 1.4, 2.4_ §1.6 [agent-engineer]
 
 - [ ] 2. Test tooling and Hypothesis profiles

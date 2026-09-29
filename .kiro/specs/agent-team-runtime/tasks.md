@@ -270,9 +270,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 35.3 Add `verify_allow_lists` comparing normalised names against an unfiltered `list_tools_sync(tool_filters={})` and failing at start-up naming the role and the missing tools
     - _Requirements: 13.7_ §8.1.3 [agent-engineer]
 
-- [ ] 36. Commit identity mapping
+- [x] 36. Commit identity mapping
   - _Requirements: 9.10, 9.11, 13.10_ §8.3 [agent-engineer]
-  - [ ] 36.1 Write `TOOL_IDENTITY` keyed by bare normalised names mapping `dispatch_crew` to `dispatch` and `propose_switching` to `commander`, and `client_for_tool` normalising first and raising for an unmapped tool
+  - [x] 36.1 Write `TOOL_IDENTITY` keyed by bare normalised names mapping `dispatch_crew` to `dispatch` and `propose_switching` to `commander`, and `client_for_tool` normalising first and raising for an unmapped tool
     - _Requirements: 9.10, 9.11, 13.10_ §8.3 [agent-engineer]
 
 - [ ] 37. The shared-identity fallback

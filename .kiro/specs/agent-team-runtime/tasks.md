@@ -23,11 +23,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 3.2 Write `docs/adr/0005-agui-custom-event-transport.md` recording the result and choosing either the primary merged-stream design or the second-channel fallback of a period record plus a read endpoint with the same schemas
     - _Requirements: 18.1_ §12.2, §22.5 [agent-engineer]
 
-- [ ] 4. Spike OQ2: structured output on both models
+- [x] 4. Spike OQ2: structured output on both models
   - _Requirements: 4.1, 4.2, 2.2, 2.4_ §5, §7.4, §22.5 [agent-engineer]
-  - [ ] 4.1 Make one `structured_output_async` Converse call per model, `openai.gpt-oss-120b-1:0` and `us.amazon.nova-2-lite-v1:0`, against the real §5 `PlanOut` and `SafetyOut` contracts, and record whether a valid object comes back
+  - [x] 4.1 Make one `structured_output_async` Converse call per model, `openai.gpt-oss-120b-1:0` and `us.amazon.nova-2-lite-v1:0`, against the real §5 `PlanOut` and `SafetyOut` contracts, and record whether a valid object comes back
     - _Requirements: 4.2, 2.2, 2.4_ §5, §7.4, §22.5 [agent-engineer]
-  - [ ] 4.2 Write `docs/adr/0006-structured-output-contract-shape.md` choosing the unchanged §5 contracts or the flattened model-facing shapes; if model access is unavailable, record the spike as blocked and adopt the flattened fallback pre-emptively
+  - [x] 4.2 Write `docs/adr/0006-structured-output-contract-shape.md` choosing the unchanged §5 contracts or the flattened model-facing shapes; if model access is unavailable, record the spike as blocked and adopt the flattened fallback pre-emptively
     - _Requirements: 4.1, 4.2_ §5, §22.5 [agent-engineer]
 
 - [ ] 5. Configuration

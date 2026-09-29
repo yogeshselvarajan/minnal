@@ -310,11 +310,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 39.2 Write the five `prompt.md` files for `commander`, `hazard`, `diagnostics`, `dispatch` and `safety`, each with the six headings Role, Inputs, Output, Limits, Untrusted data and Never, naming the role's allow-listed tools and its prohibitions
     - _Requirements: 1.5, 1.6_ §7.2, §7.5 [agent-engineer]
 
-- [ ] 40. Verify factories and prompts
+- [x] 40. Verify factories and prompts
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 17.1_ §7.1, §7.2, §21.5 [qa-eval-engineer]
-  - [ ] 40.1 Write `tests/agents/test_prompts.py::test_every_prompt_has_the_six_sections` plus a test that no prompt contains a format placeholder, so untrusted text can never be interpolated into a system prompt
+  - [x] 40.1 Write `tests/agents/test_prompts.py::test_every_prompt_has_the_six_sections` plus a test that no prompt contains a format placeholder, so untrusted text can never be interpolated into a system prompt
     - _Requirements: 1.5, 1.6, 17.1_ §7.2, §21.5 [qa-eval-engineer]
-  - [ ] 40.2 Write `tests/agents/test_layout.py::test_role_packages_and_factories` asserting each role package has `agent.py`, `prompt.md`, `schemas.py` and `tools.py`, that the factory takes all dependencies as arguments, that no module outside `settings.py` reads `os.environ`, and that modules and functions respect the size limits
+  - [x] 40.2 Write `tests/agents/test_layout.py::test_role_packages_and_factories` asserting each role package has `agent.py`, `prompt.md`, `schemas.py` and `tools.py`, that the factory takes all dependencies as arguments, that no module outside `settings.py` reads `os.environ`, and that modules and functions respect the size limits
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.7_ §3, §7.1, §21.5 [qa-eval-engineer]
 
 - [x] 41. Structured output and the outer repair

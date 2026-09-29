@@ -11,9 +11,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 1.1 `uv add` the runtime dependencies exactly as the design names them: `strands-agents==1.42.0`, `ag-ui-strands==0.1.9`, `bedrock-agentcore==1.18.1`, `mcp==1.27.2`, `PyJWT[crypto]==2.13.0`, `pydantic-settings==2.15.0`, `pyyaml==6.0.3`, and keep `patterns/agui-minnal/requirements.txt` aligned with `uv.lock` via `uv export`
     - _Requirements: 1.4, 2.4_ §1.6 [agent-engineer]
 
-- [ ] 2. Test tooling and Hypothesis profiles
+- [x] 2. Test tooling and Hypothesis profiles
   - _Requirements: 25.3, 25.5, 25.8_ §21.3 [qa-eval-engineer]
-  - [ ] 2.1 Confirm the `dev` dependency group already pins `hypothesis`, `pytest-socket`, `moto`, `freezegun`, `pytest`, `ruff` and `mypy`, and `uv add --group dev` any of them that is absent, including `ruff` and `mypy` if they are not already present; then register in `tests/agents/conftest.py` the `safety` marker, the `default` and `ci` profiles at 200 examples with `ci` derandomised and no database, and a local-only `quick` profile at 50
+  - [x] 2.1 Confirm the `dev` dependency group already pins `hypothesis`, `pytest-socket`, `moto`, `freezegun`, `pytest`, `ruff` and `mypy`, and `uv add --group dev` any of them that is absent, including `ruff` and `mypy` if they are not already present; then register in `tests/agents/conftest.py` the `safety` marker, the `default` and `ci` profiles at 200 examples with `ci` derandomised and no database, and a local-only `quick` profile at 50
     - _Requirements: 25.3, 25.5, 25.8_ §21.3 [qa-eval-engineer]
 
 - [x] 3. Spike OQ1: AG-UI `Custom` events through the adapter
@@ -39,16 +39,16 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 5.3 Add `patterns/agui-minnal/config/budgets.yaml` with per-node timeouts and tool-call caps, the period token and wall-clock budgets, the reserve of 20000 tokens and 60 seconds, the graph execution limits, and the explicit model and tool request timeouts
     - _Requirements: 16.1, 16.5, 16.6, 16.9_ §14.1, §14.6 [agent-engineer]
 
-- [ ] 6. Verify the model configuration
+- [x] 6. Verify the model configuration
   - _Requirements: 2.1, 2.2, 2.5, 2.7_ §20, §15.1 [qa-eval-engineer]
-  - [ ] 6.1 Write property test for Property 59
+  - [x] 6.1 Write property test for Property 59
     - **Property 59: every model ID comes from `models.yaml` and none is Anthropic**
     - **Validates: Requirements 2.1, 2.2, 2.5, 2.7**
     - `test_property_P59_models_from_config` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 2.1, 2.2, 2.5, 2.7_ §20, §15.1 [qa-eval-engineer]
-  - [ ] 6.2 Extend the existing `tests/test_no_claude.py`, which already scans for Anthropic model IDs and assembles the vendor token from parts so the file never contains a literal ID, to cover this spec's new trees: `patterns/agui-minnal/roles/`, `graph/`, `gateway_clients/`, `agui/`, `memory/`, `offline/` and `evals/agent-team-runtime/`
+  - [x] 6.2 Extend the existing `tests/test_no_claude.py`, which already scans for Anthropic model IDs and assembles the vendor token from parts so the file never contains a literal ID, to cover this spec's new trees: `patterns/agui-minnal/roles/`, `graph/`, `gateway_clients/`, `agui/`, `memory/`, `offline/` and `evals/agent-team-runtime/`
     - _Requirements: 2.5_ §15.1 [qa-eval-engineer]
-  - [ ] 6.3 Write `tests/agents/test_models.py::test_temperatures_and_timeouts` asserting 0.2, 0.1 and 0.0 for the reasoning tier and an explicit request timeout on every model
+  - [x] 6.3 Write `tests/agents/test_models.py::test_temperatures_and_timeouts` asserting 0.2, 0.1 and 0.0 for the reasoning tier and an explicit request timeout on every model
     - _Requirements: 2.3, 2.4_ §7.3, §15.4 [qa-eval-engineer]
 
 - [x] 7. Glass-box event schemas
@@ -65,9 +65,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ] 8.2 Write `gateway/schemas/events/JobCompleted.v1.json` carrying `proposal_id`, `device_id`, `crew_id` and `completed_by`, so a later human action needs no `.v2`
     - _Requirements: 12.8_ §16.5 [geo-data-engineer]
 
-- [ ] 9. Verify the schemas
+- [x] 9. Verify the schemas
   - _Requirements: 18.8, 12.7, 12.8, 12.9_ §12.3, §16.4 [qa-eval-engineer]
-  - [ ] 9.1 Write `tests/agents/test_events.py` with `test_device_suspected_validates`, `test_job_completed_schema_exists`, and a test that every `minnal.*` schema loads and rejects a payload missing `incident_id` or `operational_period`
+  - [x] 9.1 Write `tests/agents/test_events.py` with `test_device_suspected_validates`, `test_job_completed_schema_exists`, and a test that every `minnal.*` schema loads and rejects a payload missing `incident_id` or `operational_period`
     - _Requirements: 18.8, 12.7, 12.8, 12.9_ §12.3, §16.4 [qa-eval-engineer]
 
 ## Wave 1: pure domain logic

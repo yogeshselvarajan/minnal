@@ -104,3 +104,39 @@ sole deselected test is the pre-existing environment-artifact tests/test_network
 
 NOT done in this lane (out of Wave-0 agent-engineer scope, other lanes): T2, T6, T9 are
 qa-eval-engineer; T8 is geo-data-engineer. No push (orchestrator pushes).
+
+## 2026-09-29 — Wave 0 qa-eval-engineer lane COMPLETE (tasks 2, 6, 9)
+
+All qa-eval-engineer Wave-0 tasks done, one commit each on `feat/agent-team-runtime`:
+- T2.1 `tests/agents/conftest.py`: the design §21.3 Hypothesis profiles — `default` and `ci`
+  at 200 examples (`ci` derandomised, `database=None`), `quick` at 50 (local only) — loaded
+  from `HYPOTHESIS_PROFILE`; the `safety` marker registered via `pytest_configure`. Mirrors
+  `tests/simulator/conftest.py` so the two suites' globally-registered profiles compose;
+  socket blocking is inherited from the parent `tests/conftest.py` `_block_network` fixture.
+  The `dev` group already pinned hypothesis, pytest-socket, moto, freezegun, pytest, ruff and
+  mypy, so **no `uv add` was needed** (no `pyproject.toml`/`uv.lock` change). The conftest also
+  adds `patterns/agui-minnal` to `sys.path` (the production and `mypy_path` import root) so
+  `config.settings`/`agui.validate` resolve in tests exactly as in the container.
+- T6.1 `tests/agents/properties/test_property_P59_models_from_config.py`: Property 59, 200+
+  examples, known-bad `@example` on each generative test. T6.2 extended `tests/test_no_claude.py`
+  `SCAN_TARGETS` to name the new trees (roles/graph/gateway_clients/agui/memory/offline and
+  `evals/agent-team-runtime/`); the scanner skips absent trees, so the guard covers each the
+  moment it lands. T6.3 `tests/agents/test_models.py::test_temperatures_and_timeouts` at the
+  `Settings.model_for` layer (the path `build_bedrock_model` reads).
+- T9.1 `tests/agents/test_events.py`: `test_device_suspected_validates`,
+  `test_job_completed_schema_exists`, and a parametrised test over the six `minnal.*` schemas
+  that each rejects a payload missing `incident_id` or `operational_period`.
+
+### Task 9 was NOT blocked
+The kickoff flagged task 9 as possibly blocked on geo-data task 8 (`DeviceSuspected.v1.json`,
+`JobCompleted.v1.json`). Both files were already present on the branch when this lane ran
+(commit `37ab32d`, geo-data lane), so task 9 loaded them from `gateway/schemas/events/` as
+instructed and completed. No schema files were created by this lane.
+
+### Gate state for this lane's files
+`uv run ruff check tests/agents` and `ruff format --check` clean; `uv run pytest -q tests/agents`
+= 13 passed (P59 3, models 1, events 9); `-m safety` deselects all 13 (none of these three
+tasks own a `[SAFETY]` property). The pre-existing baseline is untouched: the 14 `ruff` errors
+remain confined to `patterns/utils/auth.py`/`ssm.py` (FAST template), and
+`tests/test_network_blocked.py` is the known sandbox socket artifact — neither is this lane's.
+No push (orchestrator pushes).

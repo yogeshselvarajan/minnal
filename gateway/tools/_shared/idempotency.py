@@ -4,7 +4,10 @@ Write tools wrap their execution body in Powertools ``@idempotent_function`` key
 on ``incident_id`` plus the tool's key field, with a ``payload_validation_jmespath``
 selecting the whole request body, so the same key with the same payload returns the
 stored result and a changed payload raises ``IdempotencyValidationError``, which
-:func:`wrap` maps to a ``CONFLICT`` (R1.9). The critical rule is P34: **a retryable
+:func:`wrap` maps to a non-retryable ``CONFLICT`` (R1.9). A concurrent duplicate
+still in flight raises ``IdempotencyAlreadyInProgressError``, which :func:`wrap`
+maps to a ``CONFLICT`` with ``retryable: true`` so the agent waits and retries the
+same key (R1.12, §11.7). The critical rule is P34: **a retryable
 outcome must not be cached.** Powertools deletes the in-progress record when the
 wrapped function raises, so the body raises :class:`_shared.errors.UpstreamError`
 (and its subclasses) on a transient failure rather than returning an error
@@ -130,6 +133,7 @@ def wrap[R](
     from _shared.errors import ConflictError  # noqa: PLC0415
     from aws_lambda_powertools.utilities.idempotency import idempotent_function  # noqa: PLC0415
     from aws_lambda_powertools.utilities.idempotency.exceptions import (  # noqa: PLC0415
+        IdempotencyAlreadyInProgressError,
         IdempotencyValidationError,
     )
 
@@ -143,10 +147,22 @@ def wrap[R](
     def wrapped(*args: object, **kwargs: object) -> R:
         try:
             return idempotent(*args, **kwargs)
+        except IdempotencyAlreadyInProgressError as exc:
+            # Same key, still in flight: a concurrent duplicate. The first call is
+            # deterministic and will complete, so the agent should wait and retry
+            # the same key -> CONFLICT with retryable: true (R1.12, §11.2 row 34,
+            # §11.7). The body's own ``UpstreamError`` is distinct: it raises out
+            # of ``idempotent`` (Powertools deletes the in-progress record) and is
+            # never turned into a CONFLICT here, so a retryable body failure is
+            # still never cached (P34 clauses 1-2).
+            raise ConflictError(
+                "This request is already being processed. Retry the same key shortly.",
+                retryable=True,
+            ) from exc
         except IdempotencyValidationError as exc:
             # Same key, different payload: a deterministic CONFLICT, not retryable
-            # (R1.9). ``IdempotencyAlreadyInProgressError`` and the body's own
-            # ``UpstreamError`` are distinct and still propagate unchanged (P34).
+            # (R1.9). The body's own ``UpstreamError`` is distinct and still
+            # propagates unchanged (P34).
             raise ConflictError(
                 "This idempotency key was already used with a different request."
             ) from exc

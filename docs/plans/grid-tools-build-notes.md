@@ -344,3 +344,48 @@ report_id replay (P14): a replay is caught by `get_by_report_id` (`replayed=True
 attach, so it never double-counts or re-escalates. Both backends agree (P27). Verified: a
 `no_power` create then a `downed_wire` attach → `is_emergency=True`; replay of the same
 report_id → `report_count` unchanged, `is_emergency` stays True.
+
+
+## Wave-4 code-review gate iteration 1 — two product-code blockers fixed
+
+### Blocker 1 (task 46, R11.4/R11.9, §5.9 / §11.2 rows 11 & 28, P2/P18)
+`approval_handler_lambda._apply_decision` returned `ok:true` even when the
+approval-time flood re-check produced a veto (`DecisionResult(terminal_state="vetoed",
+rule_id="FLOOD_CHANGED"|"FLOOD_DATA_UNAVAILABLE")`). The design and the error matrix
+require an `ok:false` SAFETY_VIOLATION envelope carrying the rule_id, matching the
+sibling write tools. Fix: after the settle sequence (SendTaskFailure, crew-lock
+release, `Dispatch/SwitchingVetoed` emit) and the `ApprovalLatencyMs` metric,
+`_raise_if_flood_veto(result)` raises `SafetyViolation(result.reason,
+rule_id=result.rule_id, details={"hazard_ids": [...]})`, which `run_tool` maps to the
+SAFETY_VIOLATION envelope — identical shape to `dispatch_crew`/`propose_switching`.
+A `reject`/`modify`-as-reject has `rule_id=None` and still returns `ok:true rejected`.
+`DecisionResult` gained `hazard_ids: tuple[str, ...] = ()`, populated by
+`_flood_refusal` for FLOOD_CHANGED (from `RecheckOutcome.hazard_ids`); the pure
+decision behaviour is otherwise unchanged, so P18 (which asserts the DecisionResult)
+stays green. Verified over the local handler harness: FLOOD_CHANGED → ok:false,
+SAFETY_VIOLATION, rule_id FLOOD_CHANGED, hazard_ids [FP-1], crew lock released,
+DispatchVetoed emitted; stale feed → FLOOD_DATA_UNAVAILABLE, lock released,
+DispatchVetoed emitted.
+
+### Blocker 2 (task 41, R1.12, §11.2 row 34 / §11.7)
+`_shared/idempotency.wrap` mapped `IdempotencyValidationError` → non-retryable
+`ConflictError` but let Powertools `IdempotencyAlreadyInProgressError` propagate;
+`run_tool`'s bare `except Exception` then turned a concurrent in-flight duplicate into
+an opaque non-retryable INTERNAL, the opposite of R1.12 (CONFLICT with retryable:true).
+Fix: `wrap` now also catches `IdempotencyAlreadyInProgressError` (class + path
+confirmed against Powertools 3.35.0:
+`aws_lambda_powertools.utilities.idempotency.exceptions.IdempotencyAlreadyInProgressError`)
+and raises `ConflictError(..., retryable=True)`. `ConflictError.__init__` gained a
+`retryable: bool = False` parameter; every other construction stays non-retryable.
+A retryable body `UpstreamError` still raises out of `idempotent` (Powertools deletes
+the in-progress record) and is never turned into a CONFLICT here, so P34 clauses 1-2
+are untouched; same-key/different-payload stays a non-retryable CONFLICT. Verified over
+moto: an in-flight re-entry raises ConflictError with code=CONFLICT, retryable=True.
+
+### Test owned by qa (do not edit here)
+`tests/tools/properties/test_property_P34_idempotency_never_caches_retryable_failure.py::test_property_P34_in_flight_duplicate_maps_to_retryable_conflict`
+asserts the raw `IdempotencyAlreadyInProgressError` propagates — the old buggy
+behaviour. After blocker 2 it correctly receives `ConflictError`, so this single
+committed test now fails; flagged for the qa lane to update to
+`pytest.raises(ConflictError)` and assert `code=="CONFLICT"` / `retryable is True`.
+All other 253 tests in tests/tools pass; ruff check/format and mypy gateway/tools green.

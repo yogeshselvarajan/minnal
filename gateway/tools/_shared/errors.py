@@ -77,6 +77,25 @@ class NotFoundError(MinnalError):
 class ConflictError(MinnalError):
     code: ErrorCode = "CONFLICT"
 
+    def __init__(
+        self,
+        public_message: str,
+        *,
+        details: dict[str, object] | None = None,
+        retryable: bool = False,
+    ) -> None:
+        """A conflict with an existing item.
+
+        Args:
+            public_message: Plain-language text for the agent (never internals).
+            details: Optional safe detail map.
+            retryable: ``True`` only for an in-flight duplicate still being served,
+                where the agent should wait and retry the same key (R1.12, §11.7);
+                ``False`` for a deterministic conflict such as same-key/different
+                payload or an already-decided work order (R1.9, R11.7).
+        """
+        super().__init__(public_message, details=details, retryable=retryable)
+
 
 class SafetyViolation(MinnalError):
     """A safety rule refused the request. Always carries a ``rule_id``."""

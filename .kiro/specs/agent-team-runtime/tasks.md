@@ -380,14 +380,14 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 48.2 Write `patterns/agui-minnal/graph/builder.py` with `build_period_graph(deps)` adding the nine nodes, the edges above, `set_entry_point("commander_objectives")`, `set_max_node_executions`, `set_execution_timeout` and `reset_on_revisit(True)`, and carrying `incident_id` and `operational_period` in the invocation state
     - _Requirements: 3.1, 3.4, 3.12, 3.13_ §4.1, §4.4 [agent-engineer]
 
-- [ ] 49. Verify the Graph and routing
+- [x] 49. Verify the Graph and routing
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.12, 3.13, 11.14, 16.9, 22.8_ §20, §4.3 [qa-eval-engineer]
-  - [ ] 49.1 Write property test for Property 61
+  - [x] 49.1 Write property test for Property 61
     - **Property 61: routing is deterministic and the summary runs once**
     - **Validates: Requirements 3.1, 3.2, 3.12, 16.9, 11.14**
     - `test_property_P61_routing_deterministic` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 3.1, 3.2, 3.12, 16.9, 11.14_ §20, §4.3 [qa-eval-engineer]
-  - [ ] 49.2 Write `tests/agents/test_graph_shape.py` with `test_node_set_is_exact`, `test_safety_precedes_commit_on_every_path` and `test_execution_limits_set`
+  - [x] 49.2 Write `tests/agents/test_graph_shape.py` with `test_node_set_is_exact`, `test_safety_precedes_commit_on_every_path` and `test_execution_limits_set`
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.12, 3.13, 22.8_ §4.1, §21.5 [qa-eval-engineer]
 
 - [x] 50. The safety node wrapper

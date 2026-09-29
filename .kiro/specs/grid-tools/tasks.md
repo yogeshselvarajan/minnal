@@ -145,7 +145,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [ ] 41. [geo-data-engineer] Tool handlers _Requirements: 1.3, 1.4, 1.6, 1.7, 1.9, 1.12, 2.3, 2.4_ _Design: §5_
   - [x] 41.1 [geo-data-engineer] Write the shared handler scaffolding: the Powertools decorator stack, `assert_tool_name` from the Gateway client context, `ensure_correlation_id`, the explicit `pydantic.ValidationError` catch that emits only `loc` and `type`, and the idempotency wrapper that raises on retryable outcomes _Requirements: 1.3, 1.4, 1.6, 1.7, 1.9, 1.12, 2.4_ _Design: §5 preamble, §11.7_
-  - [ ] 41.2 [geo-data-engineer] Write `record_outage_lambda.py` with its metrics _Requirements: 4.1, 4.6, 4.8, 4.9, 2.3_ _Design: §5.1_
+  - [x] 41.2 [geo-data-engineer] Write `record_outage_lambda.py` with its metrics _Requirements: 4.1, 4.6, 4.8, 4.9, 2.3_ _Design: §5.1_
   - [ ] 41.3 [geo-data-engineer] Write `trace_upstream_device_lambda.py` _Requirements: 5.6, 5.7_ _Design: §5.2_
   - [ ] 41.4 [geo-data-engineer] Write `check_flood_geofence_lambda.py`, including loading the stored Route for `target_kind: route` _Requirements: 6.1, 6.7, 6.8_ _Design: §5.3_
   - [ ] 41.5 [geo-data-engineer] Write `plan_crew_route_lambda.py` with the mandatory post-route re-test and `RoutesRejectedFlood` _Requirements: 7.3, 7.6, 7.7, 7.8, 7.10, 2.3_ _Design: §5.4_

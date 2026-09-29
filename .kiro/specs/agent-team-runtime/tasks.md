@@ -160,19 +160,19 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 22.2 Write `patterns/agui-minnal/domain/precedence.py` (pure) with `fold_vetoes` as a union having no parameter that could drop a tool veto, `select_commit_set` partitioning into gated, bypassed and refused with the same-period and route-or-device binding checks, and `partition_for_safety_gate`
     - _Requirements: 5.3, 5.4, 9.1, 9.2, 10.1_ §5.6, §4.3.4 [agent-engineer]
 
-- [ ] 23. Verify veto precedence and commit selection
+- [x] 23. Verify veto precedence and commit selection
   - _Requirements: 3.3, 5.1, 5.2, 5.3, 5.4, 5.8, 9.1, 9.2, 10.1, 10.2, 10.3, 10.6, 3.9_ §20, §5.6 [qa-eval-engineer]
-  - [ ] 23.1 Write property test for Property 41
+  - [x] 23.1 Write property test for Property 41
     - **Property 41: a model can add but never remove a tool veto [SAFETY]**
     - **Validates: Requirements 5.3, 5.4, 5.2**
     - `test_property_P41_veto_union` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 5.3, 5.4, 5.2_ §20, §5.6 [qa-eval-engineer]
-  - [ ] 23.2 Write property test for Property 40
+  - [x] 23.2 Write property test for Property 40
     - **Property 40: no commit without a same-period clearance [SAFETY]**
     - **Validates: Requirements 9.1, 9.2, 3.3, 5.1, 5.8**
     - `test_property_P40_commit_requires_clearance` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 9.1, 9.2, 3.3, 5.1, 5.8_ §20, §5.6, §9.1 [qa-eval-engineer]
-  - [ ] 23.3 Write property test for Property 43
+  - [x] 23.3 Write property test for Property 43
     - **Property 43: `de_energise` is never flood-gated and always reaches approval [SAFETY]**
     - **Validates: Requirements 10.1, 10.2, 10.3, 10.6, 3.9**
     - `test_property_P43_de_energise_never_gated` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`

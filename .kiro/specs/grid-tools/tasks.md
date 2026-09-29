@@ -148,7 +148,7 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
   - [x] 41.2 [geo-data-engineer] Write `record_outage_lambda.py` with its metrics _Requirements: 4.1, 4.6, 4.8, 4.9, 2.3_ _Design: §5.1_
   - [x] 41.3 [geo-data-engineer] Write `trace_upstream_device_lambda.py` _Requirements: 5.6, 5.7_ _Design: §5.2_
   - [x] 41.4 [geo-data-engineer] Write `check_flood_geofence_lambda.py`, including loading the stored Route for `target_kind: route` _Requirements: 6.1, 6.7, 6.8_ _Design: §5.3_
-  - [ ] 41.5 [geo-data-engineer] Write `plan_crew_route_lambda.py` with the mandatory post-route re-test and `RoutesRejectedFlood` _Requirements: 7.3, 7.6, 7.7, 7.8, 7.10, 2.3_ _Design: §5.4_
+  - [x] 41.5 [geo-data-engineer] Write `plan_crew_route_lambda.py` with the mandatory post-route re-test and `RoutesRejectedFlood` _Requirements: 7.3, 7.6, 7.7, 7.8, 7.10, 2.3_ _Design: §5.4_
   - [ ] 41.6 [geo-data-engineer] Write `rank_restoration_jobs_lambda.py` _Requirements: 8.7, 8.8, 8.9, 8.10_ _Design: §5.5_
   - [ ] 41.7 [geo-data-engineer] Write `dispatch_crew_lambda.py`: the proposal transaction with clearance consumption and crew lock, the work-order start, the token vaulting and `DispatchProposed` _Requirements: 9.1, 9.6, 9.8, 9.9, 2.3_ _Design: §5.6, §7.4.1, §7.4.2_
   - [ ] 41.8 [geo-data-engineer] Write `propose_switching_lambda.py`: the same flow without a crew lock, plus `is_preventive_safety_measure` reported as unknown when the feed is not fresh _Requirements: 10.1, 10.5, 10.7, 2.3_ _Design: §5.7_

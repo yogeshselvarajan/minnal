@@ -211,7 +211,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 60. [qa-eval-engineer] Write `policy/test_cedar_matrix.py`: all 21 rows of §10.5, including `de_energise` allowed with `intersects: true`, with no `flood_check` at all, and while the feed is stale or unknown; `energise` denied without `flood_check` and without nested `intersects`; the unlisted tool; and the hypothetical approval action _Requirements: 12.7, 12.3, 12.4_ _Design: §10.5_
 
-- [ ] 61. [qa-eval-engineer] Write `policy/test_policy_file.py`: `test_every_statement_cites_a_requirement`, `test_policy_fields_declared_in_subset_specs`, `test_cedar_mirror_regenerates_from_subset_specs` _Requirements: 12.1, 12.6_ _Design: §10.2, §10.4_
+- [x] 61. [qa-eval-engineer] Write `policy/test_policy_file.py`: `test_every_statement_cites_a_requirement`, `test_policy_fields_declared_in_subset_specs`, `test_cedar_mirror_regenerates_from_subset_specs` _Requirements: 12.1, 12.6_ _Design: §10.2, §10.4_
 
 - [ ] 62. [qa-eval-engineer] Write property test for Property 26 `[SAFETY]` (Cedar forbids unsafe input and default-denies everything else) _Requirements: 12.2, 12.3, 12.4, 12.7_ _Design: §18 P26_
 

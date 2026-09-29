@@ -347,11 +347,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 45.1 Write `roles/diagnostics/agent.py` paging `list_open_outages` in code until the token is absent or the budget is reached, splitting clusters at 1000 outage IDs per `trace_upstream_device` call, reporting one suspected device per group when `common_device_id` is null, carrying `unlocated_outage_ids` through, placing any `untrusted_note` only in an untrusted block, and recommending switching without calling `propose_switching`
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.10_ §7.5.3 [agent-engineer]
 
-- [ ] 46. Dispatch planning
+- [x] 46. Dispatch planning
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.14, 11.6, 11.12_ §7.5.4 [agent-engineer]
-  - [ ] 46.1 Write `roles/dispatch/agent.py` as the four-phase `dispatch_plan`: the commander Open_Proposal read skipping covered work, the free-crew filter requiring at least two members, the model turn returning a `PlanDraft` with no route or clearance field, the re-sort into the tool's `dispatchable` order dropping anything the tool did not return, `plan_crew_route` attaching `route_id` by code, and the commander switching-draft step
+  - [x] 46.1 Write `roles/dispatch/agent.py` as the four-phase `dispatch_plan`: the commander Open_Proposal read skipping covered work, the free-crew filter requiring at least two members, the model turn returning a `PlanDraft` with no route or clearance field, the re-sort into the tool's `dispatchable` order dropping anything the tool did not return, `plan_crew_route` attaching `route_id` by code, and the commander switching-draft step
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.7, 8.8, 8.14_ §7.5.4 [agent-engineer]
-  - [ ] 46.2 Handle the routing veto paths: record `FLOOD_ROUTE` and `FLOOD_DESTINATION` as vetoes without retrying the identical call, record `no_safe_route` as a Blocked_Item, re-plan only the vetoed items below the cap while leaving every cleared and blocked item untouched, and add the re-plan guard asserting a vetoed item changes at least one input or is blocked when no alternative crew exists
+  - [x] 46.2 Handle the routing veto paths: record `FLOOD_ROUTE` and `FLOOD_DESTINATION` as vetoes without retrying the identical call, record `no_safe_route` as a Blocked_Item, re-plan only the vetoed items below the cap while leaving every cleared and blocked item untouched, and add the re-plan guard asserting a vetoed item changes at least one input or is blocked when no alternative crew exists
     - _Requirements: 8.5, 8.6, 11.6, 11.12_ §7.5.4, §4.3.2 [agent-engineer]
 
 - [ ] 47. Verify the role agents

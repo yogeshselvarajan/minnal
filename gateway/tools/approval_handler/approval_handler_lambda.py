@@ -25,7 +25,7 @@ from typing import TYPE_CHECKING
 
 from _shared.adapters import make_ports
 from _shared.envelope import err, ok
-from _shared.errors import ConflictError, InputValidationError, NotFoundError
+from _shared.errors import ConflictError, InputValidationError, NotFoundError, SafetyViolation
 from _shared.flood import derive_status, hazard_index
 from _shared.handler import ensure_correlation_id, run_tool
 from _shared.observability import build_logger, build_metrics, build_tracer
@@ -156,7 +156,31 @@ def _apply_decision(  # noqa: PLR0913, PLR0917 - the settle sequence is one unit
     metrics.add_metric(
         name="ApprovalLatencyMs", unit=MetricUnit.Milliseconds, value=result.approval_latency_ms
     )
+    _raise_if_flood_veto(result)
     return ok(_data(result), _summary(result), corr)
+
+
+def _raise_if_flood_veto(result: logic.DecisionResult) -> None:
+    """Turn a flood refusal at approval into a SAFETY_VIOLATION envelope (R11.4, R11.9).
+
+    An ``approve`` re-check that fails closed (``FLOOD_DATA_UNAVAILABLE``) or finds
+    the bound geometry now flooded (``FLOOD_CHANGED``) has already had its side
+    effects applied by the caller — the task was failed, the crew lock released and
+    the vetoed event emitted. The response the approver sees must not be ``ok:true``:
+    §5.9 and §11.2 rows 11 & 28 require ``ok:false`` ``SAFETY_VIOLATION`` carrying the
+    ``rule_id`` (P2/P18), matching ``dispatch_crew``/``propose_switching``. A plain
+    ``reject`` or ``modify``-as-reject carries no ``rule_id`` and stays ``ok:true``.
+
+    Raises:
+        SafetyViolation: The approval was refused because the flood set changed or
+            became unavailable; ``run_tool`` maps it to the SAFETY_VIOLATION envelope.
+    """
+    if result.terminal_state == "vetoed" and result.rule_id is not None:
+        raise SafetyViolation(
+            result.reason,
+            rule_id=result.rule_id,
+            details={"hazard_ids": list(result.hazard_ids)},
+        )
 
 
 def _settle_task(incident_id: str, ttr: str, result: logic.DecisionResult) -> None:

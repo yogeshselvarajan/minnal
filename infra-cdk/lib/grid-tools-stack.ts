@@ -4,6 +4,8 @@ import { AppConfig } from "./utils/config-manager"
 import * as ssm from "aws-cdk-lib/aws-ssm"
 import { EventsConstruct } from "./grid-tools/events-construct"
 import { GatewayToolsConstruct } from "./grid-tools/gateway-tools-construct"
+import { GeoConstruct } from "./grid-tools/geo-construct"
+import { PolicyConstruct } from "./grid-tools/policy-construct"
 import { GridToolsDataConstruct } from "./grid-tools/grid-tools-data-construct"
 import { IntakeConstruct } from "./grid-tools/intake-construct"
 import { WorkflowConstruct } from "./grid-tools/workflow-construct"
@@ -26,6 +28,8 @@ export class GridToolsStack extends cdk.Stack {
   public readonly eventsRouting: EventsConstruct
   public readonly gatewayTools: GatewayToolsConstruct
   public readonly workflow: WorkflowConstruct
+  public readonly geo: GeoConstruct
+  public readonly policy: PolicyConstruct
 
   constructor(scope: Construct, id: string, props: GridToolsStackProps) {
     super(scope, id, props)
@@ -67,6 +71,13 @@ export class GridToolsStack extends cdk.Stack {
       userPoolId,
       dispatchCrewFn: this.gatewayTools.tools.dispatch_crew.fn,
       proposeSwitchingFn: this.gatewayTools.tools.propose_switching.fn,
+    })
+
+    this.geo = new GeoConstruct(this, "Geo", { config })
+
+    this.policy = new PolicyConstruct(this, "Policy", {
+      config,
+      gateway: this.gatewayTools.gateway,
     })
 
     // Project-wide tags on every resource in the stack (steering `infra-cdk.md`).

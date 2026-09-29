@@ -234,7 +234,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 69. [platform-engineer] Write `WorkflowConstruct`: the Standard state machine ending in `Succeed`/`Fail` with no `putEvents`, the rendered `TimeoutSeconds`, the token vault, the expirer, the Approval_Handler, and API Gateway with the Cognito authorizer _Requirements: 11.1, 11.2, 11.3, 13.5_ _Design: §6.6, §16.1_
 
-- [ ] 70. [platform-engineer] Write `GeoConstruct` and `PolicyConstruct`: the route calculator, and the policy engine associated in `ENFORCE` with one `create_policy` call per Cedar statement _Requirements: 12.5, 7.1_ _Design: §16.1, §16.3_
+- [x] 70. [platform-engineer] Write `GeoConstruct` and `PolicyConstruct`: the route calculator, and the policy engine associated in `ENFORCE` with one `create_policy` call per Cedar statement _Requirements: 12.5, 7.1_ _Design: §16.1, §16.3_
   - [ ]* 70.1 [platform-engineer] Add the geofence collection and the mirroring path for crew-entry alerts _Requirements: 3.7_ _Design: §5.8_
 
 - [ ] 71. [platform-engineer] Write `ObservabilityConstruct`: log groups at 30-day retention, tracing on, and the six alarms of §16.4 including both queue-age alarms and the batch-failure signal _Requirements: 2.1, 2.2, 2.3_ _Design: §16.4_

@@ -6,6 +6,7 @@ import { EventsConstruct } from "./grid-tools/events-construct"
 import { GatewayToolsConstruct } from "./grid-tools/gateway-tools-construct"
 import { GridToolsDataConstruct } from "./grid-tools/grid-tools-data-construct"
 import { IntakeConstruct } from "./grid-tools/intake-construct"
+import { WorkflowConstruct } from "./grid-tools/workflow-construct"
 import { minnalTags } from "./grid-tools/naming"
 
 export interface GridToolsStackProps extends cdk.StackProps {
@@ -24,6 +25,7 @@ export class GridToolsStack extends cdk.Stack {
   public readonly intake: IntakeConstruct
   public readonly eventsRouting: EventsConstruct
   public readonly gatewayTools: GatewayToolsConstruct
+  public readonly workflow: WorkflowConstruct
 
   constructor(scope: Construct, id: string, props: GridToolsStackProps) {
     super(scope, id, props)
@@ -57,6 +59,14 @@ export class GridToolsStack extends cdk.Stack {
       idempotencyTable: this.data.idempotencyTable,
       geometryBucket: this.data.geometryBucket,
       userPoolId,
+    })
+
+    this.workflow = new WorkflowConstruct(this, "Workflow", {
+      config,
+      table: this.data.table,
+      userPoolId,
+      dispatchCrewFn: this.gatewayTools.tools.dispatch_crew.fn,
+      proposeSwitchingFn: this.gatewayTools.tools.propose_switching.fn,
     })
 
     // Project-wide tags on every resource in the stack (steering `infra-cdk.md`).

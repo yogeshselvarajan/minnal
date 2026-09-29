@@ -232,7 +232,7 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 - [x] 68. [platform-engineer] Write `GatewayToolsConstruct`: the seven tool functions on arm64 with local `uv` bundling, `_shared` copied in, and `data/grid`, `data/facilities` and `data/crews` copied into every tool asset so `_shared/grid.py` can load the Grid at cold start, the seven Gateway targets from the subset specs, per-function roles, reserved concurrency and the Gateway rate limits _Requirements: 14.1, 14.2, 1.1_ _Design: §3.2, §16.1, §16.2_
 
-- [ ] 69. [platform-engineer] Write `WorkflowConstruct`: the Standard state machine ending in `Succeed`/`Fail` with no `putEvents`, the rendered `TimeoutSeconds`, the token vault, the expirer, the Approval_Handler, and API Gateway with the Cognito authorizer _Requirements: 11.1, 11.2, 11.3, 13.5_ _Design: §6.6, §16.1_
+- [x] 69. [platform-engineer] Write `WorkflowConstruct`: the Standard state machine ending in `Succeed`/`Fail` with no `putEvents`, the rendered `TimeoutSeconds`, the token vault, the expirer, the Approval_Handler, and API Gateway with the Cognito authorizer _Requirements: 11.1, 11.2, 11.3, 13.5_ _Design: §6.6, §16.1_
 
 - [ ] 70. [platform-engineer] Write `GeoConstruct` and `PolicyConstruct`: the route calculator, and the policy engine associated in `ENFORCE` with one `create_policy` call per Cedar statement _Requirements: 12.5, 7.1_ _Design: §16.1, §16.3_
   - [ ]* 70.1 [platform-engineer] Add the geofence collection and the mirroring path for crew-entry alerts _Requirements: 3.7_ _Design: §5.8_

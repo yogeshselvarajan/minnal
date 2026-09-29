@@ -1,6 +1,6 @@
 """Amazon Location adapter: a flood-avoiding :class:`RouteProvider` (§5.4, §8.11).
 
-Calls the GeoRoutes ``CalculateRoutes`` operation with ``Avoidance.Areas`` built
+Calls the GeoRoutes ``CalculateRoutes`` operation with ``Avoid.Areas`` built
 from the buffered hazard rings, ``LegGeometryFormat: "Simple"`` so legs arrive as
 ``LineString`` positions rather than an encoded polyline, and the configured
 ``TravelMode``. The leg geometries are concatenated in order — dropping a leg's
@@ -95,7 +95,7 @@ def build_request(
         if len(ring) >= 4  # noqa: PLR2004 - a linear ring needs at least 4 positions
     ]
     if areas:
-        request["Avoidance"] = {"Areas": areas}
+        request["Avoid"] = {"Areas": areas}
     return request
 
 

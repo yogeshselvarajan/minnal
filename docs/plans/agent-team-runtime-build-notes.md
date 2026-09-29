@@ -172,3 +172,17 @@ contract module" that keeps the purity rule (§3.1) intact.
    `submerged_equipment > downed_wire > sparking > partial_power > no_power`. `jobs.SYMPTOM_SEVERITY`
    (index 0 = worst) reproduces this exactly; `worst_symptom` uses `min` over the rank, so it
    matches grid-tools with no drift. No conflict.
+
+## 2026-09-29 — Wave 1 task 22: ClearanceLedgerEntry/VetoRecord live in graph/state.py
+
+§4.2 defines `ClearanceLedgerEntry`, `VetoRecord` and `PeriodState` in `graph/state.py`, and
+the §5.6 `precedence.py` code block imports them `from .state`. Task 22.1 assigns those three
+types to `graph/state.py` explicitly. `domain/precedence.py` (task 22.2) therefore imports them
+`from graph.state import ...`. This is a domain→graph *module* reference but NOT a circular
+import: `graph.state` imports only `domain.budgets.BudgetBook` (runtime) and `domain.contracts.Item`
+(TYPE_CHECKING); `domain.precedence` imports `graph.state` (the veto/clearance value types) and
+`domain.contracts.Item`. No cycle. Both modules are pure (no boto3/botocore/strands), so the
+task-25 AST purity walk over `domain/` and `graph/state.py` still passes, and `mypy_path`
+(pyproject `patterns/agui-minnal`) resolves the cross-package import. `PeriodState.failures`/
+`.audit` are typed `list[object]` for now (the `NodeFailure`/`AuditEntry` contract models land
+in task 24, §5.4); §4.2's forward-ref strings carried the same deferral. mypy --strict clean.

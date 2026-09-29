@@ -153,11 +153,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - `test_property_P48_untrusted_containment` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`
     - _Requirements: 17.1, 17.2, 17.3, 17.5_ §20, §6.6 [qa-eval-engineer]
 
-- [ ] 22. Period state, veto precedence and commit selection
+- [x] 22. Period state, veto precedence and commit selection
   - _Requirements: 5.2, 5.3, 5.4, 9.1, 9.2, 10.1, 11.2, 11.13, 11.15_ §4.2, §5.6, §4.3.4 [agent-engineer]
-  - [ ] 22.1 Write `patterns/agui-minnal/graph/state.py` (pure) with `ClearanceLedgerEntry`, `VetoRecord` and `PeriodState`, where `record_clearance` raises on `intersects=True`, `record_veto` pops the ledger entry, `open_vetoed_items` excludes blocked and at-cap items, and the `safety_ran`, `commit_ran`, `summary_ran` and `lease_lost` guards exist because `reset_on_revisit` clears `completed_nodes`
+  - [x] 22.1 Write `patterns/agui-minnal/graph/state.py` (pure) with `ClearanceLedgerEntry`, `VetoRecord` and `PeriodState`, where `record_clearance` raises on `intersects=True`, `record_veto` pops the ledger entry, `open_vetoed_items` excludes blocked and at-cap items, and the `safety_ran`, `commit_ran`, `summary_ran` and `lease_lost` guards exist because `reset_on_revisit` clears `completed_nodes`
     - _Requirements: 5.2, 11.2, 11.13, 11.15_ §4.2 [agent-engineer]
-  - [ ] 22.2 Write `patterns/agui-minnal/domain/precedence.py` (pure) with `fold_vetoes` as a union having no parameter that could drop a tool veto, `select_commit_set` partitioning into gated, bypassed and refused with the same-period and route-or-device binding checks, and `partition_for_safety_gate`
+  - [x] 22.2 Write `patterns/agui-minnal/domain/precedence.py` (pure) with `fold_vetoes` as a union having no parameter that could drop a tool veto, `select_commit_set` partitioning into gated, bypassed and refused with the same-period and route-or-device binding checks, and `partition_for_safety_gate`
     - _Requirements: 5.3, 5.4, 9.1, 9.2, 10.1_ §5.6, §4.3.4 [agent-engineer]
 
 - [ ] 23. Verify veto precedence and commit selection

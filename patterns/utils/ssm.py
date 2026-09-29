@@ -39,7 +39,9 @@ def get_ssm_parameter(parameter_name: str) -> str:
     try:
         response = ssm.get_parameter(Name=parameter_name)
         return response["Parameter"]["Value"]
-    except ssm.exceptions.ParameterNotFound:
-        raise ValueError(f"SSM parameter not found: {parameter_name}")
+    except ssm.exceptions.ParameterNotFound as err:
+        raise ValueError(f"SSM parameter not found: {parameter_name}") from err
     except Exception as e:
-        raise ValueError(f"Failed to retrieve SSM parameter {parameter_name}: {e}")
+        raise ValueError(
+            f"Failed to retrieve SSM parameter {parameter_name}: {e}"
+        ) from e

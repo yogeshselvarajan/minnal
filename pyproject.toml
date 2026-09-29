@@ -47,6 +47,11 @@ select = ["E", "F", "I", "B", "UP", "SIM", "S", "ASYNC", "PL", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]
+# FAST template utils carry `# nosemgrep:` directives whose fully-qualified rule
+# IDs exceed the 100-char line limit and must stay intact on one line for the
+# security scanner. E501 is exempted on these two vendored files only; all other
+# rules still apply. (checkpoint-26 gate; behaviour unchanged)
+"patterns/utils/auth.py" = ["E501"]
 # Spike scripts are throwaway verification harnesses (design §22.5 S1/S2), kept as
 # evidence for ADRs 0005/0006. Like tests, they assert; they also print their result.
 "patterns/agui-minnal/agui/spikes/**" = ["S101", "T201"]

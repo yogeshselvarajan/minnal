@@ -205,9 +205,9 @@ _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here bec
 
 ## Wave 5 — Policy
 
-- [ ] 58. [platform-engineer] Write `gateway/policies/grid-tools.cedar`: the dispatch forbid and the energise-scoped switching forbid, every attribute read guarded by `has` including the nested `flood_check has intersects`, the contact-data forbid, one permit per tool keyed on the role claim, a requirement-ID comment on every statement, and no approval action anywhere _Requirements: 12.1, 12.2, 12.3, 12.4, 12.8, 10.8_ _Design: §10.2_
+- [x] 58. [platform-engineer] Write `gateway/policies/grid-tools.cedar`: the dispatch forbid and the energise-scoped switching forbid, every attribute read guarded by `has` including the nested `flood_check has intersects`, the contact-data forbid, one permit per tool keyed on the role claim, a requirement-ID comment on every statement, and no approval action anywhere _Requirements: 12.1, 12.2, 12.3, 12.4, 12.8, 10.8_ _Design: §10.2_
 
-- [ ] 59. [platform-engineer] Write the Cedar schema mirror generator: build `gateway/policies/schema/gateway-schema.json` from the seven **subset** `tool_spec.json` files only, carrying types and requiredness and no enums or patterns _Requirements: 12.6, 12.7_ _Design: §10.4_
+- [x] 59. [platform-engineer] Write the Cedar schema mirror generator: build `gateway/policies/schema/gateway-schema.json` from the seven **subset** `tool_spec.json` files only, carrying types and requiredness and no enums or patterns _Requirements: 12.6, 12.7_ _Design: §10.4_
 
 - [ ] 60. [qa-eval-engineer] Write `policy/test_cedar_matrix.py`: all 21 rows of §10.5, including `de_energise` allowed with `intersects: true`, with no `flood_check` at all, and while the feed is stale or unknown; `energise` denied without `flood_check` and without nested `intersects`; the unlisted tool; and the hypothetical approval action _Requirements: 12.7, 12.3, 12.4_ _Design: §10.5_
 

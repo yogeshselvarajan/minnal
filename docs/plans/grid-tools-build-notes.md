@@ -389,3 +389,60 @@ behaviour. After blocker 2 it correctly receives `ConflictError`, so this single
 committed test now fails; flagged for the qa lane to update to
 `pytest.raises(ConflictError)` and assert `code=="CONFLICT"` / `retryable is True`.
 All other 253 tests in tests/tools pass; ruff check/format and mypy gateway/tools green.
+
+## Wave 5 (Policy) — platform lane, tasks 58 & 59
+
+### Task 58 — `gateway/policies/grid-tools.cedar` (R12.1, 12.2, 12.3, 12.4, 12.8, 10.8; design §10.2)
+
+Authored the deterministic Safety_Policy: two `[SAFETY]` forbids (dispatch_crew;
+propose_switching scoped to `action == "energise"`), one contact-data forbid on
+record_outage, and three permits (one shared `action in [...]` for the five
+read-ish tools, one dispatch-role permit, one commander-role permit) — seven
+tools permitted in total, keyed on the `minnal_role` JWT tag. Every statement
+carries a requirement-ID comment (so task 61 `test_every_statement_cites_a_requirement`
+binds). No approval action anywhere (R11.2). Default-deny + forbid-wins engine
+semantics are the safety net; the tools re-check everything (R12.8).
+
+**Deviation from §10.2's literal text (logged in decisions-log):** §10.2 writes
+each forbid as a `||`-of-negations (`!(has x) || … || fc.intersects == true`).
+cedarpy's `validate_policies` (strict) rejects that form against the *truthful*
+mirror because it cannot prove the optional `context.input.flood_check.intersects`
+read is safe unless a `has` guard precedes it in a **conjunction**. I rewrote both
+forbids to the De Morgan dual
+`!( has sfc && sfc like "sfc_*" && has fc && fc has intersects && fc.intersects == false )`
+(energise keeps its `action == "energise" &&` scope). This is semantically
+identical — verified against all 21 §10.5 rows — and now strict-validates with 0
+errors. The alternative (declaring the mirror fields *required*) was rejected
+because it would falsify §10.4's rule that requiredness comes only from the subset
+spec, and propose_switching declares `safety_clearance_id`/`flood_check` optional
+(R10.8). A comment on the dispatch forbid records the dual so a future editor does
+not "tidy" it back into the erroring `||` form.
+
+### Task 59 — `gateway/policies/generate_schema.py` + `schema/gateway-schema.json` (R12.6, 12.7; design §10.4)
+
+Generator reads the **seven** Gateway-tool subset `tool_spec.json` files only and
+builds the Cedar schema mirror: entity types `AgentCore::OAuthUser` (string-valued
+`tags`, empty shape) and `AgentCore::Gateway`; one action per tool named
+`<kebab-tool>-target___<tool>`; a `context.input` `Record` per action carrying
+**types and requiredness only**. JSON-Schema → Cedar map: `string→String`,
+`boolean→Boolean`, `integer`/`number`→`Long` (Cedar has one integral type and no
+float; no condition does arithmetic), `object→Record` (recursed, requiredness from
+each object's own `required` list), `array→Set` with an `element` type. No enums,
+patterns, descriptions, `additionalProperties`, `minimum` or `maxItems` reach the
+mirror — asserted in a throwaway check. Output is `json.dumps(sort_keys=True,
+indent=2)` + trailing newline, so a second run is byte-identical (sha256 stable).
+dispatch_crew's mirror carries `safety_clearance_id`+`flood_check` as required
+(nested `intersects` required); propose_switching carries them optional with
+`action` required — exactly what the two forbids read.
+
+### Verification (both tasks, all green)
+- `format_policies` parses the policy set; `validate_policies` passes with 0 errors
+  against the generated mirror.
+- All 21 §10.5 matrix rows evaluate to the specified Allow/Deny via
+  `cedarpy.is_authorized(request, policies, entities, schema)` (rows that omit a
+  required field surface as `NoDecision`, i.e. not-Allow = deny; Allow rows use
+  fully-populated required contexts). de_energise allowed with a hit / no
+  flood_check / no clearance / stale / unknown (rows 9,16,20,21).
+- Generator run twice → identical sha256 (deterministic).
+- `ruff check gateway` clean; `ruff format --check gateway` clean.
+- `pytest -q tests/tools` → 256 passed (imports intact; no tests added here).

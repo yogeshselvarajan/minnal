@@ -133,3 +133,9 @@ Blockers, deviations and decisions recorded during the autonomous build of the `
 ## Deferred / optional tasks
 
 Optional `- [ ]*` tasks (65.1 KMS CMK, 70.1 geofence collection, 73.5 CMK test, 78.1/78.2/78.3, 79.1 perf benchmarks) implement `[DEFERRED]` criteria and do not gate.
+
+## Wave 3 (ports and adapters) — geo-data lane
+
+- Task 32: `_shared/ports.py` — every §4.2 Protocol plus the frozen boundary value objects both adapter sets share (FloodApplyResult, Outage, OutageDraft, CreateOutageResult, StoredFloodCheck, Clearance/ClearanceDraft, StoredRoute, Proposal, CreateProposalResult, RecordedDecision, DecisionWriteResult, StartedWorkOrder, ProviderRoute, and the `Ports` bundle). The tool `logic.py` modules keep their own local dataclasses (Clearance/StoredRoute/Crew in dispatch, etc.); the port types are the store-boundary shapes the adapters exchange, matched to §7.2 items so the Wave-3 qa adapter tests bind cleanly.
+- Task 33.2: local `graph` route mode degrades to a straight segment when the shipped OSM extract has no road ways (see decisions-log 2026-09-28). Safe by the mandatory route re-test (P1).
+- `_shared/events.py` added as the shared event-envelope builder + jsonschema validator used by both the local `ListEventPublisher` and the AWS EventBridge publisher, so the same schema check runs in both modes (§11.5, R13.3, P30).

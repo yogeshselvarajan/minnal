@@ -109,10 +109,10 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 - [x] 32. [geo-data-engineer] Write `_shared/ports.py`: every Protocol from §4.2, including the snapshot contract on `FloodStore`, `close_outage`, `open_outages_under`, `release_crew_lock` and `mark_clearance_used` _Requirements: 3.6, 3.11, 9.10, 18.3_ _Design: §4.2_
 
-- [ ] 33. [geo-data-engineer] Local adapters _Requirements: 17.1, 17.2, 17.3, 17.4_ _Design: §15.1, §15.2, §15.3, §8.12_
-  - [ ] 33.1 [geo-data-engineer] Write `_shared/adapters/local.py` store side: the in-memory and file-backed stores with conditional writes and all-or-nothing transactions, atomic file replacement, and the §15.2 layout _Requirements: 17.1, 17.2_ _Design: §15.1, §15.2_
-  - [ ] 33.2 [geo-data-engineer] Write the local `RouteProvider` with all three modes: `straight`, `graph` removing road edges that intersect buffered hazards, and `adversarial` returning unsafe lines _Requirements: 17.3_ _Design: §8.12_
-  - [ ] 33.3 [geo-data-engineer] Write `InProcessWorkOrder`, `LocalTokenVault` and `ListEventPublisher` with schema validation, plus `tick()` driving the expirer logic _Requirements: 17.4_ _Design: §15.3_
+- [x] 33. [geo-data-engineer] Local adapters _Requirements: 17.1, 17.2, 17.3, 17.4_ _Design: §15.1, §15.2, §15.3, §8.12_
+  - [x] 33.1 [geo-data-engineer] Write `_shared/adapters/local.py` store side: the in-memory and file-backed stores with conditional writes and all-or-nothing transactions, atomic file replacement, and the §15.2 layout _Requirements: 17.1, 17.2_ _Design: §15.1, §15.2_
+  - [x] 33.2 [geo-data-engineer] Write the local `RouteProvider` with all three modes: `straight`, `graph` removing road edges that intersect buffered hazards, and `adversarial` returning unsafe lines _Requirements: 17.3_ _Design: §8.12_
+  - [x] 33.3 [geo-data-engineer] Write `InProcessWorkOrder`, `LocalTokenVault` and `ListEventPublisher` with schema validation, plus `tick()` driving the expirer logic _Requirements: 17.4_ _Design: §15.3_
 
 - [ ] 34. [geo-data-engineer] AWS adapters _Requirements: 1.10, 3.2, 3.6, 3.11, 3.12, 7.1, 7.6, 7.7, 11.1, 13.2, 13.3, 18.3_ _Design: §7.3, §7.4, §8.11, §11.4_
   - [ ] 34.1 [geo-data-engineer] Write the DynamoDB adapter: the §7.2 item shapes, the §7.3 access patterns, the §7.4 conditional writes and transactions, and the large-geometry S3 fallback _Requirements: 3.6, 4.1, 4.11, 9.2, 9.6, 18.3_ _Design: §7.2, §7.3, §7.4_

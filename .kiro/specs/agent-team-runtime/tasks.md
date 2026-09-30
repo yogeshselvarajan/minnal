@@ -640,11 +640,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Final checkpoint
 
-- [ ] 77. The property coverage guard
+- [x] 77. The property coverage guard
   - _Requirements: 25.1, 25.2, 25.3, 25.4, 25.5, 25.6, 25.7, 25.8, 25.9, 25.10, 25.11_ §21.4, §21.3 [qa-eval-engineer]
-  - [ ] 77.1 Write `tests/agents/properties/test_coverage_guard.py` parsing the `Property N` headings in `design.md` and the collected `test_property_P*` tests and failing unless they correspond one to one, and failing on any `Validates: Requirements` reference to a criterion absent from `requirements.md`, expanding matrix ranges per the §21.6 format contract
+  - [x] 77.1 Write `tests/agents/properties/test_coverage_guard.py` parsing the `Property N` headings in `design.md` and the collected `test_property_P*` tests and failing unless they correspond one to one, and failing on any `Validates: Requirements` reference to a criterion absent from `requirements.md`, expanding matrix ranges per the §21.6 format contract
     - _Requirements: 25.1, 25.2, 25.10, 25.11_ §21.4 [qa-eval-engineer]
-  - [ ] 77.2 Assert the profile and marker rules: at least 200 examples under `default` and `ci`, `ci` derandomised with no committed database, a `quick` profile of 50 for local use only, one known-bad `@example` per property test, `@pytest.mark.safety` on every `[SAFETY]` property with a failure blocking the gate, adversarial model and tool strategies present, and sockets blocked for the whole suite
+  - [x] 77.2 Assert the profile and marker rules: at least 200 examples under `default` and `ci`, `ci` derandomised with no committed database, a `quick` profile of 50 for local use only, one known-bad `@example` per property test, `@pytest.mark.safety` on every `[SAFETY]` property with a failure blocking the gate, adversarial model and tool strategies present, and sockets blocked for the whole suite
     - _Requirements: 25.3, 25.4, 25.5, 25.6, 25.7, 25.8, 25.9_ §21.2, §21.3, §21.4 [qa-eval-engineer]
 
 - [ ] 78. **Checkpoint: ensure all tests pass.** Run `scripts/spec-complete.sh agent-team-runtime && uv run ruff check patterns gateway && uv run pytest -q tests/agents tests/tools`, then `uv run pytest -m safety`, then the offline acceptance command `uv run python -m patterns.agui_minnal.offline.replay_runner --fixture data/fixtures/replay-michaung-style.jsonl --seed 20231205 --script honest_baseline --period 1`, then the coverage-guard test, then `cdk synth`

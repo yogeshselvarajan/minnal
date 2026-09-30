@@ -58,11 +58,11 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 7.2 Write `patterns/agui-minnal/agui/validate.py` (pure) validating an event against its schema before emit
     - _Requirements: 18.8_ §12.3 [agent-engineer]
 
-- [ ] 8. Domain event schemas
+- [x] 8. Domain event schemas
   - _Requirements: 12.7, 12.8, 12.9_ §16.4, §16.5 [geo-data-engineer]
-  - [ ] 8.1 Write `gateway/schemas/events/DeviceSuspected.v1.json` with the payload built from the `trace_upstream_device` result: `device_id`, `device_type`, `path_from_substation`, `outage_ids` and `customers_downstream_reporting_pct`
+  - [x] 8.1 Write `gateway/schemas/events/DeviceSuspected.v1.json` with the payload built from the `trace_upstream_device` result: `device_id`, `device_type`, `path_from_substation`, `outage_ids` and `customers_downstream_reporting_pct`
     - _Requirements: 12.7, 12.8, 12.9_ §16.4 [geo-data-engineer]
-  - [ ] 8.2 Write `gateway/schemas/events/JobCompleted.v1.json` carrying `proposal_id`, `device_id`, `crew_id` and `completed_by`, so a later human action needs no `.v2`
+  - [x] 8.2 Write `gateway/schemas/events/JobCompleted.v1.json` carrying `proposal_id`, `device_id`, `crew_id` and `completed_by`, so a later human action needs no `.v2`
     - _Requirements: 12.8_ §16.5 [geo-data-engineer]
 
 - [x] 9. Verify the schemas
@@ -478,7 +478,7 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 58.3 Write the `agui-stream.jsonl` writer assigning a monotonic `seq` per event, enabled offline and by `MINNAL_EVENT_CAPTURE` in `aws` mode
     - _Requirements: 22.7_ §12.5 [agent-engineer]
 
-- [ ] 59. Verify the glass box
+- [x] 59. Verify the glass box
   - _Requirements: 11.7, 18.2, 18.8, 18.9, 18.10, 18.11_ §20, §12.3 [qa-eval-engineer]
   - [x] 59.1 Write property test for Property 58
     - **Property 58: every glass-box event validates and carries no personal data [SAFETY]**

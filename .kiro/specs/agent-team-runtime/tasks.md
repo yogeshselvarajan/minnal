@@ -586,9 +586,9 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 70.4 Write `evals/agent-team-runtime/evaluators/commander_never_claims_approval.py` scanning the objectives and narrative for an approval claim unsupported by a `get_proposal_status` result in the same period
     - _Requirements: 23.4_ §17.3 [qa-eval-engineer]
 
-- [ ] 71. The offline eval runner
+- [x] 71. The offline eval runner
   - _Requirements: 23.1, 23.5_ §17.4, §17.5 [qa-eval-engineer]
-  - [ ] 71.1 Write `evals/agent-team-runtime/runner.py` running every case offline with Scripted_Models and no AWS call, writing `report.json` and exiting non-zero on any hard-rule violation, plus `baseline.json` holding the offline scores and null cloud slots
+  - [x] 71.1 Write `evals/agent-team-runtime/runner.py` running every case offline with Scripted_Models and no AWS call, writing `report.json` and exiting non-zero on any hard-rule violation, plus `baseline.json` holding the offline scores and null cloud slots
     - _Requirements: 23.1, 23.5_ §17.4, §17.5 [qa-eval-engineer]
 
 - [ ]* 72. Deferred cloud evaluations

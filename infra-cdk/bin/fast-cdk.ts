@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib"
 import { FastMainStack } from "../lib/fast-main-stack"
+import { MinnalAgentTeamStack } from "../lib/minnal-agent-team-stack"
 import { ConfigManager } from "../lib/utils/config-manager"
 
 // Load configuration using ConfigManager
@@ -17,6 +18,17 @@ const amplifyStack = new FastMainStack(app, props.stack_name_base, {
   env: { 
     account: process.env.CDK_DEFAULT_ACCOUNT, 
     region: process.env.CDK_DEFAULT_REGION 
+  },
+})
+void amplifyStack
+
+// The agent-team-runtime infrastructure stack (agent-team-runtime spec §19). Synth-only:
+// `cdk synth` + cdk-nag, never `cdk deploy`.
+new MinnalAgentTeamStack(app, `${props.stack_name_base}-agent-team`, {
+  config: props,
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
   },
 })
 

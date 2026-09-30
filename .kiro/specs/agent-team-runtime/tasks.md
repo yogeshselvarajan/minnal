@@ -600,13 +600,13 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 9: infrastructure, synth only
 
-- [ ] 73. Runtime and identity constructs
+- [x] 73. Runtime and identity constructs
   - _Requirements: 24.1, 24.2, 24.8_ §19.2, §19.3 [platform-engineer]
-  - [ ] 73.1 Write `AgentTeamRuntimeConstruct` creating the AgentCore Runtime for pattern `agui-minnal` with `ServerProtocol: AGUI`, a 900-second session timeout, the container image and the environment variables, taking every value from `infra-cdk/config.yaml`
+  - [x] 73.1 Write `AgentTeamRuntimeConstruct` creating the AgentCore Runtime for pattern `agui-minnal` with `ServerProtocol: AGUI`, a 900-second session timeout, the container image and the environment variables, taking every value from `infra-cdk/config.yaml`
     - _Requirements: 24.1, 24.8_ §19.2 [platform-engineer]
-  - [ ] 73.2 Write `RoleIdentityConstruct` creating five Cognito app clients with the client-credentials flow, the pre-token Lambda registered at trigger version `V3_0`, the user pool on the Essentials tier, and an SSM parameter per role client id
+  - [x] 73.2 Write `RoleIdentityConstruct` creating five Cognito app clients with the client-credentials flow, the pre-token Lambda registered at trigger version `V3_0`, the user pool on the Essentials tier, and an SSM parameter per role client id
     - _Requirements: 24.2_ §19.3 [platform-engineer]
-  - [ ] 73.3 Write the pre-token Lambda mapping `callerContext.clientId` to a role from an SSM-sourced map and returning `claimsToAddOrOverride` with `minnal_role`, containing no secret and no business logic
+  - [x] 73.3 Write the pre-token Lambda mapping `callerContext.clientId` to a role from an SSM-sourced map and returning `claimsToAddOrOverride` with `minnal_role`, containing no secret and no business logic
     - _Requirements: 24.2_ §19.3 [platform-engineer]
 
 - [ ] 74. Targets, storage and memory

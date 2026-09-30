@@ -4,8 +4,13 @@ import { Construct } from "constructs"
 import { AppConfig } from "./utils/config-manager"
 import { loadModelIds } from "./utils/bedrock-model-allowlist"
 import { AgentCoreRole } from "./utils/agentcore-role"
+import * as ssm from "aws-cdk-lib/aws-ssm"
 import { AgentTeamRuntimeConstruct } from "./agent-team-runtime-construct"
 import { RoleIdentityConstruct } from "./role-identity-construct"
+import { ReadToolsConstruct } from "./read-tools-construct"
+import { GatewayExtrasConstruct } from "./gateway-extras-construct"
+import { PeriodTableConstruct } from "./period-table-construct"
+import { TeamMemoryConstruct } from "./team-memory-construct"
 
 export interface MinnalAgentTeamStackProps extends cdk.StackProps {
   config: AppConfig
@@ -47,16 +52,30 @@ export class MinnalAgentTeamStack extends cdk.Stack {
       `${this.account}.dkr.ecr.${this.region}.${this.urlSuffix}/` +
       `minnal-${atr.env}-agent-team:latest`
 
-    // Resource names this spec owns; the concrete table and memory are created in task 74.
-    const periodTableName = `minnal-${atr.env}-${atr.period_table.component}`
-    const memoryId = `minnal-${atr.env}-agent-team-memory`
+    // Storage this spec owns: the period table (KMS CMK, PITR, TTL) and the Memory resource.
+    const periodTable = new PeriodTableConstruct(this, "PeriodTable", { config })
+    const memory = new TeamMemoryConstruct(this, "TeamMemory", {
+      config,
+      memoryExecutionRoleArn: runtimeRole.roleArn,
+    })
+
+    // The Gateway identifier is published by the Gateway stack as an SSM parameter and
+    // imported here as a token, so no ARN or id is hard-coded (R24.8).
+    const gatewayIdentifier = ssm.StringParameter.valueForStringParameter(
+      this,
+      `/${config.stack_name_base}/gateway_id`
+    )
+
+    // The four read-tool Lambdas + their Gateway targets, and the extra Gateway targets.
+    new ReadToolsConstruct(this, "ReadTools", { config, gatewayIdentifier })
+    new GatewayExtrasConstruct(this, "GatewayExtras", { config, gatewayIdentifier })
 
     new AgentTeamRuntimeConstruct(this, "Runtime", {
       config,
       runtimeRole,
       containerImageUri,
-      periodTableName,
-      memoryId,
+      periodTableName: periodTable.table.tableName,
+      memoryId: memory.memory.attrMemoryId,
     })
 
     void identity

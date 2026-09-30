@@ -609,15 +609,15 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [x] 73.3 Write the pre-token Lambda mapping `callerContext.clientId` to a role from an SSM-sourced map and returning `claimsToAddOrOverride` with `minnal_role`, containing no secret and no business logic
     - _Requirements: 24.2_ §19.3 [platform-engineer]
 
-- [ ] 74. Targets, storage and memory
+- [x] 74. Targets, storage and memory
   - _Requirements: 21.7, 24.3, 24.4, 24.5, 24.8_ §19.4, §19.1 [platform-engineer]
-  - [ ] 74.1 Write `ReadToolsConstruct` creating the four read-tool Lambdas, their Gateway targets named `<tool-in-kebab>-target`, and one IAM role per function scoped to read actions only on the `grid-tools` table and index ARNs plus `kms:Decrypt`
+  - [x] 74.1 Write `ReadToolsConstruct` creating the four read-tool Lambdas, their Gateway targets named `<tool-in-kebab>-target`, and one IAM role per function scoped to read actions only on the `grid-tools` table and index ARNs plus `kms:Decrypt`
     - _Requirements: 24.3, 24.5_ §19.4, §19.5 [platform-engineer]
-  - [ ] 74.2 Write `GatewayExtrasConstruct` creating the Open-Meteo OpenAPI target and the knowledge-base target with the `GATEWAY_IAM_ROLE` credential provider and its required `service` field
+  - [x] 74.2 Write `GatewayExtrasConstruct` creating the Open-Meteo OpenAPI target and the knowledge-base target with the `GATEWAY_IAM_ROLE` credential provider and its required `service` field
     - _Requirements: 24.3_ §19.4 [platform-engineer]
-  - [ ] 74.3 Write `PeriodTableConstruct` creating `minnal-<env>-periods` with point-in-time recovery, a KMS customer managed key, TTL and the removal policy from config
+  - [x] 74.3 Write `PeriodTableConstruct` creating `minnal-<env>-periods` with point-in-time recovery, a KMS customer managed key, TTL and the removal policy from config
     - _Requirements: 24.5, 24.8_ §19.1 [platform-engineer]
-  - [ ] 74.4 Write `TeamMemoryConstruct` creating the Memory resource with the incident and lessons namespaces
+  - [x] 74.4 Write `TeamMemoryConstruct` creating the Memory resource with the incident and lessons namespaces
     - _Requirements: 24.4_ §19.1 [platform-engineer]
   - [ ]* 74.5 Register the agents and tools in the AWS Agent Registry
     - _Requirements: 21.7_ §19.1 [platform-engineer]

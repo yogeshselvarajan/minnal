@@ -575,15 +575,15 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
 
 ## Wave 8: evaluations
 
-- [ ] 70. Datasets and the hard-rule evaluators
+- [x] 70. Datasets and the hard-rule evaluators
   - _Requirements: 23.1, 23.2, 23.3, 23.4_ §17.1, §17.2, §17.3 [qa-eval-engineer]
-  - [ ] 70.1 Write the per-role datasets `evals/agent-team-runtime/datasets/{commander,hazard,diagnostics,dispatch,safety}.jsonl`, each record naming a fixture slice, a script, a seed and the expected invariant
+  - [x] 70.1 Write the per-role datasets `evals/agent-team-runtime/datasets/{commander,hazard,diagnostics,dispatch,safety}.jsonl`, each record naming a fixture slice, a script, a seed and the expected invariant
     - _Requirements: 23.1_ §17.1, §17.2 [qa-eval-engineer]
-  - [ ] 70.2 Write `evals/agent-team-runtime/evaluators/safety_never_clears_flooded.py` asserting an intersecting or failed `check_flood_geofence` leaves no ledger entry, matching tool names through `normalise_tool_name`
+  - [x] 70.2 Write `evals/agent-team-runtime/evaluators/safety_never_clears_flooded.py` asserting an intersecting or failed `check_flood_geofence` leaves no ledger entry, matching tool names through `normalise_tool_name`
     - _Requirements: 23.2_ §17.3 [qa-eval-engineer]
-  - [ ] 70.3 Write `evals/agent-team-runtime/evaluators/commit_requires_ledger.py` asserting every commit has a same-period ledger entry with the matching clearance, excluding `de_energise` items explicitly and asserting each exemption really was `de_energise`
+  - [x] 70.3 Write `evals/agent-team-runtime/evaluators/commit_requires_ledger.py` asserting every commit has a same-period ledger entry with the matching clearance, excluding `de_energise` items explicitly and asserting each exemption really was `de_energise`
     - _Requirements: 23.3_ §17.3 [qa-eval-engineer]
-  - [ ] 70.4 Write `evals/agent-team-runtime/evaluators/commander_never_claims_approval.py` scanning the objectives and narrative for an approval claim unsupported by a `get_proposal_status` result in the same period
+  - [x] 70.4 Write `evals/agent-team-runtime/evaluators/commander_never_claims_approval.py` scanning the objectives and narrative for an approval claim unsupported by a `get_proposal_status` result in the same period
     - _Requirements: 23.4_ §17.3 [qa-eval-engineer]
 
 - [ ] 71. The offline eval runner

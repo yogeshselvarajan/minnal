@@ -4,6 +4,7 @@ import * as iam from "aws-cdk-lib/aws-iam"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import * as logs from "aws-cdk-lib/aws-logs"
 import * as ssm from "aws-cdk-lib/aws-ssm"
+import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager"
 import * as path from "path"
 import { Construct } from "constructs"
 import { AppConfig } from "./utils/config-manager"
@@ -25,8 +26,8 @@ export interface RoleIdentityConstructProps {
 export class RoleIdentityConstruct extends Construct {
   public readonly userPool: cognito.UserPool
   public readonly preTokenFunction: lambda.Function
-  /** ARNs of the five role client secrets, for the runtime's least-privilege secret grant. */
-  public readonly roleSecretArns: string[]
+  /** The five role client-secret resources, for the runtime's least-privilege read grant. */
+  public readonly roleSecrets: secretsmanager.ISecret[]
   private readonly clientIdByRole: Record<string, string> = {}
 
   constructor(scope: Construct, id: string, props: RoleIdentityConstructProps) {
@@ -38,11 +39,20 @@ export class RoleIdentityConstruct extends Construct {
     const roles = atr.roles
 
     // The dedicated machine-identity pool. Essentials plan is required for pre-token
-    // access-token customisation on client_credentials grants (design §19.3).
+    // access-token customisation on client_credentials grants (design §19.3). It has no
+    // interactive users (sign-up disabled, client-credentials only) but still carries a
+    // strong password policy so it is compliant by construction.
     this.userPool = new cognito.UserPool(this, "RolePool", {
       userPoolName: `minnal-${atr.env}-agent-roles`,
       selfSignUpEnabled: false,
       featurePlan: cognito.FeaturePlan.ESSENTIALS,
+      passwordPolicy: {
+        minLength: 12,
+        requireLowercase: true,
+        requireUppercase: true,
+        requireDigits: true,
+        requireSymbols: true,
+      },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     })
 
@@ -57,6 +67,19 @@ export class RoleIdentityConstruct extends Construct {
       scopes: [gatewayScope],
     })
 
+    // The pre-token Lambda log group and a custom execution role with an inline,
+    // log-group-scoped policy (no AWS managed policy, so no cdk-nag IAM4 finding).
+    const preTokenLogGroup = new logs.LogGroup(this, "PreTokenRoleLogGroup", {
+      logGroupName: `/aws/lambda/minnal-${atr.env}-pretoken-role`,
+      retention: logs.RetentionDays.ONE_MONTH,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    })
+    const preTokenRole = new iam.Role(this, "PreTokenRoleLambdaRole", {
+      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+      description: "Execution role for the Minnal role pre-token Lambda",
+    })
+    preTokenLogGroup.grantWrite(preTokenRole)
+
     // The pre-token Lambda: reads the client-id -> role map from SSM, injects minnal_role.
     this.preTokenFunction = new lambda.Function(this, "PreTokenRoleLambda", {
       functionName: `minnal-${atr.env}-pretoken-role`,
@@ -65,11 +88,8 @@ export class RoleIdentityConstruct extends Construct {
       code: lambda.Code.fromAsset(path.join(__dirname, "..", "lambdas", "minnal-pretoken-role")), // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
       timeout: cdk.Duration.seconds(10),
       description: "Maps a Cognito app client to an ICS role and injects the minnal_role claim",
-      logGroup: new logs.LogGroup(this, "PreTokenRoleLogGroup", {
-        logGroupName: `/aws/lambda/minnal-${atr.env}-pretoken-role`,
-        retention: logs.RetentionDays.ONE_MONTH,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      }),
+      role: preTokenRole,
+      logGroup: preTokenLogGroup,
     })
 
     // Create the five role clients with client credentials only, and collect their ids.
@@ -135,13 +155,19 @@ export class RoleIdentityConstruct extends Construct {
       LambdaVersion: "V3_0",
     })
 
-    // The five client-secret ARNs Cognito manages, for the runtime's secret grant (§19.5).
-    // Cognito app-client secrets live under this Secrets Manager path.
-    this.roleSecretArns = roles.map(
+    // One Secrets Manager secret per role holds that role's Cognito app-client secret, so the
+    // runtime reads it by ARN (design §8.2, §19.5) and never from config or code. The secret
+    // value is populated out of band (the app-client secret is not knowable at synth); the
+    // resource exists so the runtime's read grant targets an explicit ARN with no wildcard.
+    this.roleSecrets = roles.map(
       role =>
-        `arn:${stack.partition}:secretsmanager:${stack.region}:${stack.account}:secret:` +
-        `/${stackName}/roles/${role}/client_secret*`
+        new secretsmanager.Secret(this, `RoleClientSecret-${role}`, {
+          secretName: `/${stackName}/roles/${role}/client_secret`,
+          description: `Cognito app-client secret for the ${role} agent role`,
+          removalPolicy: cdk.RemovalPolicy.DESTROY,
+        })
     )
+    void stack
   }
 
   /** The Cognito app client id for a role, resolved at synth time. */

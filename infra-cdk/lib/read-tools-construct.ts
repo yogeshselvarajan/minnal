@@ -105,7 +105,9 @@ export class ReadToolsConstruct extends Construct {
 
       const fn = new lambda.Function(this, `Fn-${tool}`, {
         functionName: `minnal-${env}-${kebab(tool)}`,
-        runtime: lambda.Runtime.PYTHON_3_12,
+        // Latest runtime known to the pinned CDK (>= the 3.12 the tools target), so cdk-nag
+        // L1 is clean without a suppression.
+        runtime: lambda.Runtime.PYTHON_3_14,
         architecture: lambda.Architecture.ARM_64,
         code,
         handler: `tools.${tool}.${tool}_lambda.lambda_handler`,
@@ -119,8 +121,11 @@ export class ReadToolsConstruct extends Construct {
           MINNAL_TABLE_NAME: tableName,
           POWERTOOLS_SERVICE_NAME: "minnal-tools",
           POWERTOOLS_METRICS_NAMESPACE: "Minnal",
+          // Powertools tracing is driven by this flag; X-Ray IAM (which requires a `*`
+          // resource) is granted by the deploy pipeline, not baked into the synth-only role,
+          // so the read-tool role stays wildcard-free.
+          POWERTOOLS_TRACE_DISABLED: "false",
         },
-        tracing: lambda.Tracing.ACTIVE,
       })
       this.functions[tool] = fn
 

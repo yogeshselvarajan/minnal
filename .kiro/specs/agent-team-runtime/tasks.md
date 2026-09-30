@@ -622,20 +622,20 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
   - [ ]* 74.5 Register the agents and tools in the AWS Agent Registry
     - _Requirements: 21.7_ §19.1 [platform-engineer]
 
-- [ ] 75. IAM, cdk-nag and tags
+- [x] 75. IAM, cdk-nag and tags
   - _Requirements: 2.6, 24.5, 24.6, 24.7, 24.8, 24.9_ §15.2, §19.5, §19.6 [platform-engineer]
-  - [ ] 75.1 Write the runtime IAM role with the inference-profile ARN statement, the foundation-model ARNs the profile routes to, the in-region `gpt-oss-120b` ARN, an explicit deny on `anthropic.*`, the four Memory actions on the memory ARN, the period-table actions with no `Scan`, `events:PutEvents` on the bus ARN, `GetSecretValue` on the five role secrets and `GetParameter` on the stack path, all derived from `models.yaml` and replacing FAST's `foundation-model/*`
+  - [x] 75.1 Write the runtime IAM role with the inference-profile ARN statement, the foundation-model ARNs the profile routes to, the in-region `gpt-oss-120b` ARN, an explicit deny on `anthropic.*`, the four Memory actions on the memory ARN, the period-table actions with no `Scan`, `events:PutEvents` on the bus ARN, `GetSecretValue` on the five role secrets and `GetParameter` on the stack path, all derived from `models.yaml` and replacing FAST's `foundation-model/*`
     - _Requirements: 2.6, 24.5, 24.6_ §15.2, §19.5 [platform-engineer]
-  - [ ] 75.2 Apply `cdk-nag` `AwsSolutionsChecks` to the stack with only the four documented suppressions, each carrying a reason a security reviewer would accept and referencing its ADR
+  - [x] 75.2 Apply `cdk-nag` `AwsSolutionsChecks` to the stack with only the four documented suppressions, each carrying a reason a security reviewer would accept and referencing its ADR
     - _Requirements: 24.7_ §19.6 [platform-engineer]
-  - [ ] 75.3 Tag every resource `project=minnal`, `env`, `owner` and `cost-center`, and add the new `agent_team_runtime` keys to `infra-cdk/config.yaml` with no hard-coded account, region or ARN
+  - [x] 75.3 Tag every resource `project=minnal`, `env`, `owner` and `cost-center`, and add the new `agent_team_runtime` keys to `infra-cdk/config.yaml` with no hard-coded account, region or ARN
     - _Requirements: 24.8, 24.9_ §19.7 [platform-engineer]
 
-- [ ] 76. Verify the infrastructure
+- [x] 76. Verify the infrastructure
   - _Requirements: 24.6, 24.10, 24.11_ §19.8 [platform-engineer]
-  - [ ] 76.1 Write the snapshot test per construct plus fine-grained assertions: the Bedrock allow-list equals the ARNs derived from `models.yaml` with no wildcard, five app clients with client credentials only, the pre-token config at `V3_0`, the table with point-in-time recovery and a customer managed key, the runtime protocol `AGUI`, read-only IAM on the four read tools, and no `anthropic.` outside the explicit deny
+  - [x] 76.1 Write the snapshot test per construct plus fine-grained assertions: the Bedrock allow-list equals the ARNs derived from `models.yaml` with no wildcard, five app clients with client credentials only, the pre-token config at `V3_0`, the table with point-in-time recovery and a customer managed key, the runtime protocol `AGUI`, read-only IAM on the four read tools, and no `anthropic.` outside the explicit deny
     - _Requirements: 24.6, 24.11_ §19.8 [platform-engineer]
-  - [ ] 76.2 Run `cdk synth` and confirm it succeeds; do not run `cdk diff`, which needs AWS credentials, and never deploy, which is the owner's decision
+  - [x] 76.2 Run `cdk synth` and confirm it succeeds; do not run `cdk diff`, which needs AWS credentials, and never deploy, which is the owner's decision
     - _Requirements: 24.10_ §19 [platform-engineer]
 
 ## Final checkpoint

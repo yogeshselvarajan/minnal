@@ -226,8 +226,8 @@ exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
   "Resources": {
     "RoleIdentityPreTokenRoleLambda377ED416": {
       "DependsOn": [
-        "RoleIdentityPreTokenRoleLambdaServiceRoleDefaultPolicy7FB4E111",
-        "RoleIdentityPreTokenRoleLambdaServiceRoleD952FBF5",
+        "RoleIdentityPreTokenRoleLambdaRoleDefaultPolicy4C4CEC67",
+        "RoleIdentityPreTokenRoleLambdaRole8161B6F1",
       ],
       "Properties": {
         "Code": {
@@ -249,7 +249,7 @@ exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
         },
         "Role": {
           "Fn::GetAtt": [
-            "RoleIdentityPreTokenRoleLambdaServiceRoleD952FBF5",
+            "RoleIdentityPreTokenRoleLambdaRole8161B6F1",
             "Arn",
           ],
         },
@@ -277,7 +277,7 @@ exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "RoleIdentityPreTokenRoleLambdaServiceRoleD952FBF5": {
+    "RoleIdentityPreTokenRoleLambdaRole8161B6F1": {
       "Properties": {
         "AssumeRolePolicyDocument": {
           "Statement": [
@@ -291,27 +291,27 @@ exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-        ],
+        "Description": "Execution role for the Minnal role pre-token Lambda",
       },
       "Type": "AWS::IAM::Role",
     },
-    "RoleIdentityPreTokenRoleLambdaServiceRoleDefaultPolicy7FB4E111": {
+    "RoleIdentityPreTokenRoleLambdaRoleDefaultPolicy4C4CEC67": {
       "Properties": {
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "RoleIdentityPreTokenRoleLogGroup36F0D85E",
+                  "Arn",
+                ],
+              },
+            },
             {
               "Action": "ssm:GetParameter",
               "Effect": "Allow",
@@ -321,10 +321,10 @@ exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "RoleIdentityPreTokenRoleLambdaServiceRoleDefaultPolicy7FB4E111",
+        "PolicyName": "RoleIdentityPreTokenRoleLambdaRoleDefaultPolicy4C4CEC67",
         "Roles": [
           {
-            "Ref": "RoleIdentityPreTokenRoleLambdaServiceRoleD952FBF5",
+            "Ref": "RoleIdentityPreTokenRoleLambdaRole8161B6F1",
           },
         ],
       },
@@ -430,6 +430,56 @@ exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
       },
       "Type": "AWS::SSM::Parameter",
     },
+    "RoleIdentityRoleClientSecretcommanderAF0B0211": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the commander agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/commander/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecretdiagnostics1A6BFC12": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the diagnostics agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/diagnostics/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecretdispatch9B1C965D": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the dispatch agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/dispatch/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecrethazardEC7988D3": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the hazard agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/hazard/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecretsafety248D2130": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the safety agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/safety/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
     "RoleIdentityRolePool360B4A81": {
       "DeletionPolicy": "Delete",
       "Properties": {
@@ -459,6 +509,15 @@ exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
               ],
             },
             "LambdaVersion": "V3_0",
+          },
+        },
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 12,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": true,
+            "RequireUppercase": true,
           },
         },
         "SmsVerificationMessage": "The verification code to your new account is {####}",

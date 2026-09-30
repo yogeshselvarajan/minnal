@@ -42,7 +42,15 @@ _FLOOD_SET_VERSION = 7
 class _RecordingEmitter:
     vetoes: list[tuple[str | None, str | None]] = field(default_factory=list)
 
-    def veto(self, *, rule_id: str | None, reason: str, proposal_id: str | None) -> None:
+    def veto(
+        self,
+        *,
+        rule_id: str | None,
+        reason: str,
+        proposal_id: str | None,
+        source: str,
+        **_: object,
+    ) -> None:
         self.vetoes.append((rule_id, proposal_id))
 
     def agent_step(self, node: str, status: str, *, detail: str = "") -> None: ...

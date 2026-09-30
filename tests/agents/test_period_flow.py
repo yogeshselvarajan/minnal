@@ -141,7 +141,9 @@ class _StubRegistry:
 
 
 class _NoOpEmitter:
-    def veto(self, *, rule_id: str | None, reason: str, proposal_id: str | None) -> None: ...
+    def veto(
+        self, *, rule_id: str | None, reason: str, proposal_id: str | None, source: str, **_: object
+    ) -> None: ...
     def agent_step(self, node: str, status: str, *, detail: str = "") -> None: ...
 
 

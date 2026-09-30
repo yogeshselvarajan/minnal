@@ -46,3 +46,30 @@ Blocked:
 - Waves open with two spikes: S1 proves an AG-UI `Custom` event survives the `ag-ui-strands` 0.1.9 adapter stream (OQ1); S2 runs one Converse structured-output call per model against the real §5 schemas (OQ2). Each records an ADR and picks the primary design or the documented fallback.
 
 Next: owner approval to start the build, then Phase 04 wave 0.
+
+## Build resumption — Waves 6–9 (continuation session)
+
+Branch `feat/agent-team-runtime`. Resumed at task 59.2 with Waves 0–5 complete and Wave 6 partial.
+
+Done this session:
+- Task 59.2: fixed the advisory-veto `source` mislabelling (required `source` kwarg threaded through the emitter Protocol/concrete emitter and both veto call sites; the advisory test now asserts `source == "advisory"`). Commit `c344743`. Wave 6 complete except deferred task 64.
+- Task 65: offline `ScriptedModel` (real Strands `Model` ABC) + 13 pure scripts (3 honest, 4 confused, 6 adversarial per STRIDE), split under 400 lines. Commit `13b2f0e`.
+- Task 66: in-process MCP tool server over the 11 handlers via stdio, real Lambda-context tool-name check exercised, `record_outage` registered ingest-only. Commit `d07be8c`.
+
+### BLOCKED — grid-tools Lambda handlers are unimplemented stubs on this branch
+
+**Impact: the offline acceptance scenario (tasks 68.2/68.3/68.4) and Checkpoints 69 and 78 cannot pass in this session.** The replay runner and acceptance test must drive a full period through the real 11-tool path (`check_flood_geofence`, `plan_crew_route`, `rank_restoration_jobs`, `dispatch_crew`, `propose_switching`, `record_outage`, `trace_upstream_device`). On this branch the seven `grid-tools` `*_lambda.py` handler bodies are **empty stubs** (e.g. `gateway/tools/check_flood_geofence/check_flood_geofence_lambda.py` contains only a docstring "Filled in Wave 4 (task 41.4)" — that is the **grid-tools** spec's own wave, not agent-team-runtime). The pure `logic.py` for each IS implemented; only the thin handler wrappers are missing, and they belong to the `grid-tools` spec's lane, which this spec MUST NOT write (steering: "Never ... change grid-tools code except the four read tools").
+
+This spec's own four read-tool handlers (`get_flood_status`, `list_open_outages`, `get_proposal_status`, `list_crews`) ARE implemented and run through the tool server.
+
+**Dependency stubbed behind an interface (autopilot rule):** `offline/tool_server.py` resolves handlers lazily and raises a clear `RuntimeError` naming any unfilled grid-tools handler; the 11-entry map is complete, so the moment grid-tools ships the seven handlers the offline path works with zero change here.
+
+**Consequence for this session:** build everything that does NOT require the seven grid-tools handlers — task 67 (replay runner structure), the parts of task 68 that exercise scripts/read-tools/pure state, Wave 8 evals (offline, ScriptedModels + evaluators over pure logic and read tools), Wave 9 infra (`cdk synth` + cdk-nag, fully independent). Leave the acceptance run (68.2), prompt-injection-through-real-server (68.3), performance (68.4), Checkpoint 69 and the acceptance leg of Checkpoint 78 BLOCKED on grid-tools; tick them only once the seven handlers land. Owner action: implement the seven grid-tools handlers (grid-tools spec) or merge the branch that has them.
+
+### BLOCKED (second gap, surfaced building task 67) — offline period orchestrator not wired
+
+Building the replay runner (task 67) surfaced a second prerequisite gap for a LIVE offline period, on top of the grid-tools handlers:
+1. **Model-node graph executors.** `graph/builder.py::build_period_graph(GraphDeps)` takes nine injected `MultiAgentBase` executors. The four Code_Nodes exist (`graph/nodes/dispatch_commit.py`, `pio_slot.py`, `scribe_slot.py`) and the five role wrappers exist as `roles/*/agent.py::run_*` turns, but the code that WRAPS each role's `run_*`/`run_node_with_repair` turn (plus its `PeriodState` mutation) into a `MultiAgentBase` graph executor, and the code that assembles a real `GraphDeps`, is not present as a concrete artifact. No explicit task in tasks.md carries this wrapping (tasks 48/50/52/53/55 cover the builder, safety logic, commit gate, slots and start-request, but not the model-node executor adapter). It is implied by task 67 step 3 / the design's period orchestrator.
+2. **Stdio transport for `RoleClientRegistry`.** `gateway_clients/registry.py` builds each role's MCPClient over `streamablehttp_client` (HTTP) only; the offline server speaks MCP over stdio, so the registry needs a stdio transport option for offline.
+
+The task-67 runner cleanly stubs both behind an injectable `PeriodBuilder` seam (default `build_offline_period` raises a descriptive `NotImplementedError`), and a live run fails earlier at the grid-tools `record_outage` stub regardless. So the runner structure is complete and correct; a live offline period needs (a) the seven grid-tools handlers, (b) the five model-node executor wrappers + a `GraphDeps` assembler, and (c) a stdio registry transport. Items (b) and (c) are this spec's lane but are not covered by a discrete tasks.md task and are moot for the acceptance run until (a) lands. Recorded for the owner: these should be a follow-up task (or folded into the grid-tools-unblock work) before Checkpoint 69/78 can pass.

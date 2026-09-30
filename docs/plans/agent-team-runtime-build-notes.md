@@ -620,3 +620,112 @@ by the local store's own dir). Confirmed `git check-ignore .local/agent-team-run
 `tests/test_no_claude.py` → 9 passed (offline tree in scan). Import-smoke and both CLI forms run;
 the live acceptance run fails at the expected `record_outage` RuntimeError (exit 1). No tasks
 ticked, no throwaway test files left, no commit (the runner commits after verification).
+
+## 2026-09-29 — Wave 8 evaluations (tasks 70, 71, 72)
+
+Task 70 (datasets + hard-rule evaluators) and task 71 (offline eval runner) built and green
+offline. Task 71's runner (`evals/agent-team-runtime/runner.py`) loads the versioned datasets,
+applies every hard-rule evaluator, aggregates per-role/evaluator scores, writes `report.json`,
+exits non-zero on any violation, and gates on `baseline.json` (a drop of more than five points
+fails, per testing.md and the offline half of R23.6). All of that is proven by
+`tests/evals/test_runner.py` over hand-built `EvalRun` audits injected through the `CaseRunner`
+seam.
+
+BLOCKED (live-period half of 71.1, behind the injectable `CaseRunner` seam): producing an
+`EvalRun` from a real offline period (`run_case_offline`) needs the seven grid-tools `*_lambda.py`
+handlers (grid-tools lane, not this spec) and the offline period orchestrator (the five model-node
+graph executors + a stdio `RoleClientRegistry` transport) — the same gap task 67/68 hit. The
+default `CaseRunner` delegates to `replay_runner.build_offline_period` and raises the documented
+`NotImplementedError`, so a live `python evals/agent-team-runtime/runner.py` fails loudly (exit 1)
+rather than scoring a partial period. Owner action: land the seven grid-tools handlers and the
+period orchestrator, then the runner scores real periods with zero change here.
+
+Task 72 (`[DEFERRED]` 72.1, 72.2): AgentCore Evaluations cloud run and the built-in
+helpfulness/correctness model-judge evaluators. Deferred by requirements.md (R23.6, R23.7 are
+`[DEFERRED]`) and cannot run offline — they need a judge model and a live period. Left unticked;
+`baseline.json` already carries the `null` `cloud` slots for both tiers. No code written.
+
+
+### Wave 9 (infra, tasks 73–76) — platform-engineer notes
+
+- All four tasks (73, 74, 75, 76) implemented, tested and committed. 50 jest tests pass
+  (`cd infra-cdk && node_modules/.bin/jest`); type-check clean (`node_modules/.bin/tsc`).
+- `cdk synth` succeeds for the agent-team stack:
+  `cd infra-cdk && node_modules/.bin/cdk synth "FAST-stack-agent-team" --exclusively --app "node_modules/.bin/ts-node --prefer-ts-exts bin/fast-cdk.ts"` → exit 0, template written (55 resources).
+- Full-app `cdk synth` (all stacks) cannot complete in this sandbox because FAST's own
+  `FastMainStack` bundles Python Lambdas via Docker and the arm64 image fails to run under
+  emulation ("exec /bin/sh: Exec format error"). This is a pre-existing FAST/environment
+  limitation, out of the infra-cdk agent-team lane; the agent-team stack synthesises cleanly
+  in isolation with `--exclusively`.
+- cdk-nag: the pinned `cdk-nag@3.0.2` diverges from what design §19.6 anticipated. Its
+  per-finding IAM5 id embeds `::`, which the CDK `Validations.acknowledge` API rejects, so an
+  IAM5 finding cannot be suppressed — only avoided. The stack therefore carries NO IAM
+  wildcard (explicit DynamoDB table/index + KMS ARNs; enumerated SSM params; secret reads via
+  grantRead; no X-Ray `*` at synth). The remaining single-verdict suppressions are the design's
+  four exceptions re-expressed for 3.0.2: L1 (pre-token Lambda pinned for V3_0), COG2+COG8
+  (machine-only pool, no interactive users = the design's COG3), and SMG4 (Cognito app-client
+  secrets are Cognito-rotated, not SM-rotated). Recorded in `docs/adr/0008-cdk-nag-suppressions-agent-team.md`.
+  cdk-nag reports ZERO unsuppressed AwsSolutions findings (asserted in
+  `infra-cdk/test/agent-team-verify.test.ts`).
+- cdk-nag is applied and asserted in the verification test (matching the repo's existing
+  `bedrock-model-allowlist.test.ts` pattern) rather than registered in `bin/fast-cdk.ts`,
+  because the cdk-nag 3.0.2 validation plugin throws EISDIR while hashing directory Lambda
+  assets during CLI synth; keeping it out of bin lets `cdk synth` exit 0 while nag is still
+  enforced in the test gate.
+- The runtime image is referenced by ECR URI (not a DockerImageAsset) so synth needs no Docker.
+- Task 74.5 (AWS Agent Registry registration) left unticked: optional/deferred (`[ ]*`).
+
+## 2026-09-29 — Final wave (tasks 77, 78): coverage guard done; Checkpoint 78 acceptance leg BLOCKED
+
+### Task 77 — DONE and ticked (commit `test(properties): add the property coverage guard (task 77)`)
+- `tests/agents/properties/test_coverage_guard.py` (10 checks, all green):
+  77.1 — parses the `### Property N` headings in `design.md` (P40–P61) and the collected
+  `test_property_P*` tests across `tests/agents/properties` and `tests/tools/properties`, and
+  asserts one-to-one correspondence; parses every `**Validates: Requirements**` line and fails on
+  any criterion absent from `requirements.md`; parses the §21.6 matrix first cells, expands the
+  en-dash ranges, strips `` `[S]` ``/`` `[DEFERRED]` ``, and asserts every requirements.md criterion
+  is covered and every `[SAFETY]` criterion maps to a `**P<n>**` property or a named test.
+  77.2 — asserts the §21.3 profiles (`default`/`ci` ≥200 examples, `ci` derandomised with
+  `database=None`, `quick`=50), the `.hypothesis` example DB is gitignored (never committed), a
+  known-bad `@example` on every property test, `pytest.mark.safety` on all twelve `[SAFETY]`
+  property files, the six STRIDE adversarial scripts + injection strategies present, and the
+  suite-wide socket block in `tests/conftest.py`.
+- Coverage-gap fixes (separate `fix`/`test` commits, not folded into task 77):
+  - `fix(tests)`: seven recording-emitter fakes still had the pre-`source` `veto()` signature that
+    commit c344743 obsoleted, so any test reaching `record_safety_veto` raised `TypeError`
+    (P42, P44, P54, test_audit, test_commit_gate, test_period_flow, test_preventive, test_safety_node).
+  - `test(offline)`: added `test_property_P60_offline_determinism` (the P60 owner the guard needs).
+    It proves the runnable clauses — byte-identical §18.5 artefacts for identical recorded state,
+    a changed state changes the bytes, and the INET-socket guard — at the pure serialiser surface,
+    which is complete on-branch. The full live-period stream-equivalence clause stays with the
+    blocked acceptance leg (task 68.2).
+  - `test(read-tools)`: covered `get_flood_status.area_sqm` (69% → 97%), lifting read-tool `logic.py`
+    to the 90% target. Domain coverage is 98% (budgets 92, contracts 99, ids 100, jobs 100,
+    periods 95, precedence 95, untrusted 100).
+
+### Checkpoint 78 — run leg by leg, result recorded; task 78 LEFT UNTICKED
+Command (tasks.md line 650): `scripts/spec-complete.sh agent-team-runtime && ruff check patterns
+gateway && pytest -q tests/agents tests/tools`, then `pytest -m safety`, then the offline
+acceptance `replay_runner ... --script honest_baseline --period 1`, then the coverage-guard test,
+then `cdk synth`.
+
+| Leg | Command | Result |
+|---|---|---|
+| spec-complete | `scripts/spec-complete.sh agent-team-runtime` | FAIL — 11 required tasks open (8, 8.1, 8.2 geo-lane schemas present-but-unticked; 59, 59 verify; **68, 68.1–68.4, 69** the blocked offline-acceptance tasks) |
+| ruff check | `uv run ruff check patterns gateway` | PASS |
+| ruff check (+tests) | `uv run ruff check patterns gateway tests` | PASS |
+| ruff format | `uv run ruff format --check patterns gateway tests` | FAIL only on the 14 KNOWN-BASELINE files (`patterns/utils/{auth,ssm}.py`, twelve `tests/simulator/**`); NO agent-team-runtime file is unformatted |
+| pytest | `uv run pytest -q tests/agents tests/tools` | PASS — 519 passed |
+| safety | `uv run pytest -m safety` | PASS — 58 passed |
+| **acceptance (BLOCKED)** | `replay_runner --script honest_baseline --period 1` | **FAIL/BLOCKED** — exits 1 loudly at fixture ingest: "tool 'record_outage' has no lambda_handler ... its grid-tools handler is not implemented yet on this branch". This is the documented cross-lane blocker (seven grid-tools `*_lambda.py` stubs + the missing model-node executors / stdio registry). Not owned by this spec; must not be faked. |
+| coverage guard | `uv run pytest tests/agents/properties/test_coverage_guard.py` | PASS — 10 passed |
+| cdk synth | `cdk synth FAST-stack-agent-team --exclusively --app "node bin/fast-cdk.js"` | PASS (exit 0). `npx` is absent in this env, and the FAST full-app synth needs Docker; the agent-team stack synths cleanly in isolation. |
+| jest (infra) | `infra-cdk/node_modules/.bin/jest test/agent-team` | PASS — 31 passed, 5 snapshots; cdk-nag AwsSolutions = success |
+
+**Conclusion:** every leg this spec owns passes. The ACCEPTANCE / live-period leg of Checkpoint 78
+is BLOCKED on the grid-tools handlers and the offline period orchestrator (other lanes / a
+follow-up task), so the full command does not fully pass. Per the checkpoint rule, **task 78 is
+left UNTICKED** with this blocker recorded; it is tickable only once the seven grid-tools
+`*_lambda.py` handlers and the five model-node graph executors + stdio registry transport land, at
+which point the replay runner (structure complete, dependency stubbed behind the injectable
+`PeriodBuilder` seam) runs the acceptance scenario with no change here.

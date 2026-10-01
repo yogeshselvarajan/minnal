@@ -142,31 +142,43 @@ def mcp_tool_from_spec(spec: dict[str, object]) -> mcp_types.Tool:
     )
 
 
+#: The two entrypoint names a tool's ``*_lambda.py`` may export, in resolution order. This spec's
+#: four read tools follow the FAST template name ``lambda_handler``; the seven ``grid-tools``
+#: handlers (merged onto the branch) export ``handler``. The offline server accepts either so a
+#: full period exercises every real handler through the same envelope (§18.2).
+_ENTRYPOINT_NAMES: tuple[str, ...] = ("lambda_handler", "handler")
+
+
 @cache
 def _handler(name: str) -> Handler:
-    """Resolve a tool's ``lambda_handler`` lazily, importing its module on first use (§18.2).
+    """Resolve a tool's handler entrypoint lazily, importing its module on first use (§18.2).
+
+    Accepts either ``lambda_handler`` (this spec's read tools, FAST template) or ``handler``
+    (the ``grid-tools`` handlers), in that order, so both conventions on the branch work.
 
     Args:
         name: The bare Gateway tool name; must be a key of :data:`TOOLS`.
 
     Returns:
-        The real ``lambda_handler`` callable from the tool's ``*_lambda.py``.
+        The real handler callable from the tool's ``*_lambda.py``.
 
     Raises:
         KeyError: ``name`` is not a registered tool.
-        RuntimeError: The handler module has no ``lambda_handler`` yet — the seven ``grid-tools``
-            handlers ship as typed stubs until the ``grid-tools`` spec fills them; the error names
-            the tool and its module so the gap is loud, not a silent skip.
+        RuntimeError: The handler module exports neither ``lambda_handler`` nor ``handler`` — the
+            error names the tool and its module so a genuinely unfilled handler is loud, not a
+            silent skip.
     """
     module_path = TOOLS[name]
     module = importlib.import_module(module_path)
-    handler = getattr(module, "lambda_handler", None)
-    if not callable(handler):
-        raise RuntimeError(
-            f"tool {name!r} has no lambda_handler in {module_path!r}: its grid-tools handler is "
-            f"not implemented yet on this branch"
-        )
-    return cast("Handler", handler)
+    for entrypoint in _ENTRYPOINT_NAMES:
+        candidate = getattr(module, entrypoint, None)
+        if callable(candidate):
+            return cast("Handler", candidate)
+    raise RuntimeError(
+        f"tool {name!r} exports no handler entrypoint "
+        f"({' or '.join(_ENTRYPOINT_NAMES)}) in {module_path!r}: its handler is "
+        f"not implemented yet on this branch"
+    )
 
 
 def invoke_tool(name: str, arguments: dict[str, object]) -> dict[str, object]:

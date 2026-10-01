@@ -32,9 +32,7 @@ def get_ssm_parameter(parameter_name: str) -> str:
     Raises:
         ValueError: If the parameter is not found or cannot be retrieved.
     """
-    region = os.environ.get(
-        "AWS_REGION", os.environ.get("AWS_DEFAULT_REGION", "us-east-1")
-    )
+    region = os.environ.get("AWS_REGION", os.environ.get("AWS_DEFAULT_REGION", "us-east-1"))
     ssm = boto3.client("ssm", region_name=region)
     try:
         response = ssm.get_parameter(Name=parameter_name)
@@ -42,6 +40,4 @@ def get_ssm_parameter(parameter_name: str) -> str:
     except ssm.exceptions.ParameterNotFound as err:
         raise ValueError(f"SSM parameter not found: {parameter_name}") from err
     except Exception as e:
-        raise ValueError(
-            f"Failed to retrieve SSM parameter {parameter_name}: {e}"
-        ) from e
+        raise ValueError(f"Failed to retrieve SSM parameter {parameter_name}: {e}") from e

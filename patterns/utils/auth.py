@@ -65,11 +65,7 @@ def extract_user_id_from_context(context: RequestContext) -> str:
         )
 
     # Remove "Bearer " prefix to get the raw JWT token
-    token = (
-        auth_header.replace("Bearer ", "")
-        if auth_header.startswith("Bearer ")
-        else auth_header
-    )
+    token = auth_header.replace("Bearer ", "") if auth_header.startswith("Bearer ") else auth_header
 
     # Decode without signature verification — AgentCore Runtime already validated the token.
     # We use options to skip all verification since this is a trusted, pre-validated token.
@@ -106,9 +102,7 @@ def get_secret(secret_name: str) -> str:
         ValueError: If the secret is not found or cannot be accessed.
         RuntimeError: If there's an AWS service error.
     """
-    region = os.environ.get(
-        "AWS_REGION", os.environ.get("AWS_DEFAULT_REGION", "us-east-1")
-    )
+    region = os.environ.get("AWS_REGION", os.environ.get("AWS_DEFAULT_REGION", "us-east-1"))
     secrets_client = boto3.client("secretsmanager", region_name=region)
 
     try:
@@ -123,13 +117,9 @@ def get_secret(secret_name: str) -> str:
     except secrets_client.exceptions.DecryptionFailureException as err:
         raise RuntimeError(f"Failed to decrypt secret: {secret_name}") from err
     except secrets_client.exceptions.InternalServiceErrorException as err:
-        raise RuntimeError(
-            f"AWS Secrets Manager service error for secret: {secret_name}"
-        ) from err
+        raise RuntimeError(f"AWS Secrets Manager service error for secret: {secret_name}") from err
     except Exception as e:
-        raise RuntimeError(
-            f"Unexpected error retrieving secret {secret_name}: {e!s}"
-        ) from e
+        raise RuntimeError(f"Unexpected error retrieving secret {secret_name}: {e!s}") from e
 
 
 def get_gateway_access_token(user_id: str) -> str:
@@ -159,14 +149,10 @@ def get_gateway_access_token(user_id: str) -> str:
         Exception: If the token request fails or the response is invalid.
     """
     stack_name = os.environ["STACK_NAME"]
-    region = os.environ.get(
-        "AWS_REGION", os.environ.get("AWS_DEFAULT_REGION", "us-east-1")
-    )
+    region = os.environ.get("AWS_REGION", os.environ.get("AWS_DEFAULT_REGION", "us-east-1"))
 
     # nosemgrep: python.lang.security.audit.logging.logger-credential-leak.python-logger-credential-disclosure
-    logger.info(
-        "Getting access token for stack: %s, region: %s", stack_name, region
-    )
+    logger.info("Getting access token for stack: %s, region: %s", stack_name, region)
 
     # Get Cognito configuration from SSM and Secrets Manager
     cognito_domain = get_ssm_parameter(f"/{stack_name}/cognito_provider")
@@ -200,9 +186,7 @@ def get_gateway_access_token(user_id: str) -> str:
     }
 
     # nosemgrep: python.lang.security.audit.logging.logger-credential-leak.python-logger-credential-disclosure
-    logger.info(
-        "Requesting token from: %s", token_url
-    )
+    logger.info("Requesting token from: %s", token_url)
     logger.info("Scopes: %s", data["scope"])
 
     # Request access token from Cognito
@@ -210,13 +194,9 @@ def get_gateway_access_token(user_id: str) -> str:
 
     if response.status_code != HTTP_OK:
         # nosemgrep: python.lang.security.audit.logging.logger-credential-leak.python-logger-credential-disclosure
-        logger.error(
-            "Token request failed: %s", response.status_code
-        )
+        logger.error("Token request failed: %s", response.status_code)
         logger.error("Response: %s", response.text)
-        raise Exception(
-            f"Failed to get access token: {response.status_code} - {response.text}"
-        )
+        raise Exception(f"Failed to get access token: {response.status_code} - {response.text}")
 
     token_data = response.json()
     access_token = token_data.get("access_token")

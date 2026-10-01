@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.example/schemas/agui/minnal.map_update.v1.json",
+  "title": "MinnalMapUpdate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_id", "operational_period", "layer", "feature_collection"],
+  "properties": {
+    "incident_id": { "type": "string", "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "operational_period": { "type": "integer", "minimum": 1 },
+    "layer": {
+      "type": "string",
+      "enum": ["flood_polygons", "outage_clusters", "suspected_devices",
+               "crew_routes", "critical_facilities"]
+    },
+    "operation": { "type": "string", "enum": ["upsert", "remove"], "default": "upsert" },
+    "feature_collection": {
+      "type": "object",
+      "required": ["type", "features"],
+      "properties": {
+        "type": { "type": "string", "const": "FeatureCollection" },
+        "features": { "type": "array" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

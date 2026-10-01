@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "offline": {
+    "safety": {"safety_never_clears_flooded": 1.0},
+    "dispatch": {"commit_requires_ledger": 1.0},
+    "commander": {"commander_never_claims_approval": 1.0}
+  },
+  "cloud": {
+    "_comment": "Populated by the first AgentCore Evaluations run. Deferred: 23.6, 23.7.",
+    "commander": {"helpfulness": null, "correctness": null},
+    "hazard": {"helpfulness": null, "correctness": null},
+    "diagnostics": {"helpfulness": null, "correctness": null},
+    "dispatch": {"helpfulness": null, "correctness": null},
+    "safety": {"helpfulness": null, "correctness": null}
+  }
+}

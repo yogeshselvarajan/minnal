@@ -1,0 +1,764 @@
+# agent-team-runtime — build notes (blockers, design disagreements)
+
+Append-only. Newest at the bottom. Do not edit steering, requirements.md or design.md.
+
+## 2026-09-29 — orchestration start: grid-tools dependency not on the working tree
+
+The kickoff instruction states "grid-tools and replay-simulator are already merged into
+main — reuse their _shared ports, handlers, schemas and fixtures UNCHANGED." Disk reality
+on `main` at orchestration start:
+
+- `simulator/**` IS present and complete (replay-simulator merged). `data/fixtures/replay-michaung-style.jsonl` present.
+- `gateway/tools/**` contains only `sample_tool` — **grid-tools is NOT on the working tree.**
+  There is no `gateway/tools/_shared/ports.py`, no `_shared/adapters/{__init__,local}.py`,
+  no `_shared/flood.py`, no `_shared/geometry.py`, and none of the seven grid-tools
+  `*_lambda.py` handlers (`record_outage`, `trace_upstream_device`, `rank_restoration_jobs`,
+  `plan_crew_route`, `dispatch_crew`, `check_flood_geofence`, `propose_switching`).
+- `docs/plans/autopilot-state.md` confirms this: "Wave 2 of the build is blocked on `grid-tools`
+  shipping `_shared/ports.py`, `_shared/adapters/__init__.py` (`make_ports`) and
+  `_shared/adapters/local.py`, which are specified there but not built (contract change C2)."
+- The remote branch `origin/feat/grid-tools` exists (per kickoff), so the grid-tools work most
+  likely lives there, unmerged.
+
+### Impact
+- Wave 2 (tasks 27–32): the four read tools' `adapters.py` go "over the grid-tools ports"
+  (`_shared/ports.py`) and their tests exercise the shared envelope/idempotency store. These
+  cannot be built or verified against a UNCHANGED grid-tools that is absent.
+- Wave 7 (tasks 66–68): the In_Process_Tool_Server wraps the seven grid-tools `*_lambda.py`
+  handlers; the replay runner calls `make_ports` with `MINNAL_BACKEND=local`. Blocked without
+  grid-tools.
+- Waves 0,1,3,4,5,6,8,9 are largely independent of grid-tools *runtime* code: pure domain,
+  config, schemas, gateway clients, role agents (with fakes), graph, glass box, memory, evals
+  and infra (synth) can proceed with fakes/fixtures per the "stub the dependency behind an
+  interface with a fake" autopilot rule.
+
+### Decision (recorded in decisions-log.md)
+The first delegated sub-agent will attempt to reconcile the working tree with the merged state
+the kickoff asserts (fetch/merge `origin/feat/grid-tools` into the new branch, or confirm it is
+already reachable). If grid-tools genuinely cannot be brought onto the branch in this sandbox,
+Wave 2 and the grid-tools-dependent parts of Wave 7 are recorded as **Blocked** here, their
+tasks left unticked, and the build continues with every independent wave using the fakes the
+spec already prescribes (Scripted_Models, fixtures). This keeps the safety properties, the
+graph, the commit gate and the glass box provable offline.
+
+## 2026-09-29 — Wave 0 agent-engineer lane: STEP 0 grid-tools reconciliation RESOLVED
+
+`git fetch` succeeded in this sandbox (network available). `origin/feat/grid-tools` is
+reachable and carries the full grid-tools tree. Merged it into `feat/agent-team-runtime`
+with `git merge --no-ff` (merge commit `merge(grid-tools): reuse _shared ports, handlers
+and schemas unchanged`). One conflict, in `docs/plans/decisions-log.md` only — both sides
+were append-only log entries, resolved by keeping both. Verified present on the branch:
+`_shared/{ports,flood,geometry}.py`, `_shared/adapters/{__init__,local}.py`, and all seven
+`*_lambda.py` handlers (record_outage, trace_upstream_device, rank_restoration_jobs,
+plan_crew_route, dispatch_crew, check_flood_geofence, propose_switching), plus the six
+gateway/schemas/events/*.v1.json Dispatch*/Switching* schemas.
+**Outcome: grid-tools IS on the branch. Waves 2 and 7 are unblocked.**
+
+### Pre-existing gate baseline (NOT introduced by this lane; other lanes/templates own these)
+- `uv run ruff check patterns gateway tests` reports 14 errors, all in the FAST template
+  files `patterns/utils/auth.py` and `patterns/utils/ssm.py` (from phase-00 import, commit
+  e32ac1e). Out of the agent-team-runtime lane.
+- `uv run ruff format --check patterns gateway tests` reports 15 files would reformat, all
+  pre-existing: `patterns/utils/*`, `patterns/agui-minnal/agent.py` (FAST template) and the
+  `tests/simulator/properties/*` suite (replay-simulator lane).
+- `uv run pytest -q` = 1 failed, 217 passed. The single failure is
+  `tests/test_network_blocked.py::test_connecting_a_socket_to_an_external_address_raises`:
+  the sandbox black-holes external TCP (TimeoutError) instead of refusing, so pytest-socket's
+  RuntimeError never fires. Environment artifact, pre-existing, unrelated to agents.
+
+This lane therefore gates on: **the files it creates** passing `ruff check`/`ruff format`
+and their **own** pytest tests passing. It will not touch template/simulator files owned by
+other lanes.
+
+## 2026-09-29 — Wave 0 Task 4 (OQ2 spike) BLOCKED, fallback adopted
+
+Spike S2 (design §22.5 OQ2) cannot run: this is an offline / no-live-AWS sandbox
+(autopilot hard limit — agents make no live AWS calls). Bedrock model access to
+`openai.gpt-oss-120b-1:0` and `us.amazon.nova-2-lite-v1:0` is unavailable, so no
+`structured_output_async` Converse call was made against either model. Recorded honestly
+as **blocked** in ADR 0006 and the flattened model-facing fallback is adopted
+pre-emptively (correct whether or not the deep schema would be accepted). The spike
+harness (`patterns/agui-minnal/roles/_common/spikes/oq2_structured_output.py`) is the exact
+call it would make, guarded behind `MINNAL_ALLOW_LIVE_BEDROCK=1`; it printed the PlanOut
+Converse tool-input schema at nesting depth 8 with `anyOf` on every optional Item field,
+which is the concrete evidence for the concern. Re-run when Bedrock access exists.
+
+## 2026-09-29 — Wave 0 agent-engineer lane COMPLETE (tasks 1, 3, 4, 5, 7)
+
+All agent-engineer Wave-0 tasks done, one commit each on `feat/agent-team-runtime`:
+- T1 pinned the seven §1.6 runtime deps (strands-agents downgraded 1.57.1->1.42.0,
+  bedrock-agentcore 1.23.1->1.18.1; added ag-ui-strands, mcp, PyJWT[crypto]); requirements.txt
+  already matched uv.lock.
+- T3 spike OQ1 PASS -> ADR 0005 adopts the merged-stream design; a minnal.agent_step Custom
+  event survives the ag-ui-strands adapter stream in order with value intact.
+- T4 spike OQ2 BLOCKED (offline/no Bedrock) -> ADR 0006 adopts the flattened model-facing
+  fallback pre-emptively; stored §5 contracts unchanged.
+- T5 config/settings.py (single Settings, model_for merges default under per-agent, fails
+  naming the role), config/effort.yaml (§6.2 verbatim + citation), config/budgets.yaml
+  (§14.1 verbatim).
+- T7 six minnal.* JSON Schemas + pure agui/validate.py.
+
+Gate state for this lane's files: ruff check + ruff format clean, mypy --strict clean on
+settings.py and validate.py, tests/test_no_claude.py 9 passed, full pytest 217 passed (the
+sole deselected test is the pre-existing environment-artifact tests/test_network_blocked.py).
+
+NOT done in this lane (out of Wave-0 agent-engineer scope, other lanes): T2, T6, T9 are
+qa-eval-engineer; T8 is geo-data-engineer. No push (orchestrator pushes).
+
+## 2026-09-29 — Wave 0 qa-eval-engineer lane COMPLETE (tasks 2, 6, 9)
+
+All qa-eval-engineer Wave-0 tasks done, one commit each on `feat/agent-team-runtime`:
+- T2.1 `tests/agents/conftest.py`: the design §21.3 Hypothesis profiles — `default` and `ci`
+  at 200 examples (`ci` derandomised, `database=None`), `quick` at 50 (local only) — loaded
+  from `HYPOTHESIS_PROFILE`; the `safety` marker registered via `pytest_configure`. Mirrors
+  `tests/simulator/conftest.py` so the two suites' globally-registered profiles compose;
+  socket blocking is inherited from the parent `tests/conftest.py` `_block_network` fixture.
+  The `dev` group already pinned hypothesis, pytest-socket, moto, freezegun, pytest, ruff and
+  mypy, so **no `uv add` was needed** (no `pyproject.toml`/`uv.lock` change). The conftest also
+  adds `patterns/agui-minnal` to `sys.path` (the production and `mypy_path` import root) so
+  `config.settings`/`agui.validate` resolve in tests exactly as in the container.
+- T6.1 `tests/agents/properties/test_property_P59_models_from_config.py`: Property 59, 200+
+  examples, known-bad `@example` on each generative test. T6.2 extended `tests/test_no_claude.py`
+  `SCAN_TARGETS` to name the new trees (roles/graph/gateway_clients/agui/memory/offline and
+  `evals/agent-team-runtime/`); the scanner skips absent trees, so the guard covers each the
+  moment it lands. T6.3 `tests/agents/test_models.py::test_temperatures_and_timeouts` at the
+  `Settings.model_for` layer (the path `build_bedrock_model` reads).
+- T9.1 `tests/agents/test_events.py`: `test_device_suspected_validates`,
+  `test_job_completed_schema_exists`, and a parametrised test over the six `minnal.*` schemas
+  that each rejects a payload missing `incident_id` or `operational_period`.
+
+### Task 9 was NOT blocked
+The kickoff flagged task 9 as possibly blocked on geo-data task 8 (`DeviceSuspected.v1.json`,
+`JobCompleted.v1.json`). Both files were already present on the branch when this lane ran
+(commit `37ab32d`, geo-data lane), so task 9 loaded them from `gateway/schemas/events/` as
+instructed and completed. No schema files were created by this lane.
+
+### Gate state for this lane's files
+`uv run ruff check tests/agents` and `ruff format --check` clean; `uv run pytest -q tests/agents`
+= 13 passed (P59 3, models 1, events 9); `-m safety` deselects all 13 (none of these three
+tasks own a `[SAFETY]` property). The pre-existing baseline is untouched: the 14 `ruff` errors
+remain confined to `patterns/utils/auth.py`/`ssm.py` (FAST template), and
+`tests/test_network_blocked.py` is the known sandbox socket artifact — neither is this lane's.
+No push (orchestrator pushes).
+
+## 2026-09-29 — Wave 1 agent-engineer lane: shared contract module placement (tasks 12, 22, 24)
+
+The design's node contracts (§5) are needed by pure Wave-1 modules that land *before* the
+node-contracts task (24): `domain/jobs.py` (task 12) imports `Item`, `Job`, `SuspectedDevice`,
+`CoveredOutage`, `ProposalDecision`; `domain/precedence.py` (task 22.2) imports `Item`. §3
+marks all of `domain/` pure (no strands), and §5.6 shows `precedence.py` importing its clearance
+types `from .state`. To keep `domain` free of any `strands`/`graph` dependency and to respect
+task order, the shared *value* contracts Wave-1 needs live in a new pure module
+`patterns/agui-minnal/domain/contracts.py` (frozen, extra="forbid", verbatim §5.1/§5.2/§5.3
+field lists). Task 24 extends the contract surface (the node input/output models,
+`SafetyDecision`, `BlockedItem`, `NodeFailure`, `AuditEntry`, `LockedCrew`, `PeriodSummary`,
+`PioIn`, `ScribeIn`, and `reject_safety_fields`) and the per-role `roles/*/schemas.py`, re-using
+these base types rather than redefining them. This is the closest safe reading of "the shared
+contract module" that keeps the purity rule (§3.1) intact.
+
+## 2026-09-29 — grid-tools shape vs §5 contracts: two reconciled differences (task 12)
+
+1. **device_type casing.** grid-tools `trace_upstream_device` returns `DeviceType` capitalised
+   (`Substation`/`Feeder`/`Lateral`/`DT` per `_shared/grid.py`), while the agent-team
+   `SuspectedDevice.device_type` and the `effort.yaml`/`DEVICE_SKILL` keys are lowercase
+   (`substation`/`feeder`/`lateral`/`dt`, §5.3, §6.2). The lowercase form is the agent-team's
+   own contract *after* the diagnostics wrapper normalises the trace group; the pure
+   `assemble_jobs`/`build_switching_items` operate only on the normalised lowercase
+   `SuspectedDevice`. The casing bridge is a wrapper concern (Wave-4, task 39+), not a domain
+   concern — no domain change needed, recorded so the wrapper author maps it.
+2. **`effort_crew_minutes` bound.** grid-tools `Job` uses `Field(gt=0)`; design §5.2 uses
+   `Field(ge=1)`. Identical for integers. `contracts.Job` follows the design (`ge=1`).
+3. **symptom severity (criterion 4.13).** `record_outage/logic.py` `_SEVERITY_ORDER` is
+   `submerged_equipment > downed_wire > sparking > partial_power > no_power`. `jobs.SYMPTOM_SEVERITY`
+   (index 0 = worst) reproduces this exactly; `worst_symptom` uses `min` over the rank, so it
+   matches grid-tools with no drift. No conflict.
+
+## 2026-09-29 — Wave 1 task 22: ClearanceLedgerEntry/VetoRecord live in graph/state.py
+
+§4.2 defines `ClearanceLedgerEntry`, `VetoRecord` and `PeriodState` in `graph/state.py`, and
+the §5.6 `precedence.py` code block imports them `from .state`. Task 22.1 assigns those three
+types to `graph/state.py` explicitly. `domain/precedence.py` (task 22.2) therefore imports them
+`from graph.state import ...`. This is a domain→graph *module* reference but NOT a circular
+import: `graph.state` imports only `domain.budgets.BudgetBook` (runtime) and `domain.contracts.Item`
+(TYPE_CHECKING); `domain.precedence` imports `graph.state` (the veto/clearance value types) and
+`domain.contracts.Item`. No cycle. Both modules are pure (no boto3/botocore/strands), so the
+task-25 AST purity walk over `domain/` and `graph/state.py` still passes, and `mypy_path`
+(pyproject `patterns/agui-minnal`) resolves the cross-package import. `PeriodState.failures`/
+`.audit` are typed `list[object]` for now (the `NodeFailure`/`AuditEntry` contract models land
+in task 24, §5.4); §4.2's forward-ref strings carried the same deferral. mypy --strict clean.
+
+## 2026-09-29 — Wave 1 task 24: shared node-contract module placement + module-size split
+
+Task 24 names "the shared contract module". The base value types it lists (`Item`, `Job`) are
+already in `domain/contracts.py` (task 12) and `ClearanceLedgerEntry` in `graph/state.py`
+(task 22). To keep `domain/` lean and pure and to stay under the 400-line module limit
+(backend-python.md), the split is:
+
+- `domain/contracts.py` (pure) — the base value types domain logic needs: NodeContext, Citation,
+  Item, Job, ProposalDecision, CoveredOutage, SuspectedDevice, HazardPolygonView, SituationPicture,
+  CrewView, VetoFeedback, BlockedItem, CommittedProposal, SafetyDecision, NodeFailure, AuditEntry,
+  LockedCrew, and `reject_safety_fields` (+ `_walk_keys`), the shared pre-validator. All frozen,
+  extra="forbid".
+- `roles/_common/contracts.py` (the shared node-contract module) — the per-node input/output
+  contracts (ObjectivesIn/Out, HazardIn/SituationPicture use, DiagnosticsIn/Out, PlanIn/PlanOut,
+  SafetyIn/SafetyOut, CommitIn/CommitOut), PeriodSummary, and the slot inputs PioIn/ScribeIn +
+  SlotResult, importing the base value types from `domain.contracts` and the clearance/veto types
+  from `graph.state`. `reject_safety_fields` is applied there as a pre-validator on every
+  model-node OUTPUT model (ObjectivesOut, the model-facing PlanDraft/SafetyDraft, HazardOut...).
+- `roles/<role>/schemas.py` — each role re-exports its own node's input/output models from the
+  shared module and defines its model-facing (flattened, ADR 0006) output model carrying
+  `reject_safety_fields`, so the role package matches backend-python.md's per-role layout.
+
+reject_safety_fields runs as a `@model_validator(mode="before")` so it fires inside
+structured_output_async and the SDK feeds the named security reason back to the model (§7.4).
+
+## Checkpoint 26 — ruff-cleaning the FAST template `patterns/utils`
+
+Checkpoint 26's literal gate (`ruff check patterns gateway`) surfaced 14 pre-existing
+lint errors, all confined to the FAST template files `patterns/utils/auth.py` and
+`patterns/utils/ssm.py` (imported in phase 00, not owned by any agent-team-runtime lane).
+Fixed the closest-safe, behaviour-preserving way and committed separately from any task:
+
+- **B904** (7×) — added `from err` / `from e` to the `raise` statements inside `except`
+  clauses in `ssm.get_ssm_parameter` and `auth.get_secret`. Only sets `__cause__`; the
+  exception types and messages raised are unchanged.
+- **RUF010** (1×, auto-fixed) — `{str(e)}` → `{e!s}` in `auth.get_secret`. Equivalent.
+- **PLR2004** (1×) — replaced the magic `200` in `if response.status_code != 200:` with a
+  module-level `HTTP_OK = 200` constant. Same comparison.
+- **E501** on multi-line statements (4×) — moved three `# nosemgrep:` directives from the
+  trailing `)` onto the line immediately preceding the `logger` call (semgrep honours the
+  directive on the preceding line); reflowed the `verify_signature` directive's prose reason
+  onto extra comment lines. No code behaviour change.
+- **E501 that cannot be shortened without a behaviour change** — three `# nosemgrep:` comment
+  lines whose fully-qualified rule ID
+  (`python.lang.security.audit.logging.logger-credential-leak.python-logger-credential-disclosure`)
+  is itself >100 chars and must stay intact on one line for the security scanner. Rather than
+  break the directive, added a **scoped `per-file-ignores` entry** in `pyproject.toml` exempting
+  only `patterns/utils/auth.py` from `E501`; every other rule still applies to that file. This
+  is the config equivalent of a scoped `# noqa: E501` and changes no runtime behaviour.
+
+Note: `ruff format --check` on these two vendored template files was already failing before this
+change (pre-existing multi-line style the FAST template shipped). The checkpoint command is
+`ruff check` (not `format`), which now passes; format was left untouched to keep the diff minimal.
+
+Checkpoint-26 result — all four commands green:
+- `uv run ruff check patterns gateway` → All checks passed!
+- `uv run mypy patterns/agui-minnal/domain` → Success: no issues found in 8 source files
+- `uv run pytest -q tests/agents` → 115 passed
+- `uv run pytest -m safety` → 41 passed, 292 deselected
+
+Known environment artifact (out of checkpoint scope): `tests/test_network_blocked.py::
+test_connecting_a_socket_to_an_external_address_raises` fails because the sandbox black-holes
+external TCP (TimeoutError, not RuntimeError). Not under `tests/agents` and not marked `safety`,
+so it does not affect steps 3–4; left untouched.
+
+## 2026-09-29 — Wave 2 geo-data-engineer lane: the four read-only tools (tasks 27–30)
+
+Reconciliations between the design's field names / read paths and the actual
+grid-tools `_shared` ports, made while building the four read tools. No
+grid-tools `_shared` code, `requirements.md`, `design.md` or steering was edited.
+
+### Port coverage vs. what the read tools need
+
+The `_shared/ports.py` surface exposes only the reads the seven write tools
+needed. Three of the four read tools need scans the ports do not offer:
+
+- `FloodStore.get_flood_set(incident_id)` — **exists**; `get_flood_status` uses it
+  unchanged (§7.4.7 snapshot rule). No mismatch.
+- `ProposalStore.get(incident_id, proposal_id)` — **exists** (single-id mode of
+  `get_proposal_status`). But there is **no proposal query/scan port** for list
+  mode, and **no crew-lock read port** and **no crew roster loader** anywhere in
+  `_shared` (grep for `crew`/`CREW` in `_shared` returns nothing). This is exactly
+  the C10/OQ4 gap the design records.
+- `OutageStore.open_outages_under(incident_id, dt_ids)` — **exists** but is
+  DT-scoped; there is no "all open outages for the incident" port.
+
+**Resolution (no `_shared` edit):** each tool's `adapters.py` defines a narrow
+read Protocol and two backend implementations. Where a grid-tools port exists it
+is reused unchanged (flood snapshot, single-proposal `get`, `open_outages_under`
+for the substation filter). Where no port exists, the adapter reads the same
+single table both backends already use, over the documented read primitives:
+
+- **local backend:** the `LocalStore` handed out in `Ports.extras["store"]`
+  (`_local_backend.LocalStore.query(prefix)` / `.get(key)`), keyed exactly as the
+  grid-tools stores key items (`INC#<inc>#OUT#…`, `#PRP#…`, `#CREW#…`, `#TTR#…`).
+- **aws backend:** a read-only `DynamoTable` (`_shared.adapters._aws_dynamo`) on
+  the `MINNAL_TABLE_NAME` table, using `get(pk, sk)` and `query_prefix(pk,
+  sk_prefix)` — the same read methods the grid-tools AWS stores use. Only
+  `adapters.py` imports boto3; every `logic.py` stays boto3-free (R14.12).
+
+These reads never write, never publish and take no idempotency key (R14.3).
+
+### OQ4 resolution — `list_crews` availability from proposals + crew locks
+
+The grid-tools AWS store writes the crew lock as an item `pk=INC#<inc>,
+sk=CREW#<crew_id>` carrying `active_proposal_id` (`_aws_stores._proposal_actions`),
+and the local store writes the identical item
+(`_local_stores.LocalProposalStore.create_with_locks`). So a crew is `held` iff a
+`CREW#<crew_id>` item exists **and** the proposal it names is in
+`waiting_approval` or `approved`. `list_crews` reads the crew-lock items and joins
+them to the proposals it also reads — no new grid-tools port, matching the OQ4
+fallback. A crew whose lock item is missing is reported `free` (the fail-safe
+direction; `dispatch_crew` re-checks server-side, §8.6.4).
+
+### Crew roster loader
+
+`_shared/grid.py` loads devices/service-areas/facilities but **not** crews
+(`data/crews/crews.geojson`). The design says "load the crew roster … through the
+existing grid-tools crew read path", but no such path exists in `_shared`.
+**Resolution:** `list_crews` pure `logic.py` folds the crew FeatureCollection the
+adapter loads from the bundled file (mirroring `grid.load_grid`'s file read),
+emitting only `member_count` (never member ids), per R14.13.
+
+### `get_proposal_status` "completed" status
+
+§8.6.3's tool_spec prose lists a `completed` status, but the grid-tools
+`Proposal.status` Literal is
+`waiting_approval|approved|rejected|vetoed|expired|failed` — no `completed`.
+**Resolution:** the tool reports whatever status the stored Proposal carries (the
+grid-tools Literal is the source of truth); the list-mode `status` filter is
+constrained to the two values the design's strict schema fixes.
+
+### Incident existence (`NOT_FOUND`)
+
+There is no incident registry in `_shared`. "Unknown incident" is read as "the
+`INC#<inc>` partition holds no item at all"; a known incident with no flood feed
+still returns its empty version-0 `unknown` flood set. This satisfies R14.11 while
+a fresh, seeded incident answers normally.
+
+
+## Task 38 (qa): cross-file checks pending other specs
+
+Two verification cross-checks in task 38 depend on files owned by other specs
+that are not on this branch yet. They are scoped down to what this spec owns and
+noted here so they are completed when the dependency lands:
+
+### 38.2 CDK Gateway targets (Wave-9, task 76)
+
+`test_derived_filter_matches_cdk_and_cedar_targets` asserts the "corresponds to a
+target the CDK creates" half against the four read tools' `tool_spec.json` `name`s
+and their derived `gateway_tool_name`s only, because the CDK Gateway targets in
+`infra-cdk/lib/` are a Wave-9 deliverable and do not exist yet. A `TODO(wave9-cdk)`
+in the test marks that task 76's verification completes the full CDK-target
+cross-check. The Cedar half (this spec's `gateway/policies/agent-team-runtime.cedar`)
+passes fully now.
+
+### 38.3 grid-tools Cedar permits
+
+`test_tool_identity_matches_cedar` asserts `TOOL_IDENTITY`
+(`dispatch_crew`->`dispatch`, `propose_switching`->`commander`) against the
+documented grid-tools permit mapping in design §8.3 (grid-tools §10.2 Permits B
+and C), because `gateway/policies/grid-tools.cedar` is not on this branch (its task
+is unbuilt). The test already contains the cross-file branch: when that `.cedar`
+file lands, the same test reads it and cross-checks the constant against the real
+permit actions and role guards. Cross-file check pending grid-tools' Cedar landing.
+
+### 38.4 grid-tools forbids
+
+`test_collapsed_permit_keeps_forbids` reconstructs the collapsed shared-identity
+permit (ADR 0007 / grid-tools §10.3) and the grid-tools §10.2 forbid rules from the
+grid-tools design (verbatim) and asserts the collapsed permit still denies every
+forbid case (the grid-tools §10.5 matrix deny rows). When
+`gateway/policies/grid-tools.cedar` lands, the forbid text can be read from it
+instead of reconstructed. Pending grid-tools' Cedar landing.
+
+## 2026-10-01 — Wave-6 verifier (qa-eval-engineer): BUILDER BUG — advisory veto emitted as `source: tool`
+
+Found while writing task 59.2 (`tests/agents/test_veto_events.py`). Reachable in production;
+not a test defect.
+
+### Symptom
+For an **advisory** veto (a Safety Officer judgement with no tool `rule_id`), the recorded
+`graph.state.VetoRecord.source` is `"advisory"`, but the emitted `minnal.veto` glass-box event
+carries `source: "tool"`. The war room therefore cannot distinguish a deterministic flood-rule
+veto from a Safety Officer advisory veto — which is exactly the distinction §12.3 says `source`
+exists to carry, and which R11.7 ("the emitted veto reflects the actual veto") requires.
+
+### Root cause (builder code — do not edit in this lane)
+- `roles/_common/factory.py` `Emitter` Protocol (line ~62) declares:
+  `def veto(self, *, rule_id, reason, proposal_id) -> None: ...` — it has **no `source` parameter**.
+- `roles/safety/agent.py` `record_safety_veto` records the correct source on the `VetoRecord`
+  (`"tool" if rule_id else "advisory"`) but calls
+  `emitter.veto(rule_id=rule_id, reason=reason, proposal_id=...)` — it cannot pass `source`.
+- The concrete `agui/emitter.py` `GlassBoxEmitter.veto` defaults `source="tool"`, so every advisory
+  veto is emitted as `source: tool`. (`_apply_advisory_vetoes` reaches this path with `rule_id=None`.)
+
+### Fix (for the owning builder, agent-engineer lane)
+Add `source` to the `Emitter.veto` Protocol and have `record_safety_veto` pass
+`source="tool" if rule_id else "advisory"` (mirroring the `VetoRecord`), or infer `source` from
+`rule_id` inside `GlassBoxEmitter.veto`. The former is preferred (explicit, matches the record).
+
+### Test-lane handling
+`test_veto_events.py::test_advisory_veto_emits_one_event_without_rule_id` deliberately does NOT
+assert the emitted `source` (asserting the correct value would fail on this bug; asserting the
+wrong value would encode the defect). The mandated R18.5 fields (rule_id, reason, proposal_id) are
+fully covered and pass. **Task 59.2 is left unticked** pending the fix; 59.1 (Property 58) is
+complete and green (Property 58 does not exercise the advisory-source distinction).
+
+### Resolution (task 59.2, agent-engineer + qa-eval-engineer lanes)
+
+Fixed with the preferred option: `source: Literal["tool", "advisory"]` is now a **required**
+kwarg on `Emitter.veto` (the Protocol in `roles/_common/factory.py`) and on the concrete
+`GlassBoxEmitter.veto` in `agui/emitter.py`. Both veto call sites thread it explicitly:
+`roles/safety/agent.py::record_safety_veto` passes `source = "tool" if rule_id else "advisory"`
+(mirroring the `VetoRecord` it records), and `graph/nodes/dispatch_commit.py` passes
+`source="tool"` for the commit-time deterministic `SAFETY_VIOLATION`. The
+`minnal.veto.v1.json` schema already required `source`. `test_veto_events.py::
+test_advisory_veto_emits_one_event_without_rule_id` now asserts `source == "advisory"` on the
+emitted event, so the war room can distinguish a flood rule from a Safety Officer judgement
+(§12.3, R11.7). **Task 59.2 ticked.**
+
+## 2026-09-29 — task 65: ScriptedModel implements the real Strands `Model` ABC, not the §18.1 sketch
+
+Design §18.1 sketches `ScriptedModel(script, seed)` with a single `respond(node, output_model,
+context)` coroutine keyed by `(node, call_index)`. That surface is not the surface a node wrapper
+actually reaches: the wrappers build a **real** `strands.Agent` via `roles/_common/factory.build_agent`
+(whose `RoleDeps.model` is typed `strands.models.Model`) and drive it through
+`run_node_with_repair`, which calls `agent.invoke_async(...)` (→ `Model.stream`) and
+`agent.structured_output_async(output_model)` (→ `Model.structured_output`). A bare `respond`
+method would force a wrapper to branch on which model it holds — exactly what the kickoff and
+`RoleDeps` docstring forbid.
+
+Decision: `ScriptedModel` subclasses `strands.models.Model` and implements the real ABC verified
+against `strands-agents==1.42.0` (`strands/models/model.py`): `stream`, `structured_output`,
+`get_config`, `update_config`. The `(node, context)` the §18.1 sketch passed to `respond` are
+**bound at construction** instead — the runner builds one `ScriptedModel` per role, so the node
+identity the scripts key on is per-model-instance rather than a per-call argument that the Strands
+`Model` interface has no slot for. `structured_output` yields the last-event contract the Agent
+reads (`{"output": output_model(**payload)}`); building the object runs the real Pydantic
+validation (including `reject_safety_fields`), so a forbidden/omitted field raises exactly where a
+real model's bad output would and the one outer repair attempt is exercised. Verified: honest
+objectives return a valid object through a real `Agent`, and `adversarial_types_clearance` produces
+a typed `NodeFailure(reason=schema_invalid)` — never a spoofed clearance, never a raise through the
+graph.
+
+`scripts.py` is kept pure (pydantic + stdlib only, no strands/boto3/network/clock). The seeded
+`Script` is stateless; the `ScriptedModel` owns the `(node, call_index)` bookkeeping. Adversarial
+tool-loop vectors (`requests_forbidden_tool`, `endless_tools`) are expressed as gather-turn
+`toolUse` intents in `Model.stream`; the enforcement (ToolFilters allow-list, per-node tool-call
+budget) is the graph's and is verified by the integration property tests in the qa lane (task 68),
+not by this model.
+
+## 2026-10-01 — task 66: In_Process_Tool_Server — two reconciliations (agent-engineer lane)
+
+Built `patterns/agui-minnal/offline/tool_server.py` (§18.2, R22.2, R13.4, R9.9). Two places where
+the design's §18.2 sketch meets working-tree reality; neither changes the design's intent.
+
+### 1. The seven grid-tools `*_lambda.py` handlers are typed stubs, not implemented
+
+§18.2's `TOOLS` map references `record_outage_lambda.lambda_handler` … `propose_switching_lambda.
+lambda_handler`. On this branch those seven modules exist but carry **no `lambda_handler`**: the
+grid-tools merge (`b83a05f`, "logic.py / adapters.py / <name>_lambda.py are typed stubs filled in
+later waves") shipped the tool *contracts* (`tool_spec.json`, strict `input.schema.json`,
+`models.py`) but not the handlers, which are a later **grid-tools**-spec wave, not part of
+agent-team-runtime. Only the four read tools of THIS spec (`get_flood_status`, `list_open_outages`,
+`get_proposal_status`, `list_crews`) have a working `lambda_handler`.
+
+**Resolution (autopilot "stub the dependency behind an interface"):** `TOOLS` maps each of the
+eleven bare tool names to the **dotted module path** of its `*_lambda.py` (not to the function
+object), and the handler is resolved lazily on first call via `_handler(name)`. So:
+- Importing `tool_server` never fails on an unfilled sibling-spec handler.
+- `list_tools` is built from each tool's real `tool_spec.json` and returns all **eleven** now
+  (every spec file exists), so the MCP tool surface is complete and stable.
+- `call_tool`/`invoke_tool` for the four read tools runs the real handler, real envelope, real
+  error codes and (for write tools, when they land) the real idempotency store — nothing stubbed.
+- `call_tool` for one of the seven grid-tools tools raises a clear `RuntimeError` naming the tool
+  and its module ("its grid-tools handler is not implemented yet on this branch") rather than a
+  silent skip. **The moment grid-tools fills those handlers, this module wires them with zero
+  change** — the map already names them.
+This keeps §18.2's eleven-entry map verbatim and its guarantee ("the handler's own tool-name
+check runs, the real envelope/error-codes/idempotency store are exercised") true for every tool
+that has a handler, and loud for every tool that does not yet.
+
+### 2. `build_server(ports)` — the `ports` argument is intentionally not threaded into handlers
+
+§18.2 signs `build_server(ports: "Ports")`. But every `*_lambda.py` builds **its own**
+`Settings()` and, through `make_ports`, its own backend adapters (verified in
+`get_flood_status/adapters.py::make_reader(Settings())`). Injecting a `Ports` bundle into the
+handlers would *bypass* the very reader/repo construction path the offline run is meant to
+exercise ("do not bypass how handlers construct their readers/repos"). So `build_server` keeps a
+`ports: object | None = None` parameter for design fidelity and to signal the caller selected a
+backend via `make_ports`, but does **not** pass it to the handlers: the backend is chosen once, by
+`MINNAL_BACKEND` in the process environment (the replay runner, task 67, sets `MINNAL_BACKEND=
+local`; §18.3). The server opens no socket (stdio transport only, via `run_stdio`) and holds no
+boto3 client itself.
+
+### Target naming verified (§19.4 / §8.1.1)
+
+The fake Lambda `client_context.custom["bedrockAgentCoreToolName"]` is built by
+`gateway_clients.names.gateway_tool_name(tool)` — the single existing target-naming helper — which
+yields `<tool-in-kebab>-target___<tool>`, e.g. `get-flood-status-target___get_flood_status`. This
+matches design §19.4 (`get-flood-status-target … list-crews-target`) and the `test_read_permits.py`
+action names exactly. Each handler's `_routed_tool_name` splits on `"___"` and compares only the
+bare tail to its `_TOOL_NAME`, so the target prefix only has to be present and well-formed; using
+the shared helper guarantees it is the same string the CDK targets and Cedar actions name. Verified
+by smoke: a `get_flood_status` handler given a `list-crews-target___list_crews` context returns
+`NOT_FOUND` (the check fires), while the correctly-routed context returns `ok` — the check is
+exercised, not bypassed.
+
+### `record_outage` (task 66.2)
+
+Registered in `TOOLS` for fixture ingest only. No role's `GATEWAY_ALLOW_LISTS`/`LOCAL_ALLOW_LISTS`
+allow-lists it and `NEVER_ALLOWED` names it (`gateway_clients/filters.py`), so the server is
+deliberately *more* permissive than any role and Property 45 (task 38.5) tests a real filter, not a
+stub. Its handler is one of the seven stubs above, so an actual `record_outage` call raises the
+clear `RuntimeError` until the grid-tools handler lands; the registration (the thing task 66.2
+requires) is present now.
+
+### Checks (this file only; task 68 owns the tests)
+
+`uv run ruff check patterns/agui-minnal/offline` → All checks passed. `ruff format --check` → clean.
+`uv run mypy patterns/agui-minnal/offline` → Success, no issues (7 source files). `tests/
+test_no_claude.py` → 9 passed (the offline tree is in its scan targets). Import-smoke (throwaway,
+deleted; not left as a test file): `build_server` imports, `list_tools` yields 11 tools each with
+an inputSchema, `invoke_tool("get_flood_status", …)` against a local-backed seeded incident returns
+a well-formed `ok` envelope, an unknown incident returns `NOT_FOUND`, an unknown tool raises
+`ValueError`. No tasks ticked, no commit (runner commits after verification).
+
+## 2026-10-01 — task 67: replay runner — structure complete, two stubbed dependencies documented
+
+Built `patterns/agui-minnal/offline/replay_runner.py` (§18.3, §18.5, R22.1/R22.3/R22.5/R22.7/R22.9)
+plus two private helper modules to stay under the 400-line module limit (backend-python.md):
+`offline/_replay_ingest.py` (fixture decode + event→ingest mapping) and
+`offline/_replay_artefacts.py` (the three §18.5 artefact writers + the socket guard). Line counts:
+replay_runner 392, _replay_ingest 250, _replay_artefacts 151.
+
+### CLI
+
+`python -m offline.replay_runner --fixture data/fixtures/replay-michaung-style.jsonl --seed 20231205
+--script honest_baseline --period 1` with `patterns/agui-minnal` and `gateway/tools` on `sys.path`
+(the deployed-container / tests / mypy import root; the hyphenated `patterns/agui-minnal` folder is
+not an importable package, decisions-log 2026-09-28). Running the file directly
+(`python patterns/agui-minnal/offline/replay_runner.py ...`) also works: the `__main__` guard calls
+`_bootstrap_sys_path()` to add those two roots before `main` runs, and `main` imports the helper
+modules lazily so the bootstrap takes effect. The design's literal
+`python -m patterns.agui_minnal.offline.replay_runner` form cannot resolve against the hyphenated
+directory (no `patterns/agui_minnal` package); the two working forms above are the closest-safe
+reconciliation and both were smoke-run.
+
+### Steps 1-2 are real; ingest is wired behind the existing lazy interface and fails loudly
+
+- Step 1: `_local_ports()` forces `MINNAL_BACKEND=local` (and defaults the required
+  `MINNAL_EMERGENCY_NUMBER`) and calls `make_ports(Settings())`. The backend is selected ONLY
+  inside `make_ports`; the runner never imports an adapter, reads `settings.backend`, or branches
+  on the backend (R22.9). `freeze_clock` sets the local `FrozenClock`'s wall and incident readings
+  to the fixture's first `sim_time` (`2023-12-05T00:00:00Z`), so every ingest/period timestamp is
+  deterministic (R22.1, R22.4).
+- Step 2 ingest (`_replay_ingest`): `WeatherTick`→`ports.flood.apply_heartbeat` and
+  `FloodPolygonUpdated`→`ports.flood.apply_flood_event` (the Flood_Ingestor logic — verified
+  functional: 721 heartbeats + 3 flood applies land through the real `LocalFloodStore`, version
+  advances). `OutageReported`/`MeterLastGasp`→`record_outage` via `offline.tool_server.invoke_tool`
+  (the real handler over the in-process server). `record_outage` is one of the seven grid-tools
+  stubs, so the FIRST `OutageReported` raises the tool server's clear `RuntimeError` and the run
+  reports it and exits 1. Meter mapping: `source=meter`, `symptom=no_power` (a last-gasp has no
+  symptom in its payload; a meter reporting its last gasp has lost supply), `meter_id`/`dt_id`
+  passed through, `report_id` derived deterministically as `rep_meter_<meter_id>_<sequence>` (a
+  pure function of the fixture, never a minted id). Citizen mapping: `source=citizen`, the fixture's
+  own `report_id`, `symptom`, `location`, `callback_token`→`callback_ref`, `is_emergency` passed
+  through (the handler re-derives the authoritative flag). `correlation_id` threads the fixture's id.
+
+### Exact RuntimeError observed (expected, NOT this task's bug)
+
+```
+tool 'record_outage' has no lambda_handler in 'record_outage.record_outage_lambda': its grid-tools
+handler is not implemented yet on this branch
+```
+
+exit code 1, printed to stderr with no stack trace. This is the tool server's lazy-resolution
+error (task 66), surfaced — not swallowed, not degraded (`_require_ok` also raises loudly on any
+non-`ok` envelope). Flood/weather ingest succeeds first; the failure is at the first outage call.
+
+### Two dependencies stubbed behind interfaces (autopilot rule); zero-change when they land
+
+1. **grid-tools `record_outage` handler** — reached in step 2 as above, behind the tool server's
+   existing lazy `_handler` interface. No change here when it lands.
+2. **the offline period orchestrator (steps 3-4)** — step 3 (`build_offline_period`, the default
+   `PeriodBuilder`) is where the Graph is assembled with one `ScriptedModel` per role + a
+   `ScriptContext` and the real per-role registry over the in-process server. TWO prerequisites of
+   this are owned by other lanes and are NOT on this branch, so the default raises a descriptive
+   `NotImplementedError` naming the gap rather than silently building a partial graph:
+   - the **five model-node graph executors** — a `MultiAgentBase` wrapping each role's
+     `run_*`/`run_node_with_repair` turn and the `PeriodState` mutation. Only the Code_Nodes
+     (`DispatchCommitNode`, the pio/scribe slots) exist; `GraphDeps` needs all nine executors and
+     the existing tests (`test_graph_shape`, `test_period_flow`) drive only the graph *shape* with
+     stub executors, never a real model-node run. There is no task in Waves 0-6 that builds these
+     wrappers; the offline runner (task 67) is where a real end-to-end period is first assembled.
+   - a **stdio transport for `RoleClientRegistry`** — its only transport today is
+     `streamablehttp_client` (HTTP); it cannot address the in-process stdio server.
+   Because step 2 fails first, a live run never reaches step 3, so this second stub never executes
+   in practice; it is documented and behind the injectable `PeriodBuilder` seam so a test can drive
+   steps 4-6 with a fake, and the default works with zero change once the two prerequisites land.
+   Steps 4-6 themselves are real and correct: `run_period` calls the verified
+   `Graph.invoke_async(task, invocation_state)` with `initial_invocation_state(period_state)`;
+   `assert_acceptance` makes the exact §18.4 assertions off `result.execution_order[*].node_id`
+   (the verified accessor) and the recorded `PeriodState` (`vetoes`, `veto_iterations`,
+   `commit_ran`); `write_artefacts` writes `agui-stream.jsonl` (monotonic `seq` per event, §12.5),
+   `events.jsonl` and `period-0001.json` under `.local/agent-team-runtime/<incident>/`.
+
+### Socket guard (task 67.2) — subclass, not function
+
+`install_socket_guard` replaces `socket.socket` with `_GuardedSocket`, a **subclass** of
+`socket.socket` whose `__init__` raises on `AF_INET`/`AF_INET6` (including the default family). A
+subclass (rather than a plain function) is required because `ssl` does `class SSLSocket(socket)` at
+import time — and `pyproj` (pulled in transitively by `_shared.geometry`) imports `ssl`; replacing
+`socket.socket` with a function broke that import (`TypeError: function() argument 'code' must be
+code`). Verified: `AF_UNIX` and any non-INET family pass through untouched, `AF_INET`/default are
+refused with a clear message, `ssl.SSLSocket` remains a `socket.socket` subclass, and the in-process
+stdio MCP transport (a pipe over stdin/stdout, never a socket) is unaffected — the tool server still
+builds under the guard. The guard is installed at the very top of `main`, before any ingest.
+
+### Artefacts
+
+`.local/agent-team-runtime/<incident>/{agui-stream.jsonl,events.jsonl,period-0001.json}`. Added
+`.local/` to the repo `.gitignore` (it was absent; `.local/grid-tools` was only implicitly covered
+by the local store's own dir). Confirmed `git check-ignore .local/agent-team-runtime` → ignored.
+
+### Checks (this task's files only; task 68 owns the tests)
+
+`uv run ruff check patterns/agui-minnal/offline` → All checks passed. `ruff format --check` → clean
+(10 files). `uv run mypy patterns/agui-minnal/offline` → Success, no issues (10 source files).
+`tests/test_no_claude.py` → 9 passed (offline tree in scan). Import-smoke and both CLI forms run;
+the live acceptance run fails at the expected `record_outage` RuntimeError (exit 1). No tasks
+ticked, no throwaway test files left, no commit (the runner commits after verification).
+
+## 2026-09-29 — Wave 8 evaluations (tasks 70, 71, 72)
+
+Task 70 (datasets + hard-rule evaluators) and task 71 (offline eval runner) built and green
+offline. Task 71's runner (`evals/agent-team-runtime/runner.py`) loads the versioned datasets,
+applies every hard-rule evaluator, aggregates per-role/evaluator scores, writes `report.json`,
+exits non-zero on any violation, and gates on `baseline.json` (a drop of more than five points
+fails, per testing.md and the offline half of R23.6). All of that is proven by
+`tests/evals/test_runner.py` over hand-built `EvalRun` audits injected through the `CaseRunner`
+seam.
+
+BLOCKED (live-period half of 71.1, behind the injectable `CaseRunner` seam): producing an
+`EvalRun` from a real offline period (`run_case_offline`) needs the seven grid-tools `*_lambda.py`
+handlers (grid-tools lane, not this spec) and the offline period orchestrator (the five model-node
+graph executors + a stdio `RoleClientRegistry` transport) — the same gap task 67/68 hit. The
+default `CaseRunner` delegates to `replay_runner.build_offline_period` and raises the documented
+`NotImplementedError`, so a live `python evals/agent-team-runtime/runner.py` fails loudly (exit 1)
+rather than scoring a partial period. Owner action: land the seven grid-tools handlers and the
+period orchestrator, then the runner scores real periods with zero change here.
+
+Task 72 (`[DEFERRED]` 72.1, 72.2): AgentCore Evaluations cloud run and the built-in
+helpfulness/correctness model-judge evaluators. Deferred by requirements.md (R23.6, R23.7 are
+`[DEFERRED]`) and cannot run offline — they need a judge model and a live period. Left unticked;
+`baseline.json` already carries the `null` `cloud` slots for both tiers. No code written.
+
+
+### Wave 9 (infra, tasks 73–76) — platform-engineer notes
+
+- All four tasks (73, 74, 75, 76) implemented, tested and committed. 50 jest tests pass
+  (`cd infra-cdk && node_modules/.bin/jest`); type-check clean (`node_modules/.bin/tsc`).
+- `cdk synth` succeeds for the agent-team stack:
+  `cd infra-cdk && node_modules/.bin/cdk synth "FAST-stack-agent-team" --exclusively --app "node_modules/.bin/ts-node --prefer-ts-exts bin/fast-cdk.ts"` → exit 0, template written (55 resources).
+- Full-app `cdk synth` (all stacks) cannot complete in this sandbox because FAST's own
+  `FastMainStack` bundles Python Lambdas via Docker and the arm64 image fails to run under
+  emulation ("exec /bin/sh: Exec format error"). This is a pre-existing FAST/environment
+  limitation, out of the infra-cdk agent-team lane; the agent-team stack synthesises cleanly
+  in isolation with `--exclusively`.
+- cdk-nag: the pinned `cdk-nag@3.0.2` diverges from what design §19.6 anticipated. Its
+  per-finding IAM5 id embeds `::`, which the CDK `Validations.acknowledge` API rejects, so an
+  IAM5 finding cannot be suppressed — only avoided. The stack therefore carries NO IAM
+  wildcard (explicit DynamoDB table/index + KMS ARNs; enumerated SSM params; secret reads via
+  grantRead; no X-Ray `*` at synth). The remaining single-verdict suppressions are the design's
+  four exceptions re-expressed for 3.0.2: L1 (pre-token Lambda pinned for V3_0), COG2+COG8
+  (machine-only pool, no interactive users = the design's COG3), and SMG4 (Cognito app-client
+  secrets are Cognito-rotated, not SM-rotated). Recorded in `docs/adr/0008-cdk-nag-suppressions-agent-team.md`.
+  cdk-nag reports ZERO unsuppressed AwsSolutions findings (asserted in
+  `infra-cdk/test/agent-team-verify.test.ts`).
+- cdk-nag is applied and asserted in the verification test (matching the repo's existing
+  `bedrock-model-allowlist.test.ts` pattern) rather than registered in `bin/fast-cdk.ts`,
+  because the cdk-nag 3.0.2 validation plugin throws EISDIR while hashing directory Lambda
+  assets during CLI synth; keeping it out of bin lets `cdk synth` exit 0 while nag is still
+  enforced in the test gate.
+- The runtime image is referenced by ECR URI (not a DockerImageAsset) so synth needs no Docker.
+- Task 74.5 (AWS Agent Registry registration) left unticked: optional/deferred (`[ ]*`).
+
+## 2026-09-29 — Final wave (tasks 77, 78): coverage guard done; Checkpoint 78 acceptance leg BLOCKED
+
+### Task 77 — DONE and ticked (commit `test(properties): add the property coverage guard (task 77)`)
+- `tests/agents/properties/test_coverage_guard.py` (10 checks, all green):
+  77.1 — parses the `### Property N` headings in `design.md` (P40–P61) and the collected
+  `test_property_P*` tests across `tests/agents/properties` and `tests/tools/properties`, and
+  asserts one-to-one correspondence; parses every `**Validates: Requirements**` line and fails on
+  any criterion absent from `requirements.md`; parses the §21.6 matrix first cells, expands the
+  en-dash ranges, strips `` `[S]` ``/`` `[DEFERRED]` ``, and asserts every requirements.md criterion
+  is covered and every `[SAFETY]` criterion maps to a `**P<n>**` property or a named test.
+  77.2 — asserts the §21.3 profiles (`default`/`ci` ≥200 examples, `ci` derandomised with
+  `database=None`, `quick`=50), the `.hypothesis` example DB is gitignored (never committed), a
+  known-bad `@example` on every property test, `pytest.mark.safety` on all twelve `[SAFETY]`
+  property files, the six STRIDE adversarial scripts + injection strategies present, and the
+  suite-wide socket block in `tests/conftest.py`.
+- Coverage-gap fixes (separate `fix`/`test` commits, not folded into task 77):
+  - `fix(tests)`: seven recording-emitter fakes still had the pre-`source` `veto()` signature that
+    commit c344743 obsoleted, so any test reaching `record_safety_veto` raised `TypeError`
+    (P42, P44, P54, test_audit, test_commit_gate, test_period_flow, test_preventive, test_safety_node).
+  - `test(offline)`: added `test_property_P60_offline_determinism` (the P60 owner the guard needs).
+    It proves the runnable clauses — byte-identical §18.5 artefacts for identical recorded state,
+    a changed state changes the bytes, and the INET-socket guard — at the pure serialiser surface,
+    which is complete on-branch. The full live-period stream-equivalence clause stays with the
+    blocked acceptance leg (task 68.2).
+  - `test(read-tools)`: covered `get_flood_status.area_sqm` (69% → 97%), lifting read-tool `logic.py`
+    to the 90% target. Domain coverage is 98% (budgets 92, contracts 99, ids 100, jobs 100,
+    periods 95, precedence 95, untrusted 100).
+
+### Checkpoint 78 — run leg by leg, result recorded; task 78 LEFT UNTICKED
+Command (tasks.md line 650): `scripts/spec-complete.sh agent-team-runtime && ruff check patterns
+gateway && pytest -q tests/agents tests/tools`, then `pytest -m safety`, then the offline
+acceptance `replay_runner ... --script honest_baseline --period 1`, then the coverage-guard test,
+then `cdk synth`.
+
+| Leg | Command | Result |
+|---|---|---|
+| spec-complete | `scripts/spec-complete.sh agent-team-runtime` | FAIL — 11 required tasks open (8, 8.1, 8.2 geo-lane schemas present-but-unticked; 59, 59 verify; **68, 68.1–68.4, 69** the blocked offline-acceptance tasks) |
+| ruff check | `uv run ruff check patterns gateway` | PASS |
+| ruff check (+tests) | `uv run ruff check patterns gateway tests` | PASS |
+| ruff format | `uv run ruff format --check patterns gateway tests` | FAIL only on the 14 KNOWN-BASELINE files (`patterns/utils/{auth,ssm}.py`, twelve `tests/simulator/**`); NO agent-team-runtime file is unformatted |
+| pytest | `uv run pytest -q tests/agents tests/tools` | PASS — 519 passed |
+| safety | `uv run pytest -m safety` | PASS — 58 passed |
+| **acceptance (BLOCKED)** | `replay_runner --script honest_baseline --period 1` | **FAIL/BLOCKED** — exits 1 loudly at fixture ingest: "tool 'record_outage' has no lambda_handler ... its grid-tools handler is not implemented yet on this branch". This is the documented cross-lane blocker (seven grid-tools `*_lambda.py` stubs + the missing model-node executors / stdio registry). Not owned by this spec; must not be faked. |
+| coverage guard | `uv run pytest tests/agents/properties/test_coverage_guard.py` | PASS — 10 passed |
+| cdk synth | `cdk synth FAST-stack-agent-team --exclusively --app "node bin/fast-cdk.js"` | PASS (exit 0). `npx` is absent in this env, and the FAST full-app synth needs Docker; the agent-team stack synths cleanly in isolation. |
+| jest (infra) | `infra-cdk/node_modules/.bin/jest test/agent-team` | PASS — 31 passed, 5 snapshots; cdk-nag AwsSolutions = success |
+
+**Conclusion:** every leg this spec owns passes. The ACCEPTANCE / live-period leg of Checkpoint 78
+is BLOCKED on the grid-tools handlers and the offline period orchestrator (other lanes / a
+follow-up task), so the full command does not fully pass. Per the checkpoint rule, **task 78 is
+left UNTICKED** with this blocker recorded; it is tickable only once the seven grid-tools
+`*_lambda.py` handlers and the five model-node graph executors + stdio registry transport land, at
+which point the replay runner (structure complete, dependency stubbed behind the injectable
+`PeriodBuilder` seam) runs the acceptance scenario with no change here.
+
+## 2026-09-29 — main + grid-tools merged into the branch (post-PR update)
+
+The remote `feat/agent-team-runtime` had `main` and the grid-tools PR merged into it
+(`307e83f Merge branch 'main'`). This landed the seven grid-tools `*_lambda.py` handlers
+(`record_outage`, `trace_upstream_device`, `check_flood_geofence`, `plan_crew_route`,
+`rank_restoration_jobs`, `dispatch_crew`, `propose_switching`) fully implemented — the PRIMARY
+blocker for the offline live acceptance period (tasks 68/69 and the Checkpoint 78 acceptance leg).
+
+Reconciled in this spec's lane:
+- CI `ruff format --check` on branch-changed files flagged `patterns/utils/{auth,ssm}.py`
+  (changed by this branch's earlier lint-only clean, never formatted). Fixed format-only
+  (commit `4ac9a68`). The CI format gate on changed files now passes.
+- HANDLER-NAME MISMATCH (gap 1) RESOLVED: the grid-tools handlers export `def handler`, not the
+  FAST `lambda_handler` the four read tools use. `offline/tool_server.py::_handler` now resolves
+  either entrypoint (lambda_handler, then handler) and still fails loudly for a truly unfilled
+  handler. New test `tests/agents/test_tool_server_resolves.py` (4 tests) proves all eleven tools
+  resolve. Commit `8364639`.
+
+Still open (gap 2) before tasks 68/69/78-acceptance can be ticked:
+- The offline PERIOD ORCHESTRATOR is still not wired: the five model-node `MultiAgentBase` graph
+  executors + a real `GraphDeps` assembler + a stdio transport on `RoleClientRegistry` (currently
+  HTTP `streamablehttp_client` only). This is this spec's lane but is not covered by a discrete
+  tasks.md task; it sits behind the task-67 runner's injectable `PeriodBuilder`/`CaseRunner` seam
+  whose default raises `NotImplementedError`. Building it (ScriptedModels, in-process stdio tool
+  server) is the remaining work to run a full live offline period and tick 68/69 and the
+  Checkpoint 78 acceptance leg. Recommended as a focused follow-up (agent-engineer lane).
+
+Observed, NOT owned by this spec (do not fix here): 4 pre-existing failures on the merged branch
+in grid-tools-lane tests — `tests/tools/test_ingestors.py::{test_job_completed_closes_and_deletes_key,
+test_redelivery_changes_nothing}` and `tests/tools/test_property_coverage.py::{test_designed_and_tested_property_numbers_are_a_bijection,
+test_property_test_names_follow_the_naming_rule}`. They fail identically with this spec's change
+stashed, so they are a grid-tools/merge artifact, not caused by agent-team-runtime.

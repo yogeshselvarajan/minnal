@@ -1,0 +1,871 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PeriodTableConstruct (task 74.3) matches its snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "PeriodTable0A75D7F7": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "pk",
+            "AttributeType": "S",
+          },
+          {
+            "AttributeName": "sk",
+            "AttributeType": "S",
+          },
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "pk",
+            "KeyType": "HASH",
+          },
+          {
+            "AttributeName": "sk",
+            "KeyType": "RANGE",
+          },
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true,
+        },
+        "SSESpecification": {
+          "KMSMasterKeyId": {
+            "Fn::GetAtt": [
+              "PeriodTablePeriodTableKey400BE1EC",
+              "Arn",
+            ],
+          },
+          "SSEEnabled": true,
+          "SSEType": "KMS",
+        },
+        "TableName": "minnal-dev-periods",
+        "TimeToLiveSpecification": {
+          "AttributeName": "expires_at_epoch",
+          "Enabled": true,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "PeriodTablePeriodTableKey400BE1EC": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "CMK for the minnal-dev-periods table",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::111111111111:root",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`ReadToolsConstruct (task 74.1) matches its snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "SsmParameterValueFASTstackgridtoolstablekeyarnC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Default": "/FAST-stack/grid-tools/table-key-arn",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "ReadToolsFngetfloodstatus864D91D0": {
+      "DependsOn": [
+        "ReadToolsRolegetfloodstatusDefaultPolicyAE9086D6",
+        "ReadToolsRolegetfloodstatusA2D54616",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-us-east-1",
+          "S3Key": "cb64d3bd169a03b5f5bd77284e21fb5f6b3204d5b0f6be43a0fdf300dd39713d.zip",
+        },
+        "Description": "Read-only Gateway tool get_flood_status (agent-team-runtime §8.6)",
+        "Environment": {
+          "Variables": {
+            "MINNAL_BACKEND": "aws",
+            "MINNAL_ENV": "dev",
+            "MINNAL_TABLE_NAME": "minnal-dev-grid-tools",
+            "POWERTOOLS_METRICS_NAMESPACE": "Minnal",
+            "POWERTOOLS_SERVICE_NAME": "minnal-tools",
+            "POWERTOOLS_TRACE_DISABLED": "false",
+          },
+        },
+        "FunctionName": "minnal-dev-get-flood-status",
+        "Handler": "tools.get_flood_status.get_flood_status_lambda.lambda_handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ReadToolsLogGroupgetfloodstatus2C8DB25C",
+          },
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReadToolsRolegetfloodstatusA2D54616",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.14",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ReadToolsFngetfloodstatusGatewayInvokegetfloodstatus48513B4E": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReadToolsFngetfloodstatus864D91D0",
+            "Arn",
+          ],
+        },
+        "Principal": "bedrock-agentcore.amazonaws.com",
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ReadToolsFngetproposalstatus663547D9": {
+      "DependsOn": [
+        "ReadToolsRolegetproposalstatusDefaultPolicy9959CA3D",
+        "ReadToolsRolegetproposalstatus67627A59",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-us-east-1",
+          "S3Key": "cb64d3bd169a03b5f5bd77284e21fb5f6b3204d5b0f6be43a0fdf300dd39713d.zip",
+        },
+        "Description": "Read-only Gateway tool get_proposal_status (agent-team-runtime §8.6)",
+        "Environment": {
+          "Variables": {
+            "MINNAL_BACKEND": "aws",
+            "MINNAL_ENV": "dev",
+            "MINNAL_TABLE_NAME": "minnal-dev-grid-tools",
+            "POWERTOOLS_METRICS_NAMESPACE": "Minnal",
+            "POWERTOOLS_SERVICE_NAME": "minnal-tools",
+            "POWERTOOLS_TRACE_DISABLED": "false",
+          },
+        },
+        "FunctionName": "minnal-dev-get-proposal-status",
+        "Handler": "tools.get_proposal_status.get_proposal_status_lambda.lambda_handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ReadToolsLogGroupgetproposalstatus4C8AAC5A",
+          },
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReadToolsRolegetproposalstatus67627A59",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.14",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ReadToolsFngetproposalstatusGatewayInvokegetproposalstatus1D7CF06E": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReadToolsFngetproposalstatus663547D9",
+            "Arn",
+          ],
+        },
+        "Principal": "bedrock-agentcore.amazonaws.com",
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ReadToolsFnlistcrewsC95DF2E0": {
+      "DependsOn": [
+        "ReadToolsRolelistcrewsDefaultPolicy4C66AF7C",
+        "ReadToolsRolelistcrews7DFB66BA",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-us-east-1",
+          "S3Key": "cb64d3bd169a03b5f5bd77284e21fb5f6b3204d5b0f6be43a0fdf300dd39713d.zip",
+        },
+        "Description": "Read-only Gateway tool list_crews (agent-team-runtime §8.6)",
+        "Environment": {
+          "Variables": {
+            "MINNAL_BACKEND": "aws",
+            "MINNAL_ENV": "dev",
+            "MINNAL_TABLE_NAME": "minnal-dev-grid-tools",
+            "POWERTOOLS_METRICS_NAMESPACE": "Minnal",
+            "POWERTOOLS_SERVICE_NAME": "minnal-tools",
+            "POWERTOOLS_TRACE_DISABLED": "false",
+          },
+        },
+        "FunctionName": "minnal-dev-list-crews",
+        "Handler": "tools.list_crews.list_crews_lambda.lambda_handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ReadToolsLogGrouplistcrews6F0C209C",
+          },
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReadToolsRolelistcrews7DFB66BA",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.14",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ReadToolsFnlistcrewsGatewayInvokelistcrews77BC4078": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReadToolsFnlistcrewsC95DF2E0",
+            "Arn",
+          ],
+        },
+        "Principal": "bedrock-agentcore.amazonaws.com",
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ReadToolsFnlistopenoutages74F6DD00": {
+      "DependsOn": [
+        "ReadToolsRolelistopenoutagesDefaultPolicy6C144642",
+        "ReadToolsRolelistopenoutagesDBA996D0",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-us-east-1",
+          "S3Key": "cb64d3bd169a03b5f5bd77284e21fb5f6b3204d5b0f6be43a0fdf300dd39713d.zip",
+        },
+        "Description": "Read-only Gateway tool list_open_outages (agent-team-runtime §8.6)",
+        "Environment": {
+          "Variables": {
+            "MINNAL_BACKEND": "aws",
+            "MINNAL_ENV": "dev",
+            "MINNAL_TABLE_NAME": "minnal-dev-grid-tools",
+            "POWERTOOLS_METRICS_NAMESPACE": "Minnal",
+            "POWERTOOLS_SERVICE_NAME": "minnal-tools",
+            "POWERTOOLS_TRACE_DISABLED": "false",
+          },
+        },
+        "FunctionName": "minnal-dev-list-open-outages",
+        "Handler": "tools.list_open_outages.list_open_outages_lambda.lambda_handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ReadToolsLogGrouplistopenoutages3FFC0629",
+          },
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReadToolsRolelistopenoutagesDBA996D0",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.14",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ReadToolsFnlistopenoutagesGatewayInvokelistopenoutages6A35D539": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReadToolsFnlistopenoutages74F6DD00",
+            "Arn",
+          ],
+        },
+        "Principal": "bedrock-agentcore.amazonaws.com",
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ReadToolsLogGroupgetfloodstatus2C8DB25C": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/minnal-dev-get-flood-status",
+        "RetentionInDays": 30,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ReadToolsLogGroupgetproposalstatus4C8AAC5A": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/minnal-dev-get-proposal-status",
+        "RetentionInDays": 30,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ReadToolsLogGrouplistcrews6F0C209C": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/minnal-dev-list-crews",
+        "RetentionInDays": 30,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ReadToolsLogGrouplistopenoutages3FFC0629": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/minnal-dev-list-open-outages",
+        "RetentionInDays": 30,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ReadToolsRolegetfloodstatusA2D54616": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Read-only execution role for the get_flood_status Gateway tool",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ReadToolsRolegetfloodstatusDefaultPolicyAE9086D6": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools",
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools/index/gsi1",
+              ],
+              "Sid": "ReadGridToolsTable",
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValueFASTstackgridtoolstablekeyarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+              "Sid": "DecryptGridToolsCmk",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ReadToolsLogGroupgetfloodstatus2C8DB25C",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadToolsRolegetfloodstatusDefaultPolicyAE9086D6",
+        "Roles": [
+          {
+            "Ref": "ReadToolsRolegetfloodstatusA2D54616",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ReadToolsRolegetproposalstatus67627A59": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Read-only execution role for the get_proposal_status Gateway tool",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ReadToolsRolegetproposalstatusDefaultPolicy9959CA3D": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools",
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools/index/gsi1",
+              ],
+              "Sid": "ReadGridToolsTable",
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValueFASTstackgridtoolstablekeyarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+              "Sid": "DecryptGridToolsCmk",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ReadToolsLogGroupgetproposalstatus4C8AAC5A",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadToolsRolegetproposalstatusDefaultPolicy9959CA3D",
+        "Roles": [
+          {
+            "Ref": "ReadToolsRolegetproposalstatus67627A59",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ReadToolsRolelistcrews7DFB66BA": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Read-only execution role for the list_crews Gateway tool",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ReadToolsRolelistcrewsDefaultPolicy4C66AF7C": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools",
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools/index/gsi1",
+              ],
+              "Sid": "ReadGridToolsTable",
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValueFASTstackgridtoolstablekeyarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+              "Sid": "DecryptGridToolsCmk",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ReadToolsLogGrouplistcrews6F0C209C",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadToolsRolelistcrewsDefaultPolicy4C66AF7C",
+        "Roles": [
+          {
+            "Ref": "ReadToolsRolelistcrews7DFB66BA",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ReadToolsRolelistopenoutagesDBA996D0": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Read-only execution role for the list_open_outages Gateway tool",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ReadToolsRolelistopenoutagesDefaultPolicy6C144642": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools",
+                "arn:aws:dynamodb:us-east-1:111111111111:table/minnal-dev-grid-tools/index/gsi1",
+              ],
+              "Sid": "ReadGridToolsTable",
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValueFASTstackgridtoolstablekeyarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+              "Sid": "DecryptGridToolsCmk",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ReadToolsLogGrouplistopenoutages3FFC0629",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadToolsRolelistopenoutagesDefaultPolicy6C144642",
+        "Roles": [
+          {
+            "Ref": "ReadToolsRolelistopenoutagesDBA996D0",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ReadToolsTargetgetfloodstatusF94EEE96": {
+      "Properties": {
+        "Description": "Gateway target for the get_flood_status read tool",
+        "GatewayIdentifier": "gw-test",
+        "Name": "get-flood-status-target",
+        "TargetConfiguration": {
+          "Mcp": {
+            "Lambda": {
+              "LambdaArn": {
+                "Fn::GetAtt": [
+                  "ReadToolsFngetfloodstatus864D91D0",
+                  "Arn",
+                ],
+              },
+              "ToolSchema": {
+                "InlinePayload": [
+                  {
+                    "Description": "Read-only get_flood_status status tool",
+                    "InputSchema": {
+                      "Type": "object",
+                    },
+                    "Name": "get_flood_status",
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      "Type": "AWS::BedrockAgentCore::GatewayTarget",
+    },
+    "ReadToolsTargetgetproposalstatus3F541D49": {
+      "Properties": {
+        "Description": "Gateway target for the get_proposal_status read tool",
+        "GatewayIdentifier": "gw-test",
+        "Name": "get-proposal-status-target",
+        "TargetConfiguration": {
+          "Mcp": {
+            "Lambda": {
+              "LambdaArn": {
+                "Fn::GetAtt": [
+                  "ReadToolsFngetproposalstatus663547D9",
+                  "Arn",
+                ],
+              },
+              "ToolSchema": {
+                "InlinePayload": [
+                  {
+                    "Description": "Read-only get_proposal_status status tool",
+                    "InputSchema": {
+                      "Type": "object",
+                    },
+                    "Name": "get_proposal_status",
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      "Type": "AWS::BedrockAgentCore::GatewayTarget",
+    },
+    "ReadToolsTargetlistcrewsB6D11567": {
+      "Properties": {
+        "Description": "Gateway target for the list_crews read tool",
+        "GatewayIdentifier": "gw-test",
+        "Name": "list-crews-target",
+        "TargetConfiguration": {
+          "Mcp": {
+            "Lambda": {
+              "LambdaArn": {
+                "Fn::GetAtt": [
+                  "ReadToolsFnlistcrewsC95DF2E0",
+                  "Arn",
+                ],
+              },
+              "ToolSchema": {
+                "InlinePayload": [
+                  {
+                    "Description": "Read-only list_crews status tool",
+                    "InputSchema": {
+                      "Type": "object",
+                    },
+                    "Name": "list_crews",
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      "Type": "AWS::BedrockAgentCore::GatewayTarget",
+    },
+    "ReadToolsTargetlistopenoutages95FACD33": {
+      "Properties": {
+        "Description": "Gateway target for the list_open_outages read tool",
+        "GatewayIdentifier": "gw-test",
+        "Name": "list-open-outages-target",
+        "TargetConfiguration": {
+          "Mcp": {
+            "Lambda": {
+              "LambdaArn": {
+                "Fn::GetAtt": [
+                  "ReadToolsFnlistopenoutages74F6DD00",
+                  "Arn",
+                ],
+              },
+              "ToolSchema": {
+                "InlinePayload": [
+                  {
+                    "Description": "Read-only list_open_outages status tool",
+                    "InputSchema": {
+                      "Type": "object",
+                    },
+                    "Name": "list_open_outages",
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      "Type": "AWS::BedrockAgentCore::GatewayTarget",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`TeamMemoryConstruct (task 74.4) matches its snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "MemoryTeamMemory37E0ABE1": {
+      "Properties": {
+        "Description": "Minnal agent-team incident and lessons memory",
+        "EventExpiryDuration": 30,
+        "MemoryExecutionRoleArn": "arn:aws:iam::111111111111:role/mem-role",
+        "MemoryStrategies": [
+          {
+            "SemanticMemoryStrategy": {
+              "Name": "IncidentMemory",
+              "Namespaces": [
+                "incident/{actorId}",
+              ],
+            },
+          },
+          {
+            "SemanticMemoryStrategy": {
+              "Name": "LessonsMemory",
+              "Namespaces": [
+                "lessons",
+              ],
+            },
+          },
+        ],
+        "Name": "minnal_dev_agent_team_memory",
+      },
+      "Type": "AWS::BedrockAgentCore::Memory",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

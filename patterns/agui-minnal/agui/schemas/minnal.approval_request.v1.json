@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.example/schemas/agui/minnal.approval_request.v1.json",
+  "title": "MinnalApprovalRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_id", "operational_period", "proposal_id", "kind",
+               "summary", "task_token_ref"],
+  "properties": {
+    "incident_id": { "type": "string", "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "operational_period": { "type": "integer", "minimum": 1 },
+    "proposal_id": { "type": "string", "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "kind": { "type": "string", "enum": ["dispatch", "switching"] },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "route_geojson": {
+      "type": "object",
+      "description": "Optional LineString for the map preview, lon lat order, WGS84.",
+      "additionalProperties": true
+    },
+    "task_token_ref": { "type": "string", "pattern": "^ttr_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "action": { "type": "string", "enum": ["energise", "de_energise"] },
+    "is_preventive_safety_measure": { "type": ["boolean", "null"] },
+    "safety_note": { "type": "string", "maxLength": 500 },
+    "crew_id": { "type": "string", "pattern": "^crew_\\d+$" },
+    "device_id": { "type": "string", "pattern": "^(sub|fdr|lat|dt)_\\d+$" }
+  }
+}

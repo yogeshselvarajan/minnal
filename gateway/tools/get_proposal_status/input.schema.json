@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.example/schemas/tools/get_proposal_status/input.json",
+  "title": "GetProposalStatusInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_id"],
+  "properties": {
+    "incident_id": { "type": "string", "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "proposal_id": { "type": "string", "pattern": "^prp_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "status": {
+      "type": "array",
+      "items": { "enum": ["waiting_approval", "approved"] },
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "correlation_id": { "type": "string", "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$" }
+  }
+}

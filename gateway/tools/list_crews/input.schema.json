@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minnal.example/schemas/tools/list_crews/input.json",
+  "title": "ListCrewsInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_id"],
+  "properties": {
+    "incident_id": { "type": "string", "pattern": "^inc_[0-9A-HJKMNP-TV-Z]{26}$" },
+    "availability": { "enum": ["free", "held"] },
+    "required_skill": {
+      "enum": ["make_safe", "overhead_line", "switching", "underground_cable"]
+    },
+    "correlation_id": { "type": "string", "pattern": "^corr_[0-9A-HJKMNP-TV-Z]{26}$" }
+  }
+}

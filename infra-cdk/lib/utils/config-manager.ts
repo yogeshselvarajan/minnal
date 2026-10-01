@@ -63,36 +63,53 @@ export interface AppConfig {
   }
   /** Bedrock model allow-list inputs for runtime IAM (models.md rule 3). */
   bedrock: BedrockConfig
-  /** grid-tools spec infrastructure knobs (design §16). */
-  grid_tools: GridToolsConfig
+  /** agent-team-runtime infra inputs (design §19.7). */
+  agent_team_runtime: AgentTeamRuntimeConfig
 }
 
 /**
- * Configuration for the grid-tools spec constructs (design §16).
- *
- * Everything a reviewer would expect to be environment-driven lives here: the
- * environment name (which drives the DynamoDB removal policy and resource names),
- * the approval timeout and flood freshness windows, the EventBridge source
- * allow-list, per-tool reserved concurrency and Gateway rate limits, and the
- * Cedar policy-engine mode. No ARNs, account IDs or Regions are hard-coded.
+ * Removal policy for a stateful resource, chosen per environment through config so
+ * no `if (dev)` branch lives in construct code (infra-cdk.md data-safety rule).
  */
-export interface GridToolsConfig {
-  /** Deployment environment, e.g. "dev", "staging", "prod". Drives naming and removal policy. */
+export type RemovalPolicyName = "destroy" | "retain"
+
+/** Period-table inputs. The table this spec owns and writes (design §19.1). */
+export interface PeriodTableConfig {
+  /** Component segment of the name `minnal-<env>-<component>`. */
+  component: string
+  /** Whether point-in-time recovery is enabled (R24.5). */
+  point_in_time_recovery: boolean
+  /** Removal policy by environment: `destroy` in dev, `retain` in prod-like envs. */
+  removal_policy: RemovalPolicyName
+  /** The DynamoDB TTL attribute name on the period record. */
+  ttl_attribute: string
+}
+
+/**
+ * agent-team-runtime infrastructure inputs (design §19.7). Every account id, Region
+ * and ARN is derived from stack tokens at synth time; none is written here (R24.8).
+ */
+export interface AgentTeamRuntimeConfig {
+  /** AgentCore Runtime session timeout in seconds (design §19.2, R24.1). */
+  session_timeout_seconds: number
+  /** The five ICS roles, each with an app client and a Cedar permit. */
+  roles: string[]
+  /** Component segment of the grid-tools table name `minnal-<env>-<component>` (read-only). */
+  grid_tools_table_component: string
+  /** The grid-tools GSI the read tools may query. */
+  grid_tools_index_name: string
+  /** Period table this spec owns and writes. */
+  period_table: PeriodTableConfig
+  /** SOP Knowledge Base id; empty skips the KB Gateway target rather than break synth. */
+  knowledge_base_id: string
+  /** Open-Meteo OpenAPI spec URL; empty skips the OpenAPI target. */
+  open_meteo_openapi_url: string
+  /** Environment segment of every resource name and the `env` tag (R24.8, R24.9). */
   env: string
-  /** Approval task-token timeout in minutes; rendered into the state machine as seconds (§6.6). */
-  approval_timeout_minutes: number
-  /** Flood-set freshness window in minutes; feeds the staleness alarm (§16.4, R3.9). */
-  flood_max_age_minutes: number
-  /** EventBridge `source` values routed to the intake/hazard queues (§16.1, flood_event_sources). */
-  flood_event_sources: string[]
-  /** Cedar policy engine association mode. ENFORCE everywhere used for the demo (§16.3, R12.5). */
-  policy_mode: "ENFORCE" | "LOG_ONLY"
-  /** Environments in which LOG_ONLY is permitted; anything else is rejected (§16.3). */
-  policy_log_only_envs: string[]
-  /** Per-tool Lambda reserved concurrency, the hard DoS ceiling (§12.5 threat 10, R14.2). */
-  tool_reserved_concurrency: number
-  /** Gateway rate limit (requests) per caller per target (§12.5 threat 10, R14.2). */
-  gateway_rate_limit_per_minute: number
+  /** The `owner` tag applied to every resource (R24.9). */
+  owner: string
+  /** The `cost-center` tag applied to every resource (R24.9). */
+  cost_center: string
 }
 
 /**
@@ -213,12 +230,15 @@ export class ConfigManager {
 
       const pattern = parsedConfig.backend?.pattern || "strands-single-agent"
       const bedrock = this._parseBedrockConfig(parsedConfig.bedrock, pattern, configPath)
-      const gridTools = this._parseGridToolsConfig(parsedConfig.grid_tools, configPath)
+      const agentTeamRuntime = this._parseAgentTeamRuntimeConfig(
+        parsedConfig.agent_team_runtime,
+        configPath
+      )
 
       return {
         stack_name_base: stackNameBase,
         bedrock,
-        grid_tools: gridTools,
+        agent_team_runtime: agentTeamRuntime,
         admin_user_email: parsedConfig.admin_user_email || null,
         backend: {
           pattern,
@@ -271,87 +291,79 @@ export class ConfigManager {
   }
 
   /**
-   * Parse and validate the grid-tools block, applying safe defaults.
-   *
-   * The one non-obvious rule is §16.3: `policy_mode: LOG_ONLY` is only allowed
-   * when the environment name appears in `policy_log_only_envs`. Because LOG_ONLY
-   * evaluates Cedar without blocking, allowing it by accident would silently
-   * disable the boundary safety veto, so it is rejected here — a deploy in that
-   * mode must be a deliberate, visible config act.
+   * Parse and validate the agent_team_runtime block (design §19.7). Fails the synth loudly
+   * on a missing or malformed value so a broken config can never silently produce a stack
+   * with the wrong session timeout, roles or table settings.
    */
-  private _parseGridToolsConfig(
-    raw: Partial<GridToolsConfig> | undefined,
+  private _parseAgentTeamRuntimeConfig(
+    raw: Partial<AgentTeamRuntimeConfig> | undefined,
     configPath: string
-  ): GridToolsConfig {
-    const env = (raw?.env ?? "dev").trim()
-    if (!/^[a-z][a-z0-9-]{0,19}$/.test(env)) {
+  ): AgentTeamRuntimeConfig {
+    if (!raw || typeof raw !== "object") {
+      throw new Error(`agent_team_runtime is required in ${configPath}`)
+    }
+
+    const sessionTimeout = raw.session_timeout_seconds
+    if (typeof sessionTimeout !== "number" || sessionTimeout < 900) {
       throw new Error(
-        `grid_tools.env '${env}' in ${configPath} must be lower-case letters, digits and hyphens ` +
-          `(1-20 chars, starting with a letter).`
+        `agent_team_runtime.session_timeout_seconds in ${configPath} must be a number >= 900 ` +
+          `(900 s is the AgentCore Runtime minimum, design §19.2).`
       )
     }
 
-    const approvalTimeoutMinutes = raw?.approval_timeout_minutes ?? 30
-    if (!Number.isInteger(approvalTimeoutMinutes) || approvalTimeoutMinutes <= 0) {
+    const roles = raw.roles
+    if (!Array.isArray(roles) || roles.length === 0 || !roles.every(r => typeof r === "string")) {
       throw new Error(
-        `grid_tools.approval_timeout_minutes in ${configPath} must be a positive integer (minutes).`
+        `agent_team_runtime.roles in ${configPath} must be a non-empty list of role names.`
       )
     }
 
-    const floodMaxAgeMinutes = raw?.flood_max_age_minutes ?? 30
-    if (!Number.isInteger(floodMaxAgeMinutes) || floodMaxAgeMinutes <= 0) {
+    const env = (raw.env ?? "").trim()
+    if (!/^[a-z][a-z0-9-]{1,15}$/.test(env)) {
       throw new Error(
-        `grid_tools.flood_max_age_minutes in ${configPath} must be a positive integer (minutes).`
+        `agent_team_runtime.env in ${configPath} must match ^[a-z][a-z0-9-]{1,15}$ (e.g. dev).`
       )
     }
 
-    const floodEventSources =
-      raw?.flood_event_sources && raw.flood_event_sources.length > 0
-        ? raw.flood_event_sources
-        : ["minnal.simulator"]
-    if (!floodEventSources.every(s => typeof s === "string" && s.length > 0)) {
-      throw new Error(
-        `grid_tools.flood_event_sources in ${configPath} must be a non-empty list of source strings.`
-      )
+    const requireString = (value: unknown, key: string): string => {
+      if (typeof value !== "string" || value.trim() === "") {
+        throw new Error(`agent_team_runtime.${key} in ${configPath} must be a non-empty string.`)
+      }
+      return value.trim()
     }
 
-    const logOnlyEnvs = raw?.policy_log_only_envs ?? []
-    const policyMode = raw?.policy_mode ?? "ENFORCE"
-    if (policyMode !== "ENFORCE" && policyMode !== "LOG_ONLY") {
-      throw new Error(
-        `grid_tools.policy_mode '${policyMode}' in ${configPath} must be 'ENFORCE' or 'LOG_ONLY'.`
-      )
+    const pt = raw.period_table
+    if (!pt || typeof pt !== "object") {
+      throw new Error(`agent_team_runtime.period_table is required in ${configPath}.`)
     }
-    if (policyMode === "LOG_ONLY" && !logOnlyEnvs.includes(env)) {
+    if (pt.removal_policy !== "destroy" && pt.removal_policy !== "retain") {
       throw new Error(
-        `grid_tools.policy_mode 'LOG_ONLY' is not permitted for environment '${env}' in ${configPath}. ` +
-          `Add '${env}' to grid_tools.policy_log_only_envs to allow it deliberately (design §16.3).`
-      )
-    }
-
-    const reservedConcurrency = raw?.tool_reserved_concurrency ?? 20
-    if (!Number.isInteger(reservedConcurrency) || reservedConcurrency <= 0) {
-      throw new Error(
-        `grid_tools.tool_reserved_concurrency in ${configPath} must be a positive integer.`
-      )
-    }
-
-    const rateLimit = raw?.gateway_rate_limit_per_minute ?? 60
-    if (!Number.isInteger(rateLimit) || rateLimit <= 0) {
-      throw new Error(
-        `grid_tools.gateway_rate_limit_per_minute in ${configPath} must be a positive integer.`
+        `agent_team_runtime.period_table.removal_policy in ${configPath} must be ` +
+          `'destroy' or 'retain'.`
       )
     }
 
     return {
+      session_timeout_seconds: sessionTimeout,
+      roles: [...roles],
+      grid_tools_table_component: requireString(
+        raw.grid_tools_table_component,
+        "grid_tools_table_component"
+      ),
+      grid_tools_index_name: requireString(raw.grid_tools_index_name, "grid_tools_index_name"),
+      period_table: {
+        component: requireString(pt.component, "period_table.component"),
+        point_in_time_recovery: pt.point_in_time_recovery === true,
+        removal_policy: pt.removal_policy,
+        ttl_attribute: requireString(pt.ttl_attribute, "period_table.ttl_attribute"),
+      },
+      // KB id and OpenAPI URL may legitimately be empty (targets are skipped when unset).
+      knowledge_base_id: typeof raw.knowledge_base_id === "string" ? raw.knowledge_base_id : "",
+      open_meteo_openapi_url:
+        typeof raw.open_meteo_openapi_url === "string" ? raw.open_meteo_openapi_url : "",
       env,
-      approval_timeout_minutes: approvalTimeoutMinutes,
-      flood_max_age_minutes: floodMaxAgeMinutes,
-      flood_event_sources: [...floodEventSources],
-      policy_mode: policyMode,
-      policy_log_only_envs: [...logOnlyEnvs],
-      tool_reserved_concurrency: reservedConcurrency,
-      gateway_rate_limit_per_minute: rateLimit,
+      owner: requireString(raw.owner, "owner"),
+      cost_center: requireString(raw.cost_center, "cost_center"),
     }
   }
 

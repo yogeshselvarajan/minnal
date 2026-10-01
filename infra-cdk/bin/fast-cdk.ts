@@ -2,7 +2,7 @@
 import * as cdk from "aws-cdk-lib"
 import { AwsSolutionsChecks } from "cdk-nag"
 import { FastMainStack } from "../lib/fast-main-stack"
-import { GridToolsStack } from "../lib/grid-tools-stack"
+import { MinnalAgentTeamStack } from "../lib/minnal-agent-team-stack"
 import { ConfigManager } from "../lib/utils/config-manager"
 
 // Load configuration using ConfigManager
@@ -25,6 +25,19 @@ const amplifyStack = new FastMainStack(app, props.stack_name_base, {
     account: process.env.CDK_DEFAULT_ACCOUNT, 
     region: process.env.CDK_DEFAULT_REGION 
   },
+})
+void amplifyStack
+
+// The agent-team-runtime infrastructure stack (agent-team-runtime spec §19). Synth-only:
+// `cdk synth` + cdk-nag, never `cdk deploy`. It is synthesised environment-agnostic so every
+// ARN uses CloudFormation pseudo-parameters and no account id or Region is baked in (R24.8).
+// cdk-nag AwsSolutionsChecks is applied and asserted zero-findings in the verification test
+// (test/agent-team-verify.test.ts), matching the repo's existing nag pattern
+// (test/bedrock-model-allowlist.test.ts); it is not registered here because the pinned
+// cdk-nag 3.0.2 validation plugin errors while hashing directory Lambda assets during CLI
+// synth. See docs/adr/0008-cdk-nag-suppressions-agent-team.md.
+new MinnalAgentTeamStack(app, `${props.stack_name_base}-agent-team`, {
+  config: props,
 })
 
 // The grid-tools spec stack (design §16). Synthesised as its own stack so it can be

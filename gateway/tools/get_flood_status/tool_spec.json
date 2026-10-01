@@ -1,0 +1,20 @@
+[
+  {
+    "name": "get_flood_status",
+    "description": "Return the current flood hazard picture for one incident: the flood set version, its freshness (one of unknown, fresh, stale), the feed mode (replay or live), the simulated time of the last hazard feed event, and one entry per hazard polygon with its id, status (active, receding or cleared) and area in square metres. Read-only: it writes nothing and issues no safety clearance. Use it to describe the situation and to decide whether dispatch is safe at all. Do NOT use it to decide whether a specific route, device or point is flooded: that requires check_flood_geofence, which is the only tool that may issue a safety clearance.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "description": "Incident identifier, a ULID with the inc_ prefix, matching ^inc_[0-9A-HJKMNP-TV-Z]{26}$."
+        },
+        "correlation_id": {
+          "type": "string",
+          "description": "Optional correlation identifier, a ULID with the corr_ prefix. Echoed in the response and in every log line."
+        }
+      },
+      "required": ["incident_id"]
+    }
+  }
+]

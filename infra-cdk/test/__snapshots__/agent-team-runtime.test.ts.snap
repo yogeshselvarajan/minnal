@@ -1,0 +1,731 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`AgentTeamRuntimeConstruct (task 73.1) matches its snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "RuntimeAgentTeamRuntimeD3667777": {
+      "Properties": {
+        "AgentRuntimeArtifact": {
+          "ContainerConfiguration": {
+            "ContainerUri": "111111111111.dkr.ecr.us-east-1.amazonaws.com/minnal:latest",
+          },
+        },
+        "AgentRuntimeName": "minnal_dev_agent_team",
+        "EnvironmentVariables": {
+          "GATEWAY_URL_PARAM": "/FAST-stack/gateway_url",
+          "MEMORY_ID": "minnal-dev-agent-team-memory",
+          "MINNAL_BACKEND": "aws",
+          "MINNAL_ENV": "dev",
+          "MINNAL_EVENT_BUS": "minnal-events",
+          "MINNAL_REGION": "us-east-1",
+          "PERIOD_TABLE_NAME": "minnal-dev-periods",
+        },
+        "NetworkConfiguration": {
+          "NetworkMode": "PUBLIC",
+        },
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "RuntimeRoleFD8790A4",
+            "Arn",
+          ],
+        },
+        "ServerProtocol": "AGUI",
+        "SessionConfiguration": {
+          "SessionTimeoutInSeconds": 900,
+        },
+      },
+      "Type": "AWS::BedrockAgentCore::Runtime",
+    },
+    "RuntimeRoleFD8790A4": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "bedrock-agentcore.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "ecr:BatchGetImage",
+                    "ecr:GetDownloadUrlForLayer",
+                    "ecr:BatchCheckLayerAvailability",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:ecr:us-east-1:111111111111:repository/*",
+                  "Sid": "ECRImageAccess",
+                },
+                {
+                  "Action": "ecr:GetAuthorizationToken",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                  "Sid": "ECRTokenAccess",
+                },
+                {
+                  "Action": [
+                    "logs:DescribeLogStreams",
+                    "logs:CreateLogGroup",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:logs:us-east-1:111111111111:log-group:/aws/bedrock-agentcore/runtimes/*",
+                  "Sid": "CloudWatchLogsGroupAccess",
+                },
+                {
+                  "Action": "logs:DescribeLogGroups",
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:logs:us-east-1:111111111111:log-group:*",
+                  "Sid": "CloudWatchLogsDescribeGroups",
+                },
+                {
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:logs:us-east-1:111111111111:log-group:/aws/bedrock-agentcore/runtimes/*:log-stream:*",
+                  "Sid": "CloudWatchLogsStreamAccess",
+                },
+                {
+                  "Action": [
+                    "xray:PutTraceSegments",
+                    "xray:PutTelemetryRecords",
+                    "xray:GetSamplingRules",
+                    "xray:GetSamplingTargets",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": "cloudwatch:PutMetricData",
+                  "Condition": {
+                    "StringEquals": {
+                      "cloudwatch:namespace": "bedrock-agentcore",
+                    },
+                  },
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": [
+                    "bedrock-agentcore:GetWorkloadAccessToken",
+                    "bedrock-agentcore:GetWorkloadAccessTokenForJWT",
+                    "bedrock-agentcore:GetWorkloadAccessTokenForUserId",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:bedrock-agentcore:us-east-1:111111111111:workload-identity-directory/default",
+                    "arn:aws:bedrock-agentcore:us-east-1:111111111111:workload-identity-directory/default/workload-identity/*",
+                  ],
+                  "Sid": "GetAgentAccessToken",
+                },
+                {
+                  "Action": [
+                    "bedrock:InvokeModel",
+                    "bedrock:InvokeModelWithResponseStream",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-2-sonic-v1:0",
+                    "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0",
+                    "arn:aws:bedrock:us-east-1::foundation-model/openai.gpt-oss-120b-1:0",
+                  ],
+                  "Sid": "BedrockInvokeBaseModels",
+                },
+                {
+                  "Action": [
+                    "bedrock:InvokeModel",
+                    "bedrock:InvokeModelWithResponseStream",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:bedrock:us-east-1:111111111111:inference-profile/us.amazon.nova-2-lite-v1:0",
+                  "Sid": "BedrockInvokeInferenceProfiles",
+                },
+                {
+                  "Action": [
+                    "bedrock:InvokeModel",
+                    "bedrock:InvokeModelWithResponseStream",
+                  ],
+                  "Condition": {
+                    "StringEquals": {
+                      "bedrock:InferenceProfileArn": "arn:aws:bedrock:us-east-1:111111111111:inference-profile/us.amazon.nova-2-lite-v1:0",
+                    },
+                  },
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-2-lite-v1:0",
+                    "arn:aws:bedrock:us-east-2::foundation-model/amazon.nova-2-lite-v1:0",
+                    "arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-2-lite-v1:0",
+                  ],
+                  "Sid": "BedrockInvokeProfileDestinations1",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "AgentCorePolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`RoleIdentityConstruct (tasks 73.2, 73.3) matches its snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "RoleIdentityPreTokenRoleLambda377ED416": {
+      "DependsOn": [
+        "RoleIdentityPreTokenRoleLambdaRoleDefaultPolicy4C4CEC67",
+        "RoleIdentityPreTokenRoleLambdaRole8161B6F1",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-us-east-1",
+          "S3Key": "20469e459da77939768530802fe8baa50f1c438f350bdb5a8a089db135cb6bdc.zip",
+        },
+        "Description": "Maps a Cognito app client to an ICS role and injects the minnal_role claim",
+        "Environment": {
+          "Variables": {
+            "ROLE_MAP_PARAM": "/FAST-stack/roles/client_role_map",
+          },
+        },
+        "FunctionName": "minnal-dev-pretoken-role",
+        "Handler": "index.lambda_handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "RoleIdentityPreTokenRoleLogGroup36F0D85E",
+          },
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "RoleIdentityPreTokenRoleLambdaRole8161B6F1",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 10,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "RoleIdentityPreTokenRoleLambdaCognitoInvokeF584DA7F": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "RoleIdentityPreTokenRoleLambda377ED416",
+            "Arn",
+          ],
+        },
+        "Principal": "cognito-idp.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "RoleIdentityRolePool360B4A81",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RoleIdentityPreTokenRoleLambdaRole8161B6F1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Execution role for the Minnal role pre-token Lambda",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "RoleIdentityPreTokenRoleLambdaRoleDefaultPolicy4C4CEC67": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "RoleIdentityPreTokenRoleLogGroup36F0D85E",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": "ssm:GetParameter",
+              "Effect": "Allow",
+              "Resource": "arn:aws:ssm:us-east-1:111111111111:parameter/FAST-stack/roles/client_role_map",
+              "Sid": "ReadRoleClientMap",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "RoleIdentityPreTokenRoleLambdaRoleDefaultPolicy4C4CEC67",
+        "Roles": [
+          {
+            "Ref": "RoleIdentityPreTokenRoleLambdaRole8161B6F1",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "RoleIdentityPreTokenRoleLogGroup36F0D85E": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/minnal-dev-pretoken-role",
+        "RetentionInDays": 30,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientIdcommanderDAFF508D": {
+      "Properties": {
+        "Description": "Cognito app client id for the commander agent role",
+        "Name": "/FAST-stack/roles/commander/client_id",
+        "Type": "String",
+        "Value": {
+          "Ref": "RoleIdentityRolePoolMinnalRolecommander6D8A24EF",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "RoleIdentityRoleClientIddiagnostics920C3199": {
+      "Properties": {
+        "Description": "Cognito app client id for the diagnostics agent role",
+        "Name": "/FAST-stack/roles/diagnostics/client_id",
+        "Type": "String",
+        "Value": {
+          "Ref": "RoleIdentityRolePoolMinnalRolediagnosticsE9B250EC",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "RoleIdentityRoleClientIddispatch3C01955D": {
+      "Properties": {
+        "Description": "Cognito app client id for the dispatch agent role",
+        "Name": "/FAST-stack/roles/dispatch/client_id",
+        "Type": "String",
+        "Value": {
+          "Ref": "RoleIdentityRolePoolMinnalRoledispatch3BBFF4DA",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "RoleIdentityRoleClientIdhazard010AA1EC": {
+      "Properties": {
+        "Description": "Cognito app client id for the hazard agent role",
+        "Name": "/FAST-stack/roles/hazard/client_id",
+        "Type": "String",
+        "Value": {
+          "Ref": "RoleIdentityRolePoolMinnalRolehazardE236CC75",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "RoleIdentityRoleClientIdsafetyBF7EBBAD": {
+      "Properties": {
+        "Description": "Cognito app client id for the safety agent role",
+        "Name": "/FAST-stack/roles/safety/client_id",
+        "Type": "String",
+        "Value": {
+          "Ref": "RoleIdentityRolePoolMinnalRolesafetyC5092888",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "RoleIdentityRoleClientMap41B1995C": {
+      "Properties": {
+        "Description": "client_id -> ICS role map read by the pre-token Lambda",
+        "Name": "/FAST-stack/roles/client_role_map",
+        "Type": "String",
+        "Value": {
+          "Fn::Join": [
+            "",
+            [
+              "{"",
+              {
+                "Ref": "RoleIdentityRolePoolMinnalRolecommander6D8A24EF",
+              },
+              "":"commander","",
+              {
+                "Ref": "RoleIdentityRolePoolMinnalRolehazardE236CC75",
+              },
+              "":"hazard","",
+              {
+                "Ref": "RoleIdentityRolePoolMinnalRolediagnosticsE9B250EC",
+              },
+              "":"diagnostics","",
+              {
+                "Ref": "RoleIdentityRolePoolMinnalRoledispatch3BBFF4DA",
+              },
+              "":"dispatch","",
+              {
+                "Ref": "RoleIdentityRolePoolMinnalRolesafetyC5092888",
+              },
+              "":"safety"}",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "RoleIdentityRoleClientSecretcommanderAF0B0211": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the commander agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/commander/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecretdiagnostics1A6BFC12": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the diagnostics agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/diagnostics/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecretdispatch9B1C965D": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the dispatch agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/dispatch/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecrethazardEC7988D3": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the hazard agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/hazard/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRoleClientSecretsafety248D2130": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": "Cognito app-client secret for the safety agent role",
+        "GenerateSecretString": {},
+        "Name": "/FAST-stack/roles/safety/client_secret",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRolePool360B4A81": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1,
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "LambdaConfig": {
+          "PreTokenGenerationConfig": {
+            "LambdaArn": {
+              "Fn::GetAtt": [
+                "RoleIdentityPreTokenRoleLambda377ED416",
+                "Arn",
+              ],
+            },
+            "LambdaVersion": "V3_0",
+          },
+        },
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 12,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": true,
+            "RequireUppercase": true,
+          },
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolName": "minnal-dev-agent-roles",
+        "UserPoolTier": "ESSENTIALS",
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "RoleIdentityRolePoolGatewayResourceServer5CFF3357": {
+      "Properties": {
+        "Identifier": "minnal-dev-gateway",
+        "Name": "minnal-dev-gateway",
+        "Scopes": [
+          {
+            "ScopeDescription": "Invoke the Minnal agent-team Gateway",
+            "ScopeName": "invoke",
+          },
+        ],
+        "UserPoolId": {
+          "Ref": "RoleIdentityRolePool360B4A81",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolResourceServer",
+    },
+    "RoleIdentityRolePoolMinnalRolecommander6D8A24EF": {
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "client_credentials",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "RoleIdentityRolePoolGatewayResourceServer5CFF3357",
+                },
+                "/invoke",
+              ],
+            ],
+          },
+        ],
+        "ClientName": "minnal-dev-commander",
+        "GenerateSecret": true,
+        "SupportedIdentityProviders": [
+          "COGNITO",
+        ],
+        "UserPoolId": {
+          "Ref": "RoleIdentityRolePool360B4A81",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "RoleIdentityRolePoolMinnalRolediagnosticsE9B250EC": {
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "client_credentials",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "RoleIdentityRolePoolGatewayResourceServer5CFF3357",
+                },
+                "/invoke",
+              ],
+            ],
+          },
+        ],
+        "ClientName": "minnal-dev-diagnostics",
+        "GenerateSecret": true,
+        "SupportedIdentityProviders": [
+          "COGNITO",
+        ],
+        "UserPoolId": {
+          "Ref": "RoleIdentityRolePool360B4A81",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "RoleIdentityRolePoolMinnalRoledispatch3BBFF4DA": {
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "client_credentials",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "RoleIdentityRolePoolGatewayResourceServer5CFF3357",
+                },
+                "/invoke",
+              ],
+            ],
+          },
+        ],
+        "ClientName": "minnal-dev-dispatch",
+        "GenerateSecret": true,
+        "SupportedIdentityProviders": [
+          "COGNITO",
+        ],
+        "UserPoolId": {
+          "Ref": "RoleIdentityRolePool360B4A81",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "RoleIdentityRolePoolMinnalRolehazardE236CC75": {
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "client_credentials",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "RoleIdentityRolePoolGatewayResourceServer5CFF3357",
+                },
+                "/invoke",
+              ],
+            ],
+          },
+        ],
+        "ClientName": "minnal-dev-hazard",
+        "GenerateSecret": true,
+        "SupportedIdentityProviders": [
+          "COGNITO",
+        ],
+        "UserPoolId": {
+          "Ref": "RoleIdentityRolePool360B4A81",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "RoleIdentityRolePoolMinnalRolesafetyC5092888": {
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "client_credentials",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "RoleIdentityRolePoolGatewayResourceServer5CFF3357",
+                },
+                "/invoke",
+              ],
+            ],
+          },
+        ],
+        "ClientName": "minnal-dev-safety",
+        "GenerateSecret": true,
+        "SupportedIdentityProviders": [
+          "COGNITO",
+        ],
+        "UserPoolId": {
+          "Ref": "RoleIdentityRolePool360B4A81",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

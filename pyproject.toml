@@ -5,16 +5,19 @@ description = "Agentic storm-restoration war room for power utilities"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "ag-ui-strands==0.1.9",
     "aws-lambda-powertools==3.35.0",
-    "bedrock-agentcore==1.23.1",
+    "bedrock-agentcore==1.18.1",
     "jsonschema==4.26.0",
+    "mcp==1.27.2",
     "pydantic==2.13.5",
     "pydantic-settings==2.15.0",
+    "pyjwt[crypto]==2.13.0",
     "pyproj==3.8.0",
     "python-ulid==4.0.1",
     "pyyaml==6.0.3",
     "shapely==2.1.2",
-    "strands-agents==1.57.1",
+    "strands-agents==1.42.0",
 ]
 
 [dependency-groups]
@@ -44,6 +47,15 @@ select = ["E", "F", "I", "B", "UP", "SIM", "S", "ASYNC", "PL", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]
+# FAST template utils carry `# nosemgrep:` directives whose fully-qualified rule
+# IDs exceed the 100-char line limit and must stay intact on one line for the
+# security scanner. E501 is exempted on these two vendored files only; all other
+# rules still apply. (checkpoint-26 gate; behaviour unchanged)
+"patterns/utils/auth.py" = ["E501"]
+# Spike scripts are throwaway verification harnesses (design §22.5 S1/S2), kept as
+# evidence for ADRs 0005/0006. Like tests, they assert; they also print their result.
+"patterns/agui-minnal/agui/spikes/**" = ["S101", "T201"]
+"patterns/agui-minnal/roles/_common/spikes/**" = ["S101", "T201"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -57,6 +69,7 @@ mypy_path = ["patterns/agui-minnal", "gateway/tools"]
 files = [
     "patterns/agui-minnal/config/settings.py",
     "patterns/agui-minnal/domain",
+    "patterns/agui-minnal/memory/namespaces.py",
     "gateway/tools/_shared",
     "gateway/tools/*/logic.py",
 ]
@@ -67,7 +80,7 @@ files = [
 # dependency; they appear only in the AWS adapters (never in logic), so treat them
 # as untyped there. Logic and _shared pure modules import none of them (R14.4).
 [[tool.mypy.overrides]]
-module = ["shapely.*", "pyproj.*", "boto3.*", "botocore.*", "mypy_boto3_dynamodb.*", "mypy_boto3_s3.*"]
+module = ["shapely.*", "pyproj.*", "boto3.*", "botocore.*", "mypy_boto3_dynamodb.*", "mypy_boto3_s3.*", "agentcore_tools.*"]
 ignore_missing_imports = true
 
 # sample_tool is the untyped FAST template skeleton (predates grid-tools, not a

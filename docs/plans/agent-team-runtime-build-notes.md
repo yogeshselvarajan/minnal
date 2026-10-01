@@ -729,3 +729,36 @@ left UNTICKED** with this blocker recorded; it is tickable only once the seven g
 `*_lambda.py` handlers and the five model-node graph executors + stdio registry transport land, at
 which point the replay runner (structure complete, dependency stubbed behind the injectable
 `PeriodBuilder` seam) runs the acceptance scenario with no change here.
+
+## 2026-09-29 — main + grid-tools merged into the branch (post-PR update)
+
+The remote `feat/agent-team-runtime` had `main` and the grid-tools PR merged into it
+(`307e83f Merge branch 'main'`). This landed the seven grid-tools `*_lambda.py` handlers
+(`record_outage`, `trace_upstream_device`, `check_flood_geofence`, `plan_crew_route`,
+`rank_restoration_jobs`, `dispatch_crew`, `propose_switching`) fully implemented — the PRIMARY
+blocker for the offline live acceptance period (tasks 68/69 and the Checkpoint 78 acceptance leg).
+
+Reconciled in this spec's lane:
+- CI `ruff format --check` on branch-changed files flagged `patterns/utils/{auth,ssm}.py`
+  (changed by this branch's earlier lint-only clean, never formatted). Fixed format-only
+  (commit `4ac9a68`). The CI format gate on changed files now passes.
+- HANDLER-NAME MISMATCH (gap 1) RESOLVED: the grid-tools handlers export `def handler`, not the
+  FAST `lambda_handler` the four read tools use. `offline/tool_server.py::_handler` now resolves
+  either entrypoint (lambda_handler, then handler) and still fails loudly for a truly unfilled
+  handler. New test `tests/agents/test_tool_server_resolves.py` (4 tests) proves all eleven tools
+  resolve. Commit `8364639`.
+
+Still open (gap 2) before tasks 68/69/78-acceptance can be ticked:
+- The offline PERIOD ORCHESTRATOR is still not wired: the five model-node `MultiAgentBase` graph
+  executors + a real `GraphDeps` assembler + a stdio transport on `RoleClientRegistry` (currently
+  HTTP `streamablehttp_client` only). This is this spec's lane but is not covered by a discrete
+  tasks.md task; it sits behind the task-67 runner's injectable `PeriodBuilder`/`CaseRunner` seam
+  whose default raises `NotImplementedError`. Building it (ScriptedModels, in-process stdio tool
+  server) is the remaining work to run a full live offline period and tick 68/69 and the
+  Checkpoint 78 acceptance leg. Recommended as a focused follow-up (agent-engineer lane).
+
+Observed, NOT owned by this spec (do not fix here): 4 pre-existing failures on the merged branch
+in grid-tools-lane tests — `tests/tools/test_ingestors.py::{test_job_completed_closes_and_deletes_key,
+test_redelivery_changes_nothing}` and `tests/tools/test_property_coverage.py::{test_designed_and_tested_property_numbers_are_a_bijection,
+test_property_test_names_follow_the_naming_rule}`. They fail identically with this spec's change
+stashed, so they are a grid-tools/merge artifact, not caused by agent-team-runtime.

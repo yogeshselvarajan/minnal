@@ -229,6 +229,15 @@ class CapturingLogger:
         """Record a debug-level structured log call."""
         self.calls.append(LoggedCall("debug", message, dict(fields)))
 
+    def exception(self, message: str, **fields: Any) -> None:
+        """Record an error-level call from an ``except`` block (mirrors Powertools).
+
+        ``run_tool`` calls ``logger.exception`` in its catch-all branch; the fake
+        records it as an ``error`` call *without* the traceback, so a test can
+        assert the structured fields while confirming no stack trace is stored.
+        """
+        self.calls.append(LoggedCall("error", message, dict(fields)))
+
 
 class ListEventPublisher:
     """An ``EventPublisher`` that validates then appends events to a list (R13.3).

@@ -109,10 +109,9 @@ class DynamoOutageStore:
         if isinstance(exc.outcome, tx.AttachToExisting):
             existing = self.get_open_by_key(incident_id, draft.outage_key)
             if existing is not None:
-                attached = self.attach_report(
-                    incident_id, existing.outage_id, draft.report_id, None
-                )
-                return CreateOutageResult(outage=attached, created=False)
+                # The key is already owned: return the open Outage unattached so the
+                # caller's _attach applies escalation exactly once (§5.1 step 6/7, R4.13).
+                return CreateOutageResult(outage=existing, created=False)
         if isinstance(exc.outcome, tx.ReturnStored):
             replay = self.get_by_report_id(incident_id, draft.report_id)
             if replay is not None:
@@ -328,12 +327,14 @@ class DynamoTokenVault:
     def __init__(self, table: DynamoTable) -> None:
         self._table = table
 
-    def store(self, incident_id: str, ttr: str, task_token: str) -> None:
+    def store(
+        self, incident_id: str, ttr: str, task_token: str, proposal_id: str | None = None
+    ) -> None:
         item = {
             "pk": _pk(incident_id),
             "sk": f"TTR#{ttr}",
             "task_token": task_token,
-            "proposal_id": ttr,
+            "proposal_id": proposal_id if proposal_id is not None else ttr,
         }
         try:
             self._table.put_if_absent(item)

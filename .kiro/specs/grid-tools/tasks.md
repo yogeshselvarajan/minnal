@@ -143,128 +143,128 @@ Spec `grid-tools`: 18 requirements, 152 acceptance criteria (33 `[SAFETY]`), 30 
 
 ## Wave 4 — Handlers and backend components
 
-- [ ] 41. [geo-data-engineer] Tool handlers _Requirements: 1.3, 1.4, 1.6, 1.7, 1.9, 1.12, 2.3, 2.4_ _Design: §5_
-  - [ ] 41.1 [geo-data-engineer] Write the shared handler scaffolding: the Powertools decorator stack, `assert_tool_name` from the Gateway client context, `ensure_correlation_id`, the explicit `pydantic.ValidationError` catch that emits only `loc` and `type`, and the idempotency wrapper that raises on retryable outcomes _Requirements: 1.3, 1.4, 1.6, 1.7, 1.9, 1.12, 2.4_ _Design: §5 preamble, §11.7_
-  - [ ] 41.2 [geo-data-engineer] Write `record_outage_lambda.py` with its metrics _Requirements: 4.1, 4.6, 4.8, 4.9, 2.3_ _Design: §5.1_
-  - [ ] 41.3 [geo-data-engineer] Write `trace_upstream_device_lambda.py` _Requirements: 5.6, 5.7_ _Design: §5.2_
-  - [ ] 41.4 [geo-data-engineer] Write `check_flood_geofence_lambda.py`, including loading the stored Route for `target_kind: route` _Requirements: 6.1, 6.7, 6.8_ _Design: §5.3_
-  - [ ] 41.5 [geo-data-engineer] Write `plan_crew_route_lambda.py` with the mandatory post-route re-test and `RoutesRejectedFlood` _Requirements: 7.3, 7.6, 7.7, 7.8, 7.10, 2.3_ _Design: §5.4_
-  - [ ] 41.6 [geo-data-engineer] Write `rank_restoration_jobs_lambda.py` _Requirements: 8.7, 8.8, 8.9, 8.10_ _Design: §5.5_
-  - [ ] 41.7 [geo-data-engineer] Write `dispatch_crew_lambda.py`: the proposal transaction with clearance consumption and crew lock, the work-order start, the token vaulting and `DispatchProposed` _Requirements: 9.1, 9.6, 9.8, 9.9, 2.3_ _Design: §5.6, §7.4.1, §7.4.2_
-  - [ ] 41.8 [geo-data-engineer] Write `propose_switching_lambda.py`: the same flow without a crew lock, plus `is_preventive_safety_measure` reported as unknown when the feed is not fresh _Requirements: 10.1, 10.5, 10.7, 2.3_ _Design: §5.7_
+- [x] 41. [geo-data-engineer] Tool handlers _Requirements: 1.3, 1.4, 1.6, 1.7, 1.9, 1.12, 2.3, 2.4_ _Design: §5_
+  - [x] 41.1 [geo-data-engineer] Write the shared handler scaffolding: the Powertools decorator stack, `assert_tool_name` from the Gateway client context, `ensure_correlation_id`, the explicit `pydantic.ValidationError` catch that emits only `loc` and `type`, and the idempotency wrapper that raises on retryable outcomes _Requirements: 1.3, 1.4, 1.6, 1.7, 1.9, 1.12, 2.4_ _Design: §5 preamble, §11.7_
+  - [x] 41.2 [geo-data-engineer] Write `record_outage_lambda.py` with its metrics _Requirements: 4.1, 4.6, 4.8, 4.9, 2.3_ _Design: §5.1_
+  - [x] 41.3 [geo-data-engineer] Write `trace_upstream_device_lambda.py` _Requirements: 5.6, 5.7_ _Design: §5.2_
+  - [x] 41.4 [geo-data-engineer] Write `check_flood_geofence_lambda.py`, including loading the stored Route for `target_kind: route` _Requirements: 6.1, 6.7, 6.8_ _Design: §5.3_
+  - [x] 41.5 [geo-data-engineer] Write `plan_crew_route_lambda.py` with the mandatory post-route re-test and `RoutesRejectedFlood` _Requirements: 7.3, 7.6, 7.7, 7.8, 7.10, 2.3_ _Design: §5.4_
+  - [x] 41.6 [geo-data-engineer] Write `rank_restoration_jobs_lambda.py` _Requirements: 8.7, 8.8, 8.9, 8.10_ _Design: §5.5_
+  - [x] 41.7 [geo-data-engineer] Write `dispatch_crew_lambda.py`: the proposal transaction with clearance consumption and crew lock, the work-order start, the token vaulting and `DispatchProposed` _Requirements: 9.1, 9.6, 9.8, 9.9, 2.3_ _Design: §5.6, §7.4.1, §7.4.2_
+  - [x] 41.8 [geo-data-engineer] Write `propose_switching_lambda.py`: the same flow without a crew lock, plus `is_preventive_safety_measure` reported as unknown when the feed is not fresh _Requirements: 10.1, 10.5, 10.7, 2.3_ _Design: §5.7_
 
-- [ ] 42. [geo-data-engineer] Write `flood_ingestor/`: the hazard-queue handler at batch size 1, schema and geometry validation to the DLQ, the optimistic-lock transaction, the bounded re-read-and-re-apply, the heartbeat path, the configurable source filter, and cache invalidation _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.8, 3.9, 3.12, 18.8_ _Design: §5.8, §7.4.5_
+- [x] 42. [geo-data-engineer] Write `flood_ingestor/`: the hazard-queue handler at batch size 1, schema and geometry validation to the DLQ, the optimistic-lock transaction, the bounded re-read-and-re-apply, the heartbeat path, the configurable source filter, and cache invalidation _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.8, 3.9, 3.12, 18.8_ _Design: §5.8, §7.4.5_
 
-- [ ] 43. [qa-eval-engineer] Write property test for Property 20 `[SAFETY]` (flood ingestion is order-safe and loses no update under interleaved appliers) _Requirements: 3.1, 3.2, 3.3, 3.8, 3.12_ _Design: §18 P20_
+- [x] 43. [qa-eval-engineer] Write property test for Property 20 `[SAFETY]` (flood ingestion is order-safe and loses no update under interleaved appliers) _Requirements: 3.1, 3.2, 3.3, 3.8, 3.12_ _Design: §18 P20_
 
-- [ ] 44. [geo-data-engineer] Write `event_ingestor/`: the intake-queue handler at batch size 10 that processes in order, stops at the first failure and reports it plus every unprocessed message; reports through the `record_outage` Logic; `JobCompleted` closing Outages and releasing the crew lock conditional on `proposal_id` _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8_ _Design: §5.10, §7.4.6_
+- [x] 44. [geo-data-engineer] Write `event_ingestor/`: the intake-queue handler at batch size 10 that processes in order, stops at the first failure and reports it plus every unprocessed message; reports through the `record_outage` Logic; `JobCompleted` closing Outages and releasing the crew lock conditional on `proposal_id` _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7, 18.8_ _Design: §5.10, §7.4.6_
 
-- [ ] 45. [qa-eval-engineer] Write property test for Property 33 `[SAFETY]` (event intake matches the tool, and completed work frees the key and the lock) _Requirements: 18.1, 18.2, 18.3, 18.4, 18.7, 4.12, 9.10_ _Design: §18 P33_
+- [x] 45. [qa-eval-engineer] Write property test for Property 33 `[SAFETY]` (event intake matches the tool, and completed work frees the key and the lock) _Requirements: 18.1, 18.2, 18.3, 18.4, 18.7, 4.12, 9.10_ _Design: §18 P33_
 
-- [ ] 46. [geo-data-engineer] Wire `approval_handler/`: the API Gateway handler over the task-25.1 Logic — Cognito claims in, the decide-once conditional update, the approval-time flood re-test, the crew-lock release, `SendTaskSuccess`/`SendTaskFailure`, the decision events named from the proposal kind, and `ApprovalLatencyMs` _Requirements: 11.2, 11.3, 11.4, 11.7, 11.8, 11.9, 9.10, 13.5, 2.3_ _Design: §5.9_
+- [x] 46. [geo-data-engineer] Wire `approval_handler/`: the API Gateway handler over the task-25.1 Logic — Cognito claims in, the decide-once conditional update, the approval-time flood re-test, the crew-lock release, `SendTaskSuccess`/`SendTaskFailure`, the decision events named from the proposal kind, and `ApprovalLatencyMs` _Requirements: 11.2, 11.3, 11.4, 11.7, 11.8, 11.9, 9.10, 13.5, 2.3_ _Design: §5.9_
 
-- [ ] 47. [geo-data-engineer] Write `token_vault/` and wire `work_order_expirer/`: single-use token storage, and the handler over the task-25.1 expirer Logic marking the proposal expired, the clearance used, the crew lock released and the expiry event emitted _Requirements: 11.1, 11.6, 13.5, 9.10_ _Design: §5.9, §5.11, §6.6_
+- [x] 47. [geo-data-engineer] Write `token_vault/` and wire `work_order_expirer/`: single-use token storage, and the handler over the task-25.1 expirer Logic marking the proposal expired, the clearance used, the crew lock released and the expiry event emitted _Requirements: 11.1, 11.6, 13.5, 9.10_ _Design: §5.9, §5.11, §6.6_
 
 _Tasks 27 to 30 keep their wave-2 numbers deliberately: they were moved here because each one exercises a handler, a store transaction or the Approval_Handler, none of which exists before this wave._
 
-- [ ] 27. [qa-eval-engineer] Write property test for Property 1 `[SAFETY]` (no accepted route or dispatch crosses a flood, against adversarial routers) _Requirements: 7.3, 7.4, 7.5, 9.3, 9.7_ _Design: §18 P1_
+- [x] 27. [qa-eval-engineer] Write property test for Property 1 `[SAFETY]` (no accepted route or dispatch crosses a flood, against adversarial routers) _Requirements: 7.3, 7.4, 7.5, 9.3, 9.7_ _Design: §18 P1_
 
-- [ ] 28. [qa-eval-engineer] Write property test for Property 2 `[SAFETY]` (no energisation into water, including flooded customer areas) _Requirements: 10.2, 10.3, 11.4_ _Design: §18 P2_
+- [x] 28. [qa-eval-engineer] Write property test for Property 2 `[SAFETY]` (no energisation into water, including flooded customer areas) _Requirements: 10.2, 10.3, 11.4_ _Design: §18 P2_
 
-- [ ] 29. [qa-eval-engineer] Write property test for Property 17 `[SAFETY]` (only a matching, live, unused clearance is accepted; crew size vetoed) _Requirements: 9.2, 9.4, 10.4, 12.8_ _Design: §18 P17_
+- [x] 29. [qa-eval-engineer] Write property test for Property 17 `[SAFETY]` (only a matching, live, unused clearance is accepted; crew size vetoed) _Requirements: 9.2, 9.4, 10.4, 12.8_ _Design: §18 P17_
 
-- [ ] 30. [qa-eval-engineer] Write property test for Property 15 `[SAFETY]` (unknown or stale flood data fails closed in every tool, in both feed modes) _Requirements: 3.9, 3.10, 6.8, 7.10, 8.10, 9.9, 10.7, 11.9_ _Design: §18 P15_
+- [x] 30. [qa-eval-engineer] Write property test for Property 15 `[SAFETY]` (unknown or stale flood data fails closed in every tool, in both feed modes) _Requirements: 3.9, 3.10, 6.8, 7.10, 8.10, 9.9, 10.7, 11.9_ _Design: §18 P15_
 
-- [ ] 48. [qa-eval-engineer] Write property test for Property 18 `[SAFETY]` (a flood change after the clearance blocks both proposal and approval) _Requirements: 9.3, 10.2, 11.4_ _Design: §18 P18_
+- [x] 48. [qa-eval-engineer] Write property test for Property 18 `[SAFETY]` (a flood change after the clearance blocks both proposal and approval) _Requirements: 9.3, 10.2, 11.4_ _Design: §18 P18_
 
-- [ ] 49. [qa-eval-engineer] Write property test for Property 23 (a work order is decided exactly once, by a human, with no token leak) _Requirements: 11.1, 11.2, 11.3, 11.6, 11.7, 11.8, 9.8_ _Design: §18 P23_
+- [x] 49. [qa-eval-engineer] Write property test for Property 23 (a work order is decided exactly once, by a human, with no token leak) _Requirements: 11.1, 11.2, 11.3, 11.6, 11.7, 11.8, 9.8_ _Design: §18 P23_
 
-- [ ] 50. [qa-eval-engineer] Write property test for Property 19 (write-tool idempotency) _Requirements: 1.9_ _Design: §18 P19_
+- [x] 50. [qa-eval-engineer] Write property test for Property 19 (write-tool idempotency) _Requirements: 1.9_ _Design: §18 P19_
 
-- [ ] 51. [qa-eval-engineer] Write property test for Property 34 (idempotency never caches a retryable failure) _Requirements: 1.9, 1.12_ _Design: §18 P34_
+- [x] 51. [qa-eval-engineer] Write property test for Property 34 (idempotency never caches a retryable failure) _Requirements: 1.9, 1.12_ _Design: §18 P34_
 
-- [ ] 52. [qa-eval-engineer] Write property test for Property 14 (outage identity survives concurrency, duplicates and crashes) _Requirements: 4.1, 4.2, 4.3, 1.9_ _Design: §18 P14_
+- [x] 52. [qa-eval-engineer] Write property test for Property 14 (outage identity survives concurrency, duplicates and crashes) _Requirements: 4.1, 4.2, 4.3, 1.9_ _Design: §18 P14_
 
-- [ ] 53. [qa-eval-engineer] Write property test for Property 21 (exactly one well-formed envelope that leaks nothing) _Requirements: 1.4, 1.5, 1.6, 1.11_ _Design: §18 P21_
+- [x] 53. [qa-eval-engineer] Write property test for Property 21 (exactly one well-formed envelope that leaks nothing) _Requirements: 1.4, 1.5, 1.6, 1.11_ _Design: §18 P21_
 
-- [ ] 54. [qa-eval-engineer] Write property test for Property 22 `[SAFETY]` (no personal data in logs, metrics, events or validation output) _Requirements: 1.4, 2.4, 2.5, 4.8_ _Design: §18 P22_
+- [x] 54. [qa-eval-engineer] Write property test for Property 22 `[SAFETY]` (no personal data in logs, metrics, events or validation output) _Requirements: 1.4, 2.4, 2.5, 4.8_ _Design: §18 P22_
 
-- [ ] 55. [qa-eval-engineer] Write property test for Property 30 (every emitted event validates and vetoes carry a `rule_id`) _Requirements: 13.1, 13.2, 13.3, 9.8_ _Design: §18 P30_
+- [x] 55. [qa-eval-engineer] Write property test for Property 30 (every emitted event validates and vetoes carry a `rule_id`) _Requirements: 13.1, 13.2, 13.3, 9.8_ _Design: §18 P30_
 
-- [ ] 56. [qa-eval-engineer] Handler unit and error-path tests _Requirements: 2.1, 2.2, 2.3, 15.2_ _Design: §11.2, §13_
-  - [ ] 56.1 [qa-eval-engineer] Write the `record_outage` handler tests: meter requirements, DT resolution ties, study-area rejection, extra-contact rejection, retry, attach, escalation, restored-key reopen _Requirements: 4.2, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 4.11, 4.12, 4.13_ _Design: §5.1_
-  - [ ] 56.2 [qa-eval-engineer] Write the `trace`, `check_flood` and `plan_crew_route` handler tests, including `target_kind: route` binding, an unknown `route_id`, invalid geometry, the flooded destination, and `no_safe_route` _Requirements: 5.3, 5.5, 5.6, 5.7, 6.1, 6.2, 6.3, 6.4, 6.6, 7.5, 7.6, 7.7, 7.8_ _Design: §5.2, §5.3, §5.4_
-  - [ ] 56.3 [qa-eval-engineer] Write the `rank`, `dispatch_crew` and `propose_switching` handler tests, including tier-from-grid, invalid effort, the crew-size veto, the missing skill, the crew-lock conflict, energise requiring both fields, and `de_energise` valid with neither _Requirements: 8.2, 8.7, 8.8, 8.9, 9.1, 9.4, 9.5, 9.6, 9.8, 10.1, 10.4, 10.5, 10.6, 10.8_ _Design: §5.5, §5.6, §5.7_
-  - [ ] 56.4 [qa-eval-engineer] Write the ingestor tests: the DLQ paths, `receding` staying hazardous, the heartbeat not bumping the version, the staleness boundary in both feed modes, the two-queue separation, batch failure reporting, and stale `JobCompleted` handling _Requirements: 3.3, 3.4, 3.8, 3.9, 18.6, 18.7, 18.8_ _Design: §5.8, §5.10, §9.2_
-  - [ ] 56.5 [qa-eval-engineer] Write the approval, expirer and crew-lock tests: the approver group, the second decision conflict, the timeout path, lock release on every ending outcome, and the release condition on the proposal id _Requirements: 11.3, 11.6, 11.7, 11.8, 9.10_ _Design: §5.9, §5.11, §6.5_
-  - [ ] 56.6 [qa-eval-engineer] Write `test_every_error_row_reachable` covering all 44 rows of the §11.2 matrix, and the observability tests for log fields, trace annotations and the exact metric set _Requirements: 2.1, 2.2, 2.3, 15.2_ _Design: §11.2, §13_
+- [x] 56. [qa-eval-engineer] Handler unit and error-path tests _Requirements: 2.1, 2.2, 2.3, 15.2_ _Design: §11.2, §13_
+  - [x] 56.1 [qa-eval-engineer] Write the `record_outage` handler tests: meter requirements, DT resolution ties, study-area rejection, extra-contact rejection, retry, attach, escalation, restored-key reopen _Requirements: 4.2, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 4.11, 4.12, 4.13_ _Design: §5.1_
+  - [x] 56.2 [qa-eval-engineer] Write the `trace`, `check_flood` and `plan_crew_route` handler tests, including `target_kind: route` binding, an unknown `route_id`, invalid geometry, the flooded destination, and `no_safe_route` _Requirements: 5.3, 5.5, 5.6, 5.7, 6.1, 6.2, 6.3, 6.4, 6.6, 7.5, 7.6, 7.7, 7.8_ _Design: §5.2, §5.3, §5.4_
+  - [x] 56.3 [qa-eval-engineer] Write the `rank`, `dispatch_crew` and `propose_switching` handler tests, including tier-from-grid, invalid effort, the crew-size veto, the missing skill, the crew-lock conflict, energise requiring both fields, and `de_energise` valid with neither _Requirements: 8.2, 8.7, 8.8, 8.9, 9.1, 9.4, 9.5, 9.6, 9.8, 10.1, 10.4, 10.5, 10.6, 10.8_ _Design: §5.5, §5.6, §5.7_
+  - [x] 56.4 [qa-eval-engineer] Write the ingestor tests: the DLQ paths, `receding` staying hazardous, the heartbeat not bumping the version, the staleness boundary in both feed modes, the two-queue separation, batch failure reporting, and stale `JobCompleted` handling _Requirements: 3.3, 3.4, 3.8, 3.9, 18.6, 18.7, 18.8_ _Design: §5.8, §5.10, §9.2_
+  - [x] 56.5 [qa-eval-engineer] Write the approval, expirer and crew-lock tests: the approver group, the second decision conflict, the timeout path, lock release on every ending outcome, and the release condition on the proposal id _Requirements: 11.3, 11.6, 11.7, 11.8, 9.10_ _Design: §5.9, §5.11, §6.5_
+  - [x] 56.6 [qa-eval-engineer] Write `test_every_error_row_reachable` covering all 44 rows of the §11.2 matrix, and the observability tests for log fields, trace annotations and the exact metric set _Requirements: 2.1, 2.2, 2.3, 15.2_ _Design: §11.2, §13_
 
-- [ ] 57. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools`, `uv run pytest -m safety`, `uv run ruff check gateway` and `uv run mypy gateway/tools`; every handler error path and every wave-4 property must pass _Requirements: 15.1, 15.2, 16.5_ _Design: §19.1_
+- [x] 57. [qa-eval-engineer] Checkpoint: run `uv run pytest -q tests/tools`, `uv run pytest -m safety`, `uv run ruff check gateway` and `uv run mypy gateway/tools`; every handler error path and every wave-4 property must pass _Requirements: 15.1, 15.2, 16.5_ _Design: §19.1_
 
 ---
 
 ## Wave 5 — Policy
 
-- [ ] 58. [platform-engineer] Write `gateway/policies/grid-tools.cedar`: the dispatch forbid and the energise-scoped switching forbid, every attribute read guarded by `has` including the nested `flood_check has intersects`, the contact-data forbid, one permit per tool keyed on the role claim, a requirement-ID comment on every statement, and no approval action anywhere _Requirements: 12.1, 12.2, 12.3, 12.4, 12.8, 10.8_ _Design: §10.2_
+- [x] 58. [platform-engineer] Write `gateway/policies/grid-tools.cedar`: the dispatch forbid and the energise-scoped switching forbid, every attribute read guarded by `has` including the nested `flood_check has intersects`, the contact-data forbid, one permit per tool keyed on the role claim, a requirement-ID comment on every statement, and no approval action anywhere _Requirements: 12.1, 12.2, 12.3, 12.4, 12.8, 10.8_ _Design: §10.2_
 
-- [ ] 59. [platform-engineer] Write the Cedar schema mirror generator: build `gateway/policies/schema/gateway-schema.json` from the seven **subset** `tool_spec.json` files only, carrying types and requiredness and no enums or patterns _Requirements: 12.6, 12.7_ _Design: §10.4_
+- [x] 59. [platform-engineer] Write the Cedar schema mirror generator: build `gateway/policies/schema/gateway-schema.json` from the seven **subset** `tool_spec.json` files only, carrying types and requiredness and no enums or patterns _Requirements: 12.6, 12.7_ _Design: §10.4_
 
-- [ ] 60. [qa-eval-engineer] Write `policy/test_cedar_matrix.py`: all 21 rows of §10.5, including `de_energise` allowed with `intersects: true`, with no `flood_check` at all, and while the feed is stale or unknown; `energise` denied without `flood_check` and without nested `intersects`; the unlisted tool; and the hypothetical approval action _Requirements: 12.7, 12.3, 12.4_ _Design: §10.5_
+- [x] 60. [qa-eval-engineer] Write `policy/test_cedar_matrix.py`: all 21 rows of §10.5, including `de_energise` allowed with `intersects: true`, with no `flood_check` at all, and while the feed is stale or unknown; `energise` denied without `flood_check` and without nested `intersects`; the unlisted tool; and the hypothetical approval action _Requirements: 12.7, 12.3, 12.4_ _Design: §10.5_
 
-- [ ] 61. [qa-eval-engineer] Write `policy/test_policy_file.py`: `test_every_statement_cites_a_requirement`, `test_policy_fields_declared_in_subset_specs`, `test_cedar_mirror_regenerates_from_subset_specs` _Requirements: 12.1, 12.6_ _Design: §10.2, §10.4_
+- [x] 61. [qa-eval-engineer] Write `policy/test_policy_file.py`: `test_every_statement_cites_a_requirement`, `test_policy_fields_declared_in_subset_specs`, `test_cedar_mirror_regenerates_from_subset_specs` _Requirements: 12.1, 12.6_ _Design: §10.2, §10.4_
 
-- [ ] 62. [qa-eval-engineer] Write property test for Property 26 `[SAFETY]` (Cedar forbids unsafe input and default-denies everything else) _Requirements: 12.2, 12.3, 12.4, 12.7_ _Design: §18 P26_
+- [x] 62. [qa-eval-engineer] Write property test for Property 26 `[SAFETY]` (Cedar forbids unsafe input and default-denies everything else) _Requirements: 12.2, 12.3, 12.4, 12.7_ _Design: §18 P26_
 
-- [ ] 63. [qa-eval-engineer] Write property test for Property 25 `[SAFETY]` (`de_energise` is never blocked, in the Logic and in the policy, with any combination of absent fields) _Requirements: 10.5, 10.7, 10.8, 12.3_ _Design: §18 P25_
+- [x] 63. [qa-eval-engineer] Write property test for Property 25 `[SAFETY]` (`de_energise` is never blocked, in the Logic and in the policy, with any combination of absent fields) _Requirements: 10.5, 10.7, 10.8, 12.3_ _Design: §18 P25_
 
-- [ ] 64. [qa-eval-engineer] Write `test_tool_checks_hold_without_policy`: the tool-side clearance and flood checks still refuse with the policy absent or in `LOG_ONLY` _Requirements: 12.8_ _Design: §10.1, §12.5_
+- [x] 64. [qa-eval-engineer] Write `test_tool_checks_hold_without_policy`: the tool-side clearance and flood checks still refuse with the policy absent or in `LOG_ONLY` _Requirements: 12.8_ _Design: §10.1, §12.5_
 
 ---
 
 ## Wave 6 — Infrastructure, synth only
 
-- [ ] 65. [platform-engineer] Write `GridToolsDataConstruct`: the single table with `gsi1`, PITR, the TTL attribute and the environment-driven removal policy; the idempotency table; the geometry bucket _Requirements: 14.1, 14.5_ _Design: §7.2, §16.1_
+- [x] 65. [platform-engineer] Write `GridToolsDataConstruct`: the single table with `gsi1`, PITR, the TTL attribute and the environment-driven removal policy; the idempotency table; the geometry bucket _Requirements: 14.1, 14.5_ _Design: §7.2, §16.1_
   - [ ]* 65.1 [platform-engineer] Add the KMS customer managed key for the outage and token tables _Requirements: 14.3_ _Design: §16.1_
 
-- [ ] 66. [platform-engineer] Write `IntakeConstruct`: the hazard and intake FIFO queues with content-based deduplication, the shared DLQ and redrive policies, the Flood_Ingestor mapping at batch size 1, and the Event_Ingestor mapping at batch size 10 with `ReportBatchItemFailures` _Requirements: 18.8, 3.4, 18.6_ _Design: §16.1, §5.8, §5.10_
+- [x] 66. [platform-engineer] Write `IntakeConstruct`: the hazard and intake FIFO queues with content-based deduplication, the shared DLQ and redrive policies, the Flood_Ingestor mapping at batch size 1, and the Event_Ingestor mapping at batch size 10 with `ReportBatchItemFailures` _Requirements: 18.8, 3.4, 18.6_ _Design: §16.1, §5.8, §5.10_
 
-- [ ] 67. [platform-engineer] Write `EventsConstruct`: the two EventBridge rules with the configured sources and `SqsParameters.MessageGroupId` from the incident id, and the scoped EventBridge role _Requirements: 18.8, 13.2_ _Design: §16.1_
+- [x] 67. [platform-engineer] Write `EventsConstruct`: the two EventBridge rules with the configured sources and `SqsParameters.MessageGroupId` from the incident id, and the scoped EventBridge role _Requirements: 18.8, 13.2_ _Design: §16.1_
 
-- [ ] 68. [platform-engineer] Write `GatewayToolsConstruct`: the seven tool functions on arm64 with local `uv` bundling, `_shared` copied in, and `data/grid`, `data/facilities` and `data/crews` copied into every tool asset so `_shared/grid.py` can load the Grid at cold start, the seven Gateway targets from the subset specs, per-function roles, reserved concurrency and the Gateway rate limits _Requirements: 14.1, 14.2, 1.1_ _Design: §3.2, §16.1, §16.2_
+- [x] 68. [platform-engineer] Write `GatewayToolsConstruct`: the seven tool functions on arm64 with local `uv` bundling, `_shared` copied in, and `data/grid`, `data/facilities` and `data/crews` copied into every tool asset so `_shared/grid.py` can load the Grid at cold start, the seven Gateway targets from the subset specs, per-function roles, reserved concurrency and the Gateway rate limits _Requirements: 14.1, 14.2, 1.1_ _Design: §3.2, §16.1, §16.2_
 
-- [ ] 69. [platform-engineer] Write `WorkflowConstruct`: the Standard state machine ending in `Succeed`/`Fail` with no `putEvents`, the rendered `TimeoutSeconds`, the token vault, the expirer, the Approval_Handler, and API Gateway with the Cognito authorizer _Requirements: 11.1, 11.2, 11.3, 13.5_ _Design: §6.6, §16.1_
+- [x] 69. [platform-engineer] Write `WorkflowConstruct`: the Standard state machine ending in `Succeed`/`Fail` with no `putEvents`, the rendered `TimeoutSeconds`, the token vault, the expirer, the Approval_Handler, and API Gateway with the Cognito authorizer _Requirements: 11.1, 11.2, 11.3, 13.5_ _Design: §6.6, §16.1_
 
-- [ ] 70. [platform-engineer] Write `GeoConstruct` and `PolicyConstruct`: the route calculator, and the policy engine associated in `ENFORCE` with one `create_policy` call per Cedar statement _Requirements: 12.5, 7.1_ _Design: §16.1, §16.3_
+- [x] 70. [platform-engineer] Write `GeoConstruct` and `PolicyConstruct`: the route calculator, and the policy engine associated in `ENFORCE` with one `create_policy` call per Cedar statement _Requirements: 12.5, 7.1_ _Design: §16.1, §16.3_
   - [ ]* 70.1 [platform-engineer] Add the geofence collection and the mirroring path for crew-entry alerts _Requirements: 3.7_ _Design: §5.8_
 
-- [ ] 71. [platform-engineer] Write `ObservabilityConstruct`: log groups at 30-day retention, tracing on, and the six alarms of §16.4 including both queue-age alarms and the batch-failure signal _Requirements: 2.1, 2.2, 2.3_ _Design: §16.4_
+- [x] 71. [platform-engineer] Write `ObservabilityConstruct`: log groups at 30-day retention, tracing on, and the six alarms of §16.4 including both queue-age alarms and the batch-failure signal _Requirements: 2.1, 2.2, 2.3_ _Design: §16.4_
 
-- [ ] 72. [platform-engineer] Run `cdk synth` and `cdk-nag`, and write the two suppressions with their ADR references: the `geo-routes:CalculateRoutes` wildcard and, in the challenge tier, the absent customer managed key. Never run `cdk deploy` _Requirements: 14.1, 14.3_ _Design: §16.5, §20 ADR-6, ADR-10_
+- [x] 72. [platform-engineer] Run `cdk synth` and `cdk-nag`, and write the two suppressions with their ADR references: the `geo-routes:CalculateRoutes` wildcard and, in the challenge tier, the absent customer managed key. Never run `cdk deploy` _Requirements: 14.1, 14.3_ _Design: §16.5, §20 ADR-6, ADR-10_
 
-- [ ] 73. [qa-eval-engineer] Infrastructure tests _Requirements: 11.2, 12.5, 13.5, 14.1, 14.2, 18.5, 18.8_ _Design: §12.1, §16_
-  - [ ] 73.1 [qa-eval-engineer] Write `infra/test_iam.py`: one role per function, scoped resources, no tool role holding `SendTask*`, only the Approval_Handler holding it, and only this spec's functions writing outage-key and crew-lock items _Requirements: 14.1, 11.2, 18.5_ _Design: §12.1_
-  - [ ] 73.2 [qa-eval-engineer] Write `infra/test_cdk_intake.py`: two separate queues, the batch sizes, `ReportBatchItemFailures`, the redrive policies and the message-group mapping _Requirements: 18.8_ _Design: §16.1_
-  - [ ] 73.3 [qa-eval-engineer] Write `infra/test_cdk_policy.py` and `infra/test_cdk_gateway.py`: `ENFORCE` in demo environments, the rate limits and reserved concurrency, and construct snapshots _Requirements: 12.5, 14.2_ _Design: §16.2, §16.3_
-  - [ ] 73.4 [qa-eval-engineer] Write `test_state_machine_emits_no_events` and `test_one_emitter_per_event_name` _Requirements: 13.5_ _Design: §6.6, §11.5_
+- [x] 73. [qa-eval-engineer] Infrastructure tests _Requirements: 11.2, 12.5, 13.5, 14.1, 14.2, 18.5, 18.8_ _Design: §12.1, §16_
+  - [x] 73.1 [qa-eval-engineer] Write `infra/test_iam.py`: one role per function, scoped resources, no tool role holding `SendTask*`, only the Approval_Handler holding it, and only this spec's functions writing outage-key and crew-lock items _Requirements: 14.1, 11.2, 18.5_ _Design: §12.1_
+  - [x] 73.2 [qa-eval-engineer] Write `infra/test_cdk_intake.py`: two separate queues, the batch sizes, `ReportBatchItemFailures`, the redrive policies and the message-group mapping _Requirements: 18.8_ _Design: §16.1_
+  - [x] 73.3 [qa-eval-engineer] Write `infra/test_cdk_policy.py` and `infra/test_cdk_gateway.py`: `ENFORCE` in demo environments, the rate limits and reserved concurrency, and construct snapshots _Requirements: 12.5, 14.2_ _Design: §16.2, §16.3_
+  - [x] 73.4 [qa-eval-engineer] Write `test_state_machine_emits_no_events` and `test_one_emitter_per_event_name` _Requirements: 13.5_ _Design: §6.6, §11.5_
   - [ ]* 73.5 [qa-eval-engineer] Write `infra/test_cdk_data.py::test_cmk_used_when_enabled` _Requirements: 14.3_ _Design: §16.1_
-  - [ ] 73.6 [qa-eval-engineer] Write `test_assets_contain_grid_data`: every tool asset bundles `_shared` and the three `data/` collections, and `Grid` loads from the bundled copy with no repository-relative path _Requirements: 1.1_ _Design: §3.2, §22.3_
+  - [x] 73.6 [qa-eval-engineer] Write `test_assets_contain_grid_data`: every tool asset bundles `_shared` and the three `data/` collections, and `Grid` loads from the bundled copy with no repository-relative path _Requirements: 1.1_ _Design: §3.2, §22.3_
 
 ---
 
 ## Wave 7 — Replay and closure
 
-- [ ] 74. [geo-data-engineer] Write `gateway/local/replay.py`: the driver that reads the committed fixture, applies hazard events through the Flood_Ingestor Logic and reports through the Event_Ingestor Logic, runs the tool sequence at the flood peak, drives an approval, applies `JobCompleted`, and writes `events.jsonl` and a run summary _Requirements: 17.1, 17.5, 18.1, 18.3_ _Design: §15.4_
+- [x] 74. [geo-data-engineer] Write `gateway/local/replay.py`: the driver that reads the committed fixture, applies hazard events through the Flood_Ingestor Logic and reports through the Event_Ingestor Logic, runs the tool sequence at the flood peak, drives an approval, applies `JobCompleted`, and writes `events.jsonl` and a run summary _Requirements: 17.1, 17.5, 18.1, 18.3_ _Design: §15.4_
 
-- [ ] 75. [qa-eval-engineer] Write `test_fixture_drives_tools_end_to_end`: the fixture replay in `local` mode must dedupe 408 reports, cross all three flood transitions, veto an energise on `sub_004`, complete one dispatch-to-approval cycle, and close its outages _Requirements: 17.5, 18.2, 18.3_ _Design: §15.4_
+- [x] 75. [qa-eval-engineer] Write `test_fixture_drives_tools_end_to_end`: the fixture replay in `local` mode must dedupe 408 reports, cross all three flood transitions, veto an energise on `sub_004`, complete one dispatch-to-approval cycle, and close its outages _Requirements: 17.5, 18.2, 18.3_ _Design: §15.4_
 
-- [ ] 76. [qa-eval-engineer] Write `test_property_coverage.py`: the bijection between the `Property N` headings in `design.md` and the collected `test_property_P*` tests, the naming rule, resolvable `Validates:` criteria, and the safety marker on every `[SAFETY]` property _Requirements: 16.1, 16.2, 16.5, 16.8, 16.9_ _Design: §19.3_
+- [x] 76. [qa-eval-engineer] Write `test_property_coverage.py`: the bijection between the `Property N` headings in `design.md` and the collected `test_property_P*` tests, the naming rule, resolvable `Validates:` criteria, and the safety marker on every `[SAFETY]` property _Requirements: 16.1, 16.2, 16.5, 16.8, 16.9_ _Design: §19.3_
 
-- [ ] 77. [qa-eval-engineer] Write `test_adversarial_cases_are_generated`, `test_minimal_counterexample_is_reported` and `test_sockets_blocked_and_no_wall_clock_reads` _Requirements: 16.4, 16.6, 16.7_ _Design: §19.2, §19.3_
+- [x] 77. [qa-eval-engineer] Write `test_adversarial_cases_are_generated`, `test_minimal_counterexample_is_reported` and `test_sockets_blocked_and_no_wall_clock_reads` _Requirements: 16.4, 16.6, 16.7_ _Design: §19.2, §19.3_
 
-- [ ] 78. [geo-data-engineer] Write the README section for `gateway/tools/`: the agent-facing call order `plan_crew_route → check_flood_geofence(route_id) → dispatch_crew`, the two-file schema rule, and the `MINNAL_BACKEND=local` instructions _Requirements: 17.1, 6.1_ _Design: §3.3, §5.3_
+- [x] 78. [geo-data-engineer] Write the README section for `gateway/tools/`: the agent-facing call order `plan_crew_route → check_flood_geofence(route_id) → dispatch_crew`, the two-file schema rule, and the `MINNAL_BACKEND=local` instructions _Requirements: 17.1, 6.1_ _Design: §3.3, §5.3_
   - [ ]* 78.1 [geo-data-engineer] Add the staging-point suggestion and the Make-safe nearest-point exception to `plan_crew_route` _Requirements: 7.9_ _Design: §5.4_
   - [ ]* 78.2 [geo-data-engineer] Add the `modify` decision kind to the Approval_Handler _Requirements: 11.5_ _Design: §5.9_
   - [ ]* 78.3 [geo-data-engineer] Add the outbox record and sweeper for failed event publishing _Requirements: 13.4_ _Design: §11.5_
 
-- [ ] 79. [qa-eval-engineer] Checkpoint: ensure all tests pass. Run `scripts/spec-complete.sh grid-tools && uv run ruff check gateway && uv run pytest -q tests/tools tests/policy tests/infra`, `uv run pytest -m safety`, and a successful `cdk synth` (verification only — nothing is authored or deployed here); all must exit 0 _Requirements: 15.1, 15.2, 15.3, 16.5_ _Design: §19_
+- [x] 79. [qa-eval-engineer] Checkpoint: ensure all tests pass. Run `scripts/spec-complete.sh grid-tools && uv run ruff check gateway && uv run pytest -q tests/tools tests/policy tests/infra`, `uv run pytest -m safety`, and a successful `cdk synth` (verification only — nothing is authored or deployed here); all must exit 0 _Requirements: 15.1, 15.2, 15.3, 16.5_ _Design: §19_
   - [ ]* 79.1 [qa-eval-engineer] Write the deferred performance benchmarks: cold start under 1.5 s and p95 under 800 ms, marked `slow` and non-gating _Requirements: 15.4, 15.5_ _Design: §19.1_

@@ -82,6 +82,7 @@ class DecisionResult:
     release_crew_lock: bool  # released on every non-work-starting outcome (R9.10)
     approval_latency_ms: int
     reason: str
+    hazard_ids: tuple[str, ...] = ()  # hazards hit at approval, for FLOOD_CHANGED
 
 
 @dataclass(frozen=True, slots=True)
@@ -163,7 +164,9 @@ def _approve(recheck: RecheckOutcome, latency: int) -> DecisionResult:
     if recheck.is_stale:
         return _flood_refusal("FLOOD_DATA_UNAVAILABLE", "flood data is unknown or stale", latency)
     if recheck.intersects:
-        return _flood_refusal("FLOOD_CHANGED", "the bound geometry is now flooded", latency)
+        return _flood_refusal(
+            "FLOOD_CHANGED", "the bound geometry is now flooded", latency, recheck.hazard_ids
+        )
     return DecisionResult(
         terminal_state="approved",
         task_signal="success",
@@ -176,7 +179,9 @@ def _approve(recheck: RecheckOutcome, latency: int) -> DecisionResult:
     )
 
 
-def _flood_refusal(rule_id: RuleId, reason: str, latency: int) -> DecisionResult:
+def _flood_refusal(
+    rule_id: RuleId, reason: str, latency: int, hazard_ids: tuple[str, ...] = ()
+) -> DecisionResult:
     """A flood refusal at approval: fail the task, emit vetoed, free the lock."""
     return DecisionResult(
         terminal_state="vetoed",
@@ -187,6 +192,7 @@ def _flood_refusal(rule_id: RuleId, reason: str, latency: int) -> DecisionResult
         release_crew_lock=True,
         approval_latency_ms=latency,
         reason=reason,
+        hazard_ids=hazard_ids,
     )
 
 

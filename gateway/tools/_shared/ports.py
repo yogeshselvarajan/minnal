@@ -223,7 +223,7 @@ class CreateProposalResult:
 class RecordedDecision:
     """A human decision recorded on a Task_Token_Ref (§7.4.4, R11.7)."""
 
-    decision: Literal["approve", "reject", "modify"]
+    decision: Literal["approve", "reject", "modify", "expire"]
     terminal_state: Literal["approved", "rejected", "vetoed", "expired"]
     decided_by: str
     decided_at: str
@@ -436,8 +436,17 @@ class WorkOrderStarter(Protocol):
 class TokenVault(Protocol):
     """Single-use storage of the Step Functions task token (§12.3, R9.8)."""
 
-    def store(self, incident_id: str, ttr: str, task_token: str) -> None:
-        """Store the task token under its Task_Token_Ref (once, §11.6)."""
+    def store(
+        self, incident_id: str, ttr: str, task_token: str, proposal_id: str | None = None
+    ) -> None:
+        """Store the task token under its Task_Token_Ref, once (§11.6, §12.3).
+
+        ``proposal_id`` links the ``TTR#`` item to its Proposal so
+        ``ProposalStore.record_decision`` can resolve it; when omitted the ref is
+        used as the link (backward compatible with callers that only vault a
+        token). The Step Functions ``token_vault`` target passes the real
+        ``proposal_id`` from the execution input.
+        """
         ...
 
     def take(self, incident_id: str, ttr: str) -> str | None:

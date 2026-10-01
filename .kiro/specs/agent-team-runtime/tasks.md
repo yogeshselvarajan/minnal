@@ -137,17 +137,17 @@ Lanes: `[agent-engineer]` `patterns/agui-minnal/**`, `pyproject.toml`, `uv.lock`
     - **Validates: Requirements 16.1, 16.2, 16.3, 16.6, 16.5, 16.9**
     - `test_property_P53_budgets_terminate` in `tests/agents/properties/`, at least 200 examples, one known-bad `@example`
     - _Requirements: 16.1, 16.2, 16.3, 16.6, 16.5, 16.9_ §20, §14 [qa-eval-engineer]
-  - [x] 19.2 Write `tests/agents/test_budget_reserve.py` with `test_working_node_cannot_consume_reserve`, `test_exit_after_safety_still_commits` and `test_exit_before_safety_defers_all`
+  - [ ] 19.2 Write `tests/agents/test_budget_reserve.py` with `test_working_node_cannot_consume_reserve`, `test_exit_after_safety_still_commits` and `test_exit_before_safety_defers_all`
     - _Requirements: 16.9_ §14.6, §21.5 [qa-eval-engineer]
 
-- [x] 20. Untrusted-content containment
+- [ ] 20. Untrusted-content containment
   - _Requirements: 17.1, 17.2, 17.3, 17.5_ §6.6 [agent-engineer]
-  - [x] 20.1 Write `patterns/agui-minnal/domain/untrusted.py` (pure) with the open and close markers, `escape_delimiters` neutralising the delimiter substrings, `truncate_marked` with an explicit marker, and `wrap_untrusted` as the only way untrusted text enters a prompt
+  - [ ] 20.1 Write `patterns/agui-minnal/domain/untrusted.py` (pure) with the open and close markers, `escape_delimiters` neutralising the delimiter substrings, `truncate_marked` with an explicit marker, and `wrap_untrusted` as the only way untrusted text enters a prompt
     - _Requirements: 17.1, 17.2, 17.3, 17.5_ §6.6 [agent-engineer]
 
-- [x] 21. Verify untrusted containment
+- [ ] 21. Verify untrusted containment
   - _Requirements: 17.1, 17.2, 17.3, 17.5_ §20, §6.6 [qa-eval-engineer]
-  - [x] 21.1 Write property test for Property 48
+  - [ ] 21.1 Write property test for Property 48
     - **Property 48: untrusted content is contained [SAFETY]**
     - **Validates: Requirements 17.1, 17.2, 17.3, 17.5**
     - `test_property_P48_untrusted_containment` in `tests/agents/properties/`, `@pytest.mark.safety`, at least 200 examples, one known-bad `@example`

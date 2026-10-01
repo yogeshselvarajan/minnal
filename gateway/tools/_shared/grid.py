@@ -33,11 +33,45 @@ _POSITION_ARITY = 2
 _DEVICE_TYPES: frozenset[str] = frozenset({"Substation", "Feeder", "Lateral", "DT"})
 """The four topology node types (Service_Area is geometry, not a node)."""
 
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-"""Repo root: ``gateway/tools/_shared/grid.py`` -> up three levels."""
+_HERE = Path(__file__).resolve()
+"""This module's absolute path (``.../_shared/grid.py``)."""
 
-_DEFAULT_DATA_DIR = _REPO_ROOT / "data"
-"""Default location of the bundled synthetic grid and facilities data."""
+_DEFAULT_DATA_DIR = _HERE.parents[1] / "data"
+"""Default data location: the ``data`` sibling of ``_shared`` inside the bundled Lambda asset.
+
+In the deployed asset the layout is ``<asset>/_shared/grid.py`` with ``<asset>/data/`` (design
+§3.2, §22.3): the data is a sibling of the ``_shared`` package, so the default resolves from
+``grid.py``'s own location — ``parents[1]/data`` — with NO repository-relative climb (R1.1). The
+bundling step copies ``data/`` next to ``_shared`` for exactly this reason.
+"""
+
+# Grid data needs both the grid and facilities collections; used to detect whether the
+# asset-relative default is populated (it is in the deployed asset) or whether we are running
+# from the repo checkout, where the same collections live at the repository root instead.
+_REQUIRED_SUBDIRS: tuple[str, ...] = ("grid", "facilities")
+
+# Repository-checkout fallback: in the source tree the collections live at ``<repo>/data`` rather
+# than beside ``_shared``. This is a dev/test convenience only; the deployed asset always resolves
+# through ``_DEFAULT_DATA_DIR`` above. It is NOT the baked-in default (which stays asset-relative).
+_REPO_DATA_DIR = _HERE.parents[3] / "data"
+
+
+def _resolve_data_dir(data_dir: Path | None) -> Path:
+    """Resolve the data dir to use, preferring an explicit arg, then asset, then repo checkout.
+
+    Args:
+        data_dir: An explicit override (tests pass this). When None, resolves the default.
+
+    Returns:
+        The asset-relative default when present (deployed Lambda), else the repository-checkout
+        location (dev/tests). The asset-relative path is always the baked-in default; the repo
+        location is a fallback used only when running from the source tree.
+    """
+    if data_dir is not None:
+        return data_dir
+    if all((_DEFAULT_DATA_DIR / sub).is_dir() for sub in _REQUIRED_SUBDIRS):
+        return _DEFAULT_DATA_DIR
+    return _REPO_DATA_DIR
 
 
 @dataclass(frozen=True)
@@ -196,7 +230,7 @@ def load_grid(data_dir: Path | None = None) -> Grid:
     Returns:
         An immutable :class:`Grid`.
     """
-    base = data_dir if data_dir is not None else _DEFAULT_DATA_DIR
+    base = _resolve_data_dir(data_dir)
     grid_features = _load_features(base / "grid" / "grid.geojson")
     facility_features = _load_features(base / "facilities" / "facilities.geojson")
     devices, children, geometries = _build_topology(grid_features)
